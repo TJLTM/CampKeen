@@ -2835,23 +2835,6 @@ WaterSource
 Text Label 26450 6700 1    50   ~ 0
 AlarmReset
 $Comp
-L SamacSys_Parts:1N5817 D3
-U 1 1 64E613FB
-P 6700 16400
-F 0 "D3" V 6954 16530 50  0000 L CNN
-F 1 "1N5817" V 7045 16530 50  0000 L CNN
-F 2 "SamacSys_Parts:DIOAD1414W86L464D238" H 7150 16400 50  0001 L CNN
-F 3 "http://www.st.com/web/en/resource/technical/document/datasheet/CD00001625.pdf" H 7150 16300 50  0001 L CNN
-F 4 "1N5817, Schottky Diode,  1A max, 20V, 2-Pin, DO-41" H 7150 16200 50  0001 L CNN "Description"
-F 5 "" H 7150 16100 50  0001 L CNN "Height"
-F 6 "511-1N5817" H 7150 16000 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/STMicroelectronics/1N5817?qs=JV7lzlMm3yKNnxZdh%252BSMnw%3D%3D" H 7150 15900 50  0001 L CNN "Mouser Price/Stock"
-F 8 "STMicroelectronics" H 7150 15800 50  0001 L CNN "Manufacturer_Name"
-F 9 "1N5817" H 7150 15700 50  0001 L CNN "Manufacturer_Part_Number"
-	1    6700 16400
-	0    1    1    0   
-$EndComp
-$Comp
 L Device:C C3
 U 1 1 64EA7242
 P 5850 17150
@@ -2907,8 +2890,6 @@ F 3 "" H 6700 17100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6700 17100 6700 17000
-Wire Wire Line
 	7250 17100 7250 16700
 $Comp
 L Device:L L2
@@ -2921,8 +2902,6 @@ F 3 "~" H 6950 16400 50  0001 C CNN
 	1    6950 16400
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	6800 16400 6700 16400
 Wire Wire Line
 	7100 16400 7250 16400
 $Comp
@@ -6689,9 +6668,6 @@ Wire Wire Line
 Wire Wire Line
 	6200 16100 6350 16100
 Wire Wire Line
-	6350 16400 6700 16400
-Connection ~ 6700 16400
-Wire Wire Line
 	7250 15200 7250 15600
 Connection ~ 7250 16400
 Wire Wire Line
@@ -6780,49 +6756,8 @@ Wire Wire Line
 	2950 1900 2950 1800
 Wire Wire Line
 	2950 1500 2950 1300
-$Comp
-L Device:R R90
-U 1 1 6A667D8C
-P 7700 16200
-F 0 "R90" H 7770 16246 50  0000 L CNN
-F 1 "330" H 7770 16155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 7630 16200 50  0001 C CNN
-F 3 "~" H 7700 16200 50  0001 C CNN
-	1    7700 16200
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR018
-U 1 1 6A667D92
-P 7700 16450
-F 0 "#PWR018" H 7700 16200 50  0001 C CNN
-F 1 "GND" H 7705 16277 50  0000 C CNN
-F 2 "" H 7700 16450 50  0001 C CNN
-F 3 "" H 7700 16450 50  0001 C CNN
-	1    7700 16450
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	7700 16450 7700 16350
-$Comp
-L Device:LED D1
-U 1 1 6A667D99
-P 7700 15800
-F 0 "D1" H 7693 16017 50  0000 C CNN
-F 1 "LED" H 7693 15926 50  0000 C CNN
-F 2 "LED_THT:LED_D3.0mm_Clear" H 7700 15800 50  0001 C CNN
-F 3 "~" H 7700 15800 50  0001 C CNN
-	1    7700 15800
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	7700 16050 7700 15950
 Wire Wire Line
 	3350 1000 4050 1000
-Wire Wire Line
-	7250 15600 7700 15600
-Wire Wire Line
-	7700 15600 7700 15650
 Wire Wire Line
 	16100 20700 16100 25700
 Wire Wire Line
@@ -6831,6 +6766,26 @@ Connection ~ 16100 25700
 Wire Wire Line
 	18150 25700 18150 26500
 Connection ~ 18150 25700
+$Comp
+L Device:D_Schottky D1
+U 1 1 61306BCB
+P 6700 16650
+F 0 "D1" V 6654 16570 50  0000 R CNN
+F 1 "SR305-TP" V 6745 16570 50  0000 R CNN
+F 2 "Diode_THT:D_DO-201AD_P15.24mm_Horizontal" H 6700 16650 50  0001 C CNN
+F 3 "~" H 6700 16650 50  0001 C CNN
+	1    6700 16650
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	6350 16400 6700 16400
+Wire Wire Line
+	6700 16500 6700 16400
+Connection ~ 6700 16400
+Wire Wire Line
+	6700 16400 6800 16400
+Wire Wire Line
+	6700 16800 6700 17100
 Wire Bus Line
 	8600 7000 25650 7000
 Wire Bus Line
