@@ -73,7 +73,7 @@
     (visible_elements 7FFFFFFF)
     (pcbplotparams
       (layerselection 0x010f0_ffffffff)
-      (usegerberextensions false)
+      (usegerberextensions true)
       (usegerberattributes true)
       (usegerberadvancedattributes true)
       (creategerberjobfile true)
@@ -97,7 +97,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "C:/Users/tjltm/Desktop/0.1 CampKeen/"))
+      (outputdirectory "C:/Users/tjltm/Desktop/0.2 CampKeen/"))
   )
 
   (net 0 "")
@@ -12280,7 +12280,7 @@
   (segment (start 88.138 72.39) (end 88.138 68.58) (width 1.016) (layer B.Cu) (net 152))
   (segment (start 88.138 68.58) (end 89.408 67.31) (width 1.016) (layer B.Cu) (net 152))
 
-  (zone (net 1) (net_name GND) (layer B.Cu) (tstamp 6121D30B) (hatch edge 0.508)
+  (zone (net 1) (net_name GND) (layer B.Cu) (tstamp 61231327) (hatch edge 0.508)
     (connect_pads yes (clearance 0))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))
