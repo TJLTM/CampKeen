@@ -325,30 +325,6 @@ X ~ 2 0 -150 50 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# Device_R_POT_US
-#
-DEF Device_R_POT_US RV 0 40 Y N 1 F N
-F0 "RV" -175 0 50 V V C CNN
-F1 "Device_R_POT_US" -100 0 50 V V C CNN
-F2 "" 0 0 50 H I C CNN
-F3 "" 0 0 50 H I C CNN
-$FPLIST
- Potentiometer*
-$ENDFPLIST
-DRAW
-P 2 0 1 0 0 -90 0 -100 N
-P 2 0 1 0 0 100 0 90 N
-P 2 0 1 0 100 0 60 0 N
-P 4 0 1 0 45 0 90 20 90 -20 45 0 F
-P 5 0 1 0 0 -30 40 -45 0 -60 -40 -75 0 -90 N
-P 5 0 1 0 0 30 40 15 0 0 -40 -15 0 -30 N
-P 5 0 1 0 0 90 40 75 0 60 -40 45 0 30 N
-X 1 1 0 150 50 D 50 50 1 1 P
-X 2 2 150 0 50 L 50 50 1 1 P
-X 3 3 0 -150 50 U 50 50 1 1 P
-ENDDRAW
-ENDDEF
-#
 # Interface_UART_MAX232
 #
 DEF Interface_UART_MAX232 U 0 40 Y Y 1 F N
@@ -398,6 +374,26 @@ X VS- 6 800 100 200 L 50 50 1 1 w
 X T2OUT 7 800 -300 200 L 50 50 1 1 O
 X R2IN 8 800 -700 200 L 50 50 1 1 I
 X R2OUT 9 -800 -700 200 R 50 50 1 1 O
+ENDDRAW
+ENDDEF
+#
+# Reference_Voltage_TL431LP
+#
+DEF Reference_Voltage_TL431LP U 0 20 N N 1 F N
+F0 "U" -100 100 50 H V C CNN
+F1 "Reference_Voltage_TL431LP" 0 -100 50 H V C CNN
+F2 "Package_TO_SOT_THT:TO-92_Inline" 0 -150 50 H I C CIN
+F3 "" 0 0 50 H I C CIN
+$FPLIST
+ TO*92*
+$ENDFPLIST
+DRAW
+P 3 0 1 0 -50 0 0 0 50 0 N
+P 3 0 1 0 -30 30 30 0 -30 -30 F
+P 4 0 1 10 20 -40 30 -30 30 30 30 30 N
+X REF 1 0 100 100 D 50 50 1 1 P
+X A 2 -100 0 100 R 50 50 1 1 P
+X K 3 100 0 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
@@ -576,6 +572,32 @@ X 12V_@_0.045A_4 8 2200 -300 200 L 50 50 0 0 P
 ENDDRAW
 ENDDEF
 #
+# SamacSys_Parts_INA849DR
+#
+DEF SamacSys_Parts_INA849DR IC 0 30 Y Y 1 F N
+F0 "IC" 950 300 50 H V L CNN
+F1 "SamacSys_Parts_INA849DR" 950 200 50 H V L CNN
+F2 "SOIC127P600X175-8N" 950 100 50 H I L CNN
+F3 "https://www.ti.com/lit/ds/symlink/ina849.pdf?ts=1609495728489&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FINA849" 950 0 50 H I L CNN
+F4 "Texas Instruments Ultra-low noise (1 nV/vHz), high-speed (28 MHz, 35 V/), precision (35 V) instrumentation amplifier" 950 -100 50 H I L CNN "Description"
+F5 "1.75" 950 -200 50 H I L CNN "Height"
+F6 "595-INA849DR" 950 -300 50 H I L CNN "Mouser Part Number"
+F7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/INA849DR?qs=eP2BKZSCXI4qgDpsz1tg9g%3D%3D" 950 -400 50 H I L CNN "Mouser Price/Stock"
+F8 "Texas Instruments" 950 -500 50 H I L CNN "Manufacturer_Name"
+F9 "INA849DR" 950 -600 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+P 5 0 1 6 200 100 900 100 900 -400 200 -400 200 100 N
+X -IN 1 0 0 200 R 50 50 0 0 P
+X RG_1 2 0 -100 200 R 50 50 0 0 P
+X RG_2 3 0 -200 200 R 50 50 0 0 P
+X +IN 4 0 -300 200 R 50 50 0 0 P
+X -VS 5 1100 -300 200 L 50 50 0 0 P
+X REF 6 1100 -200 200 L 50 50 0 0 P
+X OUT 7 1100 -100 200 L 50 50 0 0 P
+X +VS 8 1100 0 200 L 50 50 0 0 P
+ENDDRAW
+ENDDEF
+#
 # SamacSys_Parts_IRF510
 #
 DEF SamacSys_Parts_IRF510 Q 0 30 Y Y 1 F N
@@ -690,6 +712,32 @@ X EP 8 0 0 200 R 50 50 0 0 P
 ENDDRAW
 ENDDEF
 #
+# SamacSys_Parts_LM2904N_NOPB
+#
+DEF SamacSys_Parts_LM2904N_NOPB IC 0 30 Y Y 1 F N
+F0 "IC" 2650 300 50 H V L CNN
+F1 "SamacSys_Parts_LM2904N_NOPB" 2650 200 50 H V L CNN
+F2 "DIP794W53P254L959H508Q8N" 2650 100 50 H I L CNN
+F3 "https://www.ti.com/lit/ds/symlink/lm2904-n.pdf?ts=1623840036876&ref_url=https%253A%252F%252Fwww.ti.com%252Fstore%252Fti%252Fen%252Fp%252Fproduct%252F%253Fp%253DLM2904N%252FNOPB" 2650 0 50 H I L CNN
+F4 "Low Power Dual Operational Amplifier" 2650 -100 50 H I L CNN "Description"
+F5 "5.08" 2650 -200 50 H I L CNN "Height"
+F6 "926-LM2904N/NOPB" 2650 -300 50 H I L CNN "Mouser Part Number"
+F7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/LM2904N-NOPB?qs=X1J7HmVL2ZHqLjgid2Dt%252Bg%3D%3D" 2650 -400 50 H I L CNN "Mouser Price/Stock"
+F8 "Texas Instruments" 2650 -500 50 H I L CNN "Manufacturer_Name"
+F9 "LM2904N/NOPB" 2650 -600 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+P 5 0 1 6 200 100 2600 100 2600 -400 200 -400 200 100 N
+X OUTPUT_A 1 0 0 200 R 50 50 0 0 P
+X INVERTING_INPUT_A 2 0 -100 200 R 50 50 0 0 P
+X NON-INVERTING_INPUT_A 3 0 -200 200 R 50 50 0 0 P
+X GND 4 0 -300 200 R 50 50 0 0 P
+X NON-INVERTING_INPUT_B 5 2800 -300 200 L 50 50 0 0 P
+X INVERTING_INPUT_B 6 2800 -200 200 L 50 50 0 0 P
+X OUTPUT_B 7 2800 -100 200 L 50 50 0 0 P
+X V+ 8 2800 0 200 L 50 50 0 0 P
+ENDDRAW
+ENDDEF
+#
 # SamacSys_Parts_S8411-45R
 #
 DEF SamacSys_Parts_S8411-45R U 0 30 Y Y 1 F N
@@ -706,32 +754,6 @@ DRAW
 P 5 0 1 6 200 100 600 100 600 -200 200 -200 200 100 N
 X + 1 0 -100 200 R 50 50 0 0 P
 X - 2 0 0 200 R 50 50 0 0 P
-ENDDRAW
-ENDDEF
-#
-# SamacSys_Parts_TL071CP
-#
-DEF SamacSys_Parts_TL071CP IC 0 30 Y Y 1 F N
-F0 "IC" 1450 300 50 H V L CNN
-F1 "SamacSys_Parts_TL071CP" 1450 200 50 H V L CNN
-F2 "DIP794W53P254L959H508Q8N" 1450 100 50 H I L CNN
-F3 "http://www.ti.com/lit/ds/symlink/tl071a.pdf" 1450 0 50 H I L CNN
-F4 "Low-Noise JFET-Input General-Purpose Operational Amplifier" 1450 -100 50 H I L CNN "Description"
-F5 "5.08" 1450 -200 50 H I L CNN "Height"
-F6 "595-TL071CP" 1450 -300 50 H I L CNN "Mouser Part Number"
-F7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TL071CP/?qs=3FVjRv9mUZ%2FN1XJT5coqUQ%3D%3D" 1450 -400 50 H I L CNN "Mouser Price/Stock"
-F8 "Texas Instruments" 1450 -500 50 H I L CNN "Manufacturer_Name"
-F9 "TL071CP" 1450 -600 50 H I L CNN "Manufacturer_Part_Number"
-DRAW
-P 5 0 1 6 200 100 1400 100 1400 -400 200 -400 200 100 N
-X OFFSET_N1 1 0 0 200 R 50 50 0 0 P
-X IN- 2 0 -100 200 R 50 50 0 0 P
-X IN+ 3 0 -200 200 R 50 50 0 0 P
-X VCC- 4 0 -300 200 R 50 50 0 0 P
-X OFFSET_N2 5 1600 -300 200 L 50 50 0 0 P
-X OUT 6 1600 -200 200 L 50 50 0 0 P
-X VCC+ 7 1600 -100 200 L 50 50 0 0 P
-X NC 8 1600 0 200 L 50 50 0 0 N
 ENDDRAW
 ENDDEF
 #
