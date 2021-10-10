@@ -1,0 +1,1 @@
+This is to fix the fuck up i made on the hardware for version 0.5 and the energy meter. I did not think kicad would applyu the same net to multiple lines assigned the same label even if thoseare not connected. 
