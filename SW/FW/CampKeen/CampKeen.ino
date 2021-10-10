@@ -85,9 +85,10 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Refridgerator A8
 #define Outside A9
 #define BackCabin A10
-#define ACVoltage A11
-#define ACAMPS A12
+#define FrontCabin A11
+#define AUXVoltage A12
 #define GenFuelPressure A13
+#define RTCBatteryLevel A14
 
 //OutputPins
 #define LEDBacklightOut 4
