@@ -6,24 +6,28 @@
 #include <RTClib.h>
 #include <EEPROM.h>
 
-//#define ControlComPort Serial3
 #define ControlComPort Serial
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
-const int DisplayInvterval = 3000;
 
+//-----------------------------------------------------------
+// Timers and Intervals 
+const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, LastMillis1, NTCTimer;
-bool ShittersGettinFull = false;
-bool GreyGettinFull = false;
-bool HoldingTankAlarm = false;
+//-----------------------------------------------------------
+//-----------------------------------------------------------
 bool BathroomLEDState = false, KitchenLEDState = false, WaterSourseSelection = false, WaterOn = false;
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
 bool StreamingData = true;
 
-//LastValues
+//-----------------------------------------------------------
+/*
+ * All the Stored Values and Times to have states 
+ * that can be recalled if streaming is turned off 
+ */
 String LastWaterLevel = "Empty";
 String LastTimeWaterLevel = "";
 String LastSewageLevel = "Empty";
@@ -62,8 +66,10 @@ float LastGenHeadRightTemp = 0.0;
 String LastTimeGenHeadRightTemp = "";
 float LastGenHeadLeftTemp = 0.0;
 String LastTimeGenHeadLeftTemp = "";
-
-//Generator
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//Generator, Energy Monitoring, and Voltage
+#define GenFuelPressure A13
 #define RTDGenHeadRCS 45
 #define RTDGenHeadLCS 47
 #define RTDGenEnclosure 49
@@ -72,11 +78,10 @@ String LastTimeGenHeadLeftTemp = "";
 Adafruit_MAX31865 GenHeadR = Adafruit_MAX31865(RTDGenHeadRCS);
 Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
-
-//ADC Pins
 #define Camper12VoltSensor A0
-#define LPGSensor A1
-#define WaterTankSensor A2
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//NTC Temperature Sensors
 #define FrontACTemp A3
 #define BackACTemp A4
 #define HallwayTemp A5
@@ -85,29 +90,29 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Refridgerator A8
 #define Outside A9
 #define BackCabin A10
-#define ACVoltage A11
-#define ACAMPS A12
-#define GenFuelPressure A13
-
-//OutputPins
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//Alarm
 #define LEDBacklightOut 4
-#define TankPowerRelay 43
-#define GreyWaterPowerRelay 32
-#define SewagePowerRelay 30
-#define WaterPumpOut 26
 #define AlarmOut 35
 #define AlarmLED 33
-#define CityWaterValve 37
-#define KitchenWaterButtonLED 31
-#define BathroomWaterButtonLED 29
-
-//InputPins
 #define AlarmReset 25
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//Water Control / Tanks and LPG Tank
+#define LPGSensor A1
+#define WaterTankSensor A2
+#define TankPowerRelay 43
 #define WaterSourceSelectionInput 28
 #define WaterPumpSense 23
 #define KitchWaterButton 2
 #define BathroomWaterButton 3
-
+#define CityWaterValve 37
+#define KitchenWaterButtonLED 31
+#define BathroomWaterButtonLED 29
+#define WaterPumpOut 26
+//-----------------------------------------------------------
+//-----------------------------------------------------------
 //SparePins and ports that are wired on board
 #define OtherComPort Serial2
 #define SPADC1 14
@@ -118,23 +123,30 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define SPIn4 7
 #define SPIn5 6
 #define SPIn6 5
-#define SPO1 41
 #define SPO2 13
 #define SPO3 12
 #define SPO4 11
 #define SPO5 24
-
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+// Holding Tank
+bool ShittersGettinFull = false;
+bool GreyGettinFull = false;
+bool HoldingTankAlarm = false;
 //SewageTankLevelPins
 #define S14 48
 #define S12 46
 #define S34 44
 #define S44 42
+#define SewagePowerRelay 30
 
 //GreyTankLevelPins
 #define G14 40
 #define G12 38
 #define G34 36
 #define G44 34
+#define GreyWaterPowerRelay 32
+//-----------------------------------------------------------
 
 void setup() {
   ControlComPort.begin(115200);
@@ -184,7 +196,9 @@ void setup() {
   ReadCamperBatteryVoltage();
   ReadWaterAndLPG();
   GeneratorSensors();
-  ControlComPort.println("System Initialized and values populated");
+  ControlComPort.print("System Initialized and values populated:");
+  ControlComPort.println(GetCurrentTime());
+  
   lcd.setCursor(0, 0);
   //lcd.print(DeviceName);
   lcd.setCursor(0, 1);
@@ -196,65 +210,15 @@ void setup() {
 }
 
 void loop() {
-
-  
-  ReadOtherTempSensors();
-
-  String OutputSentence =     LastTimeFrontACTemp + " Front AC Temp," + LastFrontACTemp + "\r"
-                              + LastTimeBackACTemp + " Back AC Temp," + LastBackACTemp + "\r"
-                              + LastTimeOutsideTemp + " Under Awning Temp," + LastOutsideTemp + "\r"
-                              + LastTimeBackCabinTemp + "Back Cabin Temp," + LastBackCabinTemp + "\r"
-                              + LastTimeHallwayTemp + " Hallway Temp," + LastHallwayTemp + "\r"
-                              + LastTimeFreezerTemp + " Freezer," + LastFreezerTemp + "\r"
-                              + LastTimeFridgeTemp + " Fridge," + LastFridgeTemp + "\r"
-                              + LastTimeBathroomTemp + " Bathroom Temp," + LastBathroomTemp + "\r" ;
-
-  ControlComPort.println(OutputSentence);
-
-  delay(5000);
-
-  DCVoltageTest ();
-
-}
-
-void OutputTest() {
-  delay(1000);
-  digitalWrite(BathroomWaterButtonLED, HIGH);
-  delay(1000);
-  digitalWrite(BathroomWaterButtonLED, LOW);
-}
-
-void ACTest() {
-  
-  ControlComPort.print("AC Voltage: ");
-  ControlComPort.print(LastTimeACVoltage);
-  ControlComPort.print(" : ");
-  ControlComPort.println(LastACVoltage);
-
-  ControlComPort.print("AC Current: ");
-  ControlComPort.print(LastTimeACCurrent);
-  ControlComPort.print(" : ");
-  ControlComPort.println(LastACCurrent);
-
-  delay(1000);
-}
-
-void DCVoltageTest () {
-  ReadCamperBatteryVoltage();
-  ControlComPort.print("Camper Voltage: ");
-  ControlComPort.print(LastTimeDCVoltage);
-  ControlComPort.print(" : ");
-  ControlComPort.println(LastDCVoltage);
-  delay(1000);
-}
-
-void Test() {
   //Read Current Water Source Selection
+  ControlComPort.print("WaterSourseSelection:");
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
+    ControlComPort.println("City Water");
   }
   else {
     WaterSourseSelection = false; //Tank
+    ControlComPort.println("Tank");
   }
 
   //if the water is on and the timer says it's been on for more than 5 mins turn off.
@@ -529,7 +493,6 @@ void TurnOffWater() {
   digitalWrite(WaterPumpOut, LOW);
   digitalWrite(KitchenWaterButtonLED, LOW);
   digitalWrite(BathroomWaterButtonLED, LOW);
-  delay(250);
 }
 
 void WaterLEDState() {
@@ -563,7 +526,6 @@ void GeneratorSensors() {
   }
   LastTimeGenFuel = GetCurrentTime();
 
-
   uint16_t rtd0 = GenHeadR.readRTD();
   float ratio0 = rtd0;
   ratio0 /= 32768;
@@ -586,41 +548,37 @@ void GeneratorSensors() {
 void ReadSewageTank() {
   // Turn On votlage to tank
   digitalWrite(SewagePowerRelay, HIGH);
-  int Quarter = digitalRead(S14);
-  int Half = digitalRead(S12);
-  int ThreeQuarters = digitalRead(S34);
-  int Full = digitalRead(S44);
+  byte TankStatus;
+  bitWrite(TankStatus,0,digitalRead(S14)); //quater
+  bitWrite(TankStatus,1,digitalRead(S12)); //Half
+  bitWrite(TankStatus,2,digitalRead(S34)); //Three Quater
+  bitWrite(TankStatus,3,digitalRead(S44)); //Full
 
-  //Add a switch statement here and convert these into a byte so that it can be in a switch statement
-
-  if (Quarter == HIGH || Half == HIGH || ThreeQuarters == HIGH || Full == HIGH) {
-    LastSewageLevel = "ERROR Check Tank";
+  switch(TankStatus){
+     case 0x0000:
+      LastSewageLevel = "Empty";
+      ShittersGettinFull = false;
+      break;
+    case 0x0001:
+      LastSewageLevel = "1/4";
+      ShittersGettinFull = false;
+      break;
+    case 0x0011:
+      LastSewageLevel = "1/2";
+      ShittersGettinFull = false;
+      break;
+    case 0x0111:
+      LastSewageLevel = "3/4";
+      ShittersGettinFull = true;
+      break;
+    case 0x1111:
+      LastSewageLevel = "Full";
+      break;
+    default:
+      LastSewageLevel = "ERROR Check Tank";
+    break;
   }
-
-  if (Quarter == LOW && Half == LOW && ThreeQuarters == LOW && Full == LOW) {
-    LastSewageLevel = "Empty";
-    ShittersGettinFull = false;
-  }
-
-  if (Quarter == HIGH && Half == LOW && ThreeQuarters == LOW && Full == LOW) {
-    LastSewageLevel = "1/4";
-    ShittersGettinFull = false;
-  }
-
-  if (Quarter == HIGH && Half == HIGH && ThreeQuarters == LOW && Full == LOW) {
-    LastSewageLevel = "1/2";
-    ShittersGettinFull = false;
-  }
-
-  if (Quarter == HIGH && Half == HIGH && ThreeQuarters == HIGH && Full == LOW) {
-    LastSewageLevel = "3/4";
-    ShittersGettinFull = true;
-  }
-
-  if (Quarter == HIGH && Half == HIGH && ThreeQuarters == HIGH && Full == HIGH) {
-    LastSewageLevel = "Full";
-  }
-
+  
   LastTimeSewageLevel = GetCurrentTime();
 
 
@@ -722,8 +680,17 @@ void ReadCamperBatteryVoltage() {
   for (int x = 0; x < Samples; x++) {
     DCVoltageSum = DCVoltageSum + analogRead(Camper12VoltSensor);
   }
-  LastDCVoltage = 3.8 * ConversionFactor * (DCVoltageSum / Samples); // Do some math here
+  LastDCVoltage = 3.8 * ConversionFactor * (DCVoltageSum / Samples);
   LastTimeDCVoltage = GetCurrentTime();
+
+  /*Test Code
+  ControlComPort.print("Camper Voltage: ");
+  ControlComPort.print(LastTimeDCVoltage);
+  ControlComPort.print(" : ");
+  ControlComPort.println(LastDCVoltage);
+  delay(1000);
+  */
+  
 }
 
 void ReadOtherTempSensors() {
@@ -738,34 +705,33 @@ void ReadOtherTempSensors() {
   Serial.println(R1ACF);
   LastFrontACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACF + c3 * R1ACF * R1ACF * R1ACF))) - 273.15));
 
-  //  float VoutACB = ConversionFactor * analogRead(BackACTemp);
-  //  float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
-  //  LastBackACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15));
-  //
-  //  float VoutHallway = ConversionFactor * analogRead(HallwayTemp);
-  //  float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
-  //  LastHallwayTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15));
-  //
-  //  float VoutBathroom = ConversionFactor * analogRead(BathroomTemp);
-  //  float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
-  //  LastBathroomTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15));
-  //
-  //  float VoutFreezer = ConversionFactor * analogRead(Freezer);
-  //  float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
-  //  LastFreezerTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15));
-  //
-  //  float VoutFridge = ConversionFactor * analogRead(Refridgerator);
-  //  float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
-  //  LastFridgeTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15));
-  //
-  //  float VoutOutside = ConversionFactor * analogRead(Outside);
-  //  float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
-  //  LastOutsideTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15));
-  //
-  //  float VoutBackCabin = ConversionFactor * analogRead(BackCabin);
-  //  float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
-  //  LastBackCabinTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15));
+  float VoutACB = ConversionFactor * analogRead(BackACTemp);
+  float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
+  LastBackACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15));
 
+  float VoutHallway = ConversionFactor * analogRead(HallwayTemp);
+  float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
+  LastHallwayTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15));
+
+  float VoutBathroom = ConversionFactor * analogRead(BathroomTemp);
+  float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
+  LastBathroomTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15));
+
+  float VoutFreezer = ConversionFactor * analogRead(Freezer);
+  float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
+  LastFreezerTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15));
+
+  float VoutFridge = ConversionFactor * analogRead(Refridgerator);
+  float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
+  LastFridgeTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15));
+
+  float VoutOutside = ConversionFactor * analogRead(Outside);
+  float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
+  LastOutsideTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15));
+
+  float VoutBackCabin = ConversionFactor * analogRead(BackCabin);
+  float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
+  LastBackCabinTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15));
 }
 
 float ConvertCtoF(float C) {
@@ -773,10 +739,6 @@ float ConvertCtoF(float C) {
   Serial.println(C);
   float F = (1.8 * C) + 32;
   return F;
-}
-
-void ACReadings(){
-  //do things here. 
 }
 
 String GetCurrentTime() {
