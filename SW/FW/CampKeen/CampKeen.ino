@@ -22,7 +22,6 @@ bool BathroomLEDState = false, KitchenLEDState = false, WaterSourseSelection = f
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
 bool StreamingData = true;
-
 //-----------------------------------------------------------
 /*
  * All the Stored Values and Times to have states 
@@ -79,6 +78,44 @@ Adafruit_MAX31865 GenHeadR = Adafruit_MAX31865(RTDGenHeadRCS);
 Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
+
+/***** CALIBRATION SETTINGS *****/
+/* 
+ * 4485 for 60 Hz (North America)
+ * 389 for 50 hz (rest of the world)
+ */
+unsigned short LineFreq = 4485;         
+
+/* 
+ * 0 for 10A (1x)
+ * 21 for 100A (2x)
+ * 42 for between 100A - 200A (4x)
+ */
+unsigned short PGAGain = 21;            
+
+/* 
+ * For meter <= v1.3:
+ *    42080 - 9v AC Transformer - Jameco 112336
+ *    32428 - 12v AC Transformer - Jameco 167151
+ * For meter > v1.4:
+ *    37106 - 9v AC Transformer - Jameco 157041
+ *    38302 - 9v AC Transformer - Jameco 112336
+ *    29462 - 12v AC Transformer - Jameco 167151
+ * For Meters > v1.4 purchased after 11/1/2019 and rev.3
+ *    7611 - 9v AC Transformer - Jameco 157041
+ */
+unsigned short VoltageGain = 7611;     
+                                       
+/*
+ * 25498 - SCT-013-000 100A/50mA
+ * 39473 - SCT-016 120A/40mA
+ * 46539 - Magnalab 100A
+ */                                  
+unsigned short CurrentGainCT1 = 25498;  
+unsigned short CurrentGainCT2 = 25498; 
+ATM90E32 EnergyMonitor{}; //initialize the IC class
+
+
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -152,10 +189,6 @@ void setup() {
   ControlComPort.begin(115200);
   SetupLCD();
 
-  pinMode(RTDGenHeadRCS, OUTPUT);
-  pinMode(RTDGenHeadLCS, OUTPUT);
-  pinMode(RTDGenEnclosure, OUTPUT);
-
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
   pinMode(WaterPumpSense, INPUT);
@@ -164,8 +197,6 @@ void setup() {
 
   pinMode(LEDBacklightOut, OUTPUT);
   pinMode(TankPowerRelay, OUTPUT);
-  pinMode(GreyWaterPowerRelay, OUTPUT);
-  pinMode(SewagePowerRelay, OUTPUT);
   pinMode(WaterPumpOut, OUTPUT);
   pinMode(AlarmOut, OUTPUT);
   pinMode(AlarmLED, OUTPUT);
@@ -173,19 +204,32 @@ void setup() {
   pinMode(KitchenWaterButtonLED, OUTPUT);
   pinMode(BathroomWaterButtonLED, OUTPUT);
 
+  //Sewage Tank
+  pinMode(SewagePowerRelay, OUTPUT);
   pinMode(S14, INPUT);
   pinMode(S12, INPUT);
   pinMode(S34, INPUT);
   pinMode(S44, INPUT);
 
+  //Grey Water
+  pinMode(GreyWaterPowerRelay, OUTPUT);
   pinMode(G14, INPUT);
   pinMode(G12, INPUT);
   pinMode(G34, INPUT);
   pinMode(G44, INPUT);
 
+  //Generator  
+  pinMode(RTDGenHeadRCS, OUTPUT);
+  pinMode(RTDGenHeadLCS, OUTPUT);
+  pinMode(RTDGenEnclosure, OUTPUT);
   GenHeadR.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
   GenHeadL.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
   GenEnclosure.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
+
+  //Energy
+  #define EnergyMonCS 42
+  pinMode(EnergyMonCS, OUTPUT);
+  EnergyMonitor.begin(EnergyMonCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
 
   ControlComPort.println("Starting system up");
   lcd.setCursor(0, 0);
@@ -210,6 +254,11 @@ void setup() {
 }
 
 void loop() {
+
+
+}
+
+void Test(){
   //Read Current Water Source Selection
   ControlComPort.print("WaterSourseSelection:");
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
@@ -276,7 +325,7 @@ void loop() {
     //Read NTC temp Sensors
     ReadOtherTempSensors();
     //Read AC Voltage and Current
-    
+    ACReadings();
     //Read Generator Sensors
     GeneratorSensors();
   }
@@ -508,6 +557,59 @@ void WaterLEDState() {
     WaterOn = true;
   }
   
+}
+
+void ACReadings(){
+    float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
+    unsigned short sys0 = EnergyMonitor.GetSysStatus0(); //EMMState0
+    unsigned short sys1 = EnergyMonitor.GetSysStatus1(); //EMMState1
+    unsigned short en0 = EnergyMonitor.GetMeterStatus0();//EMMIntState0
+    unsigned short en1 = EnergyMonitor.GetMeterStatus1();//EMMIntState1
+
+    Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
+    Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
+    delay(10);
+
+    //if true the MCU is not getting data from the energy meter
+    if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
+
+    //get voltage
+    voltageA = EnergyMonitor.GetLineVoltageA();
+    voltageC = EnergyMonitor.GetLineVoltageC();
+
+    if (LineFreq = 4485) {
+      totalVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+    }
+    else {
+      totalVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+    }
+
+    //get current
+    currentCT1 = EnergyMonitor.GetLineCurrentA();
+    currentCT2 = EnergyMonitor.GetLineCurrentC();
+    totalCurrent = currentCT1 + currentCT2;
+
+    realPower = EnergyMonitor.GetTotalActivePower();
+    powerFactor = EnergyMonitor.GetTotalPowerFactor();
+    temp = EnergyMonitor.GetTemperature();
+    freq = EnergyMonitor.GetFrequency();
+    totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
+
+    Serial.println("Voltage 1: " + String(voltageA) + "V");
+    Serial.println("Voltage 2: " + String(voltageC) + "V");
+    Serial.println("Current 1: " + String(currentCT1) + "A");
+    Serial.println("Current 2: " + String(currentCT2) + "A");
+    Serial.println("Active Power: " + String(realPower) + "W");
+    Serial.println("Power Factor: " + String(powerFactor));
+    Serial.println("Fundimental Power: " + String(EnergyMonitor.GetTotalActiveFundPower()) + "W");
+    Serial.println("Harmonic Power: " + String(EnergyMonitor.GetTotalActiveHarPower()) + "W");
+    Serial.println("Reactive Power: " + String(EnergyMonitor.GetTotalReactivePower()) + "var");
+    Serial.println("Apparent Power: " + String(EnergyMonitor.GetTotalApparentPower()) + "VA");
+    Serial.println("Phase Angle A: " + String(EnergyMonitor.GetPhaseA()));
+    Serial.println("Chip Temp: " + String(temp) + "C");
+    Serial.println("Frequency: " + String(freq) + "Hz");
+    
+    delay(1000);
 }
 
 void GeneratorSensors() {
