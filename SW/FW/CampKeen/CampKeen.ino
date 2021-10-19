@@ -11,9 +11,6 @@ RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
 
-//-----------------------------------------------------------
-// System Level 
-String Units = "I";
 
 //-----------------------------------------------------------
 // Timers and Intervals 
@@ -22,10 +19,12 @@ const float ConversionFactor = 5.0 / 1023;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, LastMillis1, NTCTimer;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
-bool BathroomLEDState = false, KitchenLEDState = false, WaterSourseSelection = false, WaterOn = false;
+// System Level 
+String Units = "I"; //Default Units I = Imperial M= Metric
+bool StreamingData = true;
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
-bool StreamingData = true;
+bool BathroomLEDState = false, KitchenLEDState = false, WaterSourseSelection = false, WaterOn = false;
 //-----------------------------------------------------------
 /*
  * All the Stored Values and Times to have states 
@@ -87,9 +86,6 @@ float LastHeadUnitTemp = 0.0;
 String LastTimeHeadUnitTemp = "";
 float LastACRealPower = 0.0;
 String LastTimeRealPower = "";
-
-
-
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Generator, Energy Monitoring, and Voltage
@@ -139,8 +135,6 @@ unsigned short VoltageGain = 7611;
 unsigned short CurrentGainCT1 = 25498;  
 unsigned short CurrentGainCT2 = 25498; 
 ATM90E32 EnergyMonitor{}; //initialize the IC class
-
-
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -256,9 +250,11 @@ void setup() {
   pinMode(EnergyMonCS, OUTPUT);
   EnergyMonitor.begin(EnergyMonCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
 
+  //Set up displays and output on the Serial Port
   ControlComPort.println("Starting system up");
   lcd.setCursor(0, 0);
   lcd.print("Starting system up");
+  //Run through the sensors and get values for everything
   ReadGreyTank();
   ReadSewageTank();
   ReadOtherTempSensors();
@@ -279,7 +275,7 @@ void setup() {
 }
 
 void loop() {
-
+Test();
 
 }
 
@@ -409,19 +405,19 @@ void OutputAllData() {
                           + LastTimeGreyWater + "Grey," +  LastGreyWater + '\r'
                           + LastTimeLPGLevel + "LPG," + LastLPGLevel + '\r'
                           + LastTimeDCVoltage + "Camper DC," + LastDCVoltage + '\r'
-                          + LastTimeFrontACTemp + "Front AC Temp," + LastFrontACTemp + '\r'
-                          + LastTimeBackACTemp + "Back AC Temp," + LastBackACTemp + '\r'
-                          + LastTimeOutsideTemp + "Under Awning Temp," + LastOutsideTemp + '\r'
-                          + LastTimeBackCabinTemp + "Back Cabin Temp," + LastBackCabinTemp + '\r'
-                          + LastTimeHallwayTemp + "Hallway Temp," + LastHallwayTemp + '\r'
-                          + LastTimeFreezerTemp + "Freezer," + LastFreezerTemp + '\r'
-                          + LastTimeFridgeTemp + "Fridge," + LastFridgeTemp + '\r'
+                          + LastTimeFrontACTemp + "Front AC Temp," + "" + LastFrontACTemp + '\r'
+                          + LastTimeBackACTemp + "Back AC Temp," + "" + LastBackACTemp + '\r'
+                          + LastTimeOutsideTemp + "Under Awning Temp," + "" + LastOutsideTemp + '\r'
+                          + LastTimeBackCabinTemp + "Back Cabin Temp," + "" + LastBackCabinTemp + '\r'
+                          + LastTimeHallwayTemp + "Hallway Temp," + "" + LastHallwayTemp + '\r'
+                          + LastTimeFreezerTemp + "Freezer,"+ "" + LastFreezerTemp + '\r'
+                          + LastTimeFridgeTemp + "Fridge," + "" + LastFridgeTemp + '\r'
                           + LastTimeBathroomTemp + "Bathroom Temp," + LastBathroomTemp + '\r'
-                          + LastTimeGenFuel + "Generator Fuel Pressure," + LastGenFuel + '\r'
-                          + LastTimeGenEnclosureTemp + "Generator Enclosure Temp," + LastGenEnclosureTemp + '\r'
-                          + LastTimeGenHeadRightTemp + "Generator Right Head Temp," + LastGenHeadRightTemp + '\r'
-                          + LastTimeGenHeadLeftTemp + "Generator Left Head Temp," + LastGenHeadLeftTemp + '\r' 
-                          + LastTimeACVoltage + "Head Unit Temp," + LastHeadUnitTemp + '\r';
+                          + LastTimeGenFuel + "Generator Fuel Pressure," + "" + LastGenFuel + '\r'
+                          + LastTimeGenEnclosureTemp + "Generator Enclosure Temp," + "" + LastGenEnclosureTemp + '\r'
+                          + LastTimeGenHeadRightTemp + "Generator Right Head Temp," + "" + LastGenHeadRightTemp + '\r'
+                          + LastTimeGenHeadLeftTemp + "Generator Left Head Temp," + "" + LastGenHeadLeftTemp + '\r' 
+                          + LastTimeACVoltage + "Head Unit Temp," + "" + LastHeadUnitTemp + '\r';
 
   ControlComPort.println(OutputSentence);
 
@@ -590,7 +586,6 @@ void WaterLEDState() {
 }
 
 void ACReadings(){
-    //float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
     float voltageA, voltageC, currentCT1, currentCT2;
     unsigned short sys0 = EnergyMonitor.GetSysStatus0(); //EMMState0
     unsigned short sys1 = EnergyMonitor.GetSysStatus1(); //EMMState1
@@ -622,12 +617,12 @@ void ACReadings(){
 
     LastACRealPower = EnergyMonitor.GetTotalActivePower();
     LastPowerFactor = EnergyMonitor.GetTotalPowerFactor();
-    LastHeadUnitTemp = EnergyMonitor.GetTemperature();
+    if (Units == "I"){LastHeadUnitTemp = ConvertCtoF(EnergyMonitor.GetTemperature());}
+    else{LastHeadUnitTemp = EnergyMonitor.GetTemperature();}
     LastFreq = EnergyMonitor.GetFrequency();
     //LastACWatts = (voltageA * currentCT1) + (voltageC * currentCT2); // use this if your have both legs in the service 
     LastACWatts = (voltageA * currentCT1); // Because the motorhome only has one leg. 
     
-
     LastACHarmonic = EnergyMonitor.GetTotalActiveHarPower();
     LastACApparent = EnergyMonitor.GetTotalApparentPower();
     LastACReactive = EnergyMonitor.GetTotalReactivePower();
@@ -637,13 +632,12 @@ void ACReadings(){
     Serial.println("Voltage 2: " + String(voltageC) + "V");
     Serial.println("Current 1: " + String(currentCT1) + "A");
     Serial.println("Current 2: " + String(currentCT2) + "A");
-    //Serial.println("Active Power: " + String() + "W");
     Serial.println("Power Factor: " + String(LastPowerFactor));
     Serial.println("Fundimental Power: " + String(LastACFundimental) + "W");
     Serial.println("Harmonic Power: " + String(LastACHarmonic) + "W");
     Serial.println("Reactive Power: " + String(LastACReactive) + "var");
     Serial.println("Apparent Power: " + String(LastACApparent) + "VA");
-    Serial.println("Chip Temp: " + String(ConvertCtoF(LastHeadUnitTemp)) + "F");
+    Serial.println("Chip Temp: " + String(LastHeadUnitTemp) + "F");
     Serial.println("Frequency: " + String(LastFreq) + "Hz");
     
     delay(1000);
@@ -661,7 +655,8 @@ void GeneratorSensors() {
   }
   //Sensors i'm using drop out at .5 volts and anything below that will show neg pressure. DN 102 translates to 0.5V
   if ((FuelPressureSum / Samples) > 102) {
-    LastGenFuel = (7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75;
+    if (Units == "I"){LastGenFuel = (7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75;}
+    else{}
   }
   else {
     LastGenFuel = 0.0;
@@ -671,19 +666,22 @@ void GeneratorSensors() {
   uint16_t rtd0 = GenHeadR.readRTD();
   float ratio0 = rtd0;
   ratio0 /= 32768;
-  LastGenHeadRightTemp = GenHeadR.temperature(RNOMINAL, RREF);
+  if (Units == "I"){LastGenHeadRightTemp = ConvertCtoF(GenHeadR.temperature(RNOMINAL, RREF));}
+  else{LastGenHeadRightTemp = GenHeadR.temperature(RNOMINAL, RREF);}
   LastTimeGenHeadRightTemp = GetCurrentTime();
 
   uint16_t rtd1 = GenHeadL.readRTD();
   float ratio1 = rtd1;
   ratio1 /= 32768;
-  LastGenHeadLeftTemp = GenHeadL.temperature(RNOMINAL, RREF);
+  if (Units == "I"){LastGenHeadLeftTemp = ConvertCtoF(GenHeadL.temperature(RNOMINAL, RREF));}
+  else{LastGenHeadLeftTemp = GenHeadL.temperature(RNOMINAL, RREF);}
   LastTimeGenHeadLeftTemp = GetCurrentTime();
 
   uint16_t rtd2 = GenEnclosure.readRTD();
   float ratio2 = rtd2;
   ratio2 /= 32768;
-  LastGenEnclosureTemp = GenEnclosure.temperature(RNOMINAL, RREF);
+  if (Units == "I"){LastGenEnclosureTemp = ConvertCtoF(GenEnclosure.temperature(RNOMINAL, RREF));}
+  else{LastGenEnclosureTemp = GenEnclosure.temperature(RNOMINAL, RREF);}
   LastTimeGenEnclosureTemp = GetCurrentTime();
 }
 
@@ -715,6 +713,7 @@ void ReadSewageTank() {
       break;
     case 0x1111:
       LastSewageLevel = "Full";
+      ShittersGettinFull = true;
       break;
     default:
       LastSewageLevel = "ERROR Check Tank";
@@ -734,41 +733,38 @@ void ReadSewageTank() {
 void ReadGreyTank() {
   // Turn On votlage to tank
   digitalWrite(GreyWaterPowerRelay, HIGH);
-  int Quarter = digitalRead(G14);
-  int Half = digitalRead(G12);
-  int ThreeQuarters = digitalRead(G34);
-  int Full = digitalRead(G44);
+  byte TankStatus;
+  bitWrite(TankStatus,0,digitalRead(G14)); //quater
+  bitWrite(TankStatus,1,digitalRead(G12)); //Half
+  bitWrite(TankStatus,2,digitalRead(G34)); //Three Quater
+  bitWrite(TankStatus,3,digitalRead(G44)); //Full
 
-  if (Quarter == HIGH || Half == HIGH || ThreeQuarters == HIGH || Full == HIGH) {
-    LastGreyWater = "ERROR Check Tank";
+  switch(TankStatus){
+     case 0x0000:
+      LastGreyWater = "Empty";
+      GreyGettinFull = false;
+      break;
+    case 0x0001:
+      LastGreyWater = "1/4";
+      GreyGettinFull = false;
+      break;
+    case 0x0011:
+      LastGreyWater = "1/2";
+      GreyGettinFull = false;
+      break;
+    case 0x0111:
+      LastGreyWater = "3/4";
+      GreyGettinFull = true;
+      break;
+    case 0x1111:
+      LastGreyWater = "Full";
+      GreyGettinFull = true;
+      break;
+    default:
+      LastGreyWater = "ERROR Check Tank";
+    break;
   }
-
-  if (Quarter == LOW && Half == LOW && ThreeQuarters == LOW && Full == LOW) {
-    LastGreyWater = "Empty";
-    GreyGettinFull = false;
-  }
-
-  if (Quarter == HIGH && Half == LOW && ThreeQuarters == LOW && Full == LOW) {
-    LastGreyWater = "1/4";
-    GreyGettinFull = false;
-  }
-
-  if (Quarter == HIGH && Half == HIGH && ThreeQuarters == LOW && Full == LOW) {
-    LastGreyWater = "1/2";
-    GreyGettinFull = false;
-  }
-
-  if (Quarter == HIGH && Half == HIGH && ThreeQuarters == HIGH && Full == LOW) {
-    LastGreyWater = "3/4";
-    GreyGettinFull = true;
-  }
-
-  if (Quarter == HIGH && Half == HIGH && ThreeQuarters == HIGH && Full == HIGH) {
-    LastGreyWater = "Full";
-  }
-
   LastTimeGreyWater = GetCurrentTime();
-
 
   if (GreyGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
@@ -843,37 +839,43 @@ void ReadOtherTempSensors() {
 
   float VoutACF = ConversionFactor * analogRead(FrontACTemp);
   float R1ACF = log(R2 * ((5.0 / VoutACF) - 1));
-  Serial.println(VoutACF);
-  Serial.println(R1ACF);
-  LastFrontACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACF + c3 * R1ACF * R1ACF * R1ACF))) - 273.15));
+  if (Units == "I"){LastFrontACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACF + c3 * R1ACF * R1ACF * R1ACF))) - 273.15));}
+  else{LastFrontACTemp = (((1.0 / (c1 + c2 * R1ACF + c3 * R1ACF * R1ACF * R1ACF))) - 273.15);}
 
   float VoutACB = ConversionFactor * analogRead(BackACTemp);
   float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
-  LastBackACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15));
+  if (Units == "I"){LastBackACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15));}
+  else{LastBackACTemp = (((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15);}
 
   float VoutHallway = ConversionFactor * analogRead(HallwayTemp);
   float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
-  LastHallwayTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15));
-
+  if (Units == "I"){LastHallwayTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15));}
+  else{LastHallwayTemp = (((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15);}
+  
   float VoutBathroom = ConversionFactor * analogRead(BathroomTemp);
   float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
-  LastBathroomTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15));
-
+  if (Units == "I"){LastBathroomTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15));}
+  else{LastBathroomTemp = (((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15);}
+  
   float VoutFreezer = ConversionFactor * analogRead(Freezer);
   float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
-  LastFreezerTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15));
-
+  if (Units == "I"){LastFreezerTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15));}
+  else{LastFreezerTemp = (((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15);}
+  
   float VoutFridge = ConversionFactor * analogRead(Refridgerator);
   float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
-  LastFridgeTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15));
-
+  if (Units == "I"){LastFridgeTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15));}
+  else{LastFridgeTemp = (((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15);}
+  
   float VoutOutside = ConversionFactor * analogRead(Outside);
   float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
-  LastOutsideTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15));
+  if (Units == "I"){LastOutsideTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15));}
+  else{LastOutsideTemp = (((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15);}
 
   float VoutBackCabin = ConversionFactor * analogRead(BackCabin);
   float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
-  LastBackCabinTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15));
+  if (Units == "I"){LastBackCabinTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15));}
+  else{LastBackCabinTemp = (((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15);}
 }
 
 float ConvertCtoF(float C) {
