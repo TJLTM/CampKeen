@@ -12,6 +12,10 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
 
 //-----------------------------------------------------------
+// System Level 
+String Units = "I";
+
+//-----------------------------------------------------------
 // Timers and Intervals 
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
@@ -37,10 +41,6 @@ float LastLPGLevel = 0.0;
 String LastTimeLPGLevel = "";
 float LastDCVoltage = 0.0;
 String LastTimeDCVoltage = "";
-float LastACVoltage = 0.0;
-String LastTimeACVoltage = "";
-float LastACCurrent = 0.0;
-String LastTimeACCurrent = "";
 float LastFrontACTemp = 0.0;
 String LastTimeFrontACTemp = "";
 float LastBackACTemp = 0.0;
@@ -65,6 +65,31 @@ float LastGenHeadRightTemp = 0.0;
 String LastTimeGenHeadRightTemp = "";
 float LastGenHeadLeftTemp = 0.0;
 String LastTimeGenHeadLeftTemp = "";
+float LastACVoltage = 0.0;
+String LastTimeACVoltage = "";
+float LastACCurrent = 0.0;
+String LastTimeACCurrent = "";
+float LastPowerFactor = 0.0;
+String LastTimePowerFactor = "";
+float LastFreq = 0.0;
+String LastTimeFreq = "";
+float LastACWatts = 0.0;
+String LastTimeWatts = "";
+float LastACReactive = 0.0;
+String LastTimeReactive = "";
+float LastACApparent = 0.0;
+String LastTimeACApparent = "";
+float LastACFundimental = 0.0;
+String LastTimeACFundimental = "";
+float LastACHarmonic = 0.0;
+String LastTimeACHarmonic = "";
+float LastHeadUnitTemp = 0.0;
+String LastTimeHeadUnitTemp = "";
+float LastACRealPower = 0.0;
+String LastTimeRealPower = "";
+
+
+
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Generator, Energy Monitoring, and Voltage
@@ -384,8 +409,6 @@ void OutputAllData() {
                           + LastTimeGreyWater + "Grey," +  LastGreyWater + '\r'
                           + LastTimeLPGLevel + "LPG," + LastLPGLevel + '\r'
                           + LastTimeDCVoltage + "Camper DC," + LastDCVoltage + '\r'
-                          + LastTimeACVoltage + "ACV," + LastACVoltage + '\r'
-                          + LastTimeACCurrent + "AC Amps," + LastACCurrent + '\r'
                           + LastTimeFrontACTemp + "Front AC Temp," + LastFrontACTemp + '\r'
                           + LastTimeBackACTemp + "Back AC Temp," + LastBackACTemp + '\r'
                           + LastTimeOutsideTemp + "Under Awning Temp," + LastOutsideTemp + '\r'
@@ -397,9 +420,16 @@ void OutputAllData() {
                           + LastTimeGenFuel + "Generator Fuel Pressure," + LastGenFuel + '\r'
                           + LastTimeGenEnclosureTemp + "Generator Enclosure Temp," + LastGenEnclosureTemp + '\r'
                           + LastTimeGenHeadRightTemp + "Generator Right Head Temp," + LastGenHeadRightTemp + '\r'
-                          + LastTimeGenHeadLeftTemp + "Generator Left Head Temp," + LastGenHeadLeftTemp + '\r' ;
+                          + LastTimeGenHeadLeftTemp + "Generator Left Head Temp," + LastGenHeadLeftTemp + '\r' 
+                          + LastTimeACVoltage + "Head Unit Temp," + LastHeadUnitTemp + '\r';
 
   ControlComPort.println(OutputSentence);
+
+  String EnergyOutputSentence = LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A," 
+  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive)," 
+  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)\r";
+
+  ControlComPort.println(EnergyOutputSentence);
 }
 
 
@@ -560,7 +590,8 @@ void WaterLEDState() {
 }
 
 void ACReadings(){
-    float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
+    //float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
+    float voltageA, voltageC, currentCT1, currentCT2;
     unsigned short sys0 = EnergyMonitor.GetSysStatus0(); //EMMState0
     unsigned short sys1 = EnergyMonitor.GetSysStatus1(); //EMMState1
     unsigned short en0 = EnergyMonitor.GetMeterStatus0();//EMMIntState0
@@ -578,38 +609,47 @@ void ACReadings(){
     voltageC = EnergyMonitor.GetLineVoltageC();
 
     if (LineFreq = 4485) {
-      totalVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+      LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
     }
     else {
-      totalVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+      LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
     }
 
     //get current
     currentCT1 = EnergyMonitor.GetLineCurrentA();
     currentCT2 = EnergyMonitor.GetLineCurrentC();
-    totalCurrent = currentCT1 + currentCT2;
+    LastACCurrent = currentCT1 + currentCT2;
 
-    realPower = EnergyMonitor.GetTotalActivePower();
-    powerFactor = EnergyMonitor.GetTotalPowerFactor();
-    temp = EnergyMonitor.GetTemperature();
-    freq = EnergyMonitor.GetFrequency();
-    totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
+    LastACRealPower = EnergyMonitor.GetTotalActivePower();
+    LastPowerFactor = EnergyMonitor.GetTotalPowerFactor();
+    LastHeadUnitTemp = EnergyMonitor.GetTemperature();
+    LastFreq = EnergyMonitor.GetFrequency();
+    //LastACWatts = (voltageA * currentCT1) + (voltageC * currentCT2); // use this if your have both legs in the service 
+    LastACWatts = (voltageA * currentCT1); // Because the motorhome only has one leg. 
+    
+
+    LastACHarmonic = EnergyMonitor.GetTotalActiveHarPower();
+    LastACApparent = EnergyMonitor.GetTotalApparentPower();
+    LastACReactive = EnergyMonitor.GetTotalReactivePower();
+    LastACFundimental = EnergyMonitor.GetTotalActiveFundPower();
 
     Serial.println("Voltage 1: " + String(voltageA) + "V");
     Serial.println("Voltage 2: " + String(voltageC) + "V");
     Serial.println("Current 1: " + String(currentCT1) + "A");
     Serial.println("Current 2: " + String(currentCT2) + "A");
-    Serial.println("Active Power: " + String(realPower) + "W");
-    Serial.println("Power Factor: " + String(powerFactor));
-    Serial.println("Fundimental Power: " + String(EnergyMonitor.GetTotalActiveFundPower()) + "W");
-    Serial.println("Harmonic Power: " + String(EnergyMonitor.GetTotalActiveHarPower()) + "W");
-    Serial.println("Reactive Power: " + String(EnergyMonitor.GetTotalReactivePower()) + "var");
-    Serial.println("Apparent Power: " + String(EnergyMonitor.GetTotalApparentPower()) + "VA");
-    Serial.println("Phase Angle A: " + String(EnergyMonitor.GetPhaseA()));
-    Serial.println("Chip Temp: " + String(temp) + "C");
-    Serial.println("Frequency: " + String(freq) + "Hz");
+    //Serial.println("Active Power: " + String() + "W");
+    Serial.println("Power Factor: " + String(LastPowerFactor));
+    Serial.println("Fundimental Power: " + String(LastACFundimental) + "W");
+    Serial.println("Harmonic Power: " + String(LastACHarmonic) + "W");
+    Serial.println("Reactive Power: " + String(LastACReactive) + "var");
+    Serial.println("Apparent Power: " + String(LastACApparent) + "VA");
+    Serial.println("Chip Temp: " + String(ConvertCtoF(LastHeadUnitTemp)) + "F");
+    Serial.println("Frequency: " + String(LastFreq) + "Hz");
     
     delay(1000);
+    
+    //Time Stamp all of the readings for AC at the same time. 
+    LastTimeACVoltage = LastTimeRealPower = LastTimeHeadUnitTemp = LastTimeACCurrent = LastTimePowerFactor = LastTimeFreq = LastTimeWatts = LastTimeReactive = LastTimeACApparent = LastTimeACFundimental = LastTimeACHarmonic = GetCurrentTime();
 }
 
 void GeneratorSensors() {
