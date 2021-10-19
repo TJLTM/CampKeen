@@ -20,7 +20,7 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, L
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level 
-String Units = "I"; //Default Units I = Imperial M= Metric
+String Units = "I"; //Default Units I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
@@ -99,7 +99,6 @@ Adafruit_MAX31865 GenHeadR = Adafruit_MAX31865(RTDGenHeadRCS);
 Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
-
 /***** CALIBRATION SETTINGS *****/
 /* 
  * 4485 for 60 Hz (North America)
