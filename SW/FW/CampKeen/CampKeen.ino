@@ -274,8 +274,12 @@ void setup() {
 }
 
 void loop() {
-Test();
-
+//Test();
+ACReadings();
+//digitalWrite(EnergyMonCS,HIGH);
+//delay(2000);
+//digitalWrite(EnergyMonCS,LOW);
+//delay(2000);
 }
 
 void Test(){
@@ -694,23 +698,23 @@ void ReadSewageTank() {
   bitWrite(TankStatus,3,digitalRead(S44)); //Full
 
   switch(TankStatus){
-     case 0x0000:
+     case 0:
       LastSewageLevel = "Empty";
       ShittersGettinFull = false;
       break;
-    case 0x0001:
+    case 1:
       LastSewageLevel = "1/4";
       ShittersGettinFull = false;
       break;
-    case 0x0011:
+    case 3:
       LastSewageLevel = "1/2";
       ShittersGettinFull = false;
       break;
-    case 0x0111:
+    case 7:
       LastSewageLevel = "3/4";
       ShittersGettinFull = true;
       break;
-    case 0x1111:
+    case 15:
       LastSewageLevel = "Full";
       ShittersGettinFull = true;
       break;
@@ -739,23 +743,23 @@ void ReadGreyTank() {
   bitWrite(TankStatus,3,digitalRead(G44)); //Full
 
   switch(TankStatus){
-     case 0x0000:
+     case 0:
       LastGreyWater = "Empty";
       GreyGettinFull = false;
       break;
-    case 0x0001:
+    case 1:
       LastGreyWater = "1/4";
       GreyGettinFull = false;
       break;
-    case 0x0011:
+    case 3:
       LastGreyWater = "1/2";
       GreyGettinFull = false;
       break;
-    case 0x0111:
+    case 7:
       LastGreyWater = "3/4";
       GreyGettinFull = true;
       break;
-    case 0x1111:
+    case 15:
       LastGreyWater = "Full";
       GreyGettinFull = true;
       break;
