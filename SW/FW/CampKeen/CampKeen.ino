@@ -1,4 +1,3 @@
-#include <ATM90E32.h>
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <Adafruit_MAX31865.h>
@@ -99,41 +98,6 @@ Adafruit_MAX31865 GenHeadR = Adafruit_MAX31865(RTDGenHeadRCS);
 Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
-/***** CALIBRATION SETTINGS *****/
-/* 
- * 4485 for 60 Hz (North America)
- * 389 for 50 hz (rest of the world)
- */
-unsigned short LineFreq = 4485;         
-
-/* 
- * 0 for 10A (1x)
- * 21 for 100A (2x)
- * 42 for between 100A - 200A (4x)
- */
-unsigned short PGAGain = 21;            
-
-/* 
- * For meter <= v1.3:
- *    42080 - 9v AC Transformer - Jameco 112336
- *    32428 - 12v AC Transformer - Jameco 167151
- * For meter > v1.4:
- *    37106 - 9v AC Transformer - Jameco 157041
- *    38302 - 9v AC Transformer - Jameco 112336
- *    29462 - 12v AC Transformer - Jameco 167151
- * For Meters > v1.4 purchased after 11/1/2019 and rev.3
- *    7611 - 9v AC Transformer - Jameco 157041
- */
-unsigned short VoltageGain = 7611;     
-                                       
-/*
- * 25498 - SCT-013-000 100A/50mA
- * 39473 - SCT-016 120A/40mA
- * 46539 - Magnalab 100A
- */                                  
-unsigned short CurrentGainCT1 = 25498;  
-unsigned short CurrentGainCT2 = 25498; 
-ATM90E32 EnergyMonitor{}; //initialize the IC class
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -244,11 +208,6 @@ void setup() {
   GenHeadL.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
   GenEnclosure.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
 
-  //Energy
-  #define EnergyMonCS 42
-  pinMode(EnergyMonCS, OUTPUT);
-  EnergyMonitor.begin(EnergyMonCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
-
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting system up");
   lcd.setCursor(0, 0);
@@ -274,12 +233,9 @@ void setup() {
 }
 
 void loop() {
-//Test();
-ACReadings();
-//digitalWrite(EnergyMonCS,HIGH);
-//delay(2000);
-//digitalWrite(EnergyMonCS,LOW);
-//delay(2000);
+ReadGreyTank();
+ReadSewageTank();
+delay(10000);
 }
 
 void Test(){
@@ -348,8 +304,6 @@ void Test(){
   if (abs(millis() - NTCTimer) > 3000) {
     //Read NTC temp Sensors
     ReadOtherTempSensors();
-    //Read AC Voltage and Current
-    ACReadings();
     //Read Generator Sensors
     GeneratorSensors();
   }
@@ -424,11 +378,11 @@ void OutputAllData() {
 
   ControlComPort.println(OutputSentence);
 
-  String EnergyOutputSentence = LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A," 
-  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive)," 
-  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)\r";
+//  String EnergyOutputSentence = LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A," 
+//  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive)," 
+//  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)\r";
 
-  ControlComPort.println(EnergyOutputSentence);
+  //ControlComPort.println(EnergyOutputSentence);
 }
 
 
@@ -588,67 +542,6 @@ void WaterLEDState() {
   
 }
 
-void ACReadings(){
-    float voltageA, voltageC, currentCT1, currentCT2;
-    unsigned short sys0 = EnergyMonitor.GetSysStatus0(); //EMMState0
-    unsigned short sys1 = EnergyMonitor.GetSysStatus1(); //EMMState1
-    unsigned short en0 = EnergyMonitor.GetMeterStatus0();//EMMIntState0
-    unsigned short en1 = EnergyMonitor.GetMeterStatus1();//EMMIntState1
-
-    Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
-    Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
-    delay(10);
-
-    //if true the MCU is not getting data from the energy meter
-    if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
-
-    //get voltage
-    voltageA = EnergyMonitor.GetLineVoltageA();
-    voltageC = EnergyMonitor.GetLineVoltageC();
-
-    if (LineFreq = 4485) {
-      LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
-    }
-    else {
-      LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
-    }
-
-    //get current
-    currentCT1 = EnergyMonitor.GetLineCurrentA();
-    currentCT2 = EnergyMonitor.GetLineCurrentC();
-    LastACCurrent = currentCT1 + currentCT2;
-
-    LastACRealPower = EnergyMonitor.GetTotalActivePower();
-    LastPowerFactor = EnergyMonitor.GetTotalPowerFactor();
-    if (Units == "I"){LastHeadUnitTemp = ConvertCtoF(EnergyMonitor.GetTemperature());}
-    else{LastHeadUnitTemp = EnergyMonitor.GetTemperature();}
-    LastFreq = EnergyMonitor.GetFrequency();
-    //LastACWatts = (voltageA * currentCT1) + (voltageC * currentCT2); // use this if your have both legs in the service 
-    LastACWatts = (voltageA * currentCT1); // Because the motorhome only has one leg. 
-    
-    LastACHarmonic = EnergyMonitor.GetTotalActiveHarPower();
-    LastACApparent = EnergyMonitor.GetTotalApparentPower();
-    LastACReactive = EnergyMonitor.GetTotalReactivePower();
-    LastACFundimental = EnergyMonitor.GetTotalActiveFundPower();
-
-    Serial.println("Voltage 1: " + String(voltageA) + "V");
-    Serial.println("Voltage 2: " + String(voltageC) + "V");
-    Serial.println("Current 1: " + String(currentCT1) + "A");
-    Serial.println("Current 2: " + String(currentCT2) + "A");
-    Serial.println("Power Factor: " + String(LastPowerFactor));
-    Serial.println("Fundimental Power: " + String(LastACFundimental) + "W");
-    Serial.println("Harmonic Power: " + String(LastACHarmonic) + "W");
-    Serial.println("Reactive Power: " + String(LastACReactive) + "var");
-    Serial.println("Apparent Power: " + String(LastACApparent) + "VA");
-    Serial.println("Chip Temp: " + String(LastHeadUnitTemp) + "F");
-    Serial.println("Frequency: " + String(LastFreq) + "Hz");
-    
-    delay(1000);
-    
-    //Time Stamp all of the readings for AC at the same time. 
-    LastTimeACVoltage = LastTimeRealPower = LastTimeHeadUnitTemp = LastTimeACCurrent = LastTimePowerFactor = LastTimeFreq = LastTimeWatts = LastTimeReactive = LastTimeACApparent = LastTimeACFundimental = LastTimeACHarmonic = GetCurrentTime();
-}
-
 void GeneratorSensors() {
   int Samples = 50;
   long FuelPressureSum = 0;
@@ -691,12 +584,13 @@ void GeneratorSensors() {
 void ReadSewageTank() {
   // Turn On votlage to tank
   digitalWrite(SewagePowerRelay, HIGH);
+  delay(1000); // Have to put this in here for the Relay to completely close
   byte TankStatus;
   bitWrite(TankStatus,0,digitalRead(S14)); //quater
   bitWrite(TankStatus,1,digitalRead(S12)); //Half
   bitWrite(TankStatus,2,digitalRead(S34)); //Three Quater
   bitWrite(TankStatus,3,digitalRead(S44)); //Full
-
+  
   switch(TankStatus){
      case 0:
       LastSewageLevel = "Empty";
@@ -730,12 +624,14 @@ void ReadSewageTank() {
     // Turn Off Voltage to tank
     digitalWrite(SewagePowerRelay, LOW);
   }
-
+Serial.print("Shit:");
+Serial.println(LastSewageLevel);
 }
 
 void ReadGreyTank() {
   // Turn On votlage to tank
   digitalWrite(GreyWaterPowerRelay, HIGH);
+  delay(1000); // Have to put this in here for the Relay to completely close
   byte TankStatus;
   bitWrite(TankStatus,0,digitalRead(G14)); //quater
   bitWrite(TankStatus,1,digitalRead(G12)); //Half
@@ -773,7 +669,8 @@ void ReadGreyTank() {
     // Turn Off Voltage to tank
     digitalWrite(GreyWaterPowerRelay, LOW);
   }
-
+Serial.print("Grey:");
+Serial.println(LastGreyWater);
 }
 
 void ReadWaterAndLPG() {
@@ -882,8 +779,8 @@ void ReadOtherTempSensors() {
 }
 
 float ConvertCtoF(float C) {
-  Serial.print("C:");
-  Serial.println(C);
+  //Serial.print("C:");
+  //Serial.println(C);
   float F = (1.8 * C) + 32;
   return F;
 }
