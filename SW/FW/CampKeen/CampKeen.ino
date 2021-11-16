@@ -39,6 +39,8 @@ float LastLPGLevel = 0.0;
 String LastTimeLPGLevel = "";
 float LastDCVoltage = 0.0;
 String LastTimeDCVoltage = "";
+float LastRTCVoltage = 0.0;
+String LastTimeRTCVoltage = "";
 float LastFrontACTemp = 0.0;
 String LastTimeFrontACTemp = "";
 float LastBackACTemp = 0.0;
@@ -98,6 +100,7 @@ Adafruit_MAX31865 GenHeadR = Adafruit_MAX31865(RTDGenHeadRCS);
 Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
+#define RTCBattery A14
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -134,7 +137,6 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 //-----------------------------------------------------------
 //SparePins and ports that are wired on board
 #define OtherComPort Serial2
-#define SPADC1 14
 #define SPADC2 15
 #define SPIn1 10
 #define SPIn2 9
@@ -216,7 +218,7 @@ void setup() {
   ReadGreyTank();
   ReadSewageTank();
   ReadOtherTempSensors();
-  ReadCamperBatteryVoltage();
+  ReadBatteryVoltages();
   ReadWaterAndLPG();
   GeneratorSensors();
   ControlComPort.print("System Initialized and values populated:");
@@ -233,12 +235,6 @@ void setup() {
 }
 
 void loop() {
-ReadGreyTank();
-ReadSewageTank();
-delay(10000);
-}
-
-void Test(){
   //Read Current Water Source Selection
   ControlComPort.print("WaterSourseSelection:");
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
@@ -249,11 +245,17 @@ void Test(){
     WaterSourseSelection = false; //Tank
     ControlComPort.println("Tank");
   }
-
+  //add logic that if flipped while the pump is on turn it off and open the city water valve
+  
   //if the water is on and the timer says it's been on for more than 5 mins turn off.
   if (WaterOn == true && (millis() - WaterTimer > 300000)) {
     TurnOffWater;
   }
+
+
+}
+
+void Test(){
 
   //Check to see if any of the buttons are pressed
   int KicthenButtonState = digitalRead(KitchWaterButton);
@@ -316,7 +318,7 @@ void Test(){
 
   if (abs(millis() - FiveMinTimer) > 300000) {
     //Read DC voltage at 5 min intervals
-    ReadCamperBatteryVoltage();
+    ReadBatteryVoltages();
     FiveMinTimer = millis();
   }
 
@@ -384,7 +386,6 @@ void OutputAllData() {
 
   //ControlComPort.println(EnergyOutputSentence);
 }
-
 
 void ResetAllAlarms() {
   HoldingTankAlarm = false;
@@ -711,24 +712,33 @@ void ReadWaterAndLPG() {
   digitalWrite(TankPowerRelay, LOW);
 }
 
-void ReadCamperBatteryVoltage() {
+void ReadBatteryVoltages() {
   int Samples = 50;
-  float DCVoltageSum = 0;
+  float DCVoltageSum,RTCVoltageSum = 0;
 
   for (int x = 0; x < Samples; x++) {
     DCVoltageSum = DCVoltageSum + analogRead(Camper12VoltSensor);
+    RTCVoltageSum = RTCVoltageSum + analogRead(RTCBattery);
   }
-  LastDCVoltage = 3.8 * ConversionFactor * (DCVoltageSum / Samples);
+  LastDCVoltage = 3.8 * ConversionFactor * (DCVoltageSum / Samples) - 1.2;
   LastTimeDCVoltage = GetCurrentTime();
 
+  LastRTCVoltage = ConversionFactor * (RTCVoltageSum / Samples);
+  LastTimeRTCVoltage = GetCurrentTime();
+  
   /*Test Code
   ControlComPort.print("Camper Voltage: ");
   ControlComPort.print(LastTimeDCVoltage);
   ControlComPort.print(" : ");
   ControlComPort.println(LastDCVoltage);
+
+  ControlComPort.print("RTC Battery Voltage: ");
+  ControlComPort.print(LastTimeRTCVoltage);
+  ControlComPort.print(" : ");
+  ControlComPort.println(LastRTCVoltage);
+  
   delay(1000);
   */
-  
 }
 
 void ReadOtherTempSensors() {
