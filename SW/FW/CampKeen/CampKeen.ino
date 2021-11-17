@@ -235,70 +235,15 @@ void setup() {
 }
 
 void loop() {
-  //Read Current Water Source Selection
-  ControlComPort.print("WaterSourseSelection:");
-  if (digitalRead(WaterSourceSelectionInput) == HIGH) {
-    WaterSourseSelection = true;//city water
-    ControlComPort.println("City Water");
-  }
-  else {
-    WaterSourseSelection = false; //Tank
-    ControlComPort.println("Tank");
-  }
-  //add logic that if flipped while the pump is on turn it off and open the city water valve
   
-  //if the water is on and the timer says it's been on for more than 5 mins turn off.
-  if (WaterOn == true && (millis() - WaterTimer > 300000)) {
-    TurnOffWater;
-  }
-
+Test();
 
 }
 
+
+
+
 void Test(){
-
-  //Check to see if any of the buttons are pressed
-  int KicthenButtonState = digitalRead(KitchWaterButton);
-  int BathroomButtonState = digitalRead(BathroomWaterButton);
-  if (KicthenButtonState == HIGH || BathroomButtonState == HIGH) {
-    TurnOnWater();
-  }
-
-  //Check the States of pump and or logical state and set the LEDs accordingly
-  WaterLEDState();
-
-  //Read Grey and Sewage Tanks at 1hr intervals unless it is at 3/4 full then switch to Constant
-  //Read Grey and Sewage Tanks Continuously when WaterOn == True
-  if ((millis() - ShitterTankTimer) > 900000 || ShittersGettinFull == true || WaterOn == true) {
-    ReadSewageTank();
-    ShitterTankTimer = millis();
-  }
-
-  if ((millis() - GreyTankTimer) > 900000 || GreyGettinFull == true || WaterOn == true) {
-    ReadGreyTank();
-    GreyTankTimer = millis();
-  }
-
-  if (ShittersGettinFull == true || GreyGettinFull == true) {
-    //Turn On warning LED
-    digitalWrite(AlarmLED, HIGH);
-    // Also put in a check for FUll State on either and turn off pump or city water
-    if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
-      HoldingTankAlarm = true;
-      TurnOffWater();
-      digitalWrite(AlarmOut, HIGH);
-    }
-    else {
-      // if the tanks drop below full make sure the alarm is off
-      HoldingTankAlarm = false;
-      digitalWrite(AlarmOut, LOW);
-    }
-  }
-
-  else {
-    digitalWrite(AlarmLED, LOW);
-  }
-
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarms();
   }
@@ -311,7 +256,7 @@ void Test(){
   }
 
   if (abs(millis() - WATERLPGtimer) > 3.6e+6) {
-    //ReadLPG and Water Tank at 1 hour intervals
+    //ReadLPG and Water Tank at 1 hour intervals unless the pump or city water valve are on. 
     ReadWaterAndLPG();
     WATERLPGtimer = millis();
   }
@@ -327,6 +272,20 @@ void Test(){
     OutputAllData();
   }
 
+  
+}
+
+//------------------------------------------------------------------
+//LCD
+//------------------------------------------------------------------
+void SetupLCD() {
+  lcd.init();
+  lcd.backlight();
+  rtc.begin();
+  LCDSetup = true;
+}
+
+void LCDOutput() {
   if (digitalRead(SPIn1) == HIGH) {
     if (LCDSetup == false) {
       SetupLCD();
@@ -348,49 +307,6 @@ void Test(){
   else {
     LCDSetup = false;
   }
-}
-
-
-void SetupLCD() {
-  lcd.init();
-  lcd.backlight();
-  rtc.begin();
-  LCDSetup = true;
-}
-
-void OutputAllData() {
-  String OutputSentence = LastTimeWaterLevel + "Water," + LastWaterLevel + '\r'
-                          + LastTimeSewageLevel + "Sewage," + LastSewageLevel + '\r'
-                          + LastTimeGreyWater + "Grey," +  LastGreyWater + '\r'
-                          + LastTimeLPGLevel + "LPG," + LastLPGLevel + '\r'
-                          + LastTimeDCVoltage + "Camper DC," + LastDCVoltage + '\r'
-                          + LastTimeFrontACTemp + "Front AC Temp," + "" + LastFrontACTemp + '\r'
-                          + LastTimeBackACTemp + "Back AC Temp," + "" + LastBackACTemp + '\r'
-                          + LastTimeOutsideTemp + "Under Awning Temp," + "" + LastOutsideTemp + '\r'
-                          + LastTimeBackCabinTemp + "Back Cabin Temp," + "" + LastBackCabinTemp + '\r'
-                          + LastTimeHallwayTemp + "Hallway Temp," + "" + LastHallwayTemp + '\r'
-                          + LastTimeFreezerTemp + "Freezer,"+ "" + LastFreezerTemp + '\r'
-                          + LastTimeFridgeTemp + "Fridge," + "" + LastFridgeTemp + '\r'
-                          + LastTimeBathroomTemp + "Bathroom Temp," + LastBathroomTemp + '\r'
-                          + LastTimeGenFuel + "Generator Fuel Pressure," + "" + LastGenFuel + '\r'
-                          + LastTimeGenEnclosureTemp + "Generator Enclosure Temp," + "" + LastGenEnclosureTemp + '\r'
-                          + LastTimeGenHeadRightTemp + "Generator Right Head Temp," + "" + LastGenHeadRightTemp + '\r'
-                          + LastTimeGenHeadLeftTemp + "Generator Left Head Temp," + "" + LastGenHeadLeftTemp + '\r' 
-                          + LastTimeACVoltage + "Head Unit Temp," + "" + LastHeadUnitTemp + '\r';
-
-  ControlComPort.println(OutputSentence);
-
-//  String EnergyOutputSentence = LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A," 
-//  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive)," 
-//  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)\r";
-
-  //ControlComPort.println(EnergyOutputSentence);
-}
-
-void ResetAllAlarms() {
-  HoldingTankAlarm = false;
-  digitalWrite(AlarmOut, LOW);
-  digitalWrite(AlarmLED, LOW);
 }
 
 void LCDDisplay() {
@@ -509,20 +425,52 @@ void LCDDisplay() {
   }
 }
 
+//------------------------------------------------------------------
+//Water Control
+//------------------------------------------------------------------
+void WaterControl(){
+  //Read Current Water Source Selection
+  //add logic that if flipped while the pump is on turn it off and open the city water valve
+  ControlComPort.print("WaterSourseSelection:");
+  if (digitalRead(WaterSourceSelectionInput) == HIGH) {
+    WaterSourseSelection = true;//city water
+    ControlComPort.println("City Water");
+  }
+  else {
+    WaterSourseSelection = false; //Tank
+    ControlComPort.println("Tank");
+  }
+
+  
+  //if the water is on and the timer says it's been on for more than 5 mins turn off.
+  if (WaterOn == true && (millis() - WaterTimer > 300000)) {
+    TurnOffWater;
+  }
+  //Check to see if any of the buttons are pressed
+  int KicthenButtonState = digitalRead(KitchWaterButton);
+  int BathroomButtonState = digitalRead(BathroomWaterButton);
+  if (KicthenButtonState == HIGH || BathroomButtonState == HIGH) {
+    TurnOnWater();
+  }
+
+  //Check the States of pump and or logical state and set the LEDs accordingly
+  WaterLEDState();
+}
+
 void TurnOnWater() {
   if (WaterOn == false && HoldingTankAlarm == false) {
     WaterTimer = millis();
     if (WaterSourseSelection == true) {
-      digitalWrite(WaterPumpOut, HIGH);
+      digitalWrite(CityWaterValve, HIGH);
     }
     else {
-      digitalWrite(GreyWaterPowerRelay, HIGH);
+      digitalWrite(WaterPumpOut, HIGH);
     }
   }
 }
 
 void TurnOffWater() {
-  digitalWrite(GreyWaterPowerRelay, LOW);
+  digitalWrite(CityWaterValve, LOW);
   digitalWrite(WaterPumpOut, LOW);
   digitalWrite(KitchenWaterButtonLED, LOW);
   digitalWrite(BathroomWaterButtonLED, LOW);
@@ -543,6 +491,9 @@ void WaterLEDState() {
   
 }
 
+//------------------------------------------------------------------
+//Generator and Energy
+//------------------------------------------------------------------
 void GeneratorSensors() {
   int Samples = 50;
   long FuelPressureSum = 0;
@@ -582,10 +533,46 @@ void GeneratorSensors() {
   LastTimeGenEnclosureTemp = GetCurrentTime();
 }
 
+//------------------------------------------------------------------
+//Tanks
+//------------------------------------------------------------------
+void HoldingTankMonitoring(){
+  //Read Grey and Sewage Tanks at 1hr intervals unless it is at 3/4 full then switch to Constant
+  //Read Grey and Sewage Tanks Continuously when WaterOn == True
+  if ((millis() - ShitterTankTimer) > 900000 || ShittersGettinFull == true || WaterOn == true) {
+    ReadSewageTank();
+    ShitterTankTimer = millis();
+  }
+
+  if ((millis() - GreyTankTimer) > 900000 || GreyGettinFull == true || WaterOn == true) {
+    ReadGreyTank();
+    GreyTankTimer = millis();
+  }
+
+  if (ShittersGettinFull == true || GreyGettinFull == true) {
+    //Turn On warning LED
+    digitalWrite(AlarmLED, HIGH);
+    // Also put in a check for FUll State on either and turn off pump or city water
+    if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
+      HoldingTankAlarm = true;
+      TurnOffWater();
+      digitalWrite(AlarmOut, HIGH);
+    }
+    else {
+      // if the tanks drop below full make sure the alarm is off
+      HoldingTankAlarm = false;
+      digitalWrite(AlarmOut, LOW);
+    }
+  }
+  else {
+    digitalWrite(AlarmLED, LOW);
+  }
+}
+
 void ReadSewageTank() {
   // Turn On votlage to tank
   digitalWrite(SewagePowerRelay, HIGH);
-  delay(1000); // Have to put this in here for the Relay to completely close
+  delay(2000); // Have to put this in here for the Relay to completely close
   byte TankStatus;
   bitWrite(TankStatus,0,digitalRead(S14)); //quater
   bitWrite(TankStatus,1,digitalRead(S12)); //Half
@@ -632,7 +619,7 @@ Serial.println(LastSewageLevel);
 void ReadGreyTank() {
   // Turn On votlage to tank
   digitalWrite(GreyWaterPowerRelay, HIGH);
-  delay(1000); // Have to put this in here for the Relay to completely close
+  delay(2000); // Have to put this in here for the Relay to completely close
   byte TankStatus;
   bitWrite(TankStatus,0,digitalRead(G14)); //quater
   bitWrite(TankStatus,1,digitalRead(G12)); //Half
@@ -712,6 +699,10 @@ void ReadWaterAndLPG() {
   digitalWrite(TankPowerRelay, LOW);
 }
 
+
+//------------------------------------------------------------------
+//Other sensors
+//------------------------------------------------------------------
 void ReadBatteryVoltages() {
   int Samples = 50;
   float DCVoltageSum,RTCVoltageSum = 0;
@@ -788,6 +779,10 @@ void ReadOtherTempSensors() {
   else{LastBackCabinTemp = (((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15);}
 }
 
+
+//------------------------------------------------------------------
+//Helper functions
+//------------------------------------------------------------------
 float ConvertCtoF(float C) {
   //Serial.print("C:");
   //Serial.println(C);
@@ -810,4 +805,43 @@ String GetCurrentDate() {
   DateTime now = rtc.now();
   String CurrentDate = String(now.year()) + String(now.month()) + String(now.day());
   return CurrentDate;
+}
+
+
+//------------------------------------------------------------------
+//System Control and Output
+//------------------------------------------------------------------
+void OutputAllData() {
+  String OutputSentence = LastTimeWaterLevel + "Water," + LastWaterLevel + '\r'
+                          + LastTimeSewageLevel + "Sewage," + LastSewageLevel + '\r'
+                          + LastTimeGreyWater + "Grey," +  LastGreyWater + '\r'
+                          + LastTimeLPGLevel + "LPG," + LastLPGLevel + '\r'
+                          + LastTimeDCVoltage + "Camper DC," + LastDCVoltage + '\r'
+                          + LastTimeFrontACTemp + "Front AC Temp," + "" + LastFrontACTemp + '\r'
+                          + LastTimeBackACTemp + "Back AC Temp," + "" + LastBackACTemp + '\r'
+                          + LastTimeOutsideTemp + "Under Awning Temp," + "" + LastOutsideTemp + '\r'
+                          + LastTimeBackCabinTemp + "Back Cabin Temp," + "" + LastBackCabinTemp + '\r'
+                          + LastTimeHallwayTemp + "Hallway Temp," + "" + LastHallwayTemp + '\r'
+                          + LastTimeFreezerTemp + "Freezer,"+ "" + LastFreezerTemp + '\r'
+                          + LastTimeFridgeTemp + "Fridge," + "" + LastFridgeTemp + '\r'
+                          + LastTimeBathroomTemp + "Bathroom Temp," + LastBathroomTemp + '\r'
+                          + LastTimeGenFuel + "Generator Fuel Pressure," + "" + LastGenFuel + '\r'
+                          + LastTimeGenEnclosureTemp + "Generator Enclosure Temp," + "" + LastGenEnclosureTemp + '\r'
+                          + LastTimeGenHeadRightTemp + "Generator Right Head Temp," + "" + LastGenHeadRightTemp + '\r'
+                          + LastTimeGenHeadLeftTemp + "Generator Left Head Temp," + "" + LastGenHeadLeftTemp + '\r' 
+                          + LastTimeACVoltage + "Head Unit Temp," + "" + LastHeadUnitTemp + '\r';
+
+  ControlComPort.println(OutputSentence);
+
+//  String EnergyOutputSentence = LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A," 
+//  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive)," 
+//  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)\r";
+
+  //ControlComPort.println(EnergyOutputSentence);
+}
+
+void ResetAllAlarms() {
+  HoldingTankAlarm = false;
+  digitalWrite(AlarmOut, LOW);
+  digitalWrite(AlarmLED, LOW);
 }
