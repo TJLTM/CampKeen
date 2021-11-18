@@ -4,13 +4,48 @@
 #include <SPI.h>
 #include <RTClib.h>
 #include <EEPROM.h>
+#include <ATM90E32.h>
 
 #define ControlComPort Serial
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
+//-----------------------------------------------------------
+// ATM90E32 energy monitor settings and calibrations 
+ /* 4485 for 60 Hz (North America)
+ * 389 for 50 hz (rest of the world)
+ */
+unsigned short LineFreq = 4485;     
+/* 0 for 10A (1x)
+ * 21 for 100A (2x)
+ * 42 for between 100A - 200A (4x)
+ */
+unsigned short PGAGain = 21;
+/* 
+ * For meter <= v1.3:
+ *    42080 - 9v AC Transformer - Jameco 112336
+ *    32428 - 12v AC Transformer - Jameco 167151
+ * For meter > v1.4:
+ *    37106 - 9v AC Transformer - Jameco 157041
+ *    38302 - 9v AC Transformer - Jameco 112336
+ *    29462 - 12v AC Transformer - Jameco 167151
+ * For Meters > v1.4 purchased after 11/1/2019 and rev.3
+ *    7611 - 9v AC Transformer - Jameco 157041
+ *    
+ *    These are only starting points i had to play 
+ *    with this number to get it close enough
+ */
+unsigned short VoltageGain = 4005;  
+/* 25498 - SCT-013-000 100A/50mA
+ * 39473 - SCT-016 120A/40mA
+ * 46539 - Magnalab 100A
+ */                                  
+unsigned short CurrentGainCT1 = 25498;  
+unsigned short CurrentGainCT2 = 25498;
 
+ATM90E32 eic{};
 
+//-----------------------------------------------------------
 //-----------------------------------------------------------
 // Timers and Intervals 
 const int DisplayInvterval = 3000;
@@ -101,6 +136,7 @@ Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
 #define RTCBattery A14
+#define EnergyMonitorCS 41
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -499,6 +535,73 @@ void WaterLEDState() {
 //------------------------------------------------------------------
 //Generator and Energy
 //------------------------------------------------------------------
+void SetupEnergyMonitor(){
+  eic.begin(EnergyMonitorCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
+}
+
+void EnergyMetering(){  
+    float voltageA, voltageC;
+    LastTimeACVoltage = LastTimeACCurrent = LastTimePowerFactor = LastTimeFreq = LastTimeWatts = 
+    LastTimeReactive = LastTimeACApparent = LastTimeACFundimental = LastTimeACHarmonic = LastTimeHeadUnitTemp = 
+    LastTimeRealPower = GetCurrentTime();
+    unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
+    unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
+    //unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
+    //unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
+
+    //Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
+    //Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
+    //delay(10);
+
+    //if true the MCU is not getting data from the energy meter
+    if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
+
+    //get voltage
+    voltageA = eic.GetLineVoltageA();
+    voltageC = eic.GetLineVoltageC();
+
+    if (LineFreq = 4485) {
+      LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+    }
+    else {
+      LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+    }
+
+    //get current
+    //currentCT1 = eic.GetLineCurrentA();
+    //currentCT2 = eic.GetLineCurrentC(); //this is disconnected
+    //totalCurrent = currentCT1 + currentCT2;
+    //totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
+
+    LastACCurrent = eic.GetLineCurrentA(); //Motorhome panel is only one leg 
+    LastPowerFactor = eic.GetTotalPowerFactor();
+    LastFreq = eic.GetFrequency();
+    LastACWatts = (voltageA * currentCT1);
+    LastACReactive = eic.GetTotalReactivePower();
+    LastACApparent = eic.GetTotalApparentPower();
+    LastACFundimental = eic.GetTotalActiveFundPower();
+    LastACHarmonic = eic.GetTotalActiveHarPower();
+    LastHeadUnitTemp = eic.GetTemperature();
+    LastACRealPower =  eic.GetTotalActivePower();
+  
+
+    Serial.println("Voltage 1: " + String(voltageA) + "V");
+    Serial.println("Voltage 2: " + String(voltageC) + "V");
+    Serial.println("Current 1: " + String(currentCT1) + "A");
+    Serial.println("Current 2: " + String(currentCT2) + "A");
+    Serial.println("Active Power: " + String(LastACRealPower) + "W");
+    Serial.println("Power Factor: " + String(LastPowerFactor));
+    Serial.println("Fundimental Power: " + String(LastACFundimental) + "W");
+    Serial.println("Harmonic Power: " + String(LastACHarmonic) + "W");
+    Serial.println("Reactive Power: " + String(LastACReactive) + "var");
+    Serial.println("Apparent Power: " + String(LastACApparent) + "VA");
+    Serial.println("Phase Angle A: " + String(eic.GetPhaseA()));
+    Serial.println("Chip Temp: " + String(LastHeadUnitTemp) + "C");
+    Serial.println("Frequency: " + String(LastFreq) + "Hz");
+    
+    delay(1000);
+}
+
 void GeneratorSensors() {
   int Samples = 50;
   long FuelPressureSum = 0;
