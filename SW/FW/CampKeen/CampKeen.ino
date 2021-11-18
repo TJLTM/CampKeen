@@ -22,7 +22,7 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, L
 String Units = "I"; //Default Units I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
-//WaterSourceSelection false = pump true = City Water
+//WaterSourceSelection //false = pump //true = City Water
 bool BathroomLEDState = false, KitchenLEDState = false, WaterSourseSelection = false, WaterOn = false;
 //-----------------------------------------------------------
 /*
@@ -35,7 +35,7 @@ String LastSewageLevel = "Empty";
 String LastTimeSewageLevel = "";
 String LastGreyWater = "Empty";
 String LastTimeGreyWater = "";
-float LastLPGLevel = 0.0;
+int LastLPGLevel = 0;
 String LastTimeLPGLevel = "";
 float LastDCVoltage = 0.0;
 String LastTimeDCVoltage = "";
@@ -235,13 +235,18 @@ void setup() {
 }
 
 void loop() {
-  
-Test();
-
+  WaterControlTesting();
 }
 
 
+void WaterControlTesting(){
+  int KicthenButtonState = digitalRead(KitchWaterButton);
+  int BathroomButtonState = digitalRead(BathroomWaterButton);
 
+  digitalWrite(KitchenWaterButtonLED, KicthenButtonState);
+  digitalWrite(BathroomWaterButtonLED, BathroomButtonState);
+  
+}
 
 void Test(){
   if (digitalRead(AlarmReset) == HIGH) {
@@ -664,17 +669,19 @@ Serial.println(LastGreyWater);
 void ReadWaterAndLPG() {
   // Turn On votlage to tanks
   digitalWrite(TankPowerRelay, HIGH);
-  delay(150);
-  int R2 = 47;
-  float Vout = ConversionFactor * analogRead(LPGSensor);
+  delay(1000);
   String LastTimeLPGLevel = GetCurrentTime();
-  float R1LPG = R2 * ((5.0 / Vout) - 1);
-  LastLPGLevel = map(R1LPG, 0, 122, 0, 100);
+  int LPGResistence = 47*(1/((5/(ConversionFactor * analogRead(LPGSensor)))-1));
+  if (LPGResistence > 124){
+    //LastLPGLevel = "ERROR Check Tank Sensor";
+  }
+  else{
+    LastLPGLevel = map(LPGResistence, 0, 90, 0, 100);
+  }
 
   LastWaterLevel = "EXTRA FULL";
   LastTimeWaterLevel = GetCurrentTime();
-  Vout = ConversionFactor * analogRead(WaterTankSensor);
-  float R1 = R2 * ((5.0 / Vout) - 1);
+  float R1 = 47 * ((5.0 / (ConversionFactor * analogRead(WaterTankSensor))) - 1);
   if (R1 > 40)
   {
     LastWaterLevel = "Full";
@@ -697,6 +704,14 @@ void ReadWaterAndLPG() {
   }
   // Turn Off Voltage to tanks
   digitalWrite(TankPowerRelay, LOW);
+
+  Serial.print("LastLPGLevel:");
+  Serial.println(LastLPGLevel);
+  Serial.print("LastWaterLevel:");
+  Serial.println(LastWaterLevel);
+  delay(5000);
+
+  
 }
 
 
