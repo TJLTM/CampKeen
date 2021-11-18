@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 9 9
+Sheet 9 10
 Title ""
 Date ""
 Rev ""
@@ -877,5 +877,178 @@ F 2 "Package_TO_SOT_THT:TO-92_Inline" H 9300 2975 50  0001 L CIN
 F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9100 3050 50  0001 L CNN
 	1    9100 3050
 	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:IRF9Z34NPBF Q?
+U 1 1 61E49F35
+P 2850 5550
+AR Path="/62665296/61E49F35" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61E49F35" Ref="Q?"  Part="1" 
+AR Path="/61B4978A/61E49F35" Ref="Q?"  Part="1" 
+AR Path="/619EBD0B/61E49F35" Ref="Q?"  Part="1" 
+F 0 "Q?" H 3280 5696 50  0000 L CNN
+F 1 "IRF9Z34NPBF" H 3280 5605 50  0000 L CNN
+F 2 "SamacSys_Parts:TO254P469X1042X1967-3P" H 3300 5500 50  0001 L CNN
+F 3 "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd" H 3300 5400 50  0001 L CNN
+F 4 "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC" H 3300 5300 50  0001 L CNN "Description"
+F 5 "4.69" H 3300 5200 50  0001 L CNN "Height"
+F 6 "942-IRF9Z34NPBF" H 3300 5100 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D" H 3300 5000 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Infineon" H 3300 4900 50  0001 L CNN "Manufacturer_Name"
+F 9 "IRF9Z34NPBF" H 3300 4800 50  0001 L CNN "Manufacturer_Part_Number"
+	1    2850 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61E49F3B
+P 1500 6850
+AR Path="/62665296/61E49F3B" Ref="R?"  Part="1" 
+AR Path="/6479D118/61E49F3B" Ref="R?"  Part="1" 
+AR Path="/61B4978A/61E49F3B" Ref="R?"  Part="1" 
+AR Path="/619EBD0B/61E49F3B" Ref="R?"  Part="1" 
+F 0 "R?" H 1570 6896 50  0000 L CNN
+F 1 "1M" H 1570 6805 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 1430 6850 50  0001 C CNN
+F 3 "~" H 1500 6850 50  0001 C CNN
+	1    1500 6850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61E49F41
+P 2050 7150
+AR Path="/62665296/61E49F41" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61E49F41" Ref="#PWR?"  Part="1" 
+AR Path="/61B4978A/61E49F41" Ref="#PWR?"  Part="1" 
+AR Path="/619EBD0B/61E49F41" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 2050 6900 50  0001 C CNN
+F 1 "GND" H 2055 6977 50  0000 C CNN
+F 2 "" H 2050 7150 50  0001 C CNN
+F 3 "" H 2050 7150 50  0001 C CNN
+	1    2050 7150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 7000 1500 7150
+Wire Wire Line
+	1500 7150 2050 7150
+Wire Wire Line
+	1500 6700 1500 6400
+Wire Wire Line
+	1500 6400 1750 6400
+Connection ~ 2050 7150
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61E49F4C
+P 1950 6400
+AR Path="/62665296/61E49F4C" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61E49F4C" Ref="Q?"  Part="1" 
+AR Path="/61B4978A/61E49F4C" Ref="Q?"  Part="1" 
+AR Path="/619EBD0B/61E49F4C" Ref="Q?"  Part="1" 
+F 0 "Q?" H 2154 6446 50  0000 L CNN
+F 1 "2N7000" H 2154 6355 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 2150 6325 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 1950 6400 50  0001 L CNN
+	1    1950 6400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 6600 2050 7150
+$Comp
+L Device:R R?
+U 1 1 61E49F53
+P 2050 5300
+AR Path="/62665296/61E49F53" Ref="R?"  Part="1" 
+AR Path="/6479D118/61E49F53" Ref="R?"  Part="1" 
+AR Path="/61B4978A/61E49F53" Ref="R?"  Part="1" 
+AR Path="/619EBD0B/61E49F53" Ref="R?"  Part="1" 
+F 0 "R?" H 2120 5346 50  0000 L CNN
+F 1 "100k" H 2120 5255 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 1980 5300 50  0001 C CNN
+F 3 "~" H 2050 5300 50  0001 C CNN
+	1    2050 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61E49F59
+P 2050 5800
+AR Path="/62665296/61E49F59" Ref="R?"  Part="1" 
+AR Path="/6479D118/61E49F59" Ref="R?"  Part="1" 
+AR Path="/61B4978A/61E49F59" Ref="R?"  Part="1" 
+AR Path="/619EBD0B/61E49F59" Ref="R?"  Part="1" 
+F 0 "R?" H 2120 5846 50  0000 L CNN
+F 1 "10k" H 2120 5755 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 1980 5800 50  0001 C CNN
+F 3 "~" H 2050 5800 50  0001 C CNN
+	1    2050 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:BZX79C10 Z?
+U 1 1 61E49F65
+P 2550 4750
+AR Path="/62665296/61E49F65" Ref="Z?"  Part="1" 
+AR Path="/6479D118/61E49F65" Ref="Z?"  Part="1" 
+AR Path="/61B4978A/61E49F65" Ref="Z?"  Part="1" 
+AR Path="/619EBD0B/61E49F65" Ref="Z?"  Part="1" 
+F 0 "Z?" V 2804 4620 50  0000 R CNN
+F 1 "BZX79C10" V 2895 4620 50  0000 R CNN
+F 2 "SamacSys_Parts:DIOAD1068W53L380D172" H 2950 4900 50  0001 L CNN
+F 3 "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf" H 2950 4800 50  0001 L CNN
+F 4 "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35" H 2950 4700 50  0001 L CNN "Description"
+F 5 "" H 2950 4600 50  0001 L CNN "Height"
+F 6 "512-BZX79C10" H 2950 4500 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D" H 2950 4400 50  0001 L CNN "Mouser Price/Stock"
+F 8 "ON Semiconductor" H 2950 4300 50  0001 L CNN "Manufacturer_Name"
+F 9 "BZX79C10" H 2950 4200 50  0001 L CNN "Manufacturer_Part_Number"
+	1    2550 4750
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	2050 6200 2050 5950
+Wire Wire Line
+	2050 5650 2050 5550
+Wire Wire Line
+	2850 5550 2550 5550
+Connection ~ 2050 5550
+Wire Wire Line
+	2050 5550 2050 5450
+Wire Wire Line
+	2550 5350 2550 5550
+Connection ~ 2550 5550
+Wire Wire Line
+	2550 5550 2050 5550
+Wire Wire Line
+	3150 5150 3150 4300
+Wire Wire Line
+	3150 4300 2550 4300
+Wire Wire Line
+	2050 4300 2050 5150
+Wire Wire Line
+	2550 4750 2550 4300
+Connection ~ 2550 4300
+Wire Wire Line
+	2550 4300 2050 4300
+Text HLabel 1500 6400 0    50   Input ~ 0
+SPOut6TTL
+Text HLabel 3150 6100 0    50   Input ~ 0
+SPOut6
+Wire Wire Line
+	3150 6100 3150 5750
+$Comp
+L power:+12V #PWR?
+U 1 1 61E49F7C
+P 2550 4300
+AR Path="/61E49F7C" Ref="#PWR?"  Part="1" 
+AR Path="/61B4978A/61E49F7C" Ref="#PWR?"  Part="1" 
+AR Path="/619EBD0B/61E49F7C" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 2550 4150 50  0001 C CNN
+F 1 "+12V" H 2565 4473 50  0000 C CNN
+F 2 "" H 2550 4300 50  0001 C CNN
+F 3 "" H 2550 4300 50  0001 C CNN
+	1    2550 4300
+	-1   0    0    -1  
 $EndComp
 $EndSCHEMATC

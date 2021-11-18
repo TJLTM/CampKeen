@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
-Sheet 1 9
+Sheet 1 10
 Title ""
 Date "mar. 31 mars 2015"
 Rev ""
@@ -2075,66 +2075,62 @@ GreyV
 Text GLabel 21500 4550 1    50   Input ~ 0
 STV
 $Sheet
-S 14200 6600 1700 450 
+S 14200 7500 1700 450 
 U 627AE565
 F0 "Inputs With Interrupts" 50
 F1 "file627AE564.sch" 50
-F2 "AlarmResetIn" I L 14200 6650 50 
-F3 "AlarmResetTTL" I R 15900 6650 50 
-F4 "KitchenIn" I L 14200 6750 50 
-F5 "KitchenTTL" I R 15900 6750 50 
-F6 "BathroomIn" I L 14200 6850 50 
-F7 "BathroomTTL" I R 15900 6850 50 
-F8 "SpareInterruptIn" I L 14200 6950 50 
-F9 "SpareInterruptTTL" I R 15900 6950 50 
+F2 "AlarmResetIn" I L 14200 7550 50 
+F3 "AlarmResetTTL" I R 15900 7550 50 
+F4 "KitchenIn" I L 14200 7650 50 
+F5 "KitchenTTL" I R 15900 7650 50 
+F6 "BathroomIn" I L 14200 7750 50 
+F7 "BathroomTTL" I R 15900 7750 50 
+F8 "SpareInterruptIn" I L 14200 7850 50 
+F9 "SpareInterruptTTL" I R 15900 7850 50 
 $EndSheet
 $Sheet
-S 14200 7250 1700 1100
+S 14200 8150 1700 1100
 U 619922D7
 F0 "Inputs" 50
 F1 "file619922D6.sch" 50
-F2 "WaterPumpSenseIn" I L 14200 7350 50 
-F3 "WaterPumpSenseTTL" I R 15900 7350 50 
-F4 "EnableLCDIn" I L 14200 7450 50 
-F5 "EnableLCDTTL" I R 15900 7450 50 
-F6 "LCDBackLIGHTIn" I L 14200 7550 50 
-F7 "LCDBackLIGHTTTL" I R 15900 7550 50 
-F8 "WaterSourceIn" I L 14200 7650 50 
-F9 "WaterSourceTTL" I R 15900 7650 50 
-F10 "SP1In" I L 14200 7750 50 
-F11 "SP1TTL" I R 15900 7750 50 
-F12 "SP2In" I L 14200 7850 50 
-F13 "SP2TTL" I R 15900 7850 50 
-F14 "SP3In" I L 14200 7950 50 
-F15 "SP3TTL" I R 15900 7950 50 
-F16 "SP4In" I L 14200 8050 50 
-F17 "SP4TTL" I R 15900 8050 50 
-F18 "SP5In" I L 14200 8150 50 
-F19 "SP5TTL" I R 15900 8150 50 
-F20 "SP6In" I L 14200 8250 50 
-F21 "SP6TTL" I R 15900 8250 50 
+F2 "WaterPumpSenseIn" I L 14200 8250 50 
+F3 "WaterPumpSenseTTL" I R 15900 8250 50 
+F4 "EnableLCDIn" I L 14200 8350 50 
+F5 "EnableLCDTTL" I R 15900 8350 50 
+F6 "LCDBackLIGHTIn" I L 14200 8450 50 
+F7 "LCDBackLIGHTTTL" I R 15900 8450 50 
+F8 "WaterSourceIn" I L 14200 8550 50 
+F9 "WaterSourceTTL" I R 15900 8550 50 
+F10 "SP1In" I L 14200 8650 50 
+F11 "SP1TTL" I R 15900 8650 50 
+F12 "SP2In" I L 14200 8750 50 
+F13 "SP2TTL" I R 15900 8750 50 
+F14 "SP3In" I L 14200 8850 50 
+F15 "SP3TTL" I R 15900 8850 50 
+F16 "SP4In" I L 14200 8950 50 
+F17 "SP4TTL" I R 15900 8950 50 
+F18 "SP5In" I L 14200 9050 50 
+F19 "SP5TTL" I R 15900 9050 50 
+F20 "SP6In" I L 14200 9150 50 
+F21 "SP6TTL" I R 15900 9150 50 
 $EndSheet
 $Sheet
-S 14200 4750 1900 850 
+S 14200 4550 1900 850 
 U 61B4978A
-F0 "Outputs" 50
+F0 "Outputs - 12V" 50
 F1 "file61B49789.sch" 50
-F2 "BathroomPumpLEDTTL" I R 16100 4850 50 
-F3 "BathroomPumpLEDOut" I L 14200 4850 50 
-F4 "KitchenPumpLEDTTL" I R 16100 4950 50 
-F5 "KitchenPumpLEDOut" I L 14200 4950 50 
-F6 "WarningLEDTTL" I R 16100 5050 50 
-F7 "WarningLEDOut" I L 14200 5050 50 
-F8 "WarningAlarmTTL" I R 16100 5150 50 
-F9 "WarningAlarmOut" I L 14200 5150 50 
-F10 "CityWaterValveTTL" I R 16100 5250 50 
-F11 "CityWaterValveOut" I L 14200 5250 50 
-F12 "WaterPumpTTL" I R 16100 5350 50 
-F13 "WaterPumpOut" I L 14200 5350 50 
-F14 "LCDBacklightTTL" I R 16100 5450 50 
-F15 "LCDBacklightOut" I L 14200 5450 50 
-F16 "LCDPowerTTL" I R 16100 5550 50 
-F17 "LCDPowerOut" I L 14200 5550 50 
+F2 "BathroomPumpLEDTTL" I R 16100 4650 50 
+F3 "BathroomPumpLEDOut" I L 14200 4650 50 
+F4 "KitchenPumpLEDTTL" I R 16100 4750 50 
+F5 "KitchenPumpLEDOut" I L 14200 4750 50 
+F6 "WarningLEDTTL" I R 16100 4850 50 
+F7 "WarningLEDOut" I L 14200 4850 50 
+F8 "WarningAlarmTTL" I R 16100 4950 50 
+F9 "WarningAlarmOut" I L 14200 4950 50 
+F10 "CityWaterValveTTL" I R 16100 5050 50 
+F11 "CityWaterValveOut" I L 14200 5050 50 
+F12 "WaterPumpTTL" I R 16100 5150 50 
+F13 "WaterPumpOut" I L 14200 5150 50 
 $EndSheet
 Wire Wire Line
 	12250 5600 12450 5600
@@ -2237,8 +2233,6 @@ NoConn ~ 10950 3000
 NoConn ~ 12550 3000
 NoConn ~ 12550 2600
 Wire Wire Line
-	21550 3550 21800 3550
-Wire Wire Line
 	21900 4700 21900 4900
 Text Notes 6250 6100 0    197  ~ 0
 Voltage Sensors
@@ -2326,13 +2320,13 @@ Wire Wire Line
 	21550 3650 22200 3650
 Wire Wire Line
 	21550 3750 22200 3750
-Text GLabel 16150 6650 2    50   Input ~ 0
+Text GLabel 16150 7550 2    50   Input ~ 0
 AlarmTTL
-Text GLabel 16150 6750 2    50   Input ~ 0
+Text GLabel 16150 7650 2    50   Input ~ 0
 KitchenTTL
-Text GLabel 16150 6850 2    50   Input ~ 0
+Text GLabel 16150 7750 2    50   Input ~ 0
 BathRoomTTL
-Text GLabel 16150 6950 2    50   Input ~ 0
+Text GLabel 16150 7850 2    50   Input ~ 0
 SpareTTL
 Text GLabel 22200 2900 2    50   Input ~ 0
 AlarmTTL
@@ -2347,53 +2341,53 @@ Wire Wire Line
 Wire Wire Line
 	21550 2900 22200 2900
 Wire Wire Line
-	15900 6650 16150 6650
+	15900 7550 16150 7550
 Wire Wire Line
-	16150 6750 15900 6750
+	16150 7650 15900 7650
 Wire Wire Line
-	15900 6850 16150 6850
+	15900 7750 16150 7750
 Wire Wire Line
-	16150 6950 15900 6950
-Text GLabel 16200 7350 2    50   Input ~ 0
-WPS
-Text GLabel 16200 7450 2    50   Input ~ 0
-ENLCD
-Text GLabel 16200 7550 2    50   Input ~ 0
-LCBBACK
-Text GLabel 16200 7650 2    50   Input ~ 0
-WSS
-Text GLabel 16200 7750 2    50   Input ~ 0
-SPIn1
-Text GLabel 16200 7850 2    50   Input ~ 0
-SPIn2
-Text GLabel 16200 7950 2    50   Input ~ 0
-SPIn3
-Text GLabel 16200 8050 2    50   Input ~ 0
-SPIn4
-Text GLabel 16200 8150 2    50   Input ~ 0
-SPIn5
+	16150 7850 15900 7850
 Text GLabel 16200 8250 2    50   Input ~ 0
+WPS
+Text GLabel 16200 8350 2    50   Input ~ 0
+ENLCD
+Text GLabel 16200 8450 2    50   Input ~ 0
+LCBBACK
+Text GLabel 16200 8550 2    50   Input ~ 0
+WSS
+Text GLabel 16200 8650 2    50   Input ~ 0
+SPIn1
+Text GLabel 16200 8750 2    50   Input ~ 0
+SPIn2
+Text GLabel 16200 8850 2    50   Input ~ 0
+SPIn3
+Text GLabel 16200 8950 2    50   Input ~ 0
+SPIn4
+Text GLabel 16200 9050 2    50   Input ~ 0
+SPIn5
+Text GLabel 16200 9150 2    50   Input ~ 0
 SPIn6
 Wire Wire Line
-	16200 7350 15900 7350
+	16200 8250 15900 8250
 Wire Wire Line
-	15900 7450 16200 7450
+	15900 8350 16200 8350
 Wire Wire Line
-	16200 7550 15900 7550
+	16200 8450 15900 8450
 Wire Wire Line
-	15900 7650 16200 7650
+	15900 8550 16200 8550
 Wire Wire Line
-	16200 7750 15900 7750
+	16200 8650 15900 8650
 Wire Wire Line
-	15900 7850 16200 7850
+	15900 8750 16200 8750
 Wire Wire Line
-	16200 7950 15900 7950
+	16200 8850 15900 8850
 Wire Wire Line
-	15900 8050 16200 8050
+	15900 8950 16200 8950
 Wire Wire Line
-	16200 8150 15900 8150
+	16200 9050 15900 9050
 Wire Wire Line
-	15900 8250 16200 8250
+	15900 9150 16200 9150
 Text GLabel 20900 5800 3    50   Input ~ 0
 WPS
 Text GLabel 21000 5800 3    50   Input ~ 0
@@ -2434,18 +2428,22 @@ Wire Wire Line
 	21700 5400 21700 5800
 Wire Wire Line
 	21800 5400 21800 5800
-Text GLabel 16300 4850 2    50   Input ~ 0
+Text GLabel 16300 4650 2    50   Input ~ 0
 BRLED
-Text GLabel 16300 4950 2    50   Input ~ 0
+Text GLabel 16300 4750 2    50   Input ~ 0
 KLED
-Text GLabel 16300 5050 2    50   Input ~ 0
+Text GLabel 16300 4850 2    50   Input ~ 0
 WLED
-Text GLabel 16300 5150 2    50   Input ~ 0
+Text GLabel 16300 4950 2    50   Input ~ 0
 WSiren
-Text GLabel 16300 5250 2    50   Input ~ 0
+Text GLabel 16300 5050 2    50   Input ~ 0
 CWV
-Text GLabel 16300 5350 2    50   Input ~ 0
+Text GLabel 16300 5150 2    50   Input ~ 0
 WP
+Wire Wire Line
+	16300 4650 16100 4650
+Wire Wire Line
+	16100 4750 16300 4750
 Wire Wire Line
 	16300 4850 16100 4850
 Wire Wire Line
@@ -2454,10 +2452,6 @@ Wire Wire Line
 	16300 5050 16100 5050
 Wire Wire Line
 	16100 5150 16300 5150
-Wire Wire Line
-	16300 5250 16100 5250
-Wire Wire Line
-	16100 5350 16300 5350
 Text GLabel 22200 2500 2    50   Input ~ 0
 BRLED
 Text GLabel 22200 2600 2    50   Input ~ 0
@@ -2482,14 +2476,10 @@ Wire Wire Line
 	21550 2600 22200 2600
 Wire Wire Line
 	21550 2500 22200 2500
-Text GLabel 16300 5450 2    50   Input ~ 0
+Text GLabel 16200 5900 2    50   Input ~ 0
 LCDBL
-Text GLabel 16300 5550 2    50   Input ~ 0
+Text GLabel 16200 6000 2    50   Input ~ 0
 LCDPOWER
-Wire Wire Line
-	16300 5450 16100 5450
-Wire Wire Line
-	16100 5550 16300 5550
 Text GLabel 22200 2100 2    50   Input ~ 0
 LCDBL
 Text GLabel 21900 5800 3    50   Input ~ 0
@@ -2541,13 +2531,13 @@ F 9 "BK/HTC-15M" H 3750 500 50  0001 L CNN "Manufacturer_Part_Number"
 	1    3100 1100
 	0    -1   1    0   
 $EndComp
-Text GLabel 16250 5900 2    50   Input ~ 0
+Text GLabel 16250 6600 2    50   Input ~ 0
 SO1
-Text GLabel 16250 6000 2    50   Input ~ 0
+Text GLabel 16250 6700 2    50   Input ~ 0
 SO2
-Text GLabel 16250 6100 2    50   Input ~ 0
+Text GLabel 16250 6800 2    50   Input ~ 0
 SO3
-Text GLabel 16250 6200 2    50   Input ~ 0
+Text GLabel 16250 6900 2    50   Input ~ 0
 SO4
 Text GLabel 22200 1700 2    50   Input ~ 0
 SO1
@@ -2566,13 +2556,13 @@ Wire Wire Line
 Wire Wire Line
 	21550 1700 22200 1700
 Wire Wire Line
-	16250 5900 16100 5900
+	16250 6600 16100 6600
 Wire Wire Line
-	16100 6000 16250 6000
+	16100 6700 16250 6700
 Wire Wire Line
-	16250 6100 16100 6100
+	16250 6800 16100 6800
 Wire Wire Line
-	16100 6200 16250 6200
+	16100 6900 16250 6900
 Text GLabel 21800 4550 1    50   Input ~ 0
 EnCS
 Wire Wire Line
@@ -2851,29 +2841,31 @@ Text GLabel 9250 4200 2    50   Input ~ 0
 A13
 Wire Wire Line
 	20150 3950 20750 3950
-Text GLabel 16250 6300 2    50   Input ~ 0
+Text GLabel 16250 7000 2    50   Input ~ 0
 SO5
 Wire Wire Line
-	16250 6300 16100 6300
+	16250 7000 16100 7000
 Text GLabel 22200 3450 2    50   Input ~ 0
 SO5
 Wire Wire Line
 	21550 3450 22200 3450
 $Sheet
-S 14200 5800 1900 600 
+S 14200 6500 1900 700 
 U 63F3F92C
 F0 "SpareOuts" 50
 F1 "file63F3F92B.sch" 50
-F2 "SPOut1TTL" I R 16100 5900 50 
-F3 "SPOut1" I L 14200 5900 50 
-F4 "SPOut2TTL" I R 16100 6000 50 
-F5 "SPOut2" I L 14200 6000 50 
-F6 "SPOut3TTL" I R 16100 6100 50 
-F7 "SPOut3" I L 14200 6100 50 
-F8 "SPOut4TTL" I R 16100 6200 50 
-F9 "SPOut4" I L 14200 6200 50 
-F10 "SPOut5TTL" I R 16100 6300 50 
-F11 "SPOut5" I L 14200 6300 50 
+F2 "SPOut1TTL" I R 16100 6600 50 
+F3 "SPOut1" I L 14200 6600 50 
+F4 "SPOut2TTL" I R 16100 6700 50 
+F5 "SPOut2" I L 14200 6700 50 
+F6 "SPOut3TTL" I R 16100 6800 50 
+F7 "SPOut3" I L 14200 6800 50 
+F8 "SPOut4TTL" I R 16100 6900 50 
+F9 "SPOut4" I L 14200 6900 50 
+F10 "SPOut5TTL" I R 16100 7000 50 
+F11 "SPOut5" I L 14200 7000 50 
+F12 "SPOut6TTL" I R 16100 7100 50 
+F13 "SPOut6" I L 14200 7100 50 
 $EndSheet
 Text GLabel 22200 1600 2    50   Input ~ 0
 DisplayLED
@@ -2905,21 +2897,8 @@ F 3 "" H 17800 2750 50  0000 C CNN
 $EndComp
 Wire Wire Line
 	17800 2600 17800 2750
-$Comp
-L Device:LED D3
-U 1 1 648097C3
-P 17800 2100
-F 0 "D3" H 17793 2317 50  0000 C CNN
-F 1 "LED" H 17793 2226 50  0000 C CNN
-F 2 "LED_THT:LED_D3.0mm" H 17800 2100 50  0001 C CNN
-F 3 "~" H 17800 2100 50  0001 C CNN
-	1    17800 2100
-	0    -1   1    0   
-$EndComp
 Wire Wire Line
 	17800 2300 17800 2250
-Wire Wire Line
-	17800 1950 17800 1800
 NoConn ~ 21800 1300
 NoConn ~ 21800 1200
 $Comp
@@ -3082,27 +3061,27 @@ Text GLabel 8450 7150 2    50   Input ~ 0
 IO111
 Text GLabel 8450 7250 2    50   Input ~ 0
 IO112
-Text GLabel 14050 5050 0    50   Input ~ 0
-IO22
-Text GLabel 14050 6950 0    50   Input ~ 0
-IO23
-Text GLabel 14050 7350 0    50   Input ~ 0
-IO24
 Text GLabel 14050 4850 0    50   Input ~ 0
+IO22
+Text GLabel 14050 7850 0    50   Input ~ 0
+IO23
+Text GLabel 14050 8250 0    50   Input ~ 0
+IO24
+Text GLabel 14050 4650 0    50   Input ~ 0
 IO25
-Text GLabel 14050 6850 0    50   Input ~ 0
+Text GLabel 14050 7750 0    50   Input ~ 0
 IO26
-Text GLabel 14050 7550 0    50   Input ~ 0
+Text GLabel 14050 8450 0    50   Input ~ 0
 IO27
-Text GLabel 14050 4950 0    50   Input ~ 0
+Text GLabel 14050 4750 0    50   Input ~ 0
 IO28
-Text GLabel 14050 6750 0    50   Input ~ 0
+Text GLabel 14050 7650 0    50   Input ~ 0
 IO29
 Text GLabel 10850 6550 0    50   Input ~ 0
 IO210
-Text GLabel 14050 5150 0    50   Input ~ 0
+Text GLabel 14050 4950 0    50   Input ~ 0
 IO211
-Text GLabel 14050 6650 0    50   Input ~ 0
+Text GLabel 14050 7550 0    50   Input ~ 0
 IO212
 Text GLabel 7350 7850 0    50   Input ~ 0
 IO22
@@ -3126,19 +3105,19 @@ Text GLabel 8450 8150 2    50   Input ~ 0
 IO211
 Text GLabel 8450 8250 2    50   Input ~ 0
 IO212
-Text GLabel 14050 8150 0    50   Input ~ 0
+Text GLabel 14050 9050 0    50   Input ~ 0
 IO31
-Text GLabel 14050 6300 0    50   Input ~ 0
+Text GLabel 14050 7000 0    50   Input ~ 0
 IO32
-Text GLabel 14050 5550 0    50   Input ~ 0
+Text GLabel 14050 6000 0    50   Input ~ 0
 IO33
-Text GLabel 14050 8250 0    50   Input ~ 0
+Text GLabel 14050 9150 0    50   Input ~ 0
 IO34
-Text GLabel 14050 5350 0    50   Input ~ 0
+Text GLabel 14050 5150 0    50   Input ~ 0
 IO35
-Text GLabel 14050 5250 0    50   Input ~ 0
+Text GLabel 14050 5050 0    50   Input ~ 0
 IO38
-Text GLabel 14050 7650 0    50   Input ~ 0
+Text GLabel 14050 8550 0    50   Input ~ 0
 IO311
 Text GLabel 7350 8700 0    50   Input ~ 0
 IO31
@@ -3154,21 +3133,21 @@ Text GLabel 8450 8800 2    50   Input ~ 0
 IO38
 Text GLabel 8450 9100 2    50   Input ~ 0
 IO311
-Text GLabel 14050 7750 0    50   Input ~ 0
+Text GLabel 14050 8650 0    50   Input ~ 0
 IO41
-Text GLabel 14050 5900 0    50   Input ~ 0
+Text GLabel 14050 6600 0    50   Input ~ 0
 IO42
-Text GLabel 14050 7850 0    50   Input ~ 0
+Text GLabel 14050 8750 0    50   Input ~ 0
 IO44
-Text GLabel 14050 6000 0    50   Input ~ 0
+Text GLabel 14050 6700 0    50   Input ~ 0
 IO45
-Text GLabel 14050 7950 0    50   Input ~ 0
+Text GLabel 14050 8850 0    50   Input ~ 0
 IO47
-Text GLabel 14050 6100 0    50   Input ~ 0
+Text GLabel 14050 6800 0    50   Input ~ 0
 IO48
-Text GLabel 14050 6200 0    50   Input ~ 0
+Text GLabel 14050 6900 0    50   Input ~ 0
 IO411
-Text GLabel 14050 7450 0    50   Input ~ 0
+Text GLabel 14050 8350 0    50   Input ~ 0
 IO412
 Text GLabel 7350 9650 0    50   Input ~ 0
 IO41
@@ -3310,9 +3289,9 @@ Wire Wire Line
 	10850 6450 11000 6450
 Wire Wire Line
 	10850 6550 11000 6550
-Text GLabel 14050 8050 0    50   Input ~ 0
+Text GLabel 14050 8950 0    50   Input ~ 0
 IO410
-Text GLabel 14050 5450 0    50   Input ~ 0
+Text GLabel 14050 5900 0    50   Input ~ 0
 IO49
 Wire Notes Line
 	9850 11350 6150 11350
@@ -3321,7 +3300,11 @@ Wire Notes Line
 Text Notes 6900 11200 0    197  ~ 0
 IO Terminals
 Wire Wire Line
-	14050 4850 14200 4850
+	14050 4650 14200 4650
+Wire Wire Line
+	14050 4750 14200 4750
+Wire Wire Line
+	14200 4850 14050 4850
 Wire Wire Line
 	14050 4950 14200 4950
 Wire Wire Line
@@ -3329,51 +3312,80 @@ Wire Wire Line
 Wire Wire Line
 	14050 5150 14200 5150
 Wire Wire Line
-	14200 5250 14050 5250
+	14050 6600 14200 6600
 Wire Wire Line
-	14050 5350 14200 5350
+	14200 6700 14050 6700
 Wire Wire Line
-	14200 5450 14050 5450
+	14050 6800 14200 6800
 Wire Wire Line
-	14050 5550 14200 5550
+	14200 6900 14050 6900
 Wire Wire Line
-	14050 5900 14200 5900
+	14050 7000 14200 7000
 Wire Wire Line
-	14200 6000 14050 6000
+	14050 9150 14200 9150
 Wire Wire Line
-	14050 6100 14200 6100
+	14200 9050 14050 9050
 Wire Wire Line
-	14200 6200 14050 6200
+	14050 8950 14200 8950
 Wire Wire Line
-	14050 6300 14200 6300
+	14200 8850 14050 8850
 Wire Wire Line
-	14050 8250 14200 8250
+	14050 8750 14200 8750
 Wire Wire Line
-	14200 8150 14050 8150
-Wire Wire Line
-	14050 8050 14200 8050
-Wire Wire Line
-	14200 7950 14050 7950
-Wire Wire Line
-	14050 7850 14200 7850
-Wire Wire Line
-	14200 7750 14050 7750
-Wire Wire Line
-	14050 6650 14200 6650
-Wire Wire Line
-	14050 6850 14200 6850
-Wire Wire Line
-	14050 6750 14200 6750
-Wire Wire Line
-	14200 6950 14050 6950
-Wire Wire Line
-	14050 7650 14200 7650
-Wire Wire Line
-	14200 7450 14050 7450
-Wire Wire Line
-	14050 7350 14200 7350
+	14200 8650 14050 8650
 Wire Wire Line
 	14050 7550 14200 7550
 Wire Wire Line
+	14050 7750 14200 7750
+Wire Wire Line
+	14050 7650 14200 7650
+Wire Wire Line
+	14200 7850 14050 7850
+Wire Wire Line
+	14050 8550 14200 8550
+Wire Wire Line
+	14200 8350 14050 8350
+Wire Wire Line
+	14050 8250 14200 8250
+Wire Wire Line
+	14050 8450 14200 8450
+Wire Wire Line
 	6900 7750 7450 7750
+Wire Wire Line
+	17800 1950 17800 1800
+$Comp
+L Device:LED D3
+U 1 1 648097C3
+P 17800 2100
+F 0 "D3" H 17793 2317 50  0000 C CNN
+F 1 "LED" H 17793 2226 50  0000 C CNN
+F 2 "LED_THT:LED_D3.0mm" H 17800 2100 50  0001 C CNN
+F 3 "~" H 17800 2100 50  0001 C CNN
+	1    17800 2100
+	0    -1   -1   0   
+$EndComp
+$Sheet
+S 14200 5800 1900 450 
+U 61A6AEB3
+F0 "Outputs - 5V" 50
+F1 "file61A6AEB2.sch" 50
+F2 "LCDBacklightTTL" I R 16100 5900 50 
+F3 "LCDBacklightOut" I L 14200 5900 50 
+F4 "LCDPowerTTL" I R 16100 6000 50 
+F5 "LCDPowerOut" I L 14200 6000 50 
+$EndSheet
+Wire Wire Line
+	14050 5900 14200 5900
+Wire Wire Line
+	14050 6000 14200 6000
+Wire Wire Line
+	16100 6000 16200 6000
+Wire Wire Line
+	16200 5900 16100 5900
+Text GLabel 16250 7100 2    50   Input ~ 0
+SO6
+Text GLabel 22200 3550 2    50   Input ~ 0
+SO6
+Wire Wire Line
+	21550 3550 22200 3550
 $EndSCHEMATC
