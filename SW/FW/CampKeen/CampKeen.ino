@@ -7,7 +7,7 @@
 #include <ATM90E32.h>
 
 #define ControlComPort Serial
-#define USBComPort Serial
+//#define USBComPort Serial
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
@@ -235,8 +235,8 @@ void setup() {
   GenEnclosure.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
 
   //Energy Monitor
-  pinMode(EnergyMonitorCS, OUTPUT);
-  SetupEnergyMonitor();
+  //pinMode(EnergyMonitorCS, OUTPUT);
+  //SetupEnergyMonitor();
 
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting system up");
@@ -247,24 +247,28 @@ void setup() {
   ReadBatteryVoltages();
   ReadWaterAndLPG();
   GeneratorSensors();
-  EnergyMetering();
 
   ControlComPort.print("System Initialized and values populated: ");
   ControlComPort.println(GetCurrentTime());
 }
 
 void loop() {
+Serial.println("getting here");
+delay(1000);
+}
+
+void Test(){
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarms();
   }
+
+  WaterControl();
 
   if (abs(millis() - WATERLPGtimer) > 3.6e+6 || WaterOn == true) {
     //ReadLPG and Water Tank at 1 hour intervals unless the pump or city water valve are on.
     ReadWaterAndLPG();
     WATERLPGtimer = millis();
   }
-
-  WaterControl();
 
   if (abs(millis() - NTCTimer) > 3000) {
     //Read NTC temp Sensors
@@ -805,14 +809,17 @@ void ReadWaterAndLPG() {
     }
   }
   // Turn Off Voltage to tanks
-  digitalWrite(TankPowerRelay, LOW);
-  /*
+  if (WaterOn != true){
+    digitalWrite(TankPowerRelay, LOW);
+  }
+  
+  
     Serial.print("LastLPGLevel:");
     Serial.println(LastLPGLevel);
     Serial.print("LastWaterLevel:");
     Serial.println(LastWaterLevel);
     delay(5000);
-  */
+  
 }
 
 
@@ -833,7 +840,7 @@ void ReadBatteryVoltages() {
   LastRTCVoltage = ConversionFactor * (RTCVoltageSum / Samples);
   LastTimeRTCVoltage = GetCurrentTime();
 
-  /*Test Code
+  ///*Test Code
     ControlComPort.print("Camper Voltage: ");
     ControlComPort.print(LastTimeDCVoltage);
     ControlComPort.print(" : ");
@@ -845,7 +852,7 @@ void ReadBatteryVoltages() {
     ControlComPort.println(LastRTCVoltage);
 
     delay(1000);
-  */
+  
 }
 
 void ReadOtherTempSensors() {
