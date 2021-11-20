@@ -253,8 +253,24 @@ void setup() {
 }
 
 void loop() {
+<<<<<<< release/0.5
 Serial.println("getting here");
 delay(1000);
+=======
+  //WaterControlTesting();
+  WaterControl();
+  //digitalWrite(KitchenWaterButtonLED, HIGH);
+}
+
+
+void WaterControlTesting(){
+  int KicthenButtonState = digitalRead(KitchWaterButton);
+  int BathroomButtonState = digitalRead(BathroomWaterButton);
+
+  digitalWrite(KitchenWaterButtonLED, KicthenButtonState);
+  digitalWrite(BathroomWaterButtonLED, BathroomButtonState);
+  
+>>>>>>> local
 }
 
 void Test(){
@@ -457,7 +473,7 @@ void LCDDisplay() {
 void WaterControl() {
   //Read Current Water Source Selection
   //add logic that if flipped while the pump is on turn it off and open the city water valve
-  ControlComPort.print("WaterSourseSelection:");
+  //ControlComPort.print("WaterSourseSelection:");
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
     //ControlComPort.println("City Water");
@@ -467,6 +483,7 @@ void WaterControl() {
     //ControlComPort.println("Tank");
   }
 
+<<<<<<< release/0.5
 
   //if the water is on and the timer says it's been on for more than 5 mins turn off.
   if (WaterOn == true && (millis() - WaterTimer > 300000)) {
@@ -482,6 +499,16 @@ void WaterControl() {
   //Serial.println(BathroomButtonState);
   digitalWrite(BathroomWaterButtonLED, BathroomButtonState);
 
+=======
+  
+  //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
+  if (WaterOn == true && (abs(millis() - WaterTimer) > 150000)) {
+    TurnOffWater();
+  }
+  //Check to see if any of the buttons are pressed
+  int KicthenButtonState = digitalRead(KitchWaterButton);
+  int BathroomButtonState = digitalRead(BathroomWaterButton);  
+>>>>>>> local
   if (KicthenButtonState == HIGH || BathroomButtonState == HIGH) {
     TurnOnWater();
   }
@@ -509,6 +536,7 @@ void TurnOffWater() {
   digitalWrite(WaterPumpOut, LOW);
   digitalWrite(KitchenWaterButtonLED, LOW);
   digitalWrite(BathroomWaterButtonLED, LOW);
+  WaterOn = false;
 }
 
 void WaterLEDState() {
@@ -533,6 +561,7 @@ void SetupEnergyMonitor() {
   eic.begin(EnergyMonitorCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
 }
 
+<<<<<<< release/0.5
 void EnergyMetering() {
   float voltageA, voltageC, currentCT1, currentCT2;
   unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
@@ -543,6 +572,53 @@ void EnergyMetering() {
   Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
   Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
   delay(10);
+=======
+void EnergyMetering(){  
+    float voltageA, voltageC,currentCT1,currentCT2;
+    LastTimeACVoltage = LastTimeACCurrent = LastTimePowerFactor = LastTimeFreq = LastTimeWatts = 
+    LastTimeReactive = LastTimeACApparent = LastTimeACFundimental = LastTimeACHarmonic = LastTimeHeadUnitTemp = 
+    LastTimeRealPower = GetCurrentTime();
+    unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
+    unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
+    //unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
+    //unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
+
+    //Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
+    //Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
+    //delay(10);
+
+    //if true the MCU is not getting data from the energy meter
+    if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
+
+    //get voltage
+    voltageA = eic.GetLineVoltageA();
+    voltageC = eic.GetLineVoltageC();
+
+    if (LineFreq = 4485) {
+      LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+    }
+    else {
+      LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+    }
+
+    //get current
+    currentCT1 = eic.GetLineCurrentA();
+    currentCT2 = eic.GetLineCurrentC(); //this is disconnected
+    //totalCurrent = currentCT1 + currentCT2;
+    //totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
+
+    LastACCurrent = eic.GetLineCurrentA(); //Motorhome panel is only one leg 
+    LastPowerFactor = eic.GetTotalPowerFactor();
+    LastFreq = eic.GetFrequency();
+    LastACWatts = (voltageA * currentCT1);
+    LastACReactive = eic.GetTotalReactivePower();
+    LastACApparent = eic.GetTotalApparentPower();
+    LastACFundimental = eic.GetTotalActiveFundPower();
+    LastACHarmonic = eic.GetTotalActiveHarPower();
+    LastHeadUnitTemp = eic.GetTemperature();
+    LastACRealPower =  eic.GetTotalActivePower();
+  
+>>>>>>> local
 
   //if true the MCU is not getting data from the energy meter
   if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
@@ -777,8 +853,13 @@ void ReadWaterAndLPG() {
   digitalWrite(TankPowerRelay, HIGH);
   delay(1000);
   String LastTimeLPGLevel = GetCurrentTime();
+<<<<<<< release/0.5
   int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * analogRead(LPGSensor))) - 1));
   if (LPGResistence > 124) {
+=======
+  int LPGResistence = 47*(1/((5/(ConversionFactor * analogRead(LPGSensor)))-1));
+  if (LPGResistence > 122){
+>>>>>>> local
     //LastLPGLevel = "ERROR Check Tank Sensor";
   }
   else {
