@@ -160,7 +160,7 @@ Text Label 21800 1200 0    60   ~ 0
 SCL
 Text Label 21800 1400 0    60   ~ 0
 AREF
-Text Notes 20075 575  0    60   ~ 0
+Text Notes 19225 575  0    60   ~ 0
 Shield for Arduino Mega Rev 3
 Text Notes 22400 1000 0    60   ~ 0
 Holes
@@ -348,9 +348,9 @@ Wire Notes Line
 Wire Notes Line
 	22900 1000 22150 1000
 Wire Notes Line
-	21550 650  21550 475 
+	20700 650  20700 475 
 Wire Notes Line
-	20050 650  21550 650 
+	19200 650  20700 650 
 Wire Wire Line
 	20400 1100 20400 1800
 Wire Wire Line
@@ -1550,8 +1550,6 @@ F 9 "LM2597MX-ADJ/NOPB" H 3650 3100 50  0001 L CNN "Manufacturer_Part_Number"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3450 1100 3200 1100
-Wire Wire Line
 	4050 1100 4750 1100
 $Comp
 L SamacSys_Parts:IRF9Z34NPBF Q1
@@ -1598,8 +1596,6 @@ Wire Wire Line
 	3650 1600 3650 1400
 Wire Wire Line
 	4750 1100 4750 1050
-Wire Wire Line
-	2400 1100 1650 1100
 Connection ~ 2400 1100
 $Comp
 L power:+BATT #PWR012
@@ -1682,18 +1678,18 @@ Wire Wire Line
 Wire Wire Line
 	900  10200 900  11000
 Wire Wire Line
-	4600 1200 4600 1250
+	4350 2500 4350 2550
 Wire Wire Line
-	4750 1200 4600 1200
+	4500 2500 4350 2500
 $Comp
 L power:GND #PWR027
 U 1 1 61491D30
-P 4600 1250
-F 0 "#PWR027" H 4600 1000 50  0001 C CNN
-F 1 "GND" H 4605 1077 50  0000 C CNN
-F 2 "" H 4600 1250 50  0001 C CNN
-F 3 "" H 4600 1250 50  0001 C CNN
-	1    4600 1250
+P 4350 2550
+F 0 "#PWR027" H 4350 2300 50  0001 C CNN
+F 1 "GND" H 4355 2377 50  0000 C CNN
+F 2 "" H 4350 2550 50  0001 C CNN
+F 3 "" H 4350 2550 50  0001 C CNN
+	1    4350 2550
 	1    0    0    -1  
 $EndComp
 NoConn ~ 2500 10500
@@ -2855,34 +2851,34 @@ Text GLabel 22200 1600 2    50   Input ~ 0
 DisplayLED
 Wire Wire Line
 	21550 1600 22200 1600
-Text GLabel 17900 1550 2    50   Input ~ 0
+Text GLabel 18000 750  2    50   Input ~ 0
 DisplayLED
 $Comp
 L Device:R R14
 U 1 1 647E4AAA
-P 17900 2200
-F 0 "R14" V 17693 2200 50  0000 C CNN
-F 1 "330" V 17784 2200 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 17830 2200 50  0001 C CNN
-F 3 "~" H 17900 2200 50  0001 C CNN
-	1    17900 2200
+P 18000 1400
+F 0 "R14" V 17793 1400 50  0000 C CNN
+F 1 "330" V 17884 1400 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 17930 1400 50  0001 C CNN
+F 3 "~" H 18000 1400 50  0001 C CNN
+	1    18000 1400
 	1    0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR056
 U 1 1 647E4AB0
-P 17900 2500
-F 0 "#PWR056" H 17900 2250 50  0001 C CNN
-F 1 "GND" H 17900 2350 50  0000 C CNN
-F 2 "" H 17900 2500 50  0000 C CNN
-F 3 "" H 17900 2500 50  0000 C CNN
-	1    17900 2500
+P 18000 1700
+F 0 "#PWR056" H 18000 1450 50  0001 C CNN
+F 1 "GND" H 18000 1550 50  0000 C CNN
+F 2 "" H 18000 1700 50  0000 C CNN
+F 3 "" H 18000 1700 50  0000 C CNN
+	1    18000 1700
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	17900 2350 17900 2500
+	18000 1550 18000 1700
 Wire Wire Line
-	17900 2050 17900 2000
+	18000 1250 18000 1200
 NoConn ~ 21800 1300
 NoConn ~ 21800 1200
 $Comp
@@ -3334,16 +3330,16 @@ Wire Wire Line
 Wire Wire Line
 	6900 7750 7450 7750
 Wire Wire Line
-	17900 1700 17900 1550
+	18000 900  18000 750 
 $Comp
 L Device:LED D3
 U 1 1 648097C3
-P 17900 1850
-F 0 "D3" H 17893 2067 50  0000 C CNN
-F 1 "LED" H 17893 1976 50  0000 C CNN
-F 2 "LED_THT:LED_D3.0mm" H 17900 1850 50  0001 C CNN
-F 3 "~" H 17900 1850 50  0001 C CNN
-	1    17900 1850
+P 18000 1050
+F 0 "D3" H 17993 1267 50  0000 C CNN
+F 1 "LED" H 17993 1176 50  0000 C CNN
+F 2 "LED_THT:LED_D3.0mm" H 18000 1050 50  0001 C CNN
+F 3 "~" H 18000 1050 50  0001 C CNN
+	1    18000 1050
 	0    -1   -1   0   
 $EndComp
 $Sheet
@@ -3373,25 +3369,24 @@ Wire Wire Line
 $Comp
 L Connector:Screw_Terminal_01x03 J2
 U 1 1 61F0BAC6
-P 4950 1200
-F 0 "J2" H 5030 1242 50  0000 L CNN
-F 1 "Screw_Terminal_01x03" H 5030 1151 50  0000 L CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 4950 1200 50  0001 C CNN
-F 3 "~" H 4950 1200 50  0001 C CNN
-	1    4950 1200
+P 4700 2500
+F 0 "J2" H 4780 2542 50  0000 L CNN
+F 1 "Screw_Terminal_01x03" H 4780 2451 50  0000 L CNN
+F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 4700 2500 50  0001 C CNN
+F 3 "~" H 4700 2500 50  0001 C CNN
+	1    4700 2500
 	1    0    0    -1  
 $EndComp
-Connection ~ 4750 1100
 Wire Wire Line
 	12700 10200 12550 10200
 Text GLabel 10500 10200 0    50   Input ~ 0
 SpareOut6
 Wire Wire Line
 	10500 10200 10650 10200
-Text GLabel 4750 1550 0    50   Input ~ 0
+Text GLabel 4500 2850 0    50   Input ~ 0
 SpareOut6
 Wire Wire Line
-	4750 1550 4750 1300
+	4500 2850 4500 2600
 Text Notes 10400 7050 0    197  ~ 0
 Tank Sensors
 Text Notes 14800 7050 0    197  ~ 0
@@ -3406,4 +3401,40 @@ Wire Notes Line
 	16950 450  16950 7200
 Wire Notes Line
 	9850 7200 16950 7200
+Wire Wire Line
+	2400 1100 1650 1100
+Wire Wire Line
+	3200 1100 3350 1100
+$Comp
+L SamacSys_Parts:SR305-TP D4
+U 1 1 61BA258E
+P 3700 2400
+F 0 "D4" H 4100 2667 50  0000 C CNN
+F 1 "SR305-TP" H 4100 2576 50  0000 C CNN
+F 2 "DIOAD2860W130L840D505" H 4200 2550 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/SR305-TP.pdf" H 4200 2450 50  0001 L CNN
+F 4 "Schottky Diodes & Rectifiers Rectifier 50V 80A" H 4200 2350 50  0001 L CNN "Description"
+F 5 "" H 4200 2250 50  0001 L CNN "Height"
+F 6 "833-SR305-TP" H 4200 2150 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=833-SR305-TP" H 4200 2050 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Micro Commercial Components (MCC)" H 4200 1950 50  0001 L CNN "Manufacturer_Name"
+F 9 "SR305-TP" H 4200 1850 50  0001 L CNN "Manufacturer_Part_Number"
+	1    3700 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4400 2400 4500 2400
+Wire Wire Line
+	3800 2400 3350 2400
+Wire Wire Line
+	3350 2400 3350 1100
+Connection ~ 3350 1100
+Wire Wire Line
+	3350 1100 3450 1100
+Wire Notes Line
+	19200 500  19200 6500
+Wire Notes Line
+	19200 6500 22900 6500
+Wire Notes Line
+	16950 2250 19200 2250
 $EndSCHEMATC

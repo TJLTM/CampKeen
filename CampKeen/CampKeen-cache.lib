@@ -761,6 +761,30 @@ X - 2 0 0 200 R 50 50 0 0 P
 ENDDRAW
 ENDDEF
 #
+# SamacSys_Parts_SR305-TP
+#
+DEF SamacSys_Parts_SR305-TP D 0 30 Y Y 1 F N
+F0 "D" 500 350 50 H V L CNN
+F1 "SamacSys_Parts_SR305-TP" 500 250 50 H V L CNN
+F2 "DIOAD2860W130L840D505" 500 150 50 H I L CNN
+F3 "https://componentsearchengine.com/Datasheets/1/SR305-TP.pdf" 500 50 50 H I L CNN
+F4 "Schottky Diodes & Rectifiers Rectifier 50V 80A" 500 -50 50 H I L CNN "Description"
+F5 "833-SR305-TP" 500 -250 50 H I L CNN "Mouser Part Number"
+F6 "https://www.mouser.com/Search/Refine.aspx?Keyword=833-SR305-TP" 500 -350 50 H I L CNN "Mouser Price/Stock"
+F7 "Micro Commercial Components (MCC)" 500 -450 50 H I L CNN "Manufacturer_Name"
+F8 "SR305-TP" 500 -550 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+P 2 0 1 6 200 0 300 0 N
+P 2 0 1 6 300 100 300 -100 N
+P 2 0 1 6 500 0 600 0 N
+P 3 0 1 6 300 -100 260 -100 260 -60 N
+P 3 0 1 6 300 100 340 100 340 60 N
+P 4 0 1 10 300 0 500 100 500 -100 300 0 F
+X ~ 1 100 0 100 R 50 50 0 0 P
+X ~ 2 700 0 100 L 50 50 0 0 P
+ENDDRAW
+ENDDEF
+#
 # Transistor_FET_2N7000
 #
 DEF Transistor_FET_2N7000 Q 0 20 Y N 1 F N
