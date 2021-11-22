@@ -9,7 +9,7 @@ What this can monitor:
 5. Tempetures around the RV especially and Fridge and Freezer (https://www.amazon.com/gp/product/B087NMHGX8/ref=ppx_yo_dt_b_asin_title_o07_s01?ie=UTF8&psc=1)
 6. Generator Temps (https://www.amazon.com/gp/product/B071DVVZHC/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) 
 7. Generator Fuel Pressure (https://www.amazon.com/gp/product/B07N8SX347/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&th=1 becareful of these they may or may not be DOA or last one a few weeks depending) 
-8. LPG tank level - No link as this is the original tank and sensor that came with the 1978 Pace Arrow it's resistence based but single wire) 
+8. LPG tank level - No link as this is the original tank and sensor that came with the 1978 Pace Arrow it's resistence based but single wire it is similar to https://parts.unitedrv.com/products/remote-ohm-sender-lp-gas-tank-90-degree?currency=USD&variant=36385562881&_vsrefdom=adwords&msclkid=ae7c158e8c431c0739b97415690580d9&utm_source=bing&utm_medium=cpc&utm_campaign=**LP%20Shopping%20-%20Catch%20All&utm_term=4583245501779595&utm_content=Catch%20All
 
 What this can control:
 1. WaterPump
