@@ -50,6 +50,9 @@ ATM90E32 eic{};
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
+const String DeviceName = "CampKeen";
+const String FWVersion = "0.5.0";
+const String HWVersion = "0.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, LastMillis1, NTCTimer, EnergyTimer, OutputTimer;
@@ -190,6 +193,8 @@ void setup() {
   ControlComPort.begin(115200);
   USBSerial.begin(115200);
   SetupLCD();
+  pinMode(SPIn1,INPUT);
+  pinMode(SPO2,OUTPUT);
 
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
@@ -233,9 +238,12 @@ void setup() {
   SetupEnergyMonitor();
 
   //Set up displays and output on the Serial Port
-  ControlComPort.println("Starting system up");
+  ControlComPort.println("Starting " + DeviceName);
+  digitalWrite(SPO2,HIGH);
+  delay(250);
+  SetupLCD();
   lcd.setCursor(0, 0);
-  lcd.print("Starting system up");
+  lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
   ReadGreyTank();
   ReadSewageTank();
@@ -245,15 +253,19 @@ void setup() {
   GeneratorSensors();
   ControlComPort.print("System Initialized and values populated:");
   ControlComPort.println(GetCurrentTime());
-
-  lcd.setCursor(0, 0);
-  //lcd.print(DeviceName);
   lcd.setCursor(0, 1);
-  //lcd.print(Version);
+  lcd.print("System Initialized");
   lcd.setCursor(0, 2);
-  //lcd.print("Units: "+Units);
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(GetCurrentTime());
+  lcd.setCursor(0, 1);
+  lcd.print(FWVersion);
+  lcd.setCursor(0, 2);
+  lcd.print("Units: "+Units);
   lcd.setCursor(0, 3);
-  lcd.print("Ready");
+  lcd.print(HWVersion);
 }
 
 void loop() {
@@ -301,6 +313,20 @@ void Test() {
     }
   }
 
+  if (digitalRead(SPIn1) == HIGH) {
+    digitalWrite(SPO2,HIGH);
+    if (LCDSetup == false) {
+      delay(250);
+      SetupLCD();
+    }
+    LCDOutput();
+    LCDDisplay();
+  }
+  else {
+    LCDSetup = false;
+    digitalWrite(SPO2,LOW);
+  }
+
 
 }
 
@@ -315,27 +341,19 @@ void SetupLCD() {
 }
 
 void LCDOutput() {
-  if (digitalRead(SPIn1) == HIGH) {
-    if (LCDSetup == false) {
-      SetupLCD();
+  if (abs(millis() - LastMillis1) > DisplayInvterval)
+  {
+    LCDDisplay();
+    LastMillis1 = millis();
+
+    if (DisplayCounter < 5) {
+      DisplayCounter += 1;
     }
-
-    if (abs(millis() - LastMillis1) > DisplayInvterval)
-    {
-      LCDDisplay();
-      LastMillis1 = millis();
-
-      if (DisplayCounter < 5) {
-        DisplayCounter += 1;
-      }
-      else {
-        DisplayCounter = 0;
-      }
+    else {
+      DisplayCounter = 0;
     }
   }
-  else {
-    LCDSetup = false;
-  }
+
 }
 
 void LCDDisplay() {
