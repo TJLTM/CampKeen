@@ -6,12 +6,12 @@
 #include <EEPROM.h>
 #include <ATM90E32.h>
 
-#define ControlComPort Serial
-//#define USBComPort Serial
+//#define ControlComPort Serial2
+#define ControlComPort Serial //use this for current dev. 
+#define USBSerial Serial
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
-#define LCDenablePin 10
 //-----------------------------------------------------------
 // ATM90E32 energy monitor settings and calibrations
 /* 4485 for 60 Hz (North America)
@@ -37,7 +37,7 @@ unsigned short PGAGain = 21;
       These are only starting points i had to play
       with this number to get it close enough
 */
-unsigned short VoltageGain = 4005;
+unsigned short VoltageGain = 1975;
 /* 25498 - SCT-013-000 100A/50mA
    39473 - SCT-016 120A/40mA
    46539 - Magnalab 100A
@@ -47,16 +47,12 @@ unsigned short CurrentGainCT2 = 25498;
 
 ATM90E32 eic{};
 
-
-//-----------------------------------------------------------
-//-----------------------------------------------------------
-// Timers and Intervals
-const int DisplayInvterval = 3000;
-const float ConversionFactor = 5.0 / 1023;
-long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, LastMillis1, NTCTimer, LCDDisplaySwitchTimer, DataOutTimer;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
+const int DisplayInvterval = 3000;
+const float ConversionFactor = 5.0 / 1023;
+long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, LastMillis1, NTCTimer, EnergyTimer, OutputTimer;
 String Units = "I"; //Default Units I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
@@ -90,13 +86,11 @@ float LastFreezerTemp = 0.0;
 float LastFridgeTemp = 0.0;
 float LastBathroomTemp = 0.0;
 
-float LastGenFuel = 0.0;
-String LastTimeGenFuel = "";
-
-String LastTimeGenTemps = "";
+String LastTimeGenSensors = "";
 float LastGenEnclosureTemp = 0.0;
 float LastGenHeadRightTemp = 0.0;
 float LastGenHeadLeftTemp = 0.0;
+float LastGenFuel = 0.0;
 
 String LastTimeACVoltage = "";
 float LastACVoltage = 0.0;
@@ -108,9 +102,8 @@ float LastACReactive = 0.0;
 float LastACApparent = 0.0;
 float LastACFundimental = 0.0;
 float LastACHarmonic = 0.0;
-float LastACRealPower = 0.0;
 float LastHeadUnitTemp = 0.0;
-
+float LastACRealPower = 0.0;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Generator, Energy Monitoring, and Voltage
@@ -162,6 +155,7 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 //-----------------------------------------------------------
 //SparePins and ports that are wired on board
 #define SPADC2 15
+#define SPIn1 10
 #define SPIn2 9
 #define SPIn3 8
 #define SPIn4 7
@@ -194,20 +188,20 @@ bool HoldingTankAlarm = false;
 
 void setup() {
   ControlComPort.begin(115200);
+  USBSerial.begin(115200);
+  SetupLCD();
 
-  pinMode(LCDenablePin, INPUT);
-  pinMode(LEDBacklightOut, OUTPUT);
-  
-  pinMode(AlarmOut, OUTPUT);
-  pinMode(AlarmLED, OUTPUT);
   pinMode(AlarmReset, INPUT);
-  
   pinMode(WaterSourceSelectionInput, INPUT);
   pinMode(WaterPumpSense, INPUT);
   pinMode(KitchWaterButton, INPUT);
   pinMode(BathroomWaterButton, INPUT);
+
+  pinMode(LEDBacklightOut, OUTPUT);
   pinMode(TankPowerRelay, OUTPUT);
   pinMode(WaterPumpOut, OUTPUT);
+  pinMode(AlarmOut, OUTPUT);
+  pinMode(AlarmLED, OUTPUT);
   pinMode(CityWaterValve, OUTPUT);
   pinMode(KitchenWaterButtonLED, OUTPUT);
   pinMode(BathroomWaterButtonLED, OUTPUT);
@@ -234,12 +228,14 @@ void setup() {
   GenHeadL.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
   GenEnclosure.begin(MAX31865_3WIRE); // set to 2WIRE or 4WIRE as necessary
 
-  //Energy Monitor
-  //pinMode(EnergyMonitorCS, OUTPUT);
-  //SetupEnergyMonitor();
+  //Energy
+  pinMode(EnergyMonitorCS, OUTPUT);
+  SetupEnergyMonitor();
 
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting system up");
+  lcd.setCursor(0, 0);
+  lcd.print("Starting system up");
   //Run through the sensors and get values for everything
   ReadGreyTank();
   ReadSewageTank();
@@ -247,75 +243,66 @@ void setup() {
   ReadBatteryVoltages();
   ReadWaterAndLPG();
   GeneratorSensors();
-
-  ControlComPort.print("System Initialized and values populated: ");
+  ControlComPort.print("System Initialized and values populated:");
   ControlComPort.println(GetCurrentTime());
+
+  lcd.setCursor(0, 0);
+  //lcd.print(DeviceName);
+  lcd.setCursor(0, 1);
+  //lcd.print(Version);
+  lcd.setCursor(0, 2);
+  //lcd.print("Units: "+Units);
+  lcd.setCursor(0, 3);
+  lcd.print("Ready");
 }
 
 void loop() {
-<<<<<<< release/0.5
-Serial.println("getting here");
-delay(1000);
-=======
-  //WaterControlTesting();
-  WaterControl();
-  //digitalWrite(KitchenWaterButtonLED, HIGH);
+  Test();
 }
 
-
-void WaterControlTesting(){
-  int KicthenButtonState = digitalRead(KitchWaterButton);
-  int BathroomButtonState = digitalRead(BathroomWaterButton);
-
-  digitalWrite(KitchenWaterButtonLED, KicthenButtonState);
-  digitalWrite(BathroomWaterButtonLED, BathroomButtonState);
-  
->>>>>>> local
-}
-
-void Test(){
+void Test() {
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarms();
   }
 
   WaterControl();
 
-  if (abs(millis() - WATERLPGtimer) > 3.6e+6 || WaterOn == true) {
-    //ReadLPG and Water Tank at 1 hour intervals unless the pump or city water valve are on.
-    ReadWaterAndLPG();
-    WATERLPGtimer = millis();
-  }
-
   if (abs(millis() - NTCTimer) > 3000) {
     //Read NTC temp Sensors
     ReadOtherTempSensors();
     //Read Generator Sensors
     GeneratorSensors();
-    //Read DC Voltages
-    ReadBatteryVoltages();
-    //Save Current Time
     NTCTimer = millis();
   }
 
+  if (abs(millis() - EnergyTimer) > 3000) {
+    //Read Energy
+    EnergyMetering();
+    EnergyTimer = millis();
+  }
+
+  if (abs(millis() - WATERLPGtimer) > 1800000) {
+    //ReadLPG and Water Tank at 1/2 hour intervals
+    ReadWaterAndLPG();
+    WATERLPGtimer = millis();
+  }
+
   if (abs(millis() - FiveMinTimer) > 300000) {
+    //Read DC voltage at 5 min intervals
+    ReadBatteryVoltages();
     FiveMinTimer = millis();
   }
 
   //After all the sensors have been updated stream out the data if the flag is set to do so
-  if (StreamingData == true && abs(millis() - DataOutTimer) > 3000) {
-    OutputAllData();
-    DataOutTimer = millis();
-  }
-
-  if (digitalRead(LCDenablePin) == HIGH) {
-    if (abs(millis() - LCDDisplaySwitchTimer) > DisplayInvterval) {
-      SetupLCD();
-      LCDOutput();
-      LCDDisplaySwitchTimer = millis();
+  if (StreamingData == true) {
+    if (abs(millis() - OutputTimer) > 5000) {
+      OutputAllData();
+      OutputTimer = millis();
     }
   }
-}
 
+
+}
 
 //------------------------------------------------------------------
 //LCD
@@ -328,7 +315,7 @@ void SetupLCD() {
 }
 
 void LCDOutput() {
-  if (digitalRead(LCDenablePin) == HIGH) {
+  if (digitalRead(SPIn1) == HIGH) {
     if (LCDSetup == false) {
       SetupLCD();
     }
@@ -483,32 +470,13 @@ void WaterControl() {
     //ControlComPort.println("Tank");
   }
 
-<<<<<<< release/0.5
-
-  //if the water is on and the timer says it's been on for more than 5 mins turn off.
-  if (WaterOn == true && (millis() - WaterTimer > 300000)) {
-    TurnOffWater;
-  }
-  //Check to see if any of the buttons are pressed
-  int KicthenButtonState = digitalRead(KitchWaterButton);
-  int BathroomButtonState = digitalRead(BathroomWaterButton);
-  //Serial.print("Kitchen Button:");
-  //Serial.println(KicthenButtonState);
-  digitalWrite(KitchenWaterButtonLED, KicthenButtonState);
-  //Serial.print("Bathroom Button:");
-  //Serial.println(BathroomButtonState);
-  digitalWrite(BathroomWaterButtonLED, BathroomButtonState);
-
-=======
-  
   //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
   if (WaterOn == true && (abs(millis() - WaterTimer) > 150000)) {
     TurnOffWater();
   }
   //Check to see if any of the buttons are pressed
   int KicthenButtonState = digitalRead(KitchWaterButton);
-  int BathroomButtonState = digitalRead(BathroomWaterButton);  
->>>>>>> local
+  int BathroomButtonState = digitalRead(BathroomWaterButton);
   if (KicthenButtonState == HIGH || BathroomButtonState == HIGH) {
     TurnOnWater();
   }
@@ -522,10 +490,8 @@ void TurnOnWater() {
     WaterTimer = millis();
     if (WaterSourseSelection == true) {
       digitalWrite(CityWaterValve, HIGH);
-      Serial.println("Turning on CityWater");
     }
     else {
-      Serial.println("Turning on WaterPump");
       digitalWrite(WaterPumpOut, HIGH);
     }
   }
@@ -561,64 +527,17 @@ void SetupEnergyMonitor() {
   eic.begin(EnergyMonitorCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
 }
 
-<<<<<<< release/0.5
 void EnergyMetering() {
-  float voltageA, voltageC, currentCT1, currentCT2;
+  float voltageA, voltageC;
+  LastTimeACVoltage = GetCurrentTime();
   unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
   unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
-  unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
-  unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
+  //unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
+  //unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
 
-  Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
-  Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
-  delay(10);
-=======
-void EnergyMetering(){  
-    float voltageA, voltageC,currentCT1,currentCT2;
-    LastTimeACVoltage = LastTimeACCurrent = LastTimePowerFactor = LastTimeFreq = LastTimeWatts = 
-    LastTimeReactive = LastTimeACApparent = LastTimeACFundimental = LastTimeACHarmonic = LastTimeHeadUnitTemp = 
-    LastTimeRealPower = GetCurrentTime();
-    unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
-    unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
-    //unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
-    //unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
-
-    //Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
-    //Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
-    //delay(10);
-
-    //if true the MCU is not getting data from the energy meter
-    if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
-
-    //get voltage
-    voltageA = eic.GetLineVoltageA();
-    voltageC = eic.GetLineVoltageC();
-
-    if (LineFreq = 4485) {
-      LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
-    }
-    else {
-      LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
-    }
-
-    //get current
-    currentCT1 = eic.GetLineCurrentA();
-    currentCT2 = eic.GetLineCurrentC(); //this is disconnected
-    //totalCurrent = currentCT1 + currentCT2;
-    //totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
-
-    LastACCurrent = eic.GetLineCurrentA(); //Motorhome panel is only one leg 
-    LastPowerFactor = eic.GetTotalPowerFactor();
-    LastFreq = eic.GetFrequency();
-    LastACWatts = (voltageA * currentCT1);
-    LastACReactive = eic.GetTotalReactivePower();
-    LastACApparent = eic.GetTotalApparentPower();
-    LastACFundimental = eic.GetTotalActiveFundPower();
-    LastACHarmonic = eic.GetTotalActiveHarPower();
-    LastHeadUnitTemp = eic.GetTemperature();
-    LastACRealPower =  eic.GetTotalActivePower();
-  
->>>>>>> local
+  //Serial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
+  //Serial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
+  //delay(10);
 
   //if true the MCU is not getting data from the energy meter
   if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
@@ -635,37 +554,36 @@ void EnergyMetering(){
   }
 
   //get current
-  currentCT1 = eic.GetLineCurrentA();
-  currentCT2 = eic.GetLineCurrentC(); //this is disconnected
+  //currentCT1 = eic.GetLineCurrentA();
+  //currentCT2 = eic.GetLineCurrentC(); //this is disconnected
   //totalCurrent = currentCT1 + currentCT2;
   //totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
 
   LastACCurrent = eic.GetLineCurrentA(); //Motorhome panel is only one leg
   LastPowerFactor = eic.GetTotalPowerFactor();
   LastFreq = eic.GetFrequency();
-  LastACWatts = (voltageA * currentCT1);
+  LastACWatts = (voltageA * LastACCurrent);
   LastACReactive = eic.GetTotalReactivePower();
   LastACApparent = eic.GetTotalApparentPower();
   LastACFundimental = eic.GetTotalActiveFundPower();
   LastACHarmonic = eic.GetTotalActiveHarPower();
   LastHeadUnitTemp = eic.GetTemperature();
   LastACRealPower =  eic.GetTotalActivePower();
-  LastTimeACVoltage = GetCurrentTime();
 
-  Serial.println("Voltage 1: " + String(voltageA) + "V");
-  Serial.println("Voltage 2: " + String(voltageC) + "V");
-  Serial.println("Current 1: " + String(currentCT1) + "A");
-  Serial.println("Current 2: " + String(currentCT2) + "A");
-  Serial.println("Active Power: " + String(LastACRealPower) + "W");
-  Serial.println("Power Factor: " + String(LastPowerFactor));
-  Serial.println("Fundimental Power: " + String(LastACFundimental) + "W");
-  Serial.println("Harmonic Power: " + String(LastACHarmonic) + "W");
-  Serial.println("Reactive Power: " + String(LastACReactive) + "var");
-  Serial.println("Apparent Power: " + String(LastACApparent) + "VA");
-  Serial.println("Chip Temp: " + String(LastHeadUnitTemp) + "C");
-  Serial.println("Frequency: " + String(LastFreq) + "Hz");
 
-  delay(1000);
+  //    Serial.println("Voltage 1: " + String(voltageA) + "V");
+  //    Serial.println("Voltage 2: " + String(voltageC) + "V");
+  //    Serial.println("Current 1: " + String(currentCT1) + "A");
+  //    Serial.println("Current 2: " + String(currentCT2) + "A");
+  //    Serial.println("Active Power: " + String(LastACRealPower) + "W");
+  //    Serial.println("Power Factor: " + String(LastPowerFactor));
+  //    Serial.println("Fundimental Power: " + String(LastACFundimental) + "W");
+  //    Serial.println("Harmonic Power: " + String(LastACHarmonic) + "W");
+  //    Serial.println("Reactive Power: " + String(LastACReactive) + "var");
+  //    Serial.println("Apparent Power: " + String(LastACApparent) + "VA");
+  //    Serial.println("Phase Angle A: " + String(eic.GetPhaseA()));
+  //    Serial.println("Chip Temp: " + String(LastHeadUnitTemp) + "C");
+  //    Serial.println("Frequency: " + String(LastFreq) + "Hz");
 }
 
 void GeneratorSensors() {
@@ -680,12 +598,14 @@ void GeneratorSensors() {
     if (Units == "I") {
       LastGenFuel = (7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75;
     }
-    else {}
+    else {
+      LastGenFuel = ConvertPSItoKPa((7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75);
+    }
   }
   else {
     LastGenFuel = 0.0;
   }
-  LastTimeGenFuel = GetCurrentTime();
+
 
   uint16_t rtd0 = GenHeadR.readRTD();
   float ratio0 = rtd0;
@@ -696,7 +616,7 @@ void GeneratorSensors() {
   else {
     LastGenHeadRightTemp = GenHeadR.temperature(RNOMINAL, RREF);
   }
-  
+
   uint16_t rtd1 = GenHeadL.readRTD();
   float ratio1 = rtd1;
   ratio1 /= 32768;
@@ -706,7 +626,7 @@ void GeneratorSensors() {
   else {
     LastGenHeadLeftTemp = GenHeadL.temperature(RNOMINAL, RREF);
   }
-  
+
   uint16_t rtd2 = GenEnclosure.readRTD();
   float ratio2 = rtd2;
   ratio2 /= 32768;
@@ -717,7 +637,7 @@ void GeneratorSensors() {
     LastGenEnclosureTemp = GenEnclosure.temperature(RNOMINAL, RREF);
   }
 
-  LastTimeGenTemps = GetCurrentTime();
+  LastTimeGenSensors = GetCurrentTime();
 }
 
 //------------------------------------------------------------------
@@ -853,13 +773,8 @@ void ReadWaterAndLPG() {
   digitalWrite(TankPowerRelay, HIGH);
   delay(1000);
   String LastTimeLPGLevel = GetCurrentTime();
-<<<<<<< release/0.5
   int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * analogRead(LPGSensor))) - 1));
-  if (LPGResistence > 124) {
-=======
-  int LPGResistence = 47*(1/((5/(ConversionFactor * analogRead(LPGSensor)))-1));
-  if (LPGResistence > 122){
->>>>>>> local
+  if (LPGResistence > 122) {
     //LastLPGLevel = "ERROR Check Tank Sensor";
   }
   else {
@@ -890,17 +805,15 @@ void ReadWaterAndLPG() {
     }
   }
   // Turn Off Voltage to tanks
-  if (WaterOn != true){
-    digitalWrite(TankPowerRelay, LOW);
-  }
-  
-  
-    Serial.print("LastLPGLevel:");
-    Serial.println(LastLPGLevel);
-    Serial.print("LastWaterLevel:");
-    Serial.println(LastWaterLevel);
-    delay(5000);
-  
+  digitalWrite(TankPowerRelay, LOW);
+
+  //  Serial.print("LastLPGLevel:");
+  //  Serial.println(LastLPGLevel);
+  //  Serial.print("LastWaterLevel:");
+  //  Serial.println(LastWaterLevel);
+  //  delay(5000);
+
+
 }
 
 
@@ -916,24 +829,21 @@ void ReadBatteryVoltages() {
     RTCVoltageSum = RTCVoltageSum + analogRead(RTCBattery);
   }
   LastDCVoltage = 3.8 * ConversionFactor * (DCVoltageSum / Samples) - 1.2;
+  Serial.println(ConversionFactor * (DCVoltageSum / Samples));
   LastTimeDCVoltage = GetCurrentTime();
 
   LastRTCVoltage = ConversionFactor * (RTCVoltageSum / Samples);
   LastTimeRTCVoltage = GetCurrentTime();
 
-  ///*Test Code
-    ControlComPort.print("Camper Voltage: ");
-    ControlComPort.print(LastTimeDCVoltage);
-    ControlComPort.print(" : ");
-    ControlComPort.println(LastDCVoltage);
-
-    ControlComPort.print("RTC Battery Voltage: ");
-    ControlComPort.print(LastTimeRTCVoltage);
-    ControlComPort.print(" : ");
-    ControlComPort.println(LastRTCVoltage);
-
-    delay(1000);
-  
+  //  ControlComPort.print("Camper Voltage: ");
+  //  ControlComPort.print(LastTimeDCVoltage);
+  //  ControlComPort.print(" : ");
+  //  ControlComPort.println(LastDCVoltage);
+  //
+  //  ControlComPort.print("RTC Battery Voltage: ");
+  //  ControlComPort.print(LastTimeRTCVoltage);
+  //  ControlComPort.print(" : ");
+  //  ControlComPort.println(LastRTCVoltage);
 }
 
 void ReadOtherTempSensors() {
@@ -1028,6 +938,11 @@ float ConvertCtoF(float C) {
   return F;
 }
 
+float ConvertPSItoKPa(float PSI) {
+  float KPA = 6.8947572932 * PSI;
+  return KPA;
+}
+
 String GetCurrentTime() {
   DateTime now = rtc.now();
   String DateTimeString = String(now.year())
@@ -1055,14 +970,13 @@ void OutputAllData() {
   ControlComPort.println(LastTimeGreyWater + ",Grey," +  LastGreyWater);
   ControlComPort.println(LastTimeLPGLevel + ",LPG," + LastLPGLevel);
   ControlComPort.println(LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage);
-  ControlComPort.println(LastTimeNTCTemp + ",NTC Tempetatures,Front AC Temp," + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);  
-  ControlComPort.println(LastTimeGenFuel + ",Generator Fuel Pressure," + LastGenFuel);
-  ControlComPort.println(LastTimeGenTemps + "Generator Temps, Enclosure," + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
+  ControlComPort.println(LastTimeNTCTemp + ",NTC Tempetatures,Front AC Temp," + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
+  ControlComPort.println(LastTimeGenSensors + ",Generator Fuel Pressure," + LastGenFuel);
+  ControlComPort.println(LastTimeGenSensors + "Generator Temps, Enclosure," + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
   ControlComPort.println(LastTimeRTCVoltage + "RTCBattery," + LastRTCVoltage);
-
   ControlComPort.println(LastTimeACVoltage + "Head Unit Temp," + "" + LastHeadUnitTemp);
-  String EnergyOutputSentence = LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)\r";
-  ControlComPort.println(EnergyOutputSentence);
+
+  ControlComPort.println(LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
 }
 
 void ResetAllAlarms() {
