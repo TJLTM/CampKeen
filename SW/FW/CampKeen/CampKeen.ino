@@ -14,15 +14,19 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
 //-----------------------------------------------------------
 // ATM90E32 energy monitor settings and calibrations
+ATM90E32 eic{}; // Energy Monitor Object 
+
 /* 4485 for 60 Hz (North America)
   389 for 50 hz (rest of the world)
 */
 unsigned short LineFreq = 4485;
+
 /* 0 for 10A (1x)
    21 for 100A (2x)
    42 for between 100A - 200A (4x)
 */
 unsigned short PGAGain = 21;
+
 /*
    For meter <= v1.3:
       42080 - 9v AC Transformer - Jameco 112336
@@ -38,14 +42,13 @@ unsigned short PGAGain = 21;
       with this number to get it close enough
 */
 unsigned short VoltageGain = 1975;
+
 /* 25498 - SCT-013-000 100A/50mA
    39473 - SCT-016 120A/40mA
    46539 - Magnalab 100A
 */
 unsigned short CurrentGainCT1 = 25498;
 unsigned short CurrentGainCT2 = 25498;
-
-ATM90E32 eic{};
 
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -192,7 +195,7 @@ bool HoldingTankAlarm = false;
 void setup() {
   ControlComPort.begin(115200);
   USBSerial.begin(115200);
-  SetupLCD();
+  
   pinMode(SPIn1,INPUT);
   pinMode(SPO2,OUTPUT);
 
@@ -269,10 +272,6 @@ void setup() {
 }
 
 void loop() {
-  Test();
-}
-
-void Test() {
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarms();
   }
@@ -358,6 +357,7 @@ void LCDOutput() {
 
 void LCDDisplay() {
   //setCursor(position,line)
+  lcd.clear();
   switch (DisplayCounter) {
     case 0:
       //Tank Levels
@@ -387,26 +387,26 @@ void LCDDisplay() {
       lcd.print("Camper Battery");
       lcd.setCursor(15, 0);
       lcd.print(LastDCVoltage);
-      //Amps
+      
       lcd.setCursor(0, 1);
-      lcd.print("AC Amps");
+      lcd.print("RTC Battery");
       lcd.setCursor(15, 1);
-      lcd.print(LastACCurrent);
-      //Voltage
-      lcd.setCursor(0, 2);
-      lcd.print("AC Voltage");
-      lcd.setCursor(15, 2);
-      lcd.print(LastACVoltage);
+      lcd.print(LastRTCVoltage);
 
-      //lcd.setCursor(0,3);
-      //lcd.print("RPM");
-      //lcd.setCursor(15,3);
-      //lcd.print(RPMValue,0);
+//      lcd.setCursor(0, 2);
+//      lcd.print("AC Voltage");
+//      lcd.setCursor(15, 2);
+//      lcd.print(LastACVoltage);
+//
+//      lcd.setCursor(0,3);
+//      lcd.print("PF");
+//      lcd.setCursor(15,3);
+//      lcd.print(LastPowerFactor,0);
       break;
     case 2:
       //Generator
       lcd.setCursor(0, 0);
-      lcd.print("Generator Fuel:");
+      lcd.print("Generator Fuel");
       lcd.setCursor(15, 0);
       lcd.print(LastGenFuel);
 
@@ -468,6 +468,27 @@ void LCDDisplay() {
       lcd.print("Freezer");
       lcd.setCursor(15, 3);
       lcd.print(LastFreezerTemp, 1);
+      break;
+    case 5:
+      lcd.setCursor(0, 0);
+      lcd.print("Watts");
+      lcd.setCursor(15, 0);
+      lcd.print(LastACWatts, 1);
+      //Amps
+      lcd.setCursor(0, 1);
+      lcd.print("AC Amps");
+      lcd.setCursor(15, 1);
+      lcd.print(LastACCurrent);
+      //Voltage
+      lcd.setCursor(0, 2);
+      lcd.print("AC Voltage");
+      lcd.setCursor(15, 2);
+      lcd.print(LastACVoltage);
+
+      lcd.setCursor(0,3);
+      lcd.print("PF");
+      lcd.setCursor(15,3);
+      lcd.print(LastPowerFactor,0);
       break;
   }
 }
