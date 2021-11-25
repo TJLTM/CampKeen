@@ -49,8 +49,8 @@ unsigned short VoltageGain = 1975;
    39473 - SCT-016 120A/40mA
    46539 - Magnalab 100A
 */
-unsigned short CurrentGainCT1 = 39473;
-unsigned short CurrentGainCT2 = 39473;
+unsigned short CurrentGainCT1 = 34500;
+unsigned short CurrentGainCT2 = 34500;
 
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -598,7 +598,7 @@ void EnergyMetering() {
   LastACCurrent = eic.GetLineCurrentA(); //Motorhome panel is only one leg
   LastPowerFactor = eic.GetTotalPowerFactor();
   LastFreq = eic.GetFrequency();
-  LastACWatts = (voltageA * LastACCurrent);
+  LastACWatts = 2*(voltageA * LastACCurrent);
   LastACReactive = eic.GetTotalReactivePower();
   LastACApparent = eic.GetTotalApparentPower();
   LastACFundimental = eic.GetTotalActiveFundPower();
