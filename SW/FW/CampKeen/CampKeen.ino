@@ -16,7 +16,7 @@ int DisplayCounter = 0;
 #define LCDPowerOut 13
 //-----------------------------------------------------------
 // ATM90E32 energy monitor settings and calibrations
-ATM90E32 eic{}; // Energy Monitor Object 
+ATM90E32 eic{}; // Energy Monitor Object
 
 /* 4485 for 60 Hz (North America)
   389 for 50 hz (rest of the world)
@@ -197,9 +197,9 @@ bool HoldingTankAlarm = false;
 void setup() {
   ControlComPort.begin(115200);
   USBSerial.begin(115200);
-  
-  pinMode(LCDEnable,INPUT);
-  pinMode(LCDPowerOut,OUTPUT);
+
+  pinMode(LCDEnable, INPUT);
+  pinMode(LCDPowerOut, OUTPUT);
 
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
@@ -235,7 +235,7 @@ void setup() {
   pinMode(RTDGenHeadLCS, OUTPUT);
   pinMode(RTDGenEnclosure, OUTPUT);
   // set to 2WIRE or 4WIRE as necessary
-  GenHeadR.begin(MAX31865_3WIRE); 
+  GenHeadR.begin(MAX31865_3WIRE);
   GenHeadL.begin(MAX31865_3WIRE);
   GenEnclosure.begin(MAX31865_3WIRE);
 
@@ -245,7 +245,7 @@ void setup() {
 
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting " + DeviceName);
-  digitalWrite(LCDPowerOut,HIGH);
+  digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
   lcd.setCursor(0, 0);
@@ -269,7 +269,7 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.print(FWVersion);
   lcd.setCursor(0, 2);
-  lcd.print("Units: "+Units);
+  lcd.print("Units: " + Units);
   lcd.setCursor(0, 3);
   lcd.print(HWVersion);
   delay(1000);
@@ -318,7 +318,7 @@ void loop() {
   }
 
   if (digitalRead(LCDEnable) == HIGH) {
-    digitalWrite(LCDPowerOut,HIGH);
+    digitalWrite(LCDPowerOut, HIGH);
     if (LCDSetup == false) {
       delay(250);
       SetupLCD();
@@ -328,7 +328,7 @@ void loop() {
   }
   else {
     LCDSetup = false;
-    digitalWrite(LCDPowerOut,LOW);
+    digitalWrite(LCDPowerOut, LOW);
   }
 
 
@@ -392,21 +392,21 @@ void LCDDisplay() {
       lcd.print("Camper Battery");
       lcd.setCursor(15, 0);
       lcd.print(LastDCVoltage);
-      
+
       lcd.setCursor(0, 1);
       lcd.print("RTC Battery");
       lcd.setCursor(15, 1);
       lcd.print(LastRTCVoltage);
 
-//      lcd.setCursor(0, 2);
-//      lcd.print("AC Voltage");
-//      lcd.setCursor(15, 2);
-//      lcd.print(LastACVoltage);
-//
-//      lcd.setCursor(0,3);
-//      lcd.print("PF");
-//      lcd.setCursor(15,3);
-//      lcd.print(LastPowerFactor,0);
+      //      lcd.setCursor(0, 2);
+      //      lcd.print("AC Voltage");
+      //      lcd.setCursor(15, 2);
+      //      lcd.print(LastACVoltage);
+      //
+      //      lcd.setCursor(0,3);
+      //      lcd.print("PF");
+      //      lcd.setCursor(15,3);
+      //      lcd.print(LastPowerFactor,0);
       break;
     case 2:
       //Generator
@@ -490,10 +490,10 @@ void LCDDisplay() {
       lcd.setCursor(15, 2);
       lcd.print(LastACVoltage);
 
-      lcd.setCursor(0,3);
+      lcd.setCursor(0, 3);
       lcd.print("PF");
-      lcd.setCursor(15,3);
-      lcd.print(LastPowerFactor,0);
+      lcd.setCursor(15, 3);
+      lcd.print(LastPowerFactor, 0);
       break;
   }
 }
@@ -572,7 +572,7 @@ void SetupEnergyMonitor() {
 }
 
 void EnergyMetering() {
-  float voltageA, voltageC;
+  float voltageA, voltageC, CT1, CT2;
   LastTimeACVoltage = GetCurrentTime();
   unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
   unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
@@ -580,31 +580,49 @@ void EnergyMetering() {
   //unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
 
   //if true the MCU is not getting data from the energy meter
-  if (sys0 == 65535 || sys0 == 0) ControlComPort.println(GetCurrentTime() + ",Error,Not receiving data from energy meter");
-
-  //get voltage
-  voltageA = eic.GetLineVoltageA();
-  voltageC = eic.GetLineVoltageC();
-
-  if (LineFreq = 4485) {
-    LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+  //set all AC Values to 0
+  if (sys0 == 65535 || sys0 == 0) {
+    ControlComPort.println(GetCurrentTime() + ",Error,Not receiving data from energy meter");
+    LastACVoltage = 0;
+    LastACCurrent = 0;
+    LastPowerFactor = 0;
+    LastFreq = 0;
+    LastACWatts = 0;
+    LastACReactive = 0;
+    LastACApparent = 0;
+    LastACFundimental = 0;
+    LastACHarmonic = 0;
+    LastHeadUnitTemp = 0;
+    LastACRealPower =  0;
+    //Attempt to reconnect and setup Energy Monitor
+    SetupEnergyMonitor();
   }
   else {
-    LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+    //get voltage
+    voltageA = eic.GetLineVoltageA();
+    voltageC = eic.GetLineVoltageC();
+    //get current
+    CT1 = eic.GetLineCurrentA();
+    CT2 = eic.GetLineCurrentC();
+
+    if (LineFreq = 4485) {
+      LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+    }
+    else {
+      LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+    }
+
+    LastACCurrent =  CT1 + CT2; //Motorhome panel is only one leg so these transformers need to be installed on the same leg but in opposite directions
+    LastPowerFactor = eic.GetTotalPowerFactor();
+    LastFreq = eic.GetFrequency();
+    LastACWatts = (voltageA * CT1) + (voltageC * CT2);
+    LastACReactive = eic.GetTotalReactivePower();
+    LastACApparent = eic.GetTotalApparentPower();
+    LastACFundimental = eic.GetTotalActiveFundPower();
+    LastACHarmonic = eic.GetTotalActiveHarPower();
+    LastHeadUnitTemp = eic.GetTemperature();
+    LastACRealPower =  eic.GetTotalActivePower();
   }
-
-  //currentCT2 = eic.GetLineCurrentC(); //this is disconnected
-
-  LastACCurrent = eic.GetLineCurrentA(); //Motorhome panel is only one leg
-  LastPowerFactor = eic.GetTotalPowerFactor();
-  LastFreq = eic.GetFrequency();
-  LastACWatts = 2*(voltageA * LastACCurrent);
-  LastACReactive = eic.GetTotalReactivePower();
-  LastACApparent = eic.GetTotalApparentPower();
-  LastACFundimental = eic.GetTotalActiveFundPower();
-  LastACHarmonic = eic.GetTotalActiveHarPower();
-  LastHeadUnitTemp = eic.GetTemperature();
-  LastACRealPower =  eic.GetTotalActivePower();
 }
 
 void GeneratorSensors() {
@@ -974,11 +992,11 @@ void OutputAllData() {
   ControlComPort.println(LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
 }
 
-void WarningLED(){
+void WarningLED() {
   digitalWrite(AlarmLED, HIGH);
 }
 
-void ALARM(){
+void ALARM() {
   digitalWrite(AlarmOut, HIGH);
 }
 
