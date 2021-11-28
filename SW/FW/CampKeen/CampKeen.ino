@@ -56,7 +56,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.5.0";
+const String FWVersion = "0.5.3";
 const String HWVersion = "0.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
@@ -145,7 +145,7 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 //Alarm
 #define LEDBacklightOut 4
 #define AlarmOut 35
-#define AlarmLED 33
+#define WarningLED 33
 #define AlarmReset 25
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -211,7 +211,7 @@ void setup() {
   pinMode(TankPowerRelay, OUTPUT);
   pinMode(WaterPumpOut, OUTPUT);
   pinMode(AlarmOut, OUTPUT);
-  pinMode(AlarmLED, OUTPUT);
+  pinMode(WarningLED, OUTPUT);
   pinMode(CityWaterValve, OUTPUT);
   pinMode(KitchenWaterButtonLED, OUTPUT);
   pinMode(BathroomWaterButtonLED, OUTPUT);
@@ -234,7 +234,10 @@ void setup() {
   pinMode(RTDGenHeadRCS, OUTPUT);
   pinMode(RTDGenHeadLCS, OUTPUT);
   pinMode(RTDGenEnclosure, OUTPUT);
-  // set to 2WIRE or 4WIRE as necessary
+  /* 
+   *  Please Reference Adafruit_MAX31865  
+   *  docs for setup of these boards
+   */
   GenHeadR.begin(MAX31865_3WIRE);
   GenHeadL.begin(MAX31865_3WIRE);
   GenEnclosure.begin(MAX31865_3WIRE);
@@ -245,6 +248,8 @@ void setup() {
 
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting " + DeviceName);
+  ControlComPort.println("HW: " + HWVersion);
+  ControlComPort.println("FW: "+ FWVersion);
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -604,6 +609,7 @@ void EnergyMetering() {
     //get current
     CT1 = eic.GetLineCurrentA();
     CT2 = eic.GetLineCurrentC();
+    
 
     if (LineFreq = 4485) {
       LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
@@ -612,10 +618,24 @@ void EnergyMetering() {
       LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
     }
 
-    LastACCurrent =  CT1 + CT2; //Motorhome panel is only one leg so these transformers need to be installed on the same leg but in opposite directions
+    /*
+     * If your Panel has L1 & L2 with a neutral. Then uncomment thes following two lines. 
+     */
+    //LastACCurrent =  CT1 + CT2;
+    //LastACWatts = (voltageA * CT1) + (voltageC * CT2);
+
+    /*
+     * If your Panel has only L1 with a neutral. Then uncomment thes following three lines. '
+     * CT2 can be used to monitor a particular current source if you want to as it is not
+     * used in this set up.
+     */
+    LastACCurrent =  CT1; 
+    LastACWatts = (voltageA * CT1);
     LastPowerFactor = eic.GetTotalPowerFactor();
+
+
+    // Standard Values to be read and streamed out. 
     LastFreq = eic.GetFrequency();
-    LastACWatts = (voltageA * CT1) + (voltageC * CT2);
     LastACReactive = eic.GetTotalReactivePower();
     LastACApparent = eic.GetTotalApparentPower();
     LastACFundimental = eic.GetTotalActiveFundPower();
@@ -697,7 +717,7 @@ void HoldingTankMonitoring() {
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
     //Turn On warning LED
-    digitalWrite(AlarmLED, HIGH);
+    Warning();
     // Also put in a check for FUll State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
@@ -711,7 +731,7 @@ void HoldingTankMonitoring() {
     }
   }
   else {
-    digitalWrite(AlarmLED, LOW);
+    digitalWrite(WarningLED, LOW);
   }
 }
 
@@ -992,8 +1012,8 @@ void OutputAllData() {
   ControlComPort.println(LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
 }
 
-void WarningLED() {
-  digitalWrite(AlarmLED, HIGH);
+void Warning() {
+  digitalWrite(WarningLED, HIGH);
 }
 
 void ALARM() {
@@ -1003,5 +1023,5 @@ void ALARM() {
 void ResetAllAlarms() {
   HoldingTankAlarm = false;
   digitalWrite(AlarmOut, LOW);
-  digitalWrite(AlarmLED, LOW);
+  digitalWrite(WarningLED, LOW);
 }
