@@ -9,6 +9,8 @@
 //#define ControlComPort Serial2
 #define ControlComPort Serial //use this for current dev. 
 #define USBSerial Serial
+String inputString = "";         // a String to hold incoming data
+bool stringComplete = false;  // whether the string is complete
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
@@ -193,10 +195,10 @@ bool HoldingTankAlarm = false;
 #define G44 34
 #define GreyWaterPowerRelay 32
 //-----------------------------------------------------------
-
 void setup() {
   ControlComPort.begin(115200);
   USBSerial.begin(115200);
+  inputString.reserve(200);
 
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
@@ -234,10 +236,10 @@ void setup() {
   pinMode(RTDGenHeadRCS, OUTPUT);
   pinMode(RTDGenHeadLCS, OUTPUT);
   pinMode(RTDGenEnclosure, OUTPUT);
-  /* 
-   *  Please Reference Adafruit_MAX31865  
-   *  docs for setup of these boards
-   */
+  /*
+      Please Reference Adafruit_MAX31865
+      docs for setup of these boards
+  */
   GenHeadR.begin(MAX31865_3WIRE);
   GenHeadL.begin(MAX31865_3WIRE);
   GenEnclosure.begin(MAX31865_3WIRE);
@@ -249,7 +251,7 @@ void setup() {
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting " + DeviceName);
   ControlComPort.println("HW: " + HWVersion);
-  ControlComPort.println("FW: "+ FWVersion);
+  ControlComPort.println("FW: " + FWVersion);
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -402,16 +404,6 @@ void LCDDisplay() {
       lcd.print("RTC Battery");
       lcd.setCursor(15, 1);
       lcd.print(LastRTCVoltage);
-
-      //      lcd.setCursor(0, 2);
-      //      lcd.print("AC Voltage");
-      //      lcd.setCursor(15, 2);
-      //      lcd.print(LastACVoltage);
-      //
-      //      lcd.setCursor(0,3);
-      //      lcd.print("PF");
-      //      lcd.setCursor(15,3);
-      //      lcd.print(LastPowerFactor,0);
       break;
     case 2:
       //Generator
@@ -609,7 +601,7 @@ void EnergyMetering() {
     //get current
     CT1 = eic.GetLineCurrentA();
     CT2 = eic.GetLineCurrentC();
-    
+
 
     if (LineFreq = 4485) {
       LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
@@ -619,29 +611,35 @@ void EnergyMetering() {
     }
 
     /*
-     * If your Panel has L1 & L2 with a neutral. Then uncomment thes following two lines. 
-     */
+       If your Panel has L1 & L2 with a neutral. Then uncomment thes following two lines.
+    */
     //LastACCurrent =  CT1 + CT2;
     //LastACWatts = (voltageA * CT1) + (voltageC * CT2);
 
     /*
-     * If your Panel has only L1 with a neutral. Then uncomment thes following three lines. '
-     * CT2 can be used to monitor a particular current source if you want to as it is not
-     * used in this set up.
-     */
-    LastACCurrent =  CT1; 
+       If your Panel has only L1 with a neutral. Then uncomment thes following three lines. '
+       CT2 can be used to monitor a particular current source if you want to as it is not
+       used in this set up.
+    */
+    LastACCurrent =  CT1;
     LastACWatts = (voltageA * CT1);
     LastPowerFactor = eic.GetTotalPowerFactor();
 
 
-    // Standard Values to be read and streamed out. 
+    // Standard Values to be read and streamed out.
     LastFreq = eic.GetFrequency();
     LastACReactive = eic.GetTotalReactivePower();
     LastACApparent = eic.GetTotalApparentPower();
     LastACFundimental = eic.GetTotalActiveFundPower();
     LastACHarmonic = eic.GetTotalActiveHarPower();
-    LastHeadUnitTemp = eic.GetTemperature();
     LastACRealPower =  eic.GetTotalActivePower();
+
+    if (Units == "I") {
+      LastHeadUnitTemp = ConvertCtoF(eic.GetTemperature());
+    }
+    else {
+      LastHeadUnitTemp = eic.GetTemperature();
+    }
   }
 }
 
@@ -829,7 +827,7 @@ void ReadWaterAndLPG() {
   delay(1000);
   int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * analogRead(LPGSensor))) - 1));
   if (LPGResistence > 122) {
-    //LastLPGLevel = "ERROR Check Tank Sensor";
+    LastLPGLevel = "ERROR Check Tank Sensor";
   }
   else {
     LastLPGLevel = map(LPGResistence, 0, 90, 0, 100);
@@ -861,7 +859,6 @@ void ReadWaterAndLPG() {
   // Turn Off Voltage to tanks
   digitalWrite(TankPowerRelay, LOW);
 }
-
 
 //------------------------------------------------------------------
 //Other sensors
@@ -962,7 +959,6 @@ void ReadOtherTempSensors() {
   LastTimeNTCTemp = GetCurrentTime();
 }
 
-
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
@@ -993,23 +989,21 @@ String GetCurrentDate() {
   return CurrentDate;
 }
 
-
 //------------------------------------------------------------------
 //System Control and Output
 //------------------------------------------------------------------
 void OutputAllData() {
-  ControlComPort.println(LastTimeWaterLevel + ",Water," + LastWaterLevel);
-  ControlComPort.println(LastTimeSewageLevel + ",Sewage," + LastSewageLevel);
-  ControlComPort.println(LastTimeGreyWater + ",Grey," +  LastGreyWater);
-  ControlComPort.println(LastTimeWaterLevel + ",LPG," + LastLPGLevel);
-  ControlComPort.println(LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage);
-  ControlComPort.println(LastTimeNTCTemp + ",NTC Tempetatures,Front AC Temp," + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
-  ControlComPort.println(LastTimeGenSensors + ",Generator Fuel Pressure," + LastGenFuel);
-  ControlComPort.println(LastTimeGenSensors + "Generator Temps, Enclosure," + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
-  ControlComPort.println(LastTimeRTCVoltage + "RTCBattery," + LastRTCVoltage);
-  ControlComPort.println(LastTimeACVoltage + "Head Unit Temp," + "" + LastHeadUnitTemp);
-
-  ControlComPort.println(LastTimeACVoltage + "," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
+  ControlComPort.println(LastTimeWaterLevel   + ",Water,"                             + LastWaterLevel);
+  ControlComPort.println(LastTimeSewageLevel  + ",Sewage,"                            + LastSewageLevel);
+  ControlComPort.println(LastTimeGreyWater    + ",Grey,"                              + LastGreyWater);
+  ControlComPort.println(LastTimeWaterLevel   + ",LPG,"                               + LastLPGLevel);
+  ControlComPort.println(LastTimeDCVoltage    + ",Camper VDC,"                        + LastDCVoltage);
+  ControlComPort.println(LastTimeNTCTemp      + ",NTC Tempetatures,Front AC Temp,"    + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
+  ControlComPort.println(LastTimeGenSensors   + ",Generator Fuel Pressure,"           + LastGenFuel);
+  ControlComPort.println(LastTimeGenSensors   + ",Generator Temps, Enclosure,"        + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
+  ControlComPort.println(LastTimeRTCVoltage   + ",RTCBattery,"                        + LastRTCVoltage);
+  ControlComPort.println(LastTimeACVoltage    + ",Head Unit Temp," +                  + LastHeadUnitTemp);
+  ControlComPort.println(LastTimeACVoltage    + ",Energy Monitor,"                    + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
 }
 
 void Warning() {
@@ -1024,4 +1018,23 @@ void ResetAllAlarms() {
   HoldingTankAlarm = false;
   digitalWrite(AlarmOut, LOW);
   digitalWrite(WarningLED, LOW);
+}
+
+/*
+  SerialEvent occurs whenever a new data comes in the hardware serial RX. This
+  routine is run between each time loop() runs, so using delay inside loop can
+  delay response. Multiple bytes of data may be available.
+*/
+void serialEvent() {
+  while (ControlComPort.available()) {
+    // get the new byte:
+    char inChar = (char)ControlComPort.read();
+    // add it to the inputString:
+    inputString += inChar;
+    // if the incoming character is a carriage return, set a flag so the main loop can
+    // do something about it:
+    if (inChar == '\r') {
+      stringComplete = true;
+    }
+  }
 }
