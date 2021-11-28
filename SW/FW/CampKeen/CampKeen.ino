@@ -60,7 +60,7 @@ const String FWVersion = "0.5.0";
 const String HWVersion = "0.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
-long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, LastMillis1, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer;
+long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer;
 String Units = "I"; //Default Units I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
@@ -345,10 +345,10 @@ void SetupLCD() {
 }
 
 void LCDOutput() {
-  if (abs(millis() - LastMillis1) > DisplayInvterval)
+  if (abs(millis() - DisplayTimer) > DisplayInvterval)
   {
     LCDDisplay();
-    LastMillis1 = millis();
+    DisplayTimer = millis();
 
     if (DisplayCounter < 5) {
       DisplayCounter += 1;
