@@ -547,7 +547,7 @@ void TurnOffWater() {
 }
 
 void WaterLEDState() {
-  if ((digitalRead(WaterPumpSense) == LOW && WaterSourseSelection == false) || WaterSourseSelection == true && digitalRead(CityWaterValve) == LOW) {
+  if ((digitalRead(WaterPumpSense) == LOW && WaterSourseSelection == false) || (WaterSourseSelection == true && digitalRead(CityWaterValve) == LOW)) {
     digitalWrite(KitchenWaterButtonLED, LOW);
     digitalWrite(BathroomWaterButtonLED, LOW);
     WaterOn = false;
