@@ -18,6 +18,11 @@ int DisplayCounter = 0;
 #define LCDPowerOut 13
 //-----------------------------------------------------------
 // ATM90E32 energy monitor settings and calibrations
+/*
+   The Calibration values for the Voltage and Current Gain I had to
+   Use some meters to test and calibrate these values and these are
+   what I have put in.
+*/
 ATM90E32 eic{}; // Energy Monitor Object
 
 /* 4485 for 60 Hz (North America)
@@ -41,9 +46,6 @@ unsigned short PGAGain = 21;
       29462 - 12v AC Transformer - Jameco 167151
    For Meters > v1.4 purchased after 11/1/2019 and rev.3
       7611 - 9v AC Transformer - Jameco 157041
-
-      These are only starting points i had to play
-      with this number to get it close enough
 */
 unsigned short VoltageGain = 1975;
 
@@ -63,11 +65,12 @@ const String HWVersion = "0.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer;
-String Units = "I"; //Default Units I = Imperial M = Metric
+String Units = "I"; //I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
-bool BathroomLEDState = false, KitchenLEDState = false, WaterSourseSelection = false, WaterOn = false;
+bool WaterSourseSelection = false, WaterOn = false;
+bool UseWaterPumpSense = false;
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -103,7 +106,7 @@ float LastGenEnclosureTemp = 0.0;
 float LastGenHeadRightTemp = 0.0;
 float LastGenHeadLeftTemp = 0.0;
 float LastGenFuel = 0.0;
-//AC/Energy Monitoring
+//AC&Energy Monitoring
 String LastTimeACVoltage = "";
 float LastACVoltage = 0.0;
 float LastACCurrent = 0.0;
@@ -284,7 +287,7 @@ void setup() {
 
 void loop() {
   if (digitalRead(AlarmReset) == HIGH) {
-    ResetAllAlarms();
+    ResetAllAlarmsAndWarnings();
   }
 
   WaterControl();
@@ -528,6 +531,7 @@ void WaterControl() {
 
 void TurnOnWater() {
   if (WaterOn == false && HoldingTankAlarm == false) {
+    WaterOn = true;
     WaterTimer = millis();
     if (WaterSourseSelection == true) {
       digitalWrite(CityWaterValve, HIGH);
@@ -547,16 +551,29 @@ void TurnOffWater() {
 }
 
 void WaterLEDState() {
-  if ((digitalRead(WaterPumpSense) == LOW && WaterSourseSelection == false) || (WaterSourseSelection == true && digitalRead(CityWaterValve) == LOW)) {
-    digitalWrite(KitchenWaterButtonLED, LOW);
-    digitalWrite(BathroomWaterButtonLED, LOW);
-    WaterOn = false;
-  }
+  if (UseWaterPumpSense == true) {
+    if ((digitalRead(WaterPumpSense) == LOW && WaterSourseSelection == false) || (WaterSourseSelection == true && digitalRead(CityWaterValve) == LOW)) {
+      digitalWrite(KitchenWaterButtonLED, LOW);
+      digitalWrite(BathroomWaterButtonLED, LOW);
+      WaterOn = false;
+    }
 
-  if (digitalRead(CityWaterValve) == HIGH || digitalRead(WaterPumpSense) == HIGH) {
-    digitalWrite(KitchenWaterButtonLED, HIGH);
-    digitalWrite(BathroomWaterButtonLED, HIGH);
-    WaterOn = true;
+    if (digitalRead(CityWaterValve) == HIGH || digitalRead(WaterPumpSense) == HIGH) {
+      digitalWrite(KitchenWaterButtonLED, HIGH);
+      digitalWrite(BathroomWaterButtonLED, HIGH);
+      WaterOn = true;
+    }
+  }
+  else {
+    if (WaterOn == true) {
+      digitalWrite(KitchenWaterButtonLED, HIGH);
+      digitalWrite(BathroomWaterButtonLED, HIGH);
+    }
+    else {
+      digitalWrite(KitchenWaterButtonLED, LOW);
+      digitalWrite(BathroomWaterButtonLED, LOW);
+    }
+
   }
 
 }
@@ -1014,7 +1031,7 @@ void ALARM() {
   digitalWrite(AlarmOut, HIGH);
 }
 
-void ResetAllAlarms() {
+void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
   digitalWrite(AlarmOut, LOW);
   digitalWrite(WarningLED, LOW);
