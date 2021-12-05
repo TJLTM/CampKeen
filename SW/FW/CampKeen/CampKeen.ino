@@ -6,16 +6,14 @@
 #include <EEPROM.h>
 #include <ATM90E32.h>
 
-//#define ControlComPort Serial2
-#define ControlComPort Serial //use this for current dev. 
-#define USBSerial Serial
+#define ControlComPort Serial
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;  // whether the string is complete
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
 #define LCDEnable 10
-#define LCDPowerOut 13
+#define LCDPowerOut 5
 //-----------------------------------------------------------
 // ATM90E32 energy monitor settings and calibrations
 /*
@@ -64,7 +62,7 @@ const String FWVersion = "0.5.3";
 const String HWVersion = "0.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
-long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer;
+long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn;
 String Units = "I"; //I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
@@ -77,6 +75,8 @@ bool UseWaterPumpSense = false;
    that can be recalled if streaming is turned off
 */
 //Water and LPG
+String LastTimeWaterSource = "";
+String LastSource = "Tank";
 String LastWaterLevel = "Empty";
 String LastTimeWaterLevel = "";
 int LastLPGLevel = 0;
@@ -119,6 +119,7 @@ float LastACFundimental = 0.0;
 float LastACHarmonic = 0.0;
 float LastHeadUnitTemp = 0.0;
 float LastACRealPower = 0.0;
+
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Generator, Energy Monitoring, and Voltage
@@ -174,7 +175,6 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define SPIn3 8
 #define SPIn4 7
 #define SPIn5 6
-#define SPIn6 5
 #define SPO3 12
 #define SPO4 11
 #define SPO5 24
@@ -200,7 +200,6 @@ bool HoldingTankAlarm = false;
 //-----------------------------------------------------------
 void setup() {
   ControlComPort.begin(115200);
-  USBSerial.begin(115200);
   inputString.reserve(200);
 
   pinMode(LCDEnable, INPUT);
@@ -283,6 +282,8 @@ void setup() {
   lcd.setCursor(0, 3);
   lcd.print(HWVersion);
   delay(1000);
+  digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
+  
 }
 
 void loop() {
@@ -327,21 +328,19 @@ void loop() {
     }
   }
 
-  if (digitalRead(LCDEnable) == HIGH) {
-    digitalWrite(LCDPowerOut, HIGH);
-    if (LCDSetup == false) {
-      delay(250);
-      SetupLCD();
-    }
-    LCDOutput();
-    LCDDisplay();
-  }
-  else {
-    LCDSetup = false;
-    digitalWrite(LCDPowerOut, LOW);
-  }
-
-
+//  if (digitalRead(LCDEnable) == HIGH) {
+//    digitalWrite(LCDPowerOut, HIGH);
+//    if (LCDSetup == false) {
+//      delay(250);
+//      SetupLCD();
+//    }
+//    LCDOutput();
+//    LCDDisplay();
+//  }
+//  else {
+//    LCDSetup = false;
+//    digitalWrite(LCDPowerOut, LOW);
+//  }
 }
 
 //------------------------------------------------------------------
@@ -504,14 +503,14 @@ void LCDDisplay() {
 void WaterControl() {
   //Read Current Water Source Selection
   //add logic that if flipped while the pump is on turn it off and open the city water valve
-  //ControlComPort.print("WaterSourseSelection:");
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
-    //ControlComPort.println("City Water");
+    LastSource = "City";
   }
   else {
     WaterSourseSelection = false; //Tank
-    //ControlComPort.println("Tank");
+    LastSource = "Tank";
+    
   }
 
   //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
@@ -523,6 +522,7 @@ void WaterControl() {
   int BathroomButtonState = digitalRead(BathroomWaterButton);
   if (KicthenButtonState == HIGH || BathroomButtonState == HIGH) {
     TurnOnWater();
+    LastTimeWaterWasTurnedOn = millis();
   }
 
   //Check the States of pump and or logical state and set the LEDs accordingly
@@ -997,7 +997,10 @@ String GetCurrentTime() {
                           + "-" + String(now.hour())
                           + ":" + String(now.minute())
                           + ":" + String(now.second());
+
+  
   return DateTimeString;
+  //return "12-3-21";
 }
 
 String GetCurrentDate() {
@@ -1011,6 +1014,7 @@ String GetCurrentDate() {
 //------------------------------------------------------------------
 void OutputAllData() {
   ControlComPort.println(LastTimeWaterLevel   + ",Water,"                             + LastWaterLevel);
+  ControlComPort.println(GetCurrentTime()     + ",Water Source,"                      + LastSource);
   ControlComPort.println(LastTimeSewageLevel  + ",Sewage,"                            + LastSewageLevel);
   ControlComPort.println(LastTimeGreyWater    + ",Grey,"                              + LastGreyWater);
   ControlComPort.println(LastTimeWaterLevel   + ",LPG,"                               + LastLPGLevel);
