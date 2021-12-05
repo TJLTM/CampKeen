@@ -7,7 +7,7 @@
 #include <ATM90E32.h>
 
 #define ControlComPort Serial
-String inputString = "";      // a String to hold incoming data
+String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;  // whether the string is complete
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
@@ -254,11 +254,11 @@ void setup() {
   ControlComPort.println("Starting " + DeviceName);
   ControlComPort.println("HW: " + HWVersion);
   ControlComPort.println("FW: " + FWVersion);
-//  digitalWrite(LCDPowerOut, HIGH);
-//  delay(250);
-//  SetupLCD();
-//  lcd.setCursor(0, 0);
-//  lcd.print("Starting " + DeviceName);
+  digitalWrite(LCDPowerOut, HIGH);
+  delay(250);
+  SetupLCD();
+  lcd.setCursor(0, 0);
+  lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
   ReadGreyTank();
   ReadSewageTank();
@@ -268,21 +268,21 @@ void setup() {
   GeneratorSensors();
   ControlComPort.print("System Initialized and values populated:");
   ControlComPort.println(GetCurrentTime());
-//  lcd.setCursor(0, 1);
-//  lcd.print("System Initialized");
-//  lcd.setCursor(0, 2);
-//  delay(750);
-//  lcd.clear();
-//  lcd.setCursor(0, 0);
-//  lcd.print(GetCurrentTime());
-//  lcd.setCursor(0, 1);
-//  lcd.print(FWVersion);
-//  lcd.setCursor(0, 2);
-//  lcd.print("Units: " + Units);
-//  lcd.setCursor(0, 3);
-//  lcd.print(HWVersion);
-//  delay(1000);
-//  digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
+  lcd.setCursor(0, 1);
+  lcd.print("System Initialized");
+  lcd.setCursor(0, 2);
+  delay(750);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(GetCurrentTime());
+  lcd.setCursor(0, 1);
+  lcd.print(FWVersion);
+  lcd.setCursor(0, 2);
+  lcd.print("Units: " + Units);
+  lcd.setCursor(0, 3);
+  lcd.print(HWVersion);
+  delay(1000);
+  digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
   
 }
 
@@ -1013,7 +1013,7 @@ String GetCurrentDate() {
 //System Control and Output
 //------------------------------------------------------------------
 void OutputAllData() {
-  ControlComPort.println(LastTimeWaterLevel   + ",Water Tank Level,"                  + LastWaterLevel);
+  ControlComPort.println(LastTimeWaterLevel   + ",Water,"                             + LastWaterLevel);
   ControlComPort.println(GetCurrentTime()     + ",Water Source,"                      + LastSource);
   ControlComPort.println(LastTimeSewageLevel  + ",Sewage,"                            + LastSewageLevel);
   ControlComPort.println(LastTimeGreyWater    + ",Grey,"                              + LastGreyWater);
