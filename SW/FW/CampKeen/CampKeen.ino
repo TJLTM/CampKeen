@@ -295,6 +295,9 @@ void loop() {
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarmsAndWarnings();
   }
+  else {
+    Warning();
+  }
 
   WaterControl();
   HoldingTankMonitoring();
@@ -347,7 +350,13 @@ void loop() {
   //    digitalWrite(LCDPowerOut, LOW);
   //  }
 
-  Warning();
+  if (stringComplete) {
+    ControlComPort.println(inputString);
+    // clear the string:
+    inputString = "";
+    stringComplete = false;
+  }
+  
 }
 
 //------------------------------------------------------------------
@@ -1086,7 +1095,6 @@ void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
   digitalWrite(AlarmOut, LOW);
   WarningState = 0;
-  digitalWrite(WarningLED, LOW);
 }
 
 /*
