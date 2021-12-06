@@ -1005,7 +1005,6 @@ String GetCurrentTime() {
 
 
   return DateTimeString;
-  //return "12-3-21";
 }
 
 String GetCurrentDate() {
@@ -1018,7 +1017,7 @@ String GetCurrentDate() {
 //System Control and Output
 //------------------------------------------------------------------
 void OutputAllData() {
-  ControlComPort.println(LastTimeWaterLevel   + ",Water,"                             + LastWaterLevel);
+  ControlComPort.println(LastTimeWaterLevel   + ",Water Tank Level,"                  + LastWaterLevel);
   ControlComPort.println(GetCurrentTime()     + ",Water Source,"                      + LastSource);
   ControlComPort.println(LastTimeSewageLevel  + ",Sewage,"                            + LastSewageLevel);
   ControlComPort.println(LastTimeGreyWater    + ",Grey,"                              + LastGreyWater);
