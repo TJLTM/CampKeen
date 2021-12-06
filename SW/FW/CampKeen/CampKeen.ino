@@ -70,6 +70,7 @@ bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
 bool WaterSourseSelection = false, WaterOn = false;
 bool UseWaterPumpSense = false;
+String LastSourceForCheck = "";
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -120,6 +121,9 @@ float LastACFundimental = 0.0;
 float LastACHarmonic = 0.0;
 float LastHeadUnitTemp = 0.0;
 float LastACRealPower = 0.0;
+//RTC TEMP
+float LastRTCTemp = 0.0;
+String LastTimeRTCTemp = "";
 
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -505,7 +509,6 @@ void LCDDisplay() {
 //------------------------------------------------------------------
 void WaterControl() {
   //Read Current Water Source Selection
-  //add logic that if flipped while the pump is on turn it off and open the city water valve
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
     LastSource = "City";
@@ -734,8 +737,8 @@ void HoldingTankMonitoring() {
   }
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
-    //Set Warning State 
-    WarningState = 8;
+    //Set Warning State
+    WarningState = 2;
     // Also put in a check for FUll State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
@@ -786,7 +789,7 @@ void ReadSewageTank() {
       break;
     default:
       LastSewageLevel = "ERROR Check Tank";
-      WarningState = 6;
+      WarningState = 3;
       break;
   }
 
@@ -832,7 +835,7 @@ void ReadGreyTank() {
       break;
     default:
       LastGreyWater = "ERROR Check Tank";
-      WarningState =6;
+      WarningState = 3;
       break;
   }
   LastTimeGreyWater = GetCurrentTime();
@@ -844,6 +847,16 @@ void ReadGreyTank() {
 }
 
 void ReadWaterAndLPG() {
+  /*
+   * Using a 47 1% for R2 in both circuits
+   * LPG tank is as far as i can tell is a 0-122 ohm resistence and knowing that the 80% full at ~90 ohms 
+   * that is mapped to 100%. confusing yes. but it's how it works. anythign over the 80% mark will read as 
+   * a greater percentage than 100
+   * 
+   * The Water tank level was determined from setting the tank sensor at 1/4 1/2 3/4 and full. Anything above 
+   * the full mark shows up as "EXTRA FULL" 
+   */
+  
   // Turn On votlage to tanks
   digitalWrite(TankPowerRelay, HIGH);
   delay(1000);
@@ -897,85 +910,95 @@ void ReadBatteryVoltages() {
   LastTimeDCVoltage = GetCurrentTime();
 
   LastRTCVoltage = ConversionFactor * (RTCVoltageSum / Samples);
-  LastTimeRTCVoltage = GetCurrentTime();
+  LastTimeRTCVoltage = LastTimeDCVoltage;
+}
+
+float NTCReadInC(int R2, float ResistenceRead) {
+  /*
+   * Using the Resistence that is calced from an ADC read, a known calibrated resistence 
+   * value, and https://en.wikipedia.org/wiki/Steinhart%E2%80%93Hart_equation to get the 
+   * tempetature from these values. 
+   */
+  float c1 = 1.009249522e-03;
+  float c2 = 2.378405444e-04;
+  float c3 = 2.019202697e-07;
+  float C = (1.0 / (c1 + c2 * ResistenceRead + c3 * ResistenceRead * ResistenceRead * ResistenceRead)) - 273.15;
+  return C;
 }
 
 void ReadOtherTempSensors() {
   int R2 = 10000;
-  float c1 = 1.009249522e-03;
-  float c2 = 2.378405444e-04;
-  float c3 = 2.019202697e-07;
 
   float VoutACF = ConversionFactor * analogRead(FrontACTemp);
   float R1ACF = log(R2 * ((5.0 / VoutACF) - 1));
   if (Units == "I") {
-    LastFrontACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACF + c3 * R1ACF * R1ACF * R1ACF))) - 273.15));
+    LastFrontACTemp = ConvertCtoF(NTCReadInC(R2, R1ACF));
   }
   else {
-    LastFrontACTemp = (((1.0 / (c1 + c2 * R1ACF + c3 * R1ACF * R1ACF * R1ACF))) - 273.15);
+    LastFrontACTemp = NTCReadInC(R2, R1ACF);
   }
 
   float VoutACB = ConversionFactor * analogRead(BackACTemp);
   float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
   if (Units == "I") {
-    LastBackACTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15));
+    LastBackACTemp = ConvertCtoF(NTCReadInC(R2, R1ACB));
   }
   else {
-    LastBackACTemp = (((1.0 / (c1 + c2 * R1ACB + c3 * R1ACB * R1ACB * R1ACB))) - 273.15);
+    LastBackACTemp =  NTCReadInC(R2, R1ACB);
   }
 
   float VoutHallway = ConversionFactor * analogRead(HallwayTemp);
   float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
   if (Units == "I") {
-    LastHallwayTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15));
+    LastHallwayTemp = ConvertCtoF( NTCReadInC(R2, R1Hallway));
   }
   else {
-    LastHallwayTemp = (((1.0 / (c1 + c2 * R1Hallway + c3 * R1Hallway * R1Hallway * R1Hallway))) - 273.15);
+    LastHallwayTemp =  NTCReadInC(R2, R1Hallway);
   }
 
   float VoutBathroom = ConversionFactor * analogRead(BathroomTemp);
   float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
   if (Units == "I") {
-    LastBathroomTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15));
+    LastBathroomTemp = ConvertCtoF(NTCReadInC(R2, R1Bathroom));
   }
   else {
-    LastBathroomTemp = (((1.0 / (c1 + c2 * R1Bathroom + c3 * R1Bathroom * R1Bathroom * R1Bathroom))) - 273.15);
+    LastBathroomTemp =  NTCReadInC(R2, R1Bathroom);
   }
 
   float VoutFreezer = ConversionFactor * analogRead(Freezer);
   float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
   if (Units == "I") {
-    LastFreezerTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15));
+    LastFreezerTemp = ConvertCtoF(NTCReadInC(R2, R1Freezer));
   }
   else {
-    LastFreezerTemp = (((1.0 / (c1 + c2 * R1Freezer + c3 * R1Freezer * R1Freezer * R1Freezer))) - 273.15);
+    LastFreezerTemp =  NTCReadInC(R2, R1Freezer);
   }
 
   float VoutFridge = ConversionFactor * analogRead(Refridgerator);
   float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
   if (Units == "I") {
-    LastFridgeTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15));
+    LastFridgeTemp = ConvertCtoF(NTCReadInC(R2, R1Fridge));
   }
   else {
-    LastFridgeTemp = (((1.0 / (c1 + c2 * R1Fridge + c3 * R1Fridge * R1Fridge * R1Fridge))) - 273.15);
+    LastFridgeTemp =  NTCReadInC(R2, R1Fridge);
   }
 
   float VoutOutside = ConversionFactor * analogRead(Outside);
   float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
   if (Units == "I") {
-    LastOutsideTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15));
+    LastOutsideTemp = ConvertCtoF(NTCReadInC(R2, R1Outside));
   }
   else {
-    LastOutsideTemp = (((1.0 / (c1 + c2 * R1Outside + c3 * R1Outside * R1Outside * R1Outside))) - 273.15);
+    LastOutsideTemp =  NTCReadInC(R2, R1Outside);
   }
 
   float VoutBackCabin = ConversionFactor * analogRead(BackCabin);
   float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
   if (Units == "I") {
-    LastBackCabinTemp = ConvertCtoF((((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15));
+    LastBackCabinTemp = ConvertCtoF(NTCReadInC(R2, R1BackCabin));
   }
   else {
-    LastBackCabinTemp = (((1.0 / (c1 + c2 * R1BackCabin + c3 * R1BackCabin * R1BackCabin * R1BackCabin))) - 273.15);
+    LastBackCabinTemp =  NTCReadInC(R2, R1BackCabin);
   }
 
   LastTimeNTCTemp = GetCurrentTime();
@@ -1003,7 +1026,13 @@ String GetCurrentTime() {
                           + ":" + String(now.minute())
                           + ":" + String(now.second());
 
-
+  LastTimeRTCTemp = DateTimeString;
+  if (Units == "I") {
+    LastRTCTemp = ConvertCtoF(rtc.getTemperature());
+  }
+  else {
+    LastRTCTemp = rtc.getTemperature();
+  }
   return DateTimeString;
 }
 
@@ -1027,13 +1056,13 @@ void OutputAllData() {
   ControlComPort.println(LastTimeGenSensors   + ",Generator Fuel Pressure,"           + LastGenFuel);
   ControlComPort.println(LastTimeGenSensors   + ",Generator Temps, Enclosure,"        + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
   ControlComPort.println(LastTimeRTCVoltage   + ",RTCBattery,"                        + LastRTCVoltage);
-  ControlComPort.println(LastTimeACVoltage    + ",Head Unit Temp," +                  + LastHeadUnitTemp);
+  ControlComPort.println(LastTimeRTCTemp      + ",Head Unit Temp," +                  + LastRTCTemp);
   ControlComPort.println(LastTimeACVoltage    + ",Energy Monitor,"                    + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
 }
 
 void Warning() {
   if (WarningState != 0) {
-    if (millis() - WarningBlinkTimer >= (2000/WarningState)) {
+    if (abs(millis() - WarningBlinkTimer) > (1000 * WarningState)) {
       WarningBlinkTimer = millis();
       if (digitalRead(WarningLED) == LOW) {
         digitalWrite(WarningLED, HIGH);
@@ -1048,8 +1077,8 @@ void ALARM() {
   digitalWrite(AlarmOut, HIGH);
 }
 
-void ResetAlarm(){
-digitalWrite(AlarmOut, LOW);
+void ResetAlarm() {
+  digitalWrite(AlarmOut, LOW);
 }
 
 
