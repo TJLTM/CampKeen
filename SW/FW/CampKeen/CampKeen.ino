@@ -58,11 +58,12 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.5.3";
+const String FWVersion = "0.5.4";
 const String HWVersion = "0.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
-long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn;
+int WarningState = 0; //
+long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 String Units = "I"; //I = Imperial M = Metric
 bool StreamingData = true;
 bool LCDSetup = false;
@@ -283,7 +284,7 @@ void setup() {
   lcd.print(HWVersion);
   delay(1000);
   digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
-  
+
 }
 
 void loop() {
@@ -328,19 +329,21 @@ void loop() {
     }
   }
 
-//  if (digitalRead(LCDEnable) == HIGH) {
-//    digitalWrite(LCDPowerOut, HIGH);
-//    if (LCDSetup == false) {
-//      delay(250);
-//      SetupLCD();
-//    }
-//    LCDOutput();
-//    LCDDisplay();
-//  }
-//  else {
-//    LCDSetup = false;
-//    digitalWrite(LCDPowerOut, LOW);
-//  }
+  //  if (digitalRead(LCDEnable) == HIGH) {
+  //    digitalWrite(LCDPowerOut, HIGH);
+  //    if (LCDSetup == false) {
+  //      delay(250);
+  //      SetupLCD();
+  //    }
+  //    LCDOutput();
+  //    LCDDisplay();
+  //  }
+  //  else {
+  //    LCDSetup = false;
+  //    digitalWrite(LCDPowerOut, LOW);
+  //  }
+
+  Warning();
 }
 
 //------------------------------------------------------------------
@@ -510,7 +513,7 @@ void WaterControl() {
   else {
     WaterSourseSelection = false; //Tank
     LastSource = "Tank";
-    
+
   }
 
   //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
@@ -731,18 +734,18 @@ void HoldingTankMonitoring() {
   }
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
-    //Turn On warning LED
-    Warning();
+    //Set Warning State 
+    WarningState = 8;
     // Also put in a check for FUll State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
       TurnOffWater();
-      digitalWrite(AlarmOut, HIGH);
+      ALARM();
     }
     else {
       // if the tanks drop below full make sure the alarm is off
       HoldingTankAlarm = false;
-      digitalWrite(AlarmOut, LOW);
+      ResetAlarm();
     }
   }
   else {
@@ -783,6 +786,7 @@ void ReadSewageTank() {
       break;
     default:
       LastSewageLevel = "ERROR Check Tank";
+      WarningState = 6;
       break;
   }
 
@@ -828,6 +832,7 @@ void ReadGreyTank() {
       break;
     default:
       LastGreyWater = "ERROR Check Tank";
+      WarningState =6;
       break;
   }
   LastTimeGreyWater = GetCurrentTime();
@@ -998,7 +1003,7 @@ String GetCurrentTime() {
                           + ":" + String(now.minute())
                           + ":" + String(now.second());
 
-  
+
   return DateTimeString;
   //return "12-3-21";
 }
@@ -1028,16 +1033,31 @@ void OutputAllData() {
 }
 
 void Warning() {
-  digitalWrite(WarningLED, HIGH);
+  if (WarningState != 0) {
+    if (millis() - WarningBlinkTimer >= (2000/WarningState)) {
+      WarningBlinkTimer = millis();
+      if (digitalRead(WarningLED) == LOW) {
+        digitalWrite(WarningLED, HIGH);
+      } else {
+        digitalWrite(WarningLED, LOW);
+      }
+    }
+  }
 }
 
 void ALARM() {
   digitalWrite(AlarmOut, HIGH);
 }
 
+void ResetAlarm(){
+digitalWrite(AlarmOut, LOW);
+}
+
+
 void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
   digitalWrite(AlarmOut, LOW);
+  WarningState = 0;
   digitalWrite(WarningLED, LOW);
 }
 
