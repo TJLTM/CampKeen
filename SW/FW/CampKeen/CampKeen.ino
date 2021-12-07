@@ -6,9 +6,12 @@
 #include <EEPROM.h>
 #include <ATM90E32.h>
 
+
 #define ControlComPort Serial
+char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?", "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?", "WATER?", "STREAMING?"};
+char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT", "READINPUT", "SETRTC", "GETOUTPUT"};
 String inputString = "";         // a String to hold incoming data
-bool stringComplete = false;  // whether the string is complete
+bool stringComplete = false;     // whether the string is complete
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
@@ -58,18 +61,16 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.5.4";
-const String HWVersion = "0.5";
+const String FWVersion = "0.6.0";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 int WarningState = 0; //
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 String Units = "I"; //I = Imperial M = Metric
-bool StreamingData = true;
+bool StreamingData = false;
 bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
-bool WaterSourseSelection = false, WaterOn = false;
-bool UseWaterPumpSense = false;
+bool WaterSourseSelection = false, WaterOn = false, UseWaterPumpSense = false;
 String LastSourceForCheck = "";
 //-----------------------------------------------------------
 /*
@@ -119,7 +120,7 @@ float LastACReactive = 0.0;
 float LastACApparent = 0.0;
 float LastACFundimental = 0.0;
 float LastACHarmonic = 0.0;
-float LastHeadUnitTemp = 0.0;
+float LastATM90E32Temp = 0.0;
 float LastACRealPower = 0.0;
 //RTC TEMP
 float LastRTCTemp = 0.0;
@@ -257,7 +258,6 @@ void setup() {
 
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting " + DeviceName);
-  ControlComPort.println("HW: " + HWVersion);
   ControlComPort.println("FW: " + FWVersion);
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
@@ -284,8 +284,8 @@ void setup() {
   lcd.print(FWVersion);
   lcd.setCursor(0, 2);
   lcd.print("Units: " + Units);
-  lcd.setCursor(0, 3);
-  lcd.print(HWVersion);
+  //lcd.setCursor(0, 3);
+  //lcd.print(HWVersion);
   delay(1000);
   digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
 
@@ -351,12 +351,10 @@ void loop() {
   //  }
 
   if (stringComplete) {
-    ControlComPort.println(inputString);
-    // clear the string:
-    inputString = "";
+    inputString = PainlessInstructionSet(inputString);
     stringComplete = false;
   }
-  
+
 }
 
 //------------------------------------------------------------------
@@ -621,7 +619,7 @@ void EnergyMetering() {
     LastACApparent = 0;
     LastACFundimental = 0;
     LastACHarmonic = 0;
-    LastHeadUnitTemp = 0;
+    LastATM90E32Temp = 0;
     LastACRealPower =  0;
     //Attempt to reconnect and setup Energy Monitor
     SetupEnergyMonitor();
@@ -667,10 +665,10 @@ void EnergyMetering() {
     LastACRealPower =  eic.GetTotalActivePower();
 
     if (Units == "I") {
-      LastHeadUnitTemp = ConvertCtoF(eic.GetTemperature());
+      LastATM90E32Temp = ConvertCtoF(eic.GetTemperature());
     }
     else {
-      LastHeadUnitTemp = eic.GetTemperature();
+      LastATM90E32Temp = eic.GetTemperature();
     }
   }
 }
@@ -759,9 +757,6 @@ void HoldingTankMonitoring() {
       HoldingTankAlarm = false;
       ResetAlarm();
     }
-  }
-  else {
-    digitalWrite(WarningLED, LOW);
   }
 }
 
@@ -857,15 +852,15 @@ void ReadGreyTank() {
 
 void ReadWaterAndLPG() {
   /*
-   * Using a 47 1% for R2 in both circuits
-   * LPG tank is as far as i can tell is a 0-122 ohm resistence and knowing that the 80% full at ~90 ohms 
-   * that is mapped to 100%. confusing yes. but it's how it works. anythign over the 80% mark will read as 
-   * a greater percentage than 100
-   * 
-   * The Water tank level was determined from setting the tank sensor at 1/4 1/2 3/4 and full. Anything above 
-   * the full mark shows up as "EXTRA FULL" 
-   */
-  
+     Using a 47 1% for R2 in both circuits
+     LPG tank is as far as i can tell is a 0-122 ohm resistence and knowing that the 80% full at ~90 ohms
+     that is mapped to 100%. confusing yes. but it's how it works. anythign over the 80% mark will read as
+     a greater percentage than 100
+
+     The Water tank level was determined from setting the tank sensor at 1/4 1/2 3/4 and full. Anything above
+     the full mark shows up as "EXTRA FULL"
+  */
+
   // Turn On votlage to tanks
   digitalWrite(TankPowerRelay, HIGH);
   delay(1000);
@@ -924,10 +919,10 @@ void ReadBatteryVoltages() {
 
 float NTCReadInC(int R2, float ResistenceRead) {
   /*
-   * Using the Resistence that is calced from an ADC read, a known calibrated resistence 
-   * value, and https://en.wikipedia.org/wiki/Steinhart%E2%80%93Hart_equation to get the 
-   * tempetature from these values. 
-   */
+     Using the Resistence that is calced from an ADC read, a known calibrated resistence
+     value, and https://en.wikipedia.org/wiki/Steinhart%E2%80%93Hart_equation to get the
+     tempetature from these values.
+  */
   float c1 = 1.009249522e-03;
   float c2 = 2.378405444e-04;
   float c3 = 2.019202697e-07;
@@ -1052,26 +1047,132 @@ String GetCurrentDate() {
 }
 
 //------------------------------------------------------------------
-//System Control and Output
+//Serial
 //------------------------------------------------------------------
+/*
+  SerialEvent occurs whenever a new data comes in the hardware serial RX. This
+  routine is run between each time loop() runs, so using delay inside loop can
+  delay response. Multiple bytes of data may be available.
+*/
+void serialEvent() {
+  while (ControlComPort.available()) {
+    // get the new byte:
+    char inChar = (char)ControlComPort.read();
+    // add it to the inputString:
+    inputString += inChar;
+    // if the incoming character is a carriage return, set a flag so the main loop can
+    // do something about it:
+    if (inChar == '\r') {
+      stringComplete = true;
+    }
+  }
+}
+
 void OutputAllData() {
-  ControlComPort.println(LastTimeWaterLevel   + ",Water Tank Level,"                  + LastWaterLevel);
-  ControlComPort.println(GetCurrentTime()     + ",Water Source,"                      + LastSource);
-  ControlComPort.println(LastTimeSewageLevel  + ",Sewage,"                            + LastSewageLevel);
-  ControlComPort.println(LastTimeGreyWater    + ",Grey,"                              + LastGreyWater);
-  ControlComPort.println(LastTimeWaterLevel   + ",LPG,"                               + LastLPGLevel);
-  ControlComPort.println(LastTimeDCVoltage    + ",Camper VDC,"                        + LastDCVoltage);
-  ControlComPort.println(LastTimeNTCTemp      + ",NTC Tempetatures,Front AC Temp,"    + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
-  ControlComPort.println(LastTimeGenSensors   + ",Generator Fuel Pressure,"           + LastGenFuel);
-  ControlComPort.println(LastTimeGenSensors   + ",Generator Temps, Enclosure,"        + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
-  ControlComPort.println(LastTimeRTCVoltage   + ",RTCBattery,"                        + LastRTCVoltage);
-  ControlComPort.println(LastTimeRTCTemp      + ",Head Unit Temp," +                  + LastRTCTemp);
-  ControlComPort.println(LastTimeACVoltage    + ",Energy Monitor,"                    + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
+  GetWaterSource();
+  GetWaterLevel();
+  GetSewageLevel();
+  GetGreyLevel();
+  GetLPGLevel();
+  GetDCBatteryVoltage();
+  GetRTCBatteryVotlage();
+  GetNTCTemps();
+  GetHeadUnitTemp();
+  GetGenStatus();
+  GetEnergyStatus();
+}
+
+void GetWaterSource() {
+  ControlComPort.println("%R," + GetCurrentTime() + ",Water Source," + LastSource);
+}
+
+void GetWaterLevel() {
+  ControlComPort.println("%R," + LastTimeWaterLevel + ",Water Tank Level," + LastWaterLevel);
+}
+
+void GetSewageLevel() {
+  ControlComPort.println("%R," + LastTimeSewageLevel + ",Sewage," + LastSewageLevel);
+}
+
+void GetGreyLevel() {
+  ControlComPort.println("%R," + LastTimeGreyWater + ",Grey," + LastGreyWater);
+}
+
+void GetLPGLevel() {
+  ControlComPort.println("%R," + LastTimeWaterLevel   + ",LPG," + LastLPGLevel);
+}
+
+void GetDCBatteryVoltage() {
+  ControlComPort.println("%R," + LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage);
+}
+
+void GetRTCBatteryVotlage() {
+  ControlComPort.println("%R," + LastTimeRTCVoltage + ",RTCBattery," + LastRTCVoltage);
+}
+
+void GetNTCTemps() {
+  ControlComPort.println("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Front AC Temp," + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
+}
+
+void GetHeadUnitTemp() {
+  ControlComPort.println("%R," + LastTimeRTCTemp + ",Head Unit Temp," + LastRTCTemp);
+}
+
+void GetGenStatus() {
+  ControlComPort.println("%R," + LastTimeGenSensors + ",Generator Fuel Pressure," + LastGenFuel + ",Generator Temps, Enclosure," + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
+}
+
+void GetEnergyStatus() {
+  ControlComPort.println("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
+}
+
+void GetUnits() {
+  ControlComPort.println("%R,Units," + Units);
+}
+
+void GetDeviceInfo() {
+  ControlComPort.println("%R," + DeviceName + ",FW," + FWVersion);
+}
+
+void GetStreamingState() {
+  String State = "Off";
+  if (StreamingData == true) {
+    State = "On";
+  }
+  ControlComPort.println("%R,StreamingData," + State);
+}
+
+void GetWaterPumpSense() {
+  String State = "Off";
+  if (UseWaterPumpSense == true) {
+    State = "On";
+  }
+  ControlComPort.println("%R,WaterPumpSense," + State);
+}
+
+void GetWarning() {
+  ControlComPort.println("%R,Warning," + WarningState);
+}
+
+void GetWaterState() {
+  String State = "Off";
+  if (WaterOn == true) {
+    State = "On";
+  }
+  ControlComPort.println("%R,Water," + State);
+}
+
+//------------------------------------------------------------------
+//Alarm and Warnings
+//------------------------------------------------------------------
+void Error(int Number) {
+  const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform", "command can not be processed", "Invalid Parameter", "Invalid Command Format"};
+  ControlComPort.println("%R,Error," + String(Errors[Number]));
 }
 
 void Warning() {
   if (WarningState != 0) {
-    if (abs(millis() - WarningBlinkTimer) > (1000 * WarningState)) {
+    if (abs(millis() - WarningBlinkTimer) > (1000 / (WarningState * 2))) {
       WarningBlinkTimer = millis();
       if (digitalRead(WarningLED) == LOW) {
         digitalWrite(WarningLED, HIGH);
@@ -1096,22 +1197,316 @@ void ResetAllAlarmsAndWarnings() {
   digitalWrite(AlarmOut, LOW);
   WarningState = 0;
 }
+//------------------------------------------------------------------
+//Commands
+//------------------------------------------------------------------
+void SetUnits(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  if (ThingToTest.length() == 1) {
+    bool CorrectParam = false;
+    if (ThingToTest == "I") {
+      Units = "I";
+      CorrectParam = true;
+    }
+    if (ThingToTest == "M") {
+      Units = "M";
+      CorrectParam = true;
+    }
+    if (CorrectParam == true) {
+      GetUnits();
+    }
+    else {
+      Error(4);
+    }
+  }
+  else {
+    Error(1);
+  }
+
+}
+
+void SetWaterPumpSenseOverRide(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    UseWaterPumpSense = false;
+    CorrectParam = true;
+  }
+  if (ThingToTest == "ON") {
+    UseWaterPumpSense = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetWaterPumpSense();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void SetWater(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    TurnOffWater();
+    CorrectParam = true;
+  }
+  if (ThingToTest == "ON") {
+    TurnOnWater();
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetWaterState();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void SetStreamingData(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    StreamingData = false;
+    CorrectParam = true;
+  }
+  if (ThingToTest == "ON") {
+    StreamingData = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetStreamingState();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void SetOutputState(String Value) {
+
+}
+
+void GetOutputState(String Value) {
+
+}
+
+void ReadInputState(String Value) {
+
+}
+
+void SetRTCDateTime(String Value) {
+
+}
 
 /*
-  SerialEvent occurs whenever a new data comes in the hardware serial RX. This
-  routine is run between each time loop() runs, so using delay inside loop can
-  delay response. Multiple bytes of data may be available.
+
+  SCC = start command character
+  case 1 - no SCC found and there is data in the buffer - dump the buffer
+  case 2 - SCC is found and not at position 0 - trim the buffer up to the SCC and insert error
+  case 3 - SCC is found and at position 0  - process command
+  case 4 - SCC is found and no delimiter found and there is data in the buffer  - add back to the buffer
+  case 5 - SCC is found no delimiter found and another scc is found trim up to the second
+  case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
 */
-void serialEvent() {
-  while (ControlComPort.available()) {
-    // get the new byte:
-    char inChar = (char)ControlComPort.read();
-    // add it to the inputString:
-    inputString += inChar;
-    // if the incoming character is a carriage return, set a flag so the main loop can
-    // do something about it:
-    if (inChar == '\r') {
-      stringComplete = true;
+
+String PainlessInstructionSet(String &TestString) {
+  int Search = 1;
+  while (Search == 1) {
+    int FindStart = TestString.indexOf('%');
+    int Param = TestString.indexOf('*');
+    int FindEnd = TestString.indexOf('\r');
+    if (TestString != "") {
+      if (FindStart != -1) { //case 1
+        if (FindStart != 0) { //case 2
+          //Serial.println("PIS Case 2");
+          ControlComPort.println("%R," + GetCurrentTime() + ",Error,BAD Command Format No Start or Stop Delimiters");
+          TestString.remove(0, FindStart);
+        }
+        else { //Case 3 & Case 5 & Case 4
+          String Case5Test = TestString.substring(FindStart + 1);
+          int FindStart1 = Case5Test.indexOf('%');
+          int FindEnd1 = Case5Test.indexOf('\r');
+          if ((FindEnd1 > FindStart1) && (FindStart1 != -1)) {
+            ControlComPort.println("%R," + GetCurrentTime() + ",Error,BAD Command Format - No End Delimiter");
+            //Serial.println("PIS Case 5");
+            TestString.remove(0, FindStart1 + 1);
+          }
+          else {
+            if (FindEnd != -1 || FindEnd1 != -1) {
+              //Serial.println("PIS Case 3");
+              String CommandCandidate = TestString.substring(FindStart + 1, FindEnd);
+              CommandCandidate.toUpperCase();
+              if ((Param < FindEnd) && Param != -1) {
+                //Serial.println("getting here1");
+                for (int i = 0; i < (sizeof(ParameterCommands) / sizeof(int)); i++)
+                {
+                  //Serial.println("PIS Case 3A");
+                  String ParamHeader = CommandCandidate.substring(FindStart, Param - 1);
+                  ParamHeader.toUpperCase();
+                  if (ParamHeader == ParameterCommands[i]) {
+                    ParamCommandToCall(i, CommandCandidate);
+                  }
+                }
+              }
+              else {
+                for (int i = 0; i < (sizeof(AcceptedCommands) / sizeof(int)); i++)
+                {
+                  //Non Parameter Commands
+                  if (CommandCandidate == AcceptedCommands[i]) {
+                    //Serial.println("PIS Case 3B");
+                    CommandToCall(i);
+                  }
+                }
+              }
+
+              TestString.remove(0, FindEnd + 1);
+            }
+            else {
+              //Serial.println("PIS Case 4");
+              Search = 0;
+            }
+          }
+        }
+
+      }
+      else { //Case 1 Dump the buffer if ther is no start character is found
+        //Serial.println("PIS Case 1");
+        Search = 0;
+        TestString = "";
+      }
+    }//if TestString is empty
+    else { //Exit Search While if Buffer is empty
+      Search = 0;
+      //Serial.println("PIS Case 6");
     }
+  }//End of Search While
+  return TestString;
+}//End of PIS Function
+
+
+void ParamCommandToCall(int Index, String CommandRaw) {
+  //Serial.print("Param Command to call:");
+  //Serial.println(Index);
+  switch (Index)
+  {
+    case 0:
+      //Set Units
+      SetUnits(CommandRaw);
+      break;
+    case 1:
+      //Set Water Pump Sense
+      SetWaterPumpSenseOverRide(CommandRaw);
+      break;
+    case 2:
+      //Water
+      SetWater(CommandRaw);
+      break;
+    case 3:
+      //Set Streaming Data Output
+      SetStreamingData(CommandRaw);
+      break;
+    case 4:
+      //Set Output State
+      SetOutputState(CommandRaw);
+      break;
+    case 5:
+      //Read Input State
+      ReadInputState(CommandRaw);
+      break;
+    case 6:
+      //Set RTC Datetime
+      SetRTCDateTime(CommandRaw);
+      break;
+    case 7:
+      //Read OutputSate
+      GetOutputState(CommandRaw);
+      break;
+  }
+}
+
+void CommandToCall(int Index) {
+  //Serial.print("Command to call:");
+  //Serial.println(Index);
+  switch (Index)
+  {
+    case 0:
+      //UNITS
+      GetUnits();
+      break;
+    case 1:
+      //DEVICE INFORMATION
+      GetDeviceInfo();
+      break;
+    case 2:
+      //WATERSOURCE
+      GetWaterSource();
+      break;
+    case 3:
+      //WATERLEVEL
+      GetWaterLevel();
+      break;
+    case 4:
+      //LPG LEVEL
+      GetLPGLevel();
+      break;
+    case 5:
+      //SEWAGE LEVEL
+      GetSewageLevel();
+      break;
+    case 6:
+      //GREY LEVEL
+      GetGreyLevel();
+      break;
+    case 7:
+      //ENERGY MONITOR
+      GetEnergyStatus();
+      break;
+    case 8:
+      //CAMPER DV VOLTAGE
+      GetDCBatteryVoltage();
+      break;
+    case 9:
+      //RTC BATTERY VOLTAGE
+      GetRTCBatteryVotlage();
+      break;
+    case 10:
+      //GENERATOR STATUS
+      GetGenStatus();
+      break;
+    case 11:
+      //NTC TEMPS
+      GetNTCTemps();
+      break;
+    case 12:
+      //HEAD UNIT TEMP
+      GetHeadUnitTemp();
+      break;
+    case 13:
+      //WATERPUMPSENSE
+      GetWaterPumpSense();
+      break;
+    case 14:
+      //WARNING
+      GetWarning();
+      break;
+    case 15:
+      //WATER
+      GetWaterState();
+      break;
+    case 16:
+      //STREAMING
+      GetStreamingState();
+      break;
   }
 }
