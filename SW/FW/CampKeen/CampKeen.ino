@@ -9,7 +9,7 @@
 
 #define ControlComPort Serial
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?", "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?", "WATER?", "STREAMING?"};
-char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT", "READINPUT", "SETRTC", "GETOUTPUT"};
+char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT", "READINPUT", "SETRTC", "GETOUTPUT", "SETENMON"};
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
 RTC_DS3231 rtc;
@@ -61,7 +61,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.6.0";
+const String FWVersion = "0.6.1";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 int WarningState = 0; //
@@ -70,8 +70,7 @@ String Units = "I"; //I = Imperial M = Metric
 bool StreamingData = false;
 bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
-bool WaterSourseSelection = false, WaterOn = false, UseWaterPumpSense = false;
-String LastSourceForCheck = "";
+bool WaterSourseSelection = false, WaterOn = false, UseWaterPumpSense = false, LastSourceForCheck = false, EnableEnergyMonitoring = false;
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -211,6 +210,14 @@ void setup() {
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
 
+  pinMode(SPIn2, INPUT);
+  pinMode(SPIn3, INPUT);
+  pinMode(SPIn4, INPUT);
+  pinMode(SPIn5, INPUT);
+  pinMode(SPO3, OUTPUT);
+  pinMode(SPO4, OUTPUT);
+  pinMode(SPO5, OUTPUT);
+
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
   pinMode(WaterPumpSense, INPUT);
@@ -310,7 +317,7 @@ void loop() {
     NTCTimer = millis();
   }
 
-  if (abs(millis() - EnergyTimer) > 3000) {
+  if ((abs(millis() - EnergyTimer) > 3000) && EnableEnergyMonitoring == true) {
     //Read Energy
     EnergyMetering();
     EnergyTimer = millis();
@@ -516,6 +523,7 @@ void LCDDisplay() {
 //------------------------------------------------------------------
 void WaterControl() {
   //Read Current Water Source Selection
+  LastSourceForCheck = WaterSourseSelection;
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
     LastSource = "City";
@@ -523,7 +531,12 @@ void WaterControl() {
   else {
     WaterSourseSelection = false; //Tank
     LastSource = "Tank";
+  }
 
+  if (WaterOn == true && (LastSourceForCheck != WaterSourseSelection)) {
+    TurnOffWater();
+    delay(1000);
+    TurnOnWater();
   }
 
   //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
@@ -1079,7 +1092,9 @@ void OutputAllData() {
   GetNTCTemps();
   GetHeadUnitTemp();
   GetGenStatus();
-  GetEnergyStatus();
+  if (EnableEnergyMonitoring == true) {
+    GetEnergyStatus();
+  }
 }
 
 void GetWaterSource() {
@@ -1309,6 +1324,28 @@ void SetRTCDateTime(String Value) {
 
 }
 
+void SetEnmon(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    EnableEnergyMonitoring = false;
+    CorrectParam = true;
+  }
+  if (ThingToTest == "ON") {
+    EnableEnergyMonitoring = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetStreamingState();
+  }
+  else {
+    Error(4);
+  }
+}
+
 /*
 
   SCC = start command character
@@ -1431,6 +1468,10 @@ void ParamCommandToCall(int Index, String CommandRaw) {
     case 7:
       //Read OutputSate
       GetOutputState(CommandRaw);
+      break;
+    case 8:
+      //Enable/disable AC energy Monitoring
+      SetEnmon(CommandRaw);
       break;
   }
 }
