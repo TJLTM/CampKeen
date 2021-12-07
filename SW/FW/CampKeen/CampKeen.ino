@@ -9,7 +9,7 @@
 
 #define ControlComPort Serial
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?", "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?", "WATER?", "STREAMING?"};
-char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT", "READINPUT", "SETRTC", "GETOUTPUT", "SETENMON"};
+char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT", "READINPUT", "SETRTC", "GETOUTPUT", "SETACENMON"};
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
 RTC_DS3231 rtc;
@@ -70,7 +70,7 @@ String Units = "I"; //I = Imperial M = Metric
 bool StreamingData = false;
 bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
-bool WaterSourseSelection = false, WaterOn = false, UseWaterPumpSense = false, LastSourceForCheck = false, EnableEnergyMonitoring = false;
+bool WaterSourseSelection = false, WaterOn = false, UseWaterPumpSense = false, LastSourceForCheck = false, EnableACEnergyMonitoring = false;
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -317,7 +317,7 @@ void loop() {
     NTCTimer = millis();
   }
 
-  if ((abs(millis() - EnergyTimer) > 3000) && EnableEnergyMonitoring == true) {
+  if ((abs(millis() - EnergyTimer) > 3000) && EnableACEnergyMonitoring == true) {
     //Read Energy
     EnergyMetering();
     EnergyTimer = millis();
@@ -343,19 +343,19 @@ void loop() {
     }
   }
 
-  //  if (digitalRead(LCDEnable) == HIGH) {
-  //    digitalWrite(LCDPowerOut, HIGH);
-  //    if (LCDSetup == false) {
-  //      delay(250);
-  //      SetupLCD();
-  //    }
-  //    LCDOutput();
-  //    LCDDisplay();
-  //  }
-  //  else {
-  //    LCDSetup = false;
-  //    digitalWrite(LCDPowerOut, LOW);
-  //  }
+  if (digitalRead(LCDEnable) == HIGH) {
+    digitalWrite(LCDPowerOut, HIGH);
+    if (LCDSetup == false) {
+      delay(250);
+      SetupLCD();
+    }
+    LCDOutput();
+    LCDDisplay();
+  }
+  else {
+    LCDSetup = false;
+    digitalWrite(LCDPowerOut, LOW);
+  }
 
   if (stringComplete) {
     inputString = PainlessInstructionSet(inputString);
@@ -1092,7 +1092,7 @@ void OutputAllData() {
   GetNTCTemps();
   GetHeadUnitTemp();
   GetGenStatus();
-  if (EnableEnergyMonitoring == true) {
+  if (EnableACEnergyMonitoring == true) {
     GetEnergyStatus();
   }
 }
@@ -1175,6 +1175,14 @@ void GetWaterState() {
     State = "On";
   }
   ControlComPort.println("%R,Water," + State);
+}
+
+void GetACEnmon() {
+  String State = "Off";
+  if (EnableACEnergyMonitoring == true) {
+    State = "On";
+  }
+  ControlComPort.println("%R,AC Energy Monitoring," + State);
 }
 
 //------------------------------------------------------------------
@@ -1324,22 +1332,22 @@ void SetRTCDateTime(String Value) {
 
 }
 
-void SetEnmon(String Value) {
+void SetACEnmon(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
-    EnableEnergyMonitoring = false;
+    EnableACEnergyMonitoring = false;
     CorrectParam = true;
   }
   if (ThingToTest == "ON") {
-    EnableEnergyMonitoring = true;
+    EnableACEnergyMonitoring = true;
     CorrectParam = true;
   }
 
   if (CorrectParam == true) {
-    GetStreamingState();
+    GetACEnmon();
   }
   else {
     Error(4);
@@ -1471,7 +1479,7 @@ void ParamCommandToCall(int Index, String CommandRaw) {
       break;
     case 8:
       //Enable/disable AC energy Monitoring
-      SetEnmon(CommandRaw);
+      SetACEnmon(CommandRaw);
       break;
   }
 }
