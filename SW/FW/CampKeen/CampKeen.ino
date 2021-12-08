@@ -65,7 +65,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.1";
+const String FWVersion = "0.7.2";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -1109,16 +1109,12 @@ void SetUnitsForOutput() {
 }
 
 void ReadAllInputs() {
-  String State = "Off";
-  for (int i = 0; i <= SpareInputSize; i++) {
-    int CurrentInputRead = ReadInput[i];
+  for (int i = 1; i <= SpareInputSize; i++) {
+    int CurrentInputRead = ReadInput(SpareInputs[i]);
     if (CurrentInputRead != LastInputState[i]) {
-      LastInputState[i] = digitalRead(SpareInputs[i]);
+      LastInputState[i] = CurrentInputRead;
       if (StreamingData == true) {
-        if (CurrentInputRead == 1) {
-          State = "On";
-        }
-        ControlComPort.println("%R," + GetCurrentTime() + ",Input," + (i + 1) + "," + State);
+        PrintInputState(i, CurrentInputRead);
       }
     }
   }
@@ -1455,21 +1451,26 @@ void GetOutputState(String Value) {
 
 }
 
+
 void ReadInputState(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
-  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt()) - 1;
-  String State = "Off";
-  if (ThingToTest > 0 || ThingToTest <= (SpareInputSize)) {
-    int CurrentInputRead = ReadInput[ThingToTest];
-    if (CurrentInputRead == 1) {
-      State = "On";
-    }
-    ControlComPort.println("%R," + GetCurrentTime() + ",Input," + ThingToTest + "," + State);
+  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
+  if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
+    int CurrentInputRead = ReadInput(ThingToTest);
+    PrintInputState(ThingToTest,CurrentInputRead);
   }
   else {
     Error(4);
   }
+}
+
+void PrintInputState(int Input, int CurrentInputRead){
+  String State = "Off";
+  if (CurrentInputRead == 1) {
+      State = "On";
+    }
+    ControlComPort.println("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
 }
 
 void SetRTCDateTime(String Value) {
