@@ -6,10 +6,14 @@
 #include <EEPROM.h>
 #include <ATM90E32.h>
 
-
 #define ControlComPort Serial
-char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?", "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?", "WATER?", "STREAMING?"};
-char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT", "READINPUT", "SETRTC", "GETOUTPUT", "SETACENMON"};
+char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
+                            "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
+                            "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS"
+                           };
+char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
+                             "READINPUT", "SETRTC", "GETOUTPUT", "SETACENMON"
+                            };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
 RTC_DS3231 rtc;
@@ -61,16 +65,22 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.6.1";
+const String FWVersion = "0.7.0";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 int WarningState = 0; //
-long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer, EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
-String Units = "I"; //I = Imperial M = Metric
-bool StreamingData = false;
+long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
+     EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer, WarningPostTimer;
+String TempUnits = "F";
+String PressureUnits = "PSI";
 bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
-bool WaterSourseSelection = false, WaterOn = false, UseWaterPumpSense = false, LastSourceForCheck = false, EnableACEnergyMonitoring = false;
+bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
+//Figure out if i want to store these in EEPROM
+bool UseWaterPumpSense = false;
+bool EnableACEnergyMonitoring = false;
+bool StreamingData = false;
+String Units = "I";
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -124,7 +134,6 @@ float LastACRealPower = 0.0;
 //RTC TEMP
 float LastRTCTemp = 0.0;
 String LastTimeRTCTemp = "";
-
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Generator, Energy Monitoring, and Voltage
@@ -174,15 +183,21 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define WaterPumpOut 26
 //-----------------------------------------------------------
 //-----------------------------------------------------------
-//SparePins and ports that are wired on board
+//Spare IO
+/*
+   Spare Inputs are indexed by their number +1 because I don't
+   want to start at zero.
+*/
+int SpareInputs[] = {9, 8, 7, 6};
+int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
+int LastInputState[] = {};
+int SpareOutputs[] = {12, 11, 24};
+int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
+
+/*
+   Not sure how i'm going to deal with ADCs as spare analog inputs
+*/
 #define SPADC2 15
-#define SPIn2 9
-#define SPIn3 8
-#define SPIn4 7
-#define SPIn5 6
-#define SPO3 12
-#define SPO4 11
-#define SPO5 24
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // Holding Tank
@@ -194,14 +209,13 @@ bool HoldingTankAlarm = false;
 #define S12 46
 #define S34 44
 #define S44 42
-#define SewagePowerRelay 30
-
+#define SewagePower 30
 //GreyTankLevelPins
 #define G14 40
 #define G12 38
 #define G34 36
 #define G44 34
-#define GreyWaterPowerRelay 32
+#define GreyWaterPower 32
 //-----------------------------------------------------------
 void setup() {
   ControlComPort.begin(115200);
@@ -210,13 +224,13 @@ void setup() {
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
 
-  pinMode(SPIn2, INPUT);
-  pinMode(SPIn3, INPUT);
-  pinMode(SPIn4, INPUT);
-  pinMode(SPIn5, INPUT);
-  pinMode(SPO3, OUTPUT);
-  pinMode(SPO4, OUTPUT);
-  pinMode(SPO5, OUTPUT);
+  for (int i = 0; i <= SpareInputSize; i++) {
+    pinMode(SpareInputs[i], INPUT);
+    LastInputState[i] = digitalRead(SpareInputs[i]);
+  }
+  for (int i = 0; i <= SpareOutputSize; i++) {
+    pinMode(SpareOutputs[i], OUTPUT);
+  }
 
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
@@ -234,14 +248,14 @@ void setup() {
   pinMode(BathroomWaterButtonLED, OUTPUT);
 
   //Sewage Tank
-  pinMode(SewagePowerRelay, OUTPUT);
+  pinMode(SewagePower, OUTPUT);
   pinMode(S14, INPUT);
   pinMode(S12, INPUT);
   pinMode(S34, INPUT);
   pinMode(S44, INPUT);
 
   //Grey Water
-  pinMode(GreyWaterPowerRelay, OUTPUT);
+  pinMode(GreyWaterPower, OUTPUT);
   pinMode(G14, INPUT);
   pinMode(G12, INPUT);
   pinMode(G34, INPUT);
@@ -266,18 +280,14 @@ void setup() {
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting " + DeviceName);
   ControlComPort.println("FW: " + FWVersion);
+  SetUnitsForOutput();
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
   lcd.setCursor(0, 0);
   lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
-  ReadGreyTank();
-  ReadSewageTank();
-  ReadOtherTempSensors();
-  ReadBatteryVoltages();
-  ReadWaterAndLPG();
-  GeneratorSensors();
+  ForceCompleteUpdateOfAllStates();
   ControlComPort.print("System Initialized and values populated:");
   ControlComPort.println(GetCurrentTime());
   lcd.setCursor(0, 1);
@@ -291,14 +301,13 @@ void setup() {
   lcd.print(FWVersion);
   lcd.setCursor(0, 2);
   lcd.print("Units: " + Units);
-  //lcd.setCursor(0, 3);
-  //lcd.print(HWVersion);
   delay(1000);
   digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
-
 }
 
 void loop() {
+  ReadAllInputs();
+
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarmsAndWarnings();
   }
@@ -306,6 +315,7 @@ void loop() {
     Warning();
   }
 
+  LCDControl();
   WaterControl();
   HoldingTankMonitoring();
 
@@ -315,34 +325,51 @@ void loop() {
     //Read Generator Sensors
     GeneratorSensors();
     NTCTimer = millis();
+    if (StreamingData == true) {
+      GetNTCTemps();
+      GetGenStatus();
+    }
   }
 
   if ((abs(millis() - EnergyTimer) > 3000) && EnableACEnergyMonitoring == true) {
     //Read Energy
     EnergyMetering();
     EnergyTimer = millis();
+    if (StreamingData == true) {
+      GetEnergyStatus();
+    }
   }
 
   if (abs(millis() - WATERLPGtimer) > 1800000) {
     //ReadLPG and Water Tank at 1/2 hour intervals
     ReadWaterAndLPG();
     WATERLPGtimer = millis();
+    if (StreamingData == true) {
+      GetWaterLevel();
+      GetLPGLevel();
+    }
   }
 
   if (abs(millis() - FiveMinTimer) > 300000) {
     //Read DC voltage at 5 min intervals
     ReadBatteryVoltages();
     FiveMinTimer = millis();
-  }
-
-  //After all the sensors have been updated stream out the data if the flag is set to do so
-  if (StreamingData == true) {
-    if (abs(millis() - OutputTimer) > 5000) {
-      OutputAllData();
-      OutputTimer = millis();
+    if (StreamingData == true) {
+      GetDCBatteryVoltage();
+      GetRTCBatteryVotlage();
     }
   }
 
+  if (stringComplete) {
+    inputString = PainlessInstructionSet(inputString);
+    stringComplete = false;
+  }
+}
+
+//------------------------------------------------------------------
+//LCD
+//------------------------------------------------------------------
+void LCDControl() {
   if (digitalRead(LCDEnable) == HIGH) {
     digitalWrite(LCDPowerOut, HIGH);
     if (LCDSetup == false) {
@@ -356,17 +383,8 @@ void loop() {
     LCDSetup = false;
     digitalWrite(LCDPowerOut, LOW);
   }
-
-  if (stringComplete) {
-    inputString = PainlessInstructionSet(inputString);
-    stringComplete = false;
-  }
-
 }
 
-//------------------------------------------------------------------
-//LCD
-//------------------------------------------------------------------
 void SetupLCD() {
   lcd.init();
   lcd.backlight();
@@ -377,6 +395,7 @@ void SetupLCD() {
 void LCDOutput() {
   if (abs(millis() - DisplayTimer) > DisplayInvterval)
   {
+    lcd.clear();
     LCDDisplay();
     DisplayTimer = millis();
 
@@ -387,12 +406,10 @@ void LCDOutput() {
       DisplayCounter = 0;
     }
   }
-
 }
 
 void LCDDisplay() {
   //setCursor(position,line)
-  lcd.clear();
   switch (DisplayCounter) {
     case 0:
       //Tank Levels
@@ -517,7 +534,6 @@ void LCDDisplay() {
       break;
   }
 }
-
 //------------------------------------------------------------------
 //Water Control
 //------------------------------------------------------------------
@@ -537,6 +553,9 @@ void WaterControl() {
     TurnOffWater();
     delay(1000);
     TurnOnWater();
+    if (StreamingData == true) {
+      GetWaterSource();
+    }
   }
 
   //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
@@ -603,7 +622,6 @@ void WaterLEDState() {
   }
 
 }
-
 //------------------------------------------------------------------
 //Generator and Energy
 //------------------------------------------------------------------
@@ -739,7 +757,6 @@ void GeneratorSensors() {
 
   LastTimeGenSensors = GetCurrentTime();
 }
-
 //------------------------------------------------------------------
 //Tanks
 //------------------------------------------------------------------
@@ -754,6 +771,19 @@ void HoldingTankMonitoring() {
   if ((millis() - GreyTankTimer) > 900000 || GreyGettinFull == true || WaterOn == true) {
     ReadGreyTank();
     GreyTankTimer = millis();
+  }
+
+  if (WaterOn != true) {
+    /*Post every 10 Seconds if the water is on repurpose the Grey Timer but update
+       both Sewage and Grey Timers so that when the water is back off they will
+       update on their correct interval
+    */
+    if ((millis() - GreyTankTimer) > 10000) {
+      GetGreyLevel();
+      GetSewageLevel();
+      GreyTankTimer = millis();
+      ShitterTankTimer = millis();
+    }
   }
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
@@ -775,7 +805,7 @@ void HoldingTankMonitoring() {
 
 void ReadSewageTank() {
   // Turn On votlage to tank
-  digitalWrite(SewagePowerRelay, HIGH);
+  digitalWrite(SewagePower, HIGH);
   delay(2000); // Have to put this in here for the Relay to completely close
   byte TankStatus;
   bitWrite(TankStatus, 0, digitalRead(S14)); //quater
@@ -805,7 +835,7 @@ void ReadSewageTank() {
       ShittersGettinFull = true;
       break;
     default:
-      LastSewageLevel = "ERROR Check Tank";
+      LastGreyWater = "ERROR Check Tank:" + String(TankStatus, BIN);
       WarningState = 3;
       break;
   }
@@ -815,13 +845,13 @@ void ReadSewageTank() {
 
   if (ShittersGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
-    digitalWrite(SewagePowerRelay, LOW);
+    digitalWrite(SewagePower, LOW);
   }
 }
 
 void ReadGreyTank() {
   // Turn On votlage to tank
-  digitalWrite(GreyWaterPowerRelay, HIGH);
+  digitalWrite(GreyWaterPower, HIGH);
   delay(2000); // Have to put this in here for the Relay to completely close
   byte TankStatus;
   bitWrite(TankStatus, 0, digitalRead(G14)); //quater
@@ -851,15 +881,15 @@ void ReadGreyTank() {
       GreyGettinFull = true;
       break;
     default:
-      LastGreyWater = "ERROR Check Tank";
-      WarningState = 3;
+      LastGreyWater = "ERROR Check Tank:" + String(TankStatus, BIN);
+      WarningState = 4;
       break;
   }
   LastTimeGreyWater = GetCurrentTime();
 
   if (GreyGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
-    digitalWrite(GreyWaterPowerRelay, LOW);
+    digitalWrite(GreyWaterPower, LOW);
   }
 }
 
@@ -911,7 +941,6 @@ void ReadWaterAndLPG() {
   // Turn Off Voltage to tanks
   digitalWrite(TankPowerRelay, LOW);
 }
-
 //------------------------------------------------------------------
 //Other sensors
 //------------------------------------------------------------------
@@ -928,6 +957,15 @@ void ReadBatteryVoltages() {
 
   LastRTCVoltage = ConversionFactor * (RTCVoltageSum / Samples);
   LastTimeRTCVoltage = LastTimeDCVoltage;
+
+  if (LastDCVoltage < 10.5) {
+    WarningState = 5;
+  }
+
+  if (LastRTCVoltage < 2.3) {
+    WarningState = 1;
+  }
+
 }
 
 float NTCReadInC(int R2, float ResistenceRead) {
@@ -1020,7 +1058,6 @@ void ReadOtherTempSensors() {
 
   LastTimeNTCTemp = GetCurrentTime();
 }
-
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
@@ -1059,6 +1096,51 @@ String GetCurrentDate() {
   return CurrentDate;
 }
 
+void SetUnitsForOutput() {
+  if (Units == "M") {
+    TempUnits = "C";
+    PressureUnits = "KPa";
+  }
+  else {
+    TempUnits = "F";
+    PressureUnits = "PSI";
+  }
+}
+
+void ReadAllInputs() {
+  String State = "Off";
+  for (int i = 0; i <= SpareInputSize; i++) {
+    int CurrentInputRead = ReadInput[i];
+    if (CurrentInputRead != LastInputState[i]) {
+      LastInputState[i] = digitalRead(SpareInputs[i]);
+      if (StreamingData == true) {
+        if (CurrentInputRead == 1) {
+          State = "On";
+        }
+        ControlComPort.println("%R," + GetCurrentTime() + ",Input," + (i + 1) + "," + State);
+      }
+    }
+  }
+}
+
+int ReadInput(int Number) {
+  int Value = digitalRead(SpareInputs[Number]);
+  return Value;
+}
+
+void ForceCompleteUpdateOfAllStates() {
+  ReadGreyTank();
+  ReadSewageTank();
+  ReadOtherTempSensors();
+  ReadBatteryVoltages();
+  ReadWaterAndLPG();
+  GeneratorSensors();
+  ReadAllInputs();
+  if (EnableACEnergyMonitoring == true) {
+    EnergyMetering();
+  }
+}
+
 //------------------------------------------------------------------
 //Serial
 //------------------------------------------------------------------
@@ -1082,6 +1164,12 @@ void serialEvent() {
 }
 
 void OutputAllData() {
+  GetDeviceInfo();
+  GetStreamingState();
+  GetWaterPumpSense();
+  GetACEnmon();
+  GetWaterState();
+  GetUnits();
   GetWaterSource();
   GetWaterLevel();
   GetSewageLevel();
@@ -1092,9 +1180,7 @@ void OutputAllData() {
   GetNTCTemps();
   GetHeadUnitTemp();
   GetGenStatus();
-  if (EnableACEnergyMonitoring == true) {
-    GetEnergyStatus();
-  }
+  GetEnergyStatus();
 }
 
 void GetWaterSource() {
@@ -1126,19 +1212,27 @@ void GetRTCBatteryVotlage() {
 }
 
 void GetNTCTemps() {
-  ControlComPort.println("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Front AC Temp," + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp," + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge," + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
+  ControlComPort.println("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Units," + TempUnits + ",Front AC Temp,"
+                         + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp,"
+                         + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge,"
+                         + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
 }
 
 void GetHeadUnitTemp() {
-  ControlComPort.println("%R," + LastTimeRTCTemp + ",Head Unit Temp," + LastRTCTemp);
+  ControlComPort.println("%R," + LastTimeRTCTemp + ",Head Unit Temp,Units," + TempUnits + "," + LastRTCTemp);
 }
 
 void GetGenStatus() {
-  ControlComPort.println("%R," + LastTimeGenSensors + ",Generator Fuel Pressure," + LastGenFuel + ",Generator Temps, Enclosure," + LastGenEnclosureTemp + ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
+  ControlComPort.println("%R," + LastTimeGenSensors + ",Generator Fuel Pressure,Units," + PressureUnits + ","
+                         + LastGenFuel + ",Generator Temps, Enclosure,Units," + TempUnits + "," + LastGenEnclosureTemp +
+                         ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
 }
 
 void GetEnergyStatus() {
-  ControlComPort.println("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent + ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total)," + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental)," + LastACHarmonic + ",W(harmonic)");
+  ControlComPort.println("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
+                         ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
+                         + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
+                         + LastACHarmonic + ",W(harmonic)");
 }
 
 void GetUnits() {
@@ -1184,7 +1278,6 @@ void GetACEnmon() {
   }
   ControlComPort.println("%R,AC Energy Monitoring," + State);
 }
-
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -1203,6 +1296,32 @@ void Warning() {
         digitalWrite(WarningLED, LOW);
       }
     }
+
+    if (abs(millis() - WarningPostTimer) > 10000) {
+      String Message = "";
+      switch (WarningState) {
+        case 1:
+          Message = "RTC Battery voltage is low ";
+          break;
+        case 2:
+          Message = "One of the holding tanks is getting full";
+          break;
+        case 3:
+          Message = "Grey Water Tank ERROR";
+          break;
+        case 4:
+          Message = "Sewage Tank ERROR";
+          break;
+        case 5:
+          Message = "Camper Battery voltage is low";
+          break;
+      }
+      ControlComPort.println("%R," + GetCurrentTime() + ",Warning," + Message);
+      WarningPostTimer = millis();
+    }
+    else {
+      digitalWrite(WarningLED, LOW);
+    }
   }
 }
 
@@ -1214,6 +1333,9 @@ void ResetAlarm() {
   digitalWrite(AlarmOut, LOW);
 }
 
+void ResetWarnings() {
+  WarningState = 0;
+}
 
 void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
@@ -1247,7 +1369,7 @@ void SetUnits(String Value) {
   else {
     Error(1);
   }
-
+  SetUnitsForOutput();
 }
 
 void SetWaterPumpSenseOverRide(String Value) {
@@ -1325,7 +1447,20 @@ void GetOutputState(String Value) {
 }
 
 void ReadInputState(String Value) {
-
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt()) - 1;
+  String State = "Off";
+  if (ThingToTest > 0 || ThingToTest <= (SpareInputSize)) {
+    int CurrentInputRead = ReadInput[ThingToTest];
+    if (CurrentInputRead == 1) {
+      State = "On";
+    }
+    ControlComPort.println("%R," + GetCurrentTime() + ",Input," + ThingToTest + "," + State);
+  }
+  else {
+    Error(4);
+  }
 }
 
 void SetRTCDateTime(String Value) {
@@ -1365,7 +1500,7 @@ void SetACEnmon(String Value) {
   case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
 */
 
-String PainlessInstructionSet(String &TestString) {
+String PainlessInstructionSet(String & TestString) {
   int Search = 1;
   while (Search == 1) {
     int FindStart = TestString.indexOf('%');
@@ -1556,6 +1691,29 @@ void CommandToCall(int Index) {
     case 16:
       //STREAMING
       GetStreamingState();
+      break;
+    case 17:
+      //AC energy monitoring
+      GetACEnmon();
+      break;
+    case 18:
+      //Get All Data at one go
+      OutputAllData();
+      break;
+    case 19:
+      //Force Update of all states
+      ForceCompleteUpdateOfAllStates();
+      ControlComPort.println("%R," + GetCurrentTime() + ",All States Updated");
+      break;
+    case 20:
+      //Reset Warnings
+      ResetWarnings();
+      ControlComPort.println("%R," + GetCurrentTime() + ",Reset Warnings");
+      break;
+    case 21:
+      //Reset All alarms and warnings
+      ResetAllAlarmsAndWarnings();
+      ControlComPort.println("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings");
       break;
   }
 }
