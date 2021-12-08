@@ -65,22 +65,23 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.0";
+const String FWVersion = "0.7.1";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
-int WarningState = 0; //
+bool WarningActive = false;
+int ArrayOfWarnings[5] = {};
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
-     EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer, WarningPostTimer;
+     EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 String TempUnits = "F";
 String PressureUnits = "PSI";
 bool LCDSetup = false;
 //WaterSourceSelection //false = pump //true = City Water
 bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
-//Figure out if i want to store these in EEPROM
-bool UseWaterPumpSense = false;
 bool EnableACEnergyMonitoring = false;
-bool StreamingData = false;
-String Units = "I";
+//Figure out if i want to store these in EEPROM
+String Units = "I"; // address 0
+bool UseWaterPumpSense = false; // address 1
+bool StreamingData = false; // address 2
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -773,7 +774,7 @@ void HoldingTankMonitoring() {
     GreyTankTimer = millis();
   }
 
-  if (WaterOn != true) {
+  if (WaterOn == true) {
     /*Post every 10 Seconds if the water is on repurpose the Grey Timer but update
        both Sewage and Grey Timers so that when the water is back off they will
        update on their correct interval
@@ -788,7 +789,7 @@ void HoldingTankMonitoring() {
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
     //Set Warning State
-    WarningState = 2;
+    AddWarningToList(2);
     // Also put in a check for FUll State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
@@ -836,7 +837,7 @@ void ReadSewageTank() {
       break;
     default:
       LastGreyWater = "ERROR Check Tank:" + String(TankStatus, BIN);
-      WarningState = 3;
+      AddWarningToList(3);
       break;
   }
 
@@ -882,7 +883,7 @@ void ReadGreyTank() {
       break;
     default:
       LastGreyWater = "ERROR Check Tank:" + String(TankStatus, BIN);
-      WarningState = 4;
+      AddWarningToList(4);
       break;
   }
   LastTimeGreyWater = GetCurrentTime();
@@ -959,11 +960,11 @@ void ReadBatteryVoltages() {
   LastTimeRTCVoltage = LastTimeDCVoltage;
 
   if (LastDCVoltage < 10.5) {
-    WarningState = 5;
+    AddWarningToList(5);
   }
 
   if (LastRTCVoltage < 2.3) {
-    WarningState = 1;
+    AddWarningToList(1);
   }
 
 }
@@ -1259,10 +1260,6 @@ void GetWaterPumpSense() {
   ControlComPort.println("%R,WaterPumpSense," + State);
 }
 
-void GetWarning() {
-  ControlComPort.println("%R,Warning," + WarningState);
-}
-
 void GetWaterState() {
   String State = "Off";
   if (WaterOn == true) {
@@ -1287,8 +1284,8 @@ void Error(int Number) {
 }
 
 void Warning() {
-  if (WarningState != 0) {
-    if (abs(millis() - WarningBlinkTimer) > (1000 / (WarningState * 2))) {
+  if (WarningActive == true) {
+    if (abs(millis() - WarningBlinkTimer) >  333) {
       WarningBlinkTimer = millis();
       if (digitalRead(WarningLED) == LOW) {
         digitalWrite(WarningLED, HIGH);
@@ -1296,32 +1293,42 @@ void Warning() {
         digitalWrite(WarningLED, LOW);
       }
     }
+  }
+}
 
-    if (abs(millis() - WarningPostTimer) > 10000) {
-      String Message = "";
-      switch (WarningState) {
-        case 1:
-          Message = "RTC Battery voltage is low ";
-          break;
-        case 2:
-          Message = "One of the holding tanks is getting full";
-          break;
-        case 3:
-          Message = "Grey Water Tank ERROR";
-          break;
-        case 4:
-          Message = "Sewage Tank ERROR";
-          break;
-        case 5:
-          Message = "Camper Battery voltage is low";
-          break;
-      }
-      ControlComPort.println("%R," + GetCurrentTime() + ",Warning," + Message);
-      WarningPostTimer = millis();
+void AddWarningToList(int WarningID) {
+  WarningActive = true;
+  ArrayOfWarnings[WarningID] = WarningID;
+  OutputWarningMessage(WarningID);
+}
+
+void OutputWarningMessage(int ID) {
+  if (ArrayOfWarnings[ID] != 0) {
+    String Message = "";
+    switch (ID) {
+      case 1:
+        Message = "RTC Battery voltage is low ";
+        break;
+      case 2:
+        Message = "One of the holding tanks is getting full";
+        break;
+      case 3:
+        Message = "Grey Water Tank ERROR";
+        break;
+      case 4:
+        Message = "Sewage Tank ERROR";
+        break;
+      case 5:
+        Message = "Camper Battery voltage is low";
+        break;
     }
-    else {
-      digitalWrite(WarningLED, LOW);
-    }
+    ControlComPort.println("%R," + GetCurrentTime() + ",Warning," + Message);
+  }
+}
+
+void AllWarningMessages() {
+  for (int i = 1; i <= 5; i++) {
+    OutputWarningMessage(i);
   }
 }
 
@@ -1334,13 +1341,15 @@ void ResetAlarm() {
 }
 
 void ResetWarnings() {
-  WarningState = 0;
+  ArrayOfWarnings[5] = {};
+  WarningActive = false;
+  digitalWrite(WarningLED, LOW);
 }
 
 void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
-  digitalWrite(AlarmOut, LOW);
-  WarningState = 0;
+  ResetAlarm();
+  ResetWarnings();
 }
 //------------------------------------------------------------------
 //Commands
@@ -1682,7 +1691,12 @@ void CommandToCall(int Index) {
       break;
     case 14:
       //WARNING
-      GetWarning();
+      if (WarningActive == true) {
+        AllWarningMessages();
+      }
+      else {
+        ControlComPort.println("%R," + GetCurrentTime() + ",Warning,None");
+      }
       break;
     case 15:
       //WATER
