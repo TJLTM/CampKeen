@@ -902,7 +902,6 @@ void ReadWaterAndLPG() {
      LPG tank is as far as i can tell is a 0-122 ohm resistence and knowing that the 80% full at ~90 ohms
      that is mapped to 100%. confusing yes. but it's how it works. anythign over the 80% mark will read as
      a greater percentage than 100
-
      The Water tank level was determined from setting the tank sensor at 1/4 1/2 3/4 and full. Anything above
      the full mark shows up as "EXTRA FULL"
   */
@@ -1609,7 +1608,6 @@ void SetACEnmon(String Value) {
   }
 }
 /*
-
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
   case 2 - SCC is found and not at position 0 - trim the buffer up to the SCC and insert error
