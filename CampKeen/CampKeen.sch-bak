@@ -1014,7 +1014,7 @@ Wire Wire Line
 	3100 6300 4400 6300
 Connection ~ 4400 6300
 Wire Wire Line
-	4400 5900 4400 6300
+	5050 5900 5050 6300
 Wire Wire Line
 	3350 6800 3500 6800
 Wire Wire Line
@@ -1105,12 +1105,12 @@ $EndComp
 $Comp
 L power:+5V #PWR023
 U 1 1 65AC81D1
-P 4400 5900
-F 0 "#PWR023" H 4400 5750 50  0001 C CNN
-F 1 "+5V" H 4415 6073 50  0000 C CNN
-F 2 "" H 4400 5900 50  0001 C CNN
-F 3 "" H 4400 5900 50  0001 C CNN
-	1    4400 5900
+P 5050 5900
+F 0 "#PWR023" H 5050 5750 50  0001 C CNN
+F 1 "+5V" H 5065 6073 50  0000 C CNN
+F 2 "" H 5050 5900 50  0001 C CNN
+F 3 "" H 5050 5900 50  0001 C CNN
+	1    5050 5900
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -1579,19 +1579,6 @@ F 3 "~" H 3650 1750 50  0001 C CNN
 	1    3650 1750
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR014
-U 1 1 69EC12CF
-P 3650 2000
-F 0 "#PWR014" H 3650 1750 50  0001 C CNN
-F 1 "GND" H 3655 1827 50  0000 C CNN
-F 2 "" H 3650 2000 50  0001 C CNN
-F 3 "" H 3650 2000 50  0001 C CNN
-	1    3650 2000
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	3650 2000 3650 1900
 Wire Wire Line
 	3650 1600 3650 1400
 Wire Wire Line
@@ -2847,38 +2834,8 @@ F11 "SPOut5" I L 10650 10100 50
 F12 "SPOut6TTL" I R 12550 10200 50 
 F13 "SPOut6" I L 10650 10200 50 
 $EndSheet
-Text GLabel 22200 1600 2    50   Input ~ 0
-DisplayLED
 Wire Wire Line
 	21550 1600 22200 1600
-Text GLabel 17900 1550 2    50   Input ~ 0
-DisplayLED
-$Comp
-L Device:R R14
-U 1 1 647E4AAA
-P 17900 2200
-F 0 "R14" V 17693 2200 50  0000 C CNN
-F 1 "330" V 17784 2200 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 17830 2200 50  0001 C CNN
-F 3 "~" H 17900 2200 50  0001 C CNN
-	1    17900 2200
-	1    0    0    1   
-$EndComp
-$Comp
-L power:GND #PWR056
-U 1 1 647E4AB0
-P 17900 2500
-F 0 "#PWR056" H 17900 2250 50  0001 C CNN
-F 1 "GND" H 17900 2350 50  0000 C CNN
-F 2 "" H 17900 2500 50  0000 C CNN
-F 3 "" H 17900 2500 50  0000 C CNN
-	1    17900 2500
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	17900 2350 17900 2500
-Wire Wire Line
-	17900 2050 17900 2000
 NoConn ~ 21800 1300
 NoConn ~ 21800 1200
 $Comp
@@ -2919,8 +2876,6 @@ Text GLabel 8450 9200 2    50   Input ~ 0
 AUXVoltage2
 Text GLabel 8450 8900 2    50   Input ~ 0
 AUXVoltage1
-Wire Wire Line
-	6800 7700 6800 7750
 $Comp
 L SamacSys_Parts:1727751 IO4
 U 1 1 6396531A
@@ -2941,29 +2896,29 @@ $EndComp
 $Comp
 L SamacSys_Parts:BK_HTC-15M 5VOut1
 U 1 1 63086201
-P 6800 7750
-F 0 "5VOut1" H 7428 7746 50  0000 L CNN
-F 1 "VS" H 7428 7655 50  0000 L CNN
-F 2 "SamacSys_Parts:BK_HTC-15M" H 7450 7850 50  0001 L CNN
-F 3 "" H 7450 7750 50  0001 L CNN
-F 4 "Fuse Holder PCB FUSE BLOCK" H 7450 7650 50  0001 L CNN "Description"
-F 5 "" H 7450 7550 50  0001 L CNN "Height"
-F 6 "504-HTC-15M" H 7450 7450 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/Bussmann-Eaton/BK-HTC-15M?qs=xYgILgh9YcIcij8kQUilpQ%3D%3D" H 7450 7350 50  0001 L CNN "Mouser Price/Stock"
-F 8 "Eaton" H 7450 7250 50  0001 L CNN "Manufacturer_Name"
-F 9 "BK/HTC-15M" H 7450 7150 50  0001 L CNN "Manufacturer_Part_Number"
-	1    6800 7750
+P 4600 6300
+F 0 "5VOut1" H 5228 6296 50  0000 L CNN
+F 1 "VS" H 5228 6205 50  0000 L CNN
+F 2 "SamacSys_Parts:BK_HTC-15M" H 5250 6400 50  0001 L CNN
+F 3 "" H 5250 6300 50  0001 L CNN
+F 4 "Fuse Holder PCB FUSE BLOCK" H 5250 6200 50  0001 L CNN "Description"
+F 5 "" H 5250 6100 50  0001 L CNN "Height"
+F 6 "504-HTC-15M" H 5250 6000 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Bussmann-Eaton/BK-HTC-15M?qs=xYgILgh9YcIcij8kQUilpQ%3D%3D" H 5250 5900 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Eaton" H 5250 5800 50  0001 L CNN "Manufacturer_Name"
+F 9 "BK/HTC-15M" H 5250 5700 50  0001 L CNN "Manufacturer_Part_Number"
+	1    4600 6300
 	0    -1   1    0   
 $EndComp
 $Comp
 L power:+5V #PWR034
 U 1 1 6265DF69
-P 6800 7700
-F 0 "#PWR034" H 6800 7550 50  0001 C CNN
-F 1 "+5V" H 6815 7873 50  0000 C CNN
-F 2 "" H 6800 7700 50  0001 C CNN
-F 3 "" H 6800 7700 50  0001 C CNN
-	1    6800 7700
+P 7250 7750
+F 0 "#PWR034" H 7250 7600 50  0001 C CNN
+F 1 "+5V" H 7265 7923 50  0000 C CNN
+F 2 "" H 7250 7750 50  0001 C CNN
+F 3 "" H 7250 7750 50  0001 C CNN
+	1    7250 7750
 	-1   0    0    -1  
 $EndComp
 Text GLabel 7350 9850 0    50   Input ~ 0
@@ -3327,21 +3282,6 @@ Wire Wire Line
 	14150 5500 14300 5500
 Wire Wire Line
 	14150 5700 14300 5700
-Wire Wire Line
-	6900 7750 7450 7750
-Wire Wire Line
-	17900 1700 17900 1550
-$Comp
-L Device:LED D3
-U 1 1 648097C3
-P 17900 1850
-F 0 "D3" H 17893 2067 50  0000 C CNN
-F 1 "LED" H 17893 1976 50  0000 C CNN
-F 2 "LED_THT:LED_D3.0mm" H 17900 1850 50  0001 C CNN
-F 3 "~" H 17900 1850 50  0001 C CNN
-	1    17900 1850
-	0    -1   -1   0   
-$EndComp
 $Sheet
 S 10650 9050 1900 300 
 U 61A6AEB3
@@ -3405,23 +3345,6 @@ Wire Wire Line
 	2400 1100 1650 1100
 Wire Wire Line
 	3200 1100 3350 1100
-$Comp
-L SamacSys_Parts:SR305-TP D4
-U 1 1 61BA258E
-P 3700 2400
-F 0 "D4" H 4100 2667 50  0000 C CNN
-F 1 "SR305-TP" H 4100 2576 50  0000 C CNN
-F 2 "DIOAD2860W130L840D505" H 4200 2550 50  0001 L CNN
-F 3 "https://componentsearchengine.com/Datasheets/1/SR305-TP.pdf" H 4200 2450 50  0001 L CNN
-F 4 "Schottky Diodes & Rectifiers Rectifier 50V 80A" H 4200 2350 50  0001 L CNN "Description"
-F 5 "" H 4200 2250 50  0001 L CNN "Height"
-F 6 "833-SR305-TP" H 4200 2150 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=833-SR305-TP" H 4200 2050 50  0001 L CNN "Mouser Price/Stock"
-F 8 "Micro Commercial Components (MCC)" H 4200 1950 50  0001 L CNN "Manufacturer_Name"
-F 9 "SR305-TP" H 4200 1850 50  0001 L CNN "Manufacturer_Part_Number"
-	1    3700 2400
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4400 2400 4500 2400
 Wire Wire Line
@@ -3435,4 +3358,75 @@ Wire Notes Line
 	19200 500  19200 6500
 Wire Notes Line
 	19200 6500 22900 6500
+Wire Notes Line
+	16950 2250 19200 2250
+Wire Wire Line
+	3650 2000 3650 1900
+$Comp
+L power:GND #PWR014
+U 1 1 69EC12CF
+P 3650 2000
+F 0 "#PWR014" H 3650 1750 50  0001 C CNN
+F 1 "GND" H 3655 1827 50  0000 C CNN
+F 2 "" H 3650 2000 50  0001 C CNN
+F 3 "" H 3650 2000 50  0001 C CNN
+	1    3650 2000
+	-1   0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:SR305-TP D4
+U 1 1 61BA258E
+P 4500 2400
+F 0 "D4" H 4900 2667 50  0000 C CNN
+F 1 "SR305-TP" H 4900 2576 50  0000 C CNN
+F 2 "DIOAD2860W130L840D505" H 5000 2550 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/SR305-TP.pdf" H 5000 2450 50  0001 L CNN
+F 4 "Schottky Diodes & Rectifiers Rectifier 50V 80A" H 5000 2350 50  0001 L CNN "Description"
+F 5 "" H 5000 2250 50  0001 L CNN "Height"
+F 6 "833-SR305-TP" H 5000 2150 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=833-SR305-TP" H 5000 2050 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Micro Commercial Components (MCC)" H 5000 1950 50  0001 L CNN "Manufacturer_Name"
+F 9 "SR305-TP" H 5000 1850 50  0001 L CNN "Manufacturer_Part_Number"
+	1    4500 2400
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:+5VL #PWR097
+U 1 1 61AB0C18
+P 5800 5900
+F 0 "#PWR097" H 5800 5750 50  0001 C CNN
+F 1 "+5VL" H 5815 6073 50  0000 C CNN
+F 2 "" H 5800 5900 50  0001 C CNN
+F 3 "" H 5800 5900 50  0001 C CNN
+	1    5800 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:SR305-TP D5
+U 1 1 61AB378D
+P 5750 6300
+F 0 "D5" H 6150 6567 50  0000 C CNN
+F 1 "SR305-TP" H 6150 6476 50  0000 C CNN
+F 2 "DIOAD2860W130L840D505" H 6250 6450 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/SR305-TP.pdf" H 6250 6350 50  0001 L CNN
+F 4 "Schottky Diodes & Rectifiers Rectifier 50V 80A" H 6250 6250 50  0001 L CNN "Description"
+F 5 "" H 6250 6150 50  0001 L CNN "Height"
+F 6 "833-SR305-TP" H 6250 6050 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=833-SR305-TP" H 6250 5950 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Micro Commercial Components (MCC)" H 6250 5850 50  0001 L CNN "Manufacturer_Name"
+F 9 "SR305-TP" H 6250 5750 50  0001 L CNN "Manufacturer_Part_Number"
+	1    5750 6300
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5650 6300 5800 6300
+Wire Wire Line
+	5800 6300 5800 5900
+Wire Wire Line
+	7250 7750 7450 7750
+Wire Wire Line
+	4400 6300 4600 6300
+Wire Wire Line
+	4700 6300 5050 6300
+Connection ~ 5050 6300
 $EndSCHEMATC

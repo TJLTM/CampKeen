@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 10
+Sheet 5 10
 Title ""
 Date ""
 Rev ""
@@ -122,41 +122,20 @@ Wire Wire Line
 	5950 3200 6350 3200
 Connection ~ 6350 3200
 $Comp
-L SamacSys_Parts:BK_HTC-15M Tanks1
-U 1 1 626F6AAA
-P 4200 1800
-AR Path="/62665296/626F6AAA" Ref="Tanks1"  Part="1" 
-AR Path="/6479D118/626F6AAA" Ref="Tanks2"  Part="1" 
-F 0 "Tanks2" H 4828 1796 50  0000 L CNN
-F 1 "TanksVS" H 4828 1705 50  0000 L CNN
-F 2 "SamacSys_Parts:BK_HTC-15M" H 4850 1900 50  0001 L CNN
-F 3 "" H 4850 1800 50  0001 L CNN
-F 4 "Fuse Holder PCB FUSE BLOCK" H 4850 1700 50  0001 L CNN "Description"
-F 5 "" H 4850 1600 50  0001 L CNN "Height"
-F 6 "504-HTC-15M" H 4850 1500 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/Bussmann-Eaton/BK-HTC-15M?qs=xYgILgh9YcIcij8kQUilpQ%3D%3D" H 4850 1400 50  0001 L CNN "Mouser Price/Stock"
-F 8 "Eaton" H 4850 1300 50  0001 L CNN "Manufacturer_Name"
-F 9 "BK/HTC-15M" H 4850 1200 50  0001 L CNN "Manufacturer_Part_Number"
-	1    4200 1800
-	0    -1   -1   0   
-$EndComp
-$Comp
 L power:+BATT #PWR065
 U 1 1 626F6AB0
-P 4200 2100
+P 3850 1700
 AR Path="/62665296/626F6AB0" Ref="#PWR065"  Part="1" 
 AR Path="/6479D118/626F6AB0" Ref="#PWR088"  Part="1" 
-F 0 "#PWR088" H 4200 1950 50  0001 C CNN
-F 1 "+BATT" H 4215 2273 50  0000 C CNN
-F 2 "" H 4200 2100 50  0001 C CNN
-F 3 "" H 4200 2100 50  0001 C CNN
-	1    4200 2100
-	0    -1   -1   0   
+F 0 "#PWR088" H 3850 1550 50  0001 C CNN
+F 1 "+BATT" H 3865 1873 50  0000 C CNN
+F 2 "" H 3850 1700 50  0001 C CNN
+F 3 "" H 3850 1700 50  0001 C CNN
+	1    3850 1700
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	4200 2100 4300 2100
-Wire Wire Line
-	4300 2100 4300 1800
+	3850 1700 3850 1800
 $Comp
 L SamacSys_Parts:IRF9Z34NPBF Q3
 U 1 1 638F6958
@@ -296,8 +275,6 @@ Wire Wire Line
 Connection ~ 3250 1800
 Wire Wire Line
 	3250 1800 2750 1800
-Wire Wire Line
-	4200 1800 3850 1800
 Connection ~ 3850 1800
 Text HLabel 5950 2450 0    50   Input ~ 0
 1-4IN

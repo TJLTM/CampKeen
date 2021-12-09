@@ -110,66 +110,15 @@ F 3 "~" H 5900 3100 50  0001 C CNN
 	1    5900 3100
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 61A94BB4
-P 5900 3600
-AR Path="/62665296/61A94BB4" Ref="R?"  Part="1" 
-AR Path="/6479D118/61A94BB4" Ref="R?"  Part="1" 
-AR Path="/61B4978A/61A94BB4" Ref="R?"  Part="1" 
-AR Path="/619EBD0B/61A94BB4" Ref="R?"  Part="1" 
-AR Path="/61A6AEB3/61A94BB4" Ref="R117"  Part="1" 
-F 0 "R117" H 5970 3646 50  0000 L CNN
-F 1 "10k" H 5970 3555 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5830 3600 50  0001 C CNN
-F 3 "~" H 5900 3600 50  0001 C CNN
-	1    5900 3600
-	1    0    0    -1  
-$EndComp
-$Comp
-L SamacSys_Parts:BZX79C10 Z?
-U 1 1 61A94BC0
-P 6400 2550
-AR Path="/62665296/61A94BC0" Ref="Z?"  Part="1" 
-AR Path="/6479D118/61A94BC0" Ref="Z?"  Part="1" 
-AR Path="/61B4978A/61A94BC0" Ref="Z?"  Part="1" 
-AR Path="/619EBD0B/61A94BC0" Ref="Z?"  Part="1" 
-AR Path="/61A6AEB3/61A94BC0" Ref="Z16"  Part="1" 
-F 0 "Z16" V 6654 2420 50  0000 R CNN
-F 1 "BZX79C10" V 6745 2420 50  0000 R CNN
-F 2 "SamacSys_Parts:DIOAD1068W53L380D172" H 6800 2700 50  0001 L CNN
-F 3 "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf" H 6800 2600 50  0001 L CNN
-F 4 "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35" H 6800 2500 50  0001 L CNN "Description"
-F 5 "" H 6800 2400 50  0001 L CNN "Height"
-F 6 "512-BZX79C10" H 6800 2300 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D" H 6800 2200 50  0001 L CNN "Mouser Price/Stock"
-F 8 "ON Semiconductor" H 6800 2100 50  0001 L CNN "Manufacturer_Name"
-F 9 "BZX79C10" H 6800 2000 50  0001 L CNN "Manufacturer_Part_Number"
-	1    6400 2550
-	0    -1   1    0   
-$EndComp
-Wire Wire Line
-	5900 4000 5900 3750
-Wire Wire Line
-	5900 3450 5900 3350
-Wire Wire Line
-	6700 3350 6400 3350
 Connection ~ 5900 3350
 Wire Wire Line
 	5900 3350 5900 3250
-Wire Wire Line
-	6400 3150 6400 3350
-Connection ~ 6400 3350
-Wire Wire Line
-	6400 3350 5900 3350
 Wire Wire Line
 	7000 2950 7000 2100
 Wire Wire Line
 	7000 2100 6400 2100
 Wire Wire Line
 	5900 2100 5900 2950
-Wire Wire Line
-	6400 2550 6400 2100
 Connection ~ 6400 2100
 Wire Wire Line
 	6400 2100 5900 2100
@@ -291,66 +240,15 @@ F 3 "~" H 8350 3100 50  0001 C CNN
 	1    8350 3100
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 61A94C07
-P 8350 3600
-AR Path="/62665296/61A94C07" Ref="R?"  Part="1" 
-AR Path="/6479D118/61A94C07" Ref="R?"  Part="1" 
-AR Path="/61B4978A/61A94C07" Ref="R?"  Part="1" 
-AR Path="/619EBD0B/61A94C07" Ref="R?"  Part="1" 
-AR Path="/61A6AEB3/61A94C07" Ref="R120"  Part="1" 
-F 0 "R120" H 8420 3646 50  0000 L CNN
-F 1 "10k" H 8420 3555 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8280 3600 50  0001 C CNN
-F 3 "~" H 8350 3600 50  0001 C CNN
-	1    8350 3600
-	1    0    0    -1  
-$EndComp
-$Comp
-L SamacSys_Parts:BZX79C10 Z?
-U 1 1 61A94C13
-P 8850 2550
-AR Path="/62665296/61A94C13" Ref="Z?"  Part="1" 
-AR Path="/6479D118/61A94C13" Ref="Z?"  Part="1" 
-AR Path="/61B4978A/61A94C13" Ref="Z?"  Part="1" 
-AR Path="/619EBD0B/61A94C13" Ref="Z?"  Part="1" 
-AR Path="/61A6AEB3/61A94C13" Ref="Z17"  Part="1" 
-F 0 "Z17" V 9104 2420 50  0000 R CNN
-F 1 "BZX79C10" V 9195 2420 50  0000 R CNN
-F 2 "SamacSys_Parts:DIOAD1068W53L380D172" H 9250 2700 50  0001 L CNN
-F 3 "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf" H 9250 2600 50  0001 L CNN
-F 4 "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35" H 9250 2500 50  0001 L CNN "Description"
-F 5 "" H 9250 2400 50  0001 L CNN "Height"
-F 6 "512-BZX79C10" H 9250 2300 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D" H 9250 2200 50  0001 L CNN "Mouser Price/Stock"
-F 8 "ON Semiconductor" H 9250 2100 50  0001 L CNN "Manufacturer_Name"
-F 9 "BZX79C10" H 9250 2000 50  0001 L CNN "Manufacturer_Part_Number"
-	1    8850 2550
-	0    -1   1    0   
-$EndComp
-Wire Wire Line
-	8350 4000 8350 3750
-Wire Wire Line
-	8350 3450 8350 3350
-Wire Wire Line
-	9150 3350 8850 3350
 Connection ~ 8350 3350
 Wire Wire Line
 	8350 3350 8350 3250
-Wire Wire Line
-	8850 3150 8850 3350
-Connection ~ 8850 3350
-Wire Wire Line
-	8850 3350 8350 3350
 Wire Wire Line
 	9450 2950 9450 2100
 Wire Wire Line
 	9450 2100 8850 2100
 Wire Wire Line
 	8350 2100 8350 2950
-Wire Wire Line
-	8850 2550 8850 2100
 Connection ~ 8850 2100
 Wire Wire Line
 	8850 2100 8350 2100
@@ -375,4 +273,12 @@ F 3 "" H 8850 2100 50  0001 C CNN
 	1    8850 2100
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	5900 3350 6700 3350
+Wire Wire Line
+	8350 3350 9150 3350
+Wire Wire Line
+	5900 3350 5900 4000
+Wire Wire Line
+	8350 3350 8350 4000
 $EndSCHEMATC
