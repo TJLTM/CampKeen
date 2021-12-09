@@ -27,4 +27,3 @@ Some Specs and Installation Notes:
 1. I designed this for 12Vdc systems only so i'm not sure if it would work on a 24Vdc system might. might not. 
 2. The Inputs are buffered and you can just supply 12Vdc in as a logical 'On' 
 3. Outputs, Althought technically you could power the waterpump directly off of the unit. this is not recommended. nor encouraged in any way, shape or form. These outputs are used to trigger remove 12Vdc relays like the following: https://www.summitracing.com/parts/pco-5591pt
-
