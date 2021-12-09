@@ -66,7 +66,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.5";
+const String FWVersion = "0.7.6";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -83,6 +83,7 @@ bool EnableACEnergyMonitoring = false;
 String Units = "I"; // address 0
 bool UseWaterPumpSense = false; // address 1
 bool StreamingData = false; // address 2
+const String StatesForOutput[2] = {"Off","On"};
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -1246,25 +1247,25 @@ void GetDeviceInfo() {
 }
 
 void GetStreamingState() {
-  String State = "Off";
+  String State = StatesForOutput[0];
   if (StreamingData == true) {
-    State = "On";
+    State = StatesForOutput[1];
   }
   ControlComPort.println("%R,StreamingData," + State);
 }
 
 void GetWaterPumpSense() {
-  String State = "Off";
+  String State = StatesForOutput[0];
   if (UseWaterPumpSense == true) {
-    State = "On";
+    State = StatesForOutput[1];
   }
   ControlComPort.println("%R,WaterPumpSense," + State);
 }
 
 void GetWaterState() {
-  String State = "Off";
+  String State = StatesForOutput[0];
   if (WaterOn == true) {
-    State = "On";
+    State = StatesForOutput[1];
   }
   ControlComPort.println("%R,Water," + State);
 }
@@ -1274,9 +1275,9 @@ void GetSystemTime() {
 }
 
 void GetACEnmon() {
-  String State = "Off";
+  String State = StatesForOutput[0];
   if (EnableACEnergyMonitoring == true) {
-    State = "On";
+    State = StatesForOutput[1];
   }
   ControlComPort.println("%R,AC Energy Monitoring," + State);
 }
@@ -1495,9 +1496,9 @@ void GetOutputState(String Value) {
 
 void PrinOutputState(int Output) {
   int CurrentState = ReadOutput(Output);
-  String State = "Off";
+  String State = StatesForOutput[0];
   if (CurrentState == 1) {
-    State = "On";
+    String State = StatesForOutput[1];
   }
   ControlComPort.println("%R," + GetCurrentTime() + ",Output," + Output + "," + State);
 }
@@ -1516,9 +1517,9 @@ void ReadInputState(String Value) {
 }
 
 void PrintInputState(int Input, int CurrentInputRead) {
-  String State = "Off";
+  String State = StatesForOutput[0];
   if (CurrentInputRead == 1) {
-    State = "On";
+    String State = StatesForOutput[1];
   }
   ControlComPort.println("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
 }
@@ -1556,7 +1557,7 @@ void SetRTCDateTime(String Value) {
 
   ThingToTest.remove(0, ThingToTest.indexOf(':'));
   int Hour = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (0 > Min > 12) {
+  if (0 > Hour > 12) {
     ControlComPort.println("%R,Error,0-24 accepted");
     CorrectParam = false;
   }
@@ -1646,7 +1647,6 @@ String PainlessInstructionSet(String & TestString) {
               String CommandCandidate = TestString.substring(FindStart + 1, FindEnd);
               CommandCandidate.toUpperCase();
               if ((Param < FindEnd) && Param != -1) {
-                //Serial.println("getting here1");
                 for (int i = 0; i < (sizeof(ParameterCommands) / sizeof(int)); i++)
                 {
                   //Serial.println("PIS Case 3A");
