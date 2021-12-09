@@ -1,0 +1,22 @@
+Water Pump
+-- White -- Water pump sense 
+-- Green -- Water Pump Relay
+-- black -- NC
+-- red -- NC 
+
+Sewage/Grey 
+-- Blue --1/4
+-- Brown -- 1/2
+-- Green -- 3/4
+-- White - Full
+-- Red/Black -- 12v Power
+
+Bathroom 
+-- Red & White -- 12v Power
+-- Green -- Button input
+-- Black -- LED 
+
+Kitchen 
+-- Red -- Button input
+-- Black -- LED
+-- White & Green -- 12v Power 
