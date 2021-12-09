@@ -1,0 +1,361 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 10
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SamacSys_Parts:1727751 Temps1
+U 1 1 62AD032F
+P 3450 3300
+F 0 "Temps1" H 3900 3565 50  0000 C CNN
+F 1 "Temps" H 3900 3474 50  0000 C CNN
+F 2 "SamacSys_Parts:1727751" H 4200 3400 50  0001 L CNN
+F 3 "https://www.phoenixcontact.com/pxc-oc-itemdetail-pdf-web/eshop?lineItemType=LineItem&UID=1727751" H 4200 3300 50  0001 L CNN
+F 4 "PCB Terminal Block 1727751" H 4200 3200 50  0001 L CNN "Description"
+F 5 "24.1" H 4200 3100 50  0001 L CNN "Height"
+F 6 "651-1727751" H 4200 3000 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Phoenix-Contact/1727751?qs=tW%2FRIINyXrem9edff%2FW2fg%3D%3D" H 4200 2900 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Phoenix Contact" H 4200 2800 50  0001 L CNN "Manufacturer_Name"
+F 9 "1727751" H 4200 2700 50  0001 L CNN "Manufacturer_Part_Number"
+	1    3450 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR076
+U 1 1 62AD0335
+P 3250 4800
+F 0 "#PWR076" H 3250 4550 50  0001 C CNN
+F 1 "GND" H 3250 4650 50  0000 C CNN
+F 2 "" H 3250 4800 50  0000 C CNN
+F 3 "" H 3250 4800 50  0000 C CNN
+	1    3250 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 4800 3250 4650
+$Comp
+L power:GND #PWR077
+U 1 1 62AD033C
+P 3700 4800
+F 0 "#PWR077" H 3700 4550 50  0001 C CNN
+F 1 "GND" H 3700 4650 50  0000 C CNN
+F 2 "" H 3700 4800 50  0000 C CNN
+F 3 "" H 3700 4800 50  0000 C CNN
+	1    3700 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3700 4800 3700 4650
+$Comp
+L power:GND #PWR083
+U 1 1 62AD0343
+P 9600 3750
+F 0 "#PWR083" H 9600 3500 50  0001 C CNN
+F 1 "GND" H 9600 3600 50  0000 C CNN
+F 2 "" H 9600 3750 50  0000 C CNN
+F 3 "" H 9600 3750 50  0000 C CNN
+	1    9600 3750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9600 3750 9600 3600
+$Comp
+L power:GND #PWR082
+U 1 1 62AD034A
+P 8450 3850
+F 0 "#PWR082" H 8450 3600 50  0001 C CNN
+F 1 "GND" H 8450 3700 50  0000 C CNN
+F 2 "" H 8450 3850 50  0000 C CNN
+F 3 "" H 8450 3850 50  0000 C CNN
+	1    8450 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8450 3850 8450 3700
+$Comp
+L power:GND #PWR080
+U 1 1 62AD0358
+P 6800 4050
+F 0 "#PWR080" H 6800 3800 50  0001 C CNN
+F 1 "GND" H 6800 3900 50  0000 C CNN
+F 2 "" H 6800 4050 50  0000 C CNN
+F 3 "" H 6800 4050 50  0000 C CNN
+	1    6800 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 4050 6800 3900
+$Comp
+L power:GND #PWR079
+U 1 1 62AD035F
+P 6100 4150
+F 0 "#PWR079" H 6100 3900 50  0001 C CNN
+F 1 "GND" H 6100 4000 50  0000 C CNN
+F 2 "" H 6100 4150 50  0000 C CNN
+F 3 "" H 6100 4150 50  0000 C CNN
+	1    6100 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6100 4150 6100 4000
+$Comp
+L power:GND #PWR078
+U 1 1 62AD0366
+P 5200 4250
+F 0 "#PWR078" H 5200 4000 50  0001 C CNN
+F 1 "GND" H 5200 4100 50  0000 C CNN
+F 2 "" H 5200 4250 50  0000 C CNN
+F 3 "" H 5200 4250 50  0000 C CNN
+	1    5200 4250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 4250 5200 4100
+$Comp
+L power:+5V #PWR075
+U 1 1 62AD036D
+P 2950 3150
+F 0 "#PWR075" H 2950 3000 50  0001 C CNN
+F 1 "+5V" H 2965 3323 50  0000 C CNN
+F 2 "" H 2950 3150 50  0001 C CNN
+F 3 "" H 2950 3150 50  0001 C CNN
+	1    2950 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 3300 3450 3300
+Wire Wire Line
+	2950 3150 2950 3300
+Wire Wire Line
+	3450 3500 2950 3500
+Wire Wire Line
+	2950 3500 2950 3400
+Connection ~ 2950 3300
+Wire Wire Line
+	3450 3400 2950 3400
+Connection ~ 2950 3400
+Wire Wire Line
+	2950 3400 2950 3300
+$Comp
+L Device:R R30
+U 1 1 62AD0386
+P 6100 3850
+F 0 "R30" V 5893 3850 50  0000 C CNN
+F 1 "10k" V 5984 3850 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 6030 3850 50  0001 C CNN
+F 3 "~" H 6100 3850 50  0001 C CNN
+	1    6100 3850
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R29
+U 1 1 62AD038C
+P 5200 3950
+F 0 "R29" V 4993 3950 50  0000 C CNN
+F 1 "10k" V 5084 3950 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5130 3950 50  0001 C CNN
+F 3 "~" H 5200 3950 50  0001 C CNN
+	1    5200 3950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4350 3800 5200 3800
+$Comp
+L Device:R R33
+U 1 1 62AD03A8
+P 8450 3550
+F 0 "R33" V 8243 3550 50  0000 C CNN
+F 1 "10k" V 8334 3550 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8380 3550 50  0001 C CNN
+F 3 "~" H 8450 3550 50  0001 C CNN
+	1    8450 3550
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R34
+U 1 1 62AD03AE
+P 9600 3450
+F 0 "R34" V 9393 3450 50  0000 C CNN
+F 1 "10k" V 9484 3450 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 9530 3450 50  0001 C CNN
+F 3 "~" H 9600 3450 50  0001 C CNN
+	1    9600 3450
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R28
+U 1 1 62AD03B4
+P 3700 4500
+F 0 "R28" V 3493 4500 50  0000 C CNN
+F 1 "10k" V 3584 4500 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3630 4500 50  0001 C CNN
+F 3 "~" H 3700 4500 50  0001 C CNN
+	1    3700 4500
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R27
+U 1 1 62AD03BA
+P 3250 4500
+F 0 "R27" V 3043 4500 50  0000 C CNN
+F 1 "10k" V 3134 4500 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3180 4500 50  0001 C CNN
+F 3 "~" H 3250 4500 50  0001 C CNN
+	1    3250 4500
+	-1   0    0    1   
+$EndComp
+Text GLabel 5300 3800 2    50   Input ~ 0
+A10
+Text GLabel 6250 3700 2    50   Input ~ 0
+A9
+Text GLabel 8600 3400 2    50   Input ~ 0
+A6
+Text GLabel 9800 3300 2    50   Input ~ 0
+A5
+Text GLabel 3800 4350 2    50   Input ~ 0
+A4
+Text GLabel 3400 4350 2    50   Input ~ 0
+A3
+Wire Wire Line
+	3250 4350 3400 4350
+Wire Wire Line
+	3700 4350 3800 4350
+Wire Wire Line
+	9600 3300 9800 3300
+Connection ~ 9600 3300
+Wire Wire Line
+	8450 3400 8600 3400
+Connection ~ 8450 3400
+Wire Wire Line
+	6100 3700 6250 3700
+Connection ~ 6100 3700
+Wire Wire Line
+	5200 3800 5300 3800
+Connection ~ 5200 3800
+Text GLabel 2700 3600 0    50   Input ~ 0
+A11
+Text Label 3250 4300 1    50   ~ 0
+FrontACTemp
+Text Label 3700 4150 0    50   ~ 0
+BackATemp
+Text Label 8800 3300 0    50   ~ 0
+HallwayTemp
+Text Label 7700 3400 0    50   ~ 0
+BathroomTemp
+Text Label 5650 3700 0    50   ~ 0
+Outside
+Text Label 4550 3800 0    50   ~ 0
+BackCabin
+$Comp
+L power:GND #PWR074
+U 1 1 62AD03E3
+P 2800 4050
+F 0 "#PWR074" H 2800 3800 50  0001 C CNN
+F 1 "GND" H 2800 3900 50  0000 C CNN
+F 2 "" H 2800 4050 50  0000 C CNN
+F 3 "" H 2800 4050 50  0000 C CNN
+	1    2800 4050
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 4050 2800 3900
+$Comp
+L Device:R R26
+U 1 1 62AD03EA
+P 2800 3750
+F 0 "R26" V 2593 3750 50  0000 C CNN
+F 1 "10k" V 2684 3750 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 2730 3750 50  0001 C CNN
+F 3 "~" H 2800 3750 50  0001 C CNN
+	1    2800 3750
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	2800 3600 2700 3600
+Text Label 3300 3600 2    50   ~ 0
+FrontCabin
+Wire Wire Line
+	2800 3600 3450 3600
+Connection ~ 2800 3600
+Wire Wire Line
+	3250 4350 3250 3700
+Wire Wire Line
+	3250 3700 3450 3700
+Connection ~ 3250 4350
+Wire Wire Line
+	3450 3800 3450 4150
+Wire Wire Line
+	3450 4150 3700 4150
+Wire Wire Line
+	3700 4150 3700 4350
+Connection ~ 3700 4350
+Text Label 6150 3600 0    50   ~ 0
+Refridgerator
+Text Label 7200 3500 0    50   ~ 0
+Freezer
+Connection ~ 6800 3600
+Wire Wire Line
+	6800 3600 6900 3600
+Connection ~ 7700 3500
+Wire Wire Line
+	7700 3500 7850 3500
+Text GLabel 7850 3500 2    50   Input ~ 0
+A7
+Text GLabel 6900 3600 2    50   Input ~ 0
+A8
+$Comp
+L Device:R R32
+U 1 1 62AD03A2
+P 7700 3650
+F 0 "R32" V 7493 3650 50  0000 C CNN
+F 1 "10k" V 7584 3650 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 7630 3650 50  0001 C CNN
+F 3 "~" H 7700 3650 50  0001 C CNN
+	1    7700 3650
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R31
+U 1 1 62AD039C
+P 6800 3750
+F 0 "R31" V 6593 3750 50  0000 C CNN
+F 1 "10k" V 6684 3750 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 6730 3750 50  0001 C CNN
+F 3 "~" H 6800 3750 50  0001 C CNN
+	1    6800 3750
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7700 3950 7700 3800
+$Comp
+L power:GND #PWR081
+U 1 1 62AD0351
+P 7700 3950
+F 0 "#PWR081" H 7700 3700 50  0001 C CNN
+F 1 "GND" H 7700 3800 50  0000 C CNN
+F 2 "" H 7700 3950 50  0000 C CNN
+F 3 "" H 7700 3950 50  0000 C CNN
+	1    7700 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4350 3500 7700 3500
+Wire Wire Line
+	4350 3400 8450 3400
+Wire Wire Line
+	4350 3300 9600 3300
+Wire Wire Line
+	4350 3600 6800 3600
+Wire Wire Line
+	4350 3700 6100 3700
+$EndSCHEMATC
