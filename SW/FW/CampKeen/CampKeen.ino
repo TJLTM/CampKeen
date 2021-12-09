@@ -65,7 +65,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.3";
+const String FWVersion = "0.7.4";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -1126,8 +1126,7 @@ int ReadInput(int Number) {
 }
 
 int ReadOutput(int Number) {
-  Serial.println(SpareOutputs[Number - 1]);
-  int Value = digitalRead(SpareOutputs[Number]);
+  int Value = digitalRead(SpareOutputs[Number - 1]);
   return Value;
 }
 
@@ -1459,11 +1458,11 @@ void SetOutputState(String Value) {
   if (Number > 0 && Number <= (SpareOutputSize)) {
     bool CorrectParam = false;
     if (State == "OFF") {
-      digitalWrite(SpareOutputs[Number], LOW);
+      digitalWrite(SpareOutputs[Number - 1], LOW);
       CorrectParam = true;
     }
     if (State == "ON") {
-      digitalWrite(SpareOutputs[Number], HIGH);
+      digitalWrite(SpareOutputs[Number - 1], HIGH);
       CorrectParam = true;
     }
     if (CorrectParam == true) {
