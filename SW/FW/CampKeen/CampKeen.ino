@@ -65,7 +65,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.2";
+const String FWVersion = "0.7.3";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -1125,6 +1125,12 @@ int ReadInput(int Number) {
   return Value;
 }
 
+int ReadOutput(int Number) {
+  Serial.println(SpareOutputs[Number - 1]);
+  int Value = digitalRead(SpareOutputs[Number]);
+  return Value;
+}
+
 void ForceCompleteUpdateOfAllStates() {
   ReadGreyTank();
   ReadSewageTank();
@@ -1444,11 +1450,53 @@ void SetStreamingData(String Value) {
 }
 
 void SetOutputState(String Value) {
-
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String Start = Value.substring(Index + 1, End - 1);
+  int SecondParam = Start.indexOf("*");
+  int Number = Start.substring(0, SecondParam).toInt();
+  String State = Start.substring(SecondParam + 1);
+  if (Number > 0 && Number <= (SpareOutputSize)) {
+    bool CorrectParam = false;
+    if (State == "OFF") {
+      digitalWrite(SpareOutputs[Number], LOW);
+      CorrectParam = true;
+    }
+    if (State == "ON") {
+      digitalWrite(SpareOutputs[Number], HIGH);
+      CorrectParam = true;
+    }
+    if (CorrectParam == true) {
+      PrinOutputState(Number);
+    }
+    else {
+      Error(4);
+    }
+  }
+  else {
+    Error(4);
+  }
 }
 
 void GetOutputState(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
+  if (ThingToTest > 0 && ThingToTest <= (SpareOutputSize)) {
+    PrinOutputState(ThingToTest);
+  }
+  else {
+    Error(4);
+  }
+}
 
+void PrinOutputState(int Output) {
+  int CurrentState = ReadOutput(Output);
+  String State = "Off";
+  if (CurrentState == 1) {
+    State = "On";
+  }
+  ControlComPort.println("%R," + GetCurrentTime() + ",Output," + Output + "," + State);
 }
 
 
@@ -1458,19 +1506,19 @@ void ReadInputState(String Value) {
   int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
   if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
     int CurrentInputRead = ReadInput(ThingToTest);
-    PrintInputState(ThingToTest,CurrentInputRead);
+    PrintInputState(ThingToTest, CurrentInputRead);
   }
   else {
     Error(4);
   }
 }
 
-void PrintInputState(int Input, int CurrentInputRead){
+void PrintInputState(int Input, int CurrentInputRead) {
   String State = "Off";
   if (CurrentInputRead == 1) {
-      State = "On";
-    }
-    ControlComPort.println("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
+    State = "On";
+  }
+  ControlComPort.println("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
 }
 
 void SetRTCDateTime(String Value) {
@@ -1486,6 +1534,7 @@ void SetACEnmon(String Value) {
     EnableACEnergyMonitoring = false;
     CorrectParam = true;
   }
+
   if (ThingToTest == "ON") {
     EnableACEnergyMonitoring = true;
     CorrectParam = true;
@@ -1559,7 +1608,6 @@ String PainlessInstructionSet(String & TestString) {
                   }
                 }
               }
-
               TestString.remove(0, FindEnd + 1);
             }
             else {
@@ -1568,7 +1616,6 @@ String PainlessInstructionSet(String & TestString) {
             }
           }
         }
-
       }
       else { //Case 1 Dump the buffer if ther is no start character is found
         //Serial.println("PIS Case 1");
