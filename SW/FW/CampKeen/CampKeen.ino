@@ -9,7 +9,8 @@
 #define ControlComPort Serial
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
-                            "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS"
+                            "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
+                            "GETTIME"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETRTC", "GETOUTPUT", "SETACENMON"
@@ -65,7 +66,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.4";
+const String FWVersion = "0.7.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -1268,6 +1269,10 @@ void GetWaterState() {
   ControlComPort.println("%R,Water," + State);
 }
 
+void GetSystemTime() {
+  ControlComPort.println("%R,System Time," + GetCurrentTime());
+}
+
 void GetACEnmon() {
   String State = "Off";
   if (EnableACEnergyMonitoring == true) {
@@ -1519,7 +1524,65 @@ void PrintInputState(int Input, int CurrentInputRead) {
 }
 
 void SetRTCDateTime(String Value) {
+  // need to set Year Month Day Hour Min Second
+  //rtc.adjust(DateTime(year, month, day, hour, minute, seconds));
+  //Example 8-19-2020 5:25:45 PM settime*2020:8:19:17:25:45\r
+  bool CorrectParam = true;
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
 
+  String Prefix = Value.substring(0, Index);
+  String ThingToTest = Value.substring(Index + 1, End);
+
+  int Year = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
+  if (2021 > Year) {
+    ControlComPort.println("%R,Error,Can't set the year older than when i made this mess");
+    CorrectParam = false;
+  }
+
+  ThingToTest.remove(0, ThingToTest.indexOf(':'));
+  int Month = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
+  if (1 > Month > 12) {
+    ControlComPort.println("%R,Error,1-12 accepted");
+    CorrectParam = false;
+  }
+
+  ThingToTest.remove(0, ThingToTest.indexOf(':'));
+  int Day = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
+  if (1 > Day > 31) {
+    ControlComPort.println("%R,Error,1-31 accepted");
+    CorrectParam = false;
+  }
+
+  ThingToTest.remove(0, ThingToTest.indexOf(':'));
+  int Hour = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
+  if (0 > Min > 12) {
+    ControlComPort.println("%R,Error,0-24 accepted");
+    CorrectParam = false;
+  }
+
+  ThingToTest.remove(0, ThingToTest.indexOf(':'));
+  int Min = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
+  if (0 > Min > 60) {
+    ControlComPort.println("%R,Error,0-59 accepted");
+    CorrectParam = false;
+  }
+
+  ThingToTest.remove(0, ThingToTest.indexOf(':'));
+  int Sec = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
+  if (0 > Sec > 60) {
+    ControlComPort.println("%R,Error,0-59 accepted");
+    CorrectParam = false;
+  }
+
+  if (CorrectParam == true) {
+    rtc.adjust(DateTime(Year, Month, Day, Hour, Min, Sec));
+    delay(100);
+    GetSystemTime();
+  }
+  else {
+    Error(4);
+  }
 }
 
 void SetACEnmon(String Value) {
@@ -1767,6 +1830,10 @@ void CommandToCall(int Index) {
       //Reset All alarms and warnings
       ResetAllAlarmsAndWarnings();
       ControlComPort.println("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings");
+      break;
+    case 22:
+      //Show System Time
+      GetSystemTime();
       break;
   }
 }
