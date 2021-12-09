@@ -1142,7 +1142,6 @@ void ForceCompleteUpdateOfAllStates() {
     EnergyMetering();
   }
 }
-
 //------------------------------------------------------------------
 //Serial
 //------------------------------------------------------------------
@@ -1498,7 +1497,6 @@ void PrinOutputState(int Output) {
   ControlComPort.println("%R," + GetCurrentTime() + ",Output," + Output + "," + State);
 }
 
-
 void ReadInputState(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -1546,7 +1544,6 @@ void SetACEnmon(String Value) {
     Error(4);
   }
 }
-
 /*
 
   SCC = start command character
@@ -1630,10 +1627,7 @@ String PainlessInstructionSet(String & TestString) {
   return TestString;
 }//End of PIS Function
 
-
 void ParamCommandToCall(int Index, String CommandRaw) {
-  //Serial.print("Param Command to call:");
-  //Serial.println(Index);
   switch (Index)
   {
     case 0:
@@ -1676,8 +1670,6 @@ void ParamCommandToCall(int Index, String CommandRaw) {
 }
 
 void CommandToCall(int Index) {
-  //Serial.print("Command to call:");
-  //Serial.println(Index);
   switch (Index)
   {
     case 0:
