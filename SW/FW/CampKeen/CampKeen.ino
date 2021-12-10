@@ -66,7 +66,7 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.7";
+const String FWVersion = "0.7.8";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -910,7 +910,7 @@ void ReadWaterAndLPG() {
   digitalWrite(TankPowerRelay, HIGH);
   delay(1000);
   int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * analogRead(LPGSensor))) - 1));
-  if (LPGResistence > 122) {
+  if (LPGResistence >= 122) {
     LastLPGLevel = "ERROR Check Tank Sensor";
   }
   else {
@@ -947,7 +947,7 @@ void ReadWaterAndLPG() {
     OutputWarningMessage(6); //Water
   }
 
-  if (LastLPGLevel >= 25 || LastLPGLevel == "ERROR Check Tank Sensor") {
+  if (LastLPGLevel <= 25 || LastLPGLevel == "ERROR Check Tank Sensor") {
     OutputWarningMessage(7); //LPG
   }
 }
@@ -1555,33 +1555,20 @@ void SetRTCDateTime(String Value) {
 
 
   for (int i = 0; i < 6; i++) {
-    PreviousIndex = NextIndex;
     NextIndex = ThingToTest.indexOf(":");
+    if (NextIndex != PreviousIndex || NextIndex == 2){
     TimeArray[i] = ThingToTest.substring(0, NextIndex).toInt();
     ThingToTest = ThingToTest.substring(NextIndex + 1);
+    PreviousIndex = NextIndex;
+    }
   }
 
   for (int i = 0; i < 6; i++) {
     //check that all the params are filled out.
     if (TimeArray[i] == -1) {
       CorrectParam = false;
-      Serial.println("Something Wrong");
     }
   }
-
-  Serial.print("Year: ");
-  Serial.println(TimeArray[0]);
-  Serial.print("Month: ");
-  Serial.println(TimeArray[1]);
-  Serial.print("Day: ");
-  Serial.println(TimeArray[2]);
-  Serial.print("Hour: ");
-  Serial.println(TimeArray[3]);
-  Serial.print("Min: ");
-  Serial.println(TimeArray[4]);
-  Serial.print("Second: ");
-  Serial.println(TimeArray[5]);
-
 
   if (2021 > TimeArray[0]) {
     ControlComPort.println("%R,Error,Can't set the year older than when i made this mess : " + String(TimeArray[0]));
@@ -1614,7 +1601,7 @@ void SetRTCDateTime(String Value) {
   }
 
   if (CorrectParam == true) {
-    //rtc.adjust(DateTime(TimeArray[0], TimeArray[1], TimeArray[2], TimeArray[3], TimeArray[4], TimeArray[5]));
+    rtc.adjust(DateTime(TimeArray[0], TimeArray[1], TimeArray[2], TimeArray[3], TimeArray[4], TimeArray[5]));
     delay(100);
     GetSystemTime();
   }
