@@ -13,7 +13,7 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "GETTIME"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
-                             "READINPUT", "SETRTC", "GETOUTPUT", "SETACENMON"
+                             "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON"
                             };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
@@ -83,7 +83,7 @@ bool EnableACEnergyMonitoring = false;
 String Units = "I"; // address 0
 bool UseWaterPumpSense = false; // address 1
 bool StreamingData = false; // address 2
-const String StatesForOutput[2] = {"Off","On"};
+const String StatesForOutput[2] = {"Off", "On"};
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -1531,52 +1531,76 @@ void SetRTCDateTime(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
 
-  String Prefix = Value.substring(0, Index);
   String ThingToTest = Value.substring(Index + 1, End);
 
-  int Year = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (2021 > Year) {
-    ControlComPort.println("%R,Error,Can't set the year older than when i made this mess");
+  Serial.print("RTC: ");
+  Serial.println(ThingToTest);
+
+  int NextIndex = -1, PreviousIndex;
+  int TimeArray[6] = { -1, -1, -1, -1, -1, -1};
+
+
+  for (int i = 0; i < 6; i++) {
+    PreviousIndex = NextIndex;
+    NextIndex = ThingToTest.indexOf(":");
+    TimeArray[i] = ThingToTest.substring(0, NextIndex).toInt();
+    ThingToTest = ThingToTest.substring(NextIndex + 1);
+  }
+
+  for (int i = 0; i < 6; i++) {
+    //check that all the params are filled out.
+    if (TimeArray[i] == -1) {
+      CorrectParam = false;
+      Serial.println("Something Wrong");
+    }
+  }
+
+  Serial.print("Year: ");
+  Serial.println(TimeArray[0]);
+  Serial.print("Month: ");
+  Serial.println(TimeArray[1]);
+  Serial.print("Day: ");
+  Serial.println(TimeArray[2]);
+  Serial.print("Hour: ");
+  Serial.println(TimeArray[3]);
+  Serial.print("Min: ");
+  Serial.println(TimeArray[4]);
+  Serial.print("Second: ");
+  Serial.println(TimeArray[5]);
+
+
+  if (2021 > TimeArray[0]) {
+    ControlComPort.println("%R,Error,Can't set the year older than when i made this mess : " + String(TimeArray[0]));
     CorrectParam = false;
   }
 
-  ThingToTest.remove(0, ThingToTest.indexOf(':'));
-  int Month = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (1 > Month > 12) {
-    ControlComPort.println("%R,Error,1-12 accepted");
+  if (1 > TimeArray[1] ||  TimeArray[1] > 12) {
+    ControlComPort.println("%R,Error,Month 1-12 accepted : " + String(TimeArray[1]));
     CorrectParam = false;
   }
 
-  ThingToTest.remove(0, ThingToTest.indexOf(':'));
-  int Day = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (1 > Day > 31) {
-    ControlComPort.println("%R,Error,1-31 accepted");
+  if (1 > TimeArray[2] ||  TimeArray[2] > 31) {
+    ControlComPort.println("%R,Error,Date 1-31 accepted : " + String(TimeArray[2]));
     CorrectParam = false;
   }
 
-  ThingToTest.remove(0, ThingToTest.indexOf(':'));
-  int Hour = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (0 > Hour > 12) {
-    ControlComPort.println("%R,Error,0-24 accepted");
+  if (0 > TimeArray[3] ||  TimeArray[3] > 24) {
+    ControlComPort.println("%R,Error,Hour 0-23 accepted : " + String(TimeArray[3]));
     CorrectParam = false;
   }
 
-  ThingToTest.remove(0, ThingToTest.indexOf(':'));
-  int Min = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (0 > Min > 60) {
-    ControlComPort.println("%R,Error,0-59 accepted");
+  if (0 > TimeArray[4] || TimeArray[4] > 60) {
+    ControlComPort.println("%R,Error,Min 0-59 accepted : " + String(TimeArray[4]));
     CorrectParam = false;
   }
 
-  ThingToTest.remove(0, ThingToTest.indexOf(':'));
-  int Sec = ThingToTest.substring(0, ThingToTest.indexOf(':')).toInt();
-  if (0 > Sec > 60) {
-    ControlComPort.println("%R,Error,0-59 accepted");
+  if (0 > TimeArray[5] ||  TimeArray[5] >= 60) {
+    ControlComPort.println("%R,Error,Sec 0-59 accepted : " + String(TimeArray[5]));
     CorrectParam = false;
   }
 
   if (CorrectParam == true) {
-    rtc.adjust(DateTime(Year, Month, Day, Hour, Min, Sec));
+    //rtc.adjust(DateTime(TimeArray[0], TimeArray[1], TimeArray[2], TimeArray[3], TimeArray[4], TimeArray[5]));
     delay(100);
     GetSystemTime();
   }
