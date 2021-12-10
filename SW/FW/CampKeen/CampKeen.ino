@@ -66,11 +66,11 @@ unsigned short CurrentGainCT2 = 34500;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.6";
+const String FWVersion = "0.7.7";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
-int ArrayOfWarnings[5] = {};
+int ArrayOfWarnings[7] = {};
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 String TempUnits = "F";
@@ -942,6 +942,14 @@ void ReadWaterAndLPG() {
   }
   // Turn Off Voltage to tanks
   digitalWrite(TankPowerRelay, LOW);
+
+  if (LastWaterLevel == "1/4") {
+    OutputWarningMessage(6); //Water
+  }
+
+  if (LastLPGLevel >= 25 || LastLPGLevel == "ERROR Check Tank Sensor") {
+    OutputWarningMessage(7); //LPG
+  }
 }
 //------------------------------------------------------------------
 //Other sensors
@@ -1326,13 +1334,19 @@ void OutputWarningMessage(int ID) {
       case 5:
         Message = "Camper Battery voltage is low";
         break;
+      case 6:
+        Message = "Water Tank Level is low";
+        break;
+      case 7:
+        Message = "LPG Level is low";
+        break;
     }
     ControlComPort.println("%R," + GetCurrentTime() + ",Warning," + Message);
   }
 }
 
 void AllWarningMessages() {
-  for (int i = 1; i <= 5; i++) {
+  for (int i = 1; i <= 7; i++) {
     OutputWarningMessage(i);
   }
 }
@@ -1346,7 +1360,7 @@ void ResetAlarm() {
 }
 
 void ResetWarnings() {
-  ArrayOfWarnings[5] = {};
+  ArrayOfWarnings[7] = {};
   WarningActive = false;
   digitalWrite(WarningLED, LOW);
 }
@@ -1589,7 +1603,7 @@ void SetRTCDateTime(String Value) {
     CorrectParam = false;
   }
 
-  if (0 > TimeArray[4] || TimeArray[4] > 60) {
+  if (0 > TimeArray[4] || TimeArray[4] >= 60) {
     ControlComPort.println("%R,Error,Min 0-59 accepted : " + String(TimeArray[4]));
     CorrectParam = false;
   }
