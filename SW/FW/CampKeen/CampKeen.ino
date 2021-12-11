@@ -1802,15 +1802,9 @@ void SetACVOLTAGEGAIN(String Value) {
   unsigned short CurrentVOLTAGEGAIN = VoltageGain;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
-  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
-  bool CorrectParam = false;
+  unsigned short ThingToTest = Value.substring(Index + 1, End - 1).toInt();
   if ( 1 <= ThingToTest < 65535) {
-    CorrectParam = true;
     VoltageGain = ThingToTest;
-  }
-
-  if (CorrectParam == true) {
-    //put it into EEPROM
     EEPROM.update(8, highByte(ThingToTest));
     EEPROM.update(9, lowByte(ThingToTest));
     GetACVOLTAGEGAIN();
@@ -1824,20 +1818,18 @@ void SetACVOLTAGEGAIN(String Value) {
 }
 
 void SetACCT1GAIN(String Value) {
+  unsigned short CurrentCT1GAIN = CurrentGainCT1;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
-  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
-  bool CorrectParam = false;
+  unsigned short ThingToTest = Value.substring(Index + 1, End - 1).toInt();
   if ( 1 <= ThingToTest < 65535) {
-    CorrectParam = true;
     CurrentGainCT1 = ThingToTest;
-  }
-
-  if (CorrectParam == true) {
-    //put it into EEPROM
     EEPROM.update(10, highByte(ThingToTest));
     EEPROM.update(11, lowByte(ThingToTest));
     GetACCT1GAIN();
+    if (CurrentCT1GAIN != CurrentGainCT1) {
+        SetupEnergyMonitor();
+      }
   }
   else {
     Error(4);
@@ -1847,14 +1839,10 @@ void SetACCT1GAIN(String Value) {
 void SetACCT2GAIN(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
-  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
-  bool CorrectParam = false;
-  if ( 1 <= ThingToTest < 65535) {
-    CorrectParam = true;
+  unsigned short ThingToTest = Value.substring(Index + 1, End - 1).toInt();
+  Serial.println(ThingToTest);
+  if ( 1 <= ThingToTest < 65534) {
     CurrentGainCT2 = ThingToTest;
-  }
-
-  if (CorrectParam == true) {
     //put it into EEPROM
     EEPROM.update(12, highByte(ThingToTest));
     EEPROM.update(13, lowByte(ThingToTest));
@@ -1866,19 +1854,12 @@ void SetACCT2GAIN(String Value) {
 }
 
 void SetACPGAGAIN(String Value) {
-  Serial.println("Getting to SetACPGAGAIN");
   unsigned short CurrentFREQ = LineFreq;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
-  bool CorrectParam = false;
   if ( 1 <= ThingToTest < 65535) {
-    CorrectParam = true;
     PGAGain = ThingToTest;
-  }
-
-  if (CorrectParam == true) {
-    //put it into EEPROM
     if (CurrentFREQ != LineFreq) {
       SetupEnergyMonitor();
     }
@@ -1973,10 +1954,6 @@ String PainlessInstructionSet(String & TestString) {
 }//End of PIS Function
 
 void ParamCommandToCall(int Index, String CommandRaw) {
-  Serial.print("ParamCommandToCall: ");
-  Serial.print(Index);
-  Serial.print(" ");
-  Serial.println(CommandRaw);
   switch (Index)
   {
     case 0:
@@ -2029,6 +2006,14 @@ void ParamCommandToCall(int Index, String CommandRaw) {
       break;
     case 12:
       SetACLEGS(CommandRaw);
+      break;
+    case 13:
+      //SET AC CT1 GAIN
+      SetACCT1GAIN(CommandRaw);
+      break;
+    case 14:
+      //SET AC CT2 GAIN
+      SetACCT2GAIN(CommandRaw);
       break;
   }
 }
