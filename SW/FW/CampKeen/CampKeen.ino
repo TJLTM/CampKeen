@@ -74,7 +74,7 @@ int NumberOfACLegs = 1;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.1";
+const String FWVersion = "0.8.2";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -292,7 +292,7 @@ void setup() {
   CurrentGainCT1 = GetFromEEPROMACCurrentGainCT1();
   CurrentGainCT2 = GetFromEEPROMACCurrentGainCT2();
   NumberOfACLegs = GetFromEEPROMACLegs();
-  
+
   pinMode(EnergyMonitorCS, OUTPUT);
   SetupEnergyMonitor();
 
@@ -1082,41 +1082,83 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 unsigned short GetFromEEPROMACVOLTAGEGAIN() {
   unsigned short Value = EEPROM.read(8) << 8 | EEPROM.read(9);
+  Serial.print("ACVOLTAGEGAIN ");
+  Serial.println(Value);
+  if (Value == 65535) {
+    Value = 1975;
+    EEPROM.update(8, highByte(Value));
+    EEPROM.update(9, lowByte(Value));
+  }
   return Value;
 }
 
 unsigned short GetFromEEPROMACCurrentGainCT1() {
   unsigned short Value = EEPROM.read(10) << 8 | EEPROM.read(11);
+  Serial.print("GainCT1 ");
+  Serial.println(Value);
+  if (Value == 65535) {
+    Value = 34500;
+    EEPROM.update(10, highByte(Value));
+    EEPROM.update(11, lowByte(Value));
+  }
   return Value;
 }
 
 unsigned short GetFromEEPROMACCurrentGainCT2() {
   unsigned short Value = EEPROM.read(12) << 8 | EEPROM.read(13);
+  Serial.print("GainCT2 ");
+  Serial.println(Value);
+  if (Value == 65535) {
+    Value = 34500;
+    EEPROM.update(12, highByte(Value));
+    EEPROM.update(13, lowByte(Value));
+  }
   return Value;
 }
 
 unsigned short GetFromEEPROMACPGAGain() {
   unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
+  Serial.print("ACPGAGain ");
+  Serial.println(Value);
+  if (Value == 65535) {
+    Value = 21;
+    EEPROM.update(14, highByte(Value));
+    EEPROM.update(15, lowByte(Value));
+  }
   return Value;
 }
 
 int GetFromEEPROMACLegs() {
   int Value = EEPROM.read(7);
+  Serial.print("AC LEGS ");
+  Serial.println(Value);
+  if (0 < Value > 3) {
+    Value = 1;
+    EEPROM.update(7, Value);
+  }
   return Value;
 }
 
 unsigned short GetFromEEPROMACFREQ() {
   unsigned short Value = 0;
-  if (EEPROM.read(6) == 60) {
+  int ReadFromMem = EEPROM.read(6);
+  if (ReadFromMem == 60) {
     Value = 4485; //for 60 Hz (North America)
   }
-  if (EEPROM.read(6) == 50) {
+  if (ReadFromMem == 50) {
     Value = 389; //for 50 hz (rest of the world)
+  }
+  
+  if (Value == 0) {
+    /*
+       If it isn't either one of those values
+       set the default of 60 hz
+    */
+    EEPROM.update(6, 60);
+    Value = 4485;
   }
   return Value;
 }
-
-
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
@@ -1713,16 +1755,17 @@ void SetACFREAK(String Value) {
   bool CorrectParam = false;
   if (ThingToTest == "50") {
     LineFreq = 389;
+    EEPROM.update(6, 50);
     CorrectParam = true;
   }
 
   if (ThingToTest == "60") {
+    EEPROM.update(6, 60);
     LineFreq = 4485;
     CorrectParam = true;
   }
 
   if (CorrectParam == true) {
-    //put it into EEPROM
     GetACFREQ();
   }
   else {
@@ -1756,11 +1799,12 @@ void SetACLEGS(String Value) {
 }
 
 void SetACVOLTAGEGAIN(String Value) {
+  unsigned short CurrentVOLTAGEGAIN = VoltageGain;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
   bool CorrectParam = false;
-  if ( 1 <= ThingToTest <= 65535) {
+  if ( 1 <= ThingToTest < 65535) {
     CorrectParam = true;
     VoltageGain = ThingToTest;
   }
@@ -1770,18 +1814,21 @@ void SetACVOLTAGEGAIN(String Value) {
     EEPROM.update(8, highByte(ThingToTest));
     EEPROM.update(9, lowByte(ThingToTest));
     GetACVOLTAGEGAIN();
+    if (CurrentVOLTAGEGAIN != VoltageGain) {
+        SetupEnergyMonitor();
+      }
   }
   else {
     Error(4);
   }
 }
 
-void GetACCT1GAIN(String Value) {
+void SetACCT1GAIN(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
   bool CorrectParam = false;
-  if ( 1 <= ThingToTest <= 65535) {
+  if ( 1 <= ThingToTest < 65535) {
     CorrectParam = true;
     CurrentGainCT1 = ThingToTest;
   }
@@ -1797,12 +1844,12 @@ void GetACCT1GAIN(String Value) {
   }
 }
 
-void GetACCT2GAIN(String Value) {
+void SetACCT2GAIN(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
   bool CorrectParam = false;
-  if ( 1 <= ThingToTest <= 65535) {
+  if ( 1 <= ThingToTest < 65535) {
     CorrectParam = true;
     CurrentGainCT2 = ThingToTest;
   }
@@ -1819,17 +1866,22 @@ void GetACCT2GAIN(String Value) {
 }
 
 void SetACPGAGAIN(String Value) {
+  Serial.println("Getting to SetACPGAGAIN");
+  unsigned short CurrentFREQ = LineFreq;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
   bool CorrectParam = false;
-  if ( 1 <= ThingToTest <= 65535) {
+  if ( 1 <= ThingToTest < 65535) {
     CorrectParam = true;
     PGAGain = ThingToTest;
   }
 
   if (CorrectParam == true) {
     //put it into EEPROM
+    if (CurrentFREQ != LineFreq) {
+      SetupEnergyMonitor();
+    }
     EEPROM.update(14, highByte(ThingToTest));
     EEPROM.update(15, lowByte(ThingToTest));
     GetACPGAGAIN();
@@ -1921,6 +1973,10 @@ String PainlessInstructionSet(String & TestString) {
 }//End of PIS Function
 
 void ParamCommandToCall(int Index, String CommandRaw) {
+  Serial.print("ParamCommandToCall: ");
+  Serial.print(Index);
+  Serial.print(" ");
+  Serial.println(CommandRaw);
   switch (Index)
   {
     case 0:
@@ -1961,51 +2017,18 @@ void ParamCommandToCall(int Index, String CommandRaw) {
       break;
     case 9:
       //SET AC FREQUNECY 50/60 Hz
-      unsigned short CurrentFREQ = LineFreq;
       SetACFREAK(CommandRaw);
-      if (CurrentFREQ != LineFreq) {
-        SetupEnergyMonitor();
-      }
       break;
     case 10:
       //SET AC PGAGAIN
-      unsigned short CurrentPGAGain = PGAGain;
       SetACPGAGAIN(CommandRaw);
-      if (CurrentPGAGain != PGAGain) {
-        SetupEnergyMonitor();
-      }
       break;
     case 11:
       //SET AC VOLTAGEGAIN
-      unsigned short CurrentVOLTAGEGAIN = VoltageGain;
       SetACVOLTAGEGAIN(CommandRaw);
-      if (CurrentPGAGain != VoltageGain) {
-        SetupEnergyMonitor();
-      }
       break;
     case 12:
-      //SET AC LEGS
-      unsigned short CurrentACLEGS = NumberOfACLegs;
       SetACLEGS(CommandRaw);
-      if (CurrentPGAGain != NumberOfACLegs) {
-        SetupEnergyMonitor();
-      }
-      break;
-    case 13:
-      //SET AC CT1 GAIN
-      unsigned short CurrentCT1GAIN = CurrentGainCT1;
-
-      if (CurrentPGAGain != CurrentGainCT1) {
-        SetupEnergyMonitor();
-      }
-      break;
-    case 14:
-      //SET AC CT2 GAIN
-      unsigned short CurrentCT2GAIN = CurrentGainCT2;
-
-      if (CurrentPGAGain != CurrentGainCT2) {
-        SetupEnergyMonitor();
-      }
       break;
   }
 }
@@ -2115,7 +2138,6 @@ void CommandToCall(int Index) {
       break;
     case 23:
       //Show AC VOLTAGEGAIN
-      Serial.println("VOLTAGEGAIN");
       GetACVOLTAGEGAIN();
       break;
     case 24:
@@ -2124,7 +2146,6 @@ void CommandToCall(int Index) {
       break;
     case 25:
       //Show AC PGAGAIN
-      Serial.println("PGAGAIN");
       GetACPGAGAIN();
       break;
     case 26:
@@ -2133,12 +2154,10 @@ void CommandToCall(int Index) {
       break;
     case 27:
       //Show AC CT1GAIN
-      Serial.println("CT1GAIN");
       GetACCT1GAIN();
       break;
     case 28:
       //Show AC CT2GAIN
-      Serial.println("CT2GAIN");
       GetACCT2GAIN();
       break;
   }
