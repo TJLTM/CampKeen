@@ -1,0 +1,16 @@
+Memory Address in EEPROM
+1 - Units
+2 - Resevred for possible future use
+3 - Resevred for possible future use
+4 - Resevred for possible future use
+5 - Resevred for possible future use
+6 - Energy Monitoring Frequency Data to be stored 50,60 
+7 - Energy Monitoring Single Leg or Both Legs of 240 Data to be Stored 1,2
+8 - Voltage Gain Upper Byte 
+9 - Voltage Gain Lower Byte 
+10 - CurrentGainCT1 Upper Byte
+11 - CurrentGainCT1 Lower Byte
+12 - CurrentGainCT2 Upper Byte
+13 - CurrentGainCT2 Lower Byte
+14 - PGAGain Upper Byte
+15 - PGAGain Lower Byte
