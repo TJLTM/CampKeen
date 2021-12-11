@@ -74,7 +74,7 @@ int NumberOfACLegs = 1;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.0";
+const String FWVersion = "0.8.1";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -285,6 +285,14 @@ void setup() {
   GenEnclosure.begin(MAX31865_3WIRE);
 
   //Energy
+  //Load from EEProm
+  LineFreq = GetFromEEPROMACFREQ(); //Load from EEProm
+  PGAGain = GetFromEEPROMACPGAGain();
+  VoltageGain = GetFromEEPROMACVOLTAGEGAIN();
+  CurrentGainCT1 = GetFromEEPROMACCurrentGainCT1();
+  CurrentGainCT2 = GetFromEEPROMACCurrentGainCT2();
+  NumberOfACLegs = GetFromEEPROMACLegs();
+  
   pinMode(EnergyMonitorCS, OUTPUT);
   SetupEnergyMonitor();
 
@@ -1073,10 +1081,41 @@ void ReadOtherTempSensors() {
 //EEPROM functions
 //------------------------------------------------------------------
 unsigned short GetFromEEPROMACVOLTAGEGAIN() {
-unsigned short Value;
-
-return Value;
+  unsigned short Value = EEPROM.read(8) << 8 | EEPROM.read(9);
+  return Value;
 }
+
+unsigned short GetFromEEPROMACCurrentGainCT1() {
+  unsigned short Value = EEPROM.read(10) << 8 | EEPROM.read(11);
+  return Value;
+}
+
+unsigned short GetFromEEPROMACCurrentGainCT2() {
+  unsigned short Value = EEPROM.read(12) << 8 | EEPROM.read(13);
+  return Value;
+}
+
+unsigned short GetFromEEPROMACPGAGain() {
+  unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
+  return Value;
+}
+
+int GetFromEEPROMACLegs() {
+  int Value = EEPROM.read(7);
+  return Value;
+}
+
+unsigned short GetFromEEPROMACFREQ() {
+  unsigned short Value = 0;
+  if (EEPROM.read(6) == 60) {
+    Value = 4485; //for 60 Hz (North America)
+  }
+  if (EEPROM.read(6) == 50) {
+    Value = 389; //for 50 hz (rest of the world)
+  }
+  return Value;
+}
+
 
 //------------------------------------------------------------------
 //Helper functions
@@ -1300,34 +1339,32 @@ void GetACEnmon() {
 }
 
 void GetACVOLTAGEGAIN() {
-  ControlComPort.println("%R,ACVOLTAGEGAIN," + VoltageGain);
+  ControlComPort.println("%R,ACVOLTAGEGAIN," + String(VoltageGain));
 }
 
 void GetACFREQ() {
-  int State = 0;
   if (LineFreq == 4485) {
-    State = 60;
+    ControlComPort.println("%R,ACFREQ,60");
   }
   if (LineFreq == 389) {
-    State = 50;
+    ControlComPort.println("%R,ACFREQ,50");
   }
-  ControlComPort.println("%R,ACFREQ," + State);
 }
 
 void GetACPGAGAIN() {
-  ControlComPort.println("%R,ACPGAGAIN," + PGAGain);
+  ControlComPort.println("%R,ACPGAGAIN," + String(PGAGain));
 }
 
 void GetACLEGS() {
-  ControlComPort.println("%R,ACPGAGAIN," + NumberOfACLegs);
+  ControlComPort.println("%R,ACLEGS," + String(NumberOfACLegs));
 }
 
 void GetACCT1GAIN() {
-  ControlComPort.println("%R,ACCT1GAIN," + CurrentGainCT1);
+  ControlComPort.println("%R,ACCT1GAIN," + String(CurrentGainCT1));
 }
 
 void GetACCT2GAIN() {
-  ControlComPort.println("%R,ACCT2GAIN," + CurrentGainCT2);
+  ControlComPort.println("%R,ACCT2GAIN," + String(CurrentGainCT2));
 }
 
 //------------------------------------------------------------------
@@ -1586,15 +1623,9 @@ void SetRTCDateTime(String Value) {
   bool CorrectParam = true;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
-
   String ThingToTest = Value.substring(Index + 1, End);
-
-  Serial.print("RTC: ");
-  Serial.println(ThingToTest);
-
   int NextIndex = -1, PreviousIndex;
   int TimeArray[6] = { -1, -1, -1, -1, -1, -1};
-
 
   for (int i = 0; i < 6; i++) {
     NextIndex = ThingToTest.indexOf(":");
@@ -2084,6 +2115,7 @@ void CommandToCall(int Index) {
       break;
     case 23:
       //Show AC VOLTAGEGAIN
+      Serial.println("VOLTAGEGAIN");
       GetACVOLTAGEGAIN();
       break;
     case 24:
@@ -2092,6 +2124,7 @@ void CommandToCall(int Index) {
       break;
     case 25:
       //Show AC PGAGAIN
+      Serial.println("PGAGAIN");
       GetACPGAGAIN();
       break;
     case 26:
@@ -2100,10 +2133,12 @@ void CommandToCall(int Index) {
       break;
     case 27:
       //Show AC CT1GAIN
+      Serial.println("CT1GAIN");
       GetACCT1GAIN();
       break;
     case 28:
       //Show AC CT2GAIN
+      Serial.println("CT2GAIN");
       GetACCT2GAIN();
       break;
   }
