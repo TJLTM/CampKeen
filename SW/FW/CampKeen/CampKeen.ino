@@ -74,7 +74,7 @@ int NumberOfACLegs = 1;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.2";
+const String FWVersion = "0.8.3";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -1082,8 +1082,6 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 unsigned short GetFromEEPROMACVOLTAGEGAIN() {
   unsigned short Value = EEPROM.read(8) << 8 | EEPROM.read(9);
-  Serial.print("ACVOLTAGEGAIN ");
-  Serial.println(Value);
   if (Value == 65535) {
     Value = 1975;
     EEPROM.update(8, highByte(Value));
@@ -1094,8 +1092,6 @@ unsigned short GetFromEEPROMACVOLTAGEGAIN() {
 
 unsigned short GetFromEEPROMACCurrentGainCT1() {
   unsigned short Value = EEPROM.read(10) << 8 | EEPROM.read(11);
-  Serial.print("GainCT1 ");
-  Serial.println(Value);
   if (Value == 65535) {
     Value = 34500;
     EEPROM.update(10, highByte(Value));
@@ -1106,8 +1102,6 @@ unsigned short GetFromEEPROMACCurrentGainCT1() {
 
 unsigned short GetFromEEPROMACCurrentGainCT2() {
   unsigned short Value = EEPROM.read(12) << 8 | EEPROM.read(13);
-  Serial.print("GainCT2 ");
-  Serial.println(Value);
   if (Value == 65535) {
     Value = 34500;
     EEPROM.update(12, highByte(Value));
@@ -1118,8 +1112,6 @@ unsigned short GetFromEEPROMACCurrentGainCT2() {
 
 unsigned short GetFromEEPROMACPGAGain() {
   unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
-  Serial.print("ACPGAGain ");
-  Serial.println(Value);
   if (Value == 65535) {
     Value = 21;
     EEPROM.update(14, highByte(Value));
@@ -1130,8 +1122,6 @@ unsigned short GetFromEEPROMACPGAGain() {
 
 int GetFromEEPROMACLegs() {
   int Value = EEPROM.read(7);
-  Serial.print("AC LEGS ");
-  Serial.println(Value);
   if (0 < Value > 3) {
     Value = 1;
     EEPROM.update(7, Value);
@@ -1148,7 +1138,7 @@ unsigned short GetFromEEPROMACFREQ() {
   if (ReadFromMem == 50) {
     Value = 389; //for 50 hz (rest of the world)
   }
-  
+
   if (Value == 0) {
     /*
        If it isn't either one of those values
@@ -1803,18 +1793,14 @@ void SetACVOLTAGEGAIN(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = Value.substring(Index + 1, End - 1).toInt();
-  if ( 1 <= ThingToTest < 65535) {
-    VoltageGain = ThingToTest;
-    EEPROM.update(8, highByte(ThingToTest));
-    EEPROM.update(9, lowByte(ThingToTest));
-    GetACVOLTAGEGAIN();
-    if (CurrentVOLTAGEGAIN != VoltageGain) {
-        SetupEnergyMonitor();
-      }
+  VoltageGain = ThingToTest;
+  EEPROM.update(8, highByte(ThingToTest));
+  EEPROM.update(9, lowByte(ThingToTest));
+  GetACVOLTAGEGAIN();
+  if (CurrentVOLTAGEGAIN != VoltageGain) {
+    SetupEnergyMonitor();
   }
-  else {
-    Error(4);
-  }
+
 }
 
 void SetACCT1GAIN(String Value) {
@@ -1822,53 +1808,40 @@ void SetACCT1GAIN(String Value) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = Value.substring(Index + 1, End - 1).toInt();
-  if ( 1 <= ThingToTest < 65535) {
-    CurrentGainCT1 = ThingToTest;
-    EEPROM.update(10, highByte(ThingToTest));
-    EEPROM.update(11, lowByte(ThingToTest));
-    GetACCT1GAIN();
-    if (CurrentCT1GAIN != CurrentGainCT1) {
-        SetupEnergyMonitor();
-      }
-  }
-  else {
-    Error(4);
+  CurrentGainCT1 = ThingToTest;
+  EEPROM.update(10, highByte(ThingToTest));
+  EEPROM.update(11, lowByte(ThingToTest));
+  GetACCT1GAIN();
+  if (CurrentCT1GAIN != CurrentGainCT1) {
+    SetupEnergyMonitor();
   }
 }
 
 void SetACCT2GAIN(String Value) {
+  unsigned short CurrentCT2GAIN = CurrentGainCT2;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = Value.substring(Index + 1, End - 1).toInt();
-  Serial.println(ThingToTest);
-  if ( 1 <= ThingToTest < 65534) {
-    CurrentGainCT2 = ThingToTest;
-    //put it into EEPROM
-    EEPROM.update(12, highByte(ThingToTest));
-    EEPROM.update(13, lowByte(ThingToTest));
-    GetACCT2GAIN();
-  }
-  else {
-    Error(4);
+  CurrentGainCT2 = ThingToTest;
+  EEPROM.update(12, highByte(ThingToTest));
+  EEPROM.update(13, lowByte(ThingToTest));
+  GetACCT2GAIN();
+  if (CurrentCT2GAIN != CurrentGainCT2) {
+    SetupEnergyMonitor();
   }
 }
 
 void SetACPGAGAIN(String Value) {
-  unsigned short CurrentFREQ = LineFreq;
+  unsigned short CurrentPGAGain = PGAGain;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
-  if ( 1 <= ThingToTest < 65535) {
-    PGAGain = ThingToTest;
-    if (CurrentFREQ != LineFreq) {
-      SetupEnergyMonitor();
-    }
-    EEPROM.update(14, highByte(ThingToTest));
-    EEPROM.update(15, lowByte(ThingToTest));
-    GetACPGAGAIN();
-  }
-  else {
-    Error(4);
+  PGAGain = ThingToTest;
+  EEPROM.update(14, highByte(ThingToTest));
+  EEPROM.update(15, lowByte(ThingToTest));
+  GetACPGAGAIN();
+  if (CurrentPGAGain != PGAGain) {
+    SetupEnergyMonitor();
   }
 }
 
