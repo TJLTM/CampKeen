@@ -10,10 +10,11 @@
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
-                            "GETTIME"
+                            "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
-                             "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON"
+                             "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
+                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
                             };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
@@ -61,12 +62,19 @@ unsigned short VoltageGain = 1975;
 */
 unsigned short CurrentGainCT1 = 34500;
 unsigned short CurrentGainCT2 = 34500;
+/*
+   IF your panel has both sides of the 240 volt tansformer
+   for the split phase grid then this needs to be set to 2
+   if you only have 1 leg ie only 120 volt then you need to
+   set this to 1
+*/
+int NumberOfACLegs = 1;
 
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.7.8";
+const String FWVersion = "0.8.0";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -666,7 +674,6 @@ void EnergyMetering() {
     CT1 = eic.GetLineCurrentA();
     CT2 = eic.GetLineCurrentC();
 
-
     if (LineFreq = 4485) {
       LastACVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
     }
@@ -674,21 +681,15 @@ void EnergyMetering() {
       LastACVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
     }
 
-    /*
-       If your Panel has L1 & L2 with a neutral. Then uncomment thes following two lines.
-    */
-    //LastACCurrent =  CT1 + CT2;
-    //LastACWatts = (voltageA * CT1) + (voltageC * CT2);
-
-    /*
-       If your Panel has only L1 with a neutral. Then uncomment thes following three lines. '
-       CT2 can be used to monitor a particular current source if you want to as it is not
-       used in this set up.
-    */
-    LastACCurrent =  CT1;
-    LastACWatts = (voltageA * CT1);
-    LastPowerFactor = eic.GetTotalPowerFactor();
-
+    if (NumberOfACLegs == 2) {
+      LastACCurrent =  CT1 + CT2;
+      LastACWatts = (voltageA * CT1) + (voltageC * CT2);
+    }
+    else {
+      LastACCurrent =  CT1;
+      LastACWatts = (voltageA * CT1);
+      LastPowerFactor = eic.GetTotalPowerFactor();
+    }
 
     // Standard Values to be read and streamed out.
     LastFreq = eic.GetFrequency();
@@ -1069,6 +1070,15 @@ void ReadOtherTempSensors() {
   LastTimeNTCTemp = GetCurrentTime();
 }
 //------------------------------------------------------------------
+//EEPROM functions
+//------------------------------------------------------------------
+unsigned short GetFromEEPROMACVOLTAGEGAIN() {
+unsigned short Value;
+
+return Value;
+}
+
+//------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
 float ConvertCtoF(float C) {
@@ -1288,6 +1298,38 @@ void GetACEnmon() {
   }
   ControlComPort.println("%R,AC Energy Monitoring," + State);
 }
+
+void GetACVOLTAGEGAIN() {
+  ControlComPort.println("%R,ACVOLTAGEGAIN," + VoltageGain);
+}
+
+void GetACFREQ() {
+  int State = 0;
+  if (LineFreq == 4485) {
+    State = 60;
+  }
+  if (LineFreq == 389) {
+    State = 50;
+  }
+  ControlComPort.println("%R,ACFREQ," + State);
+}
+
+void GetACPGAGAIN() {
+  ControlComPort.println("%R,ACPGAGAIN," + PGAGain);
+}
+
+void GetACLEGS() {
+  ControlComPort.println("%R,ACPGAGAIN," + NumberOfACLegs);
+}
+
+void GetACCT1GAIN() {
+  ControlComPort.println("%R,ACCT1GAIN," + CurrentGainCT1);
+}
+
+void GetACCT2GAIN() {
+  ControlComPort.println("%R,ACCT2GAIN," + CurrentGainCT2);
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -1556,10 +1598,10 @@ void SetRTCDateTime(String Value) {
 
   for (int i = 0; i < 6; i++) {
     NextIndex = ThingToTest.indexOf(":");
-    if (NextIndex != PreviousIndex || NextIndex == 2){
-    TimeArray[i] = ThingToTest.substring(0, NextIndex).toInt();
-    ThingToTest = ThingToTest.substring(NextIndex + 1);
-    PreviousIndex = NextIndex;
+    if (NextIndex != PreviousIndex || NextIndex == 2) {
+      TimeArray[i] = ThingToTest.substring(0, NextIndex).toInt();
+      ThingToTest = ThingToTest.substring(NextIndex + 1);
+      PreviousIndex = NextIndex;
     }
   }
 
@@ -1632,6 +1674,140 @@ void SetACEnmon(String Value) {
     Error(4);
   }
 }
+
+void SetACFREAK(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "50") {
+    LineFreq = 389;
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "60") {
+    LineFreq = 4485;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    //put it into EEPROM
+    GetACFREQ();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void SetACLEGS(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "1") {
+    NumberOfACLegs = 1;
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "2") {
+    NumberOfACLegs = 2;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    //put it into EEPROM
+    EEPROM.update(7, NumberOfACLegs);
+    GetACLEGS();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void SetACVOLTAGEGAIN(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
+  bool CorrectParam = false;
+  if ( 1 <= ThingToTest <= 65535) {
+    CorrectParam = true;
+    VoltageGain = ThingToTest;
+  }
+
+  if (CorrectParam == true) {
+    //put it into EEPROM
+    EEPROM.update(8, highByte(ThingToTest));
+    EEPROM.update(9, lowByte(ThingToTest));
+    GetACVOLTAGEGAIN();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void GetACCT1GAIN(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
+  bool CorrectParam = false;
+  if ( 1 <= ThingToTest <= 65535) {
+    CorrectParam = true;
+    CurrentGainCT1 = ThingToTest;
+  }
+
+  if (CorrectParam == true) {
+    //put it into EEPROM
+    EEPROM.update(10, highByte(ThingToTest));
+    EEPROM.update(11, lowByte(ThingToTest));
+    GetACCT1GAIN();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void GetACCT2GAIN(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
+  bool CorrectParam = false;
+  if ( 1 <= ThingToTest <= 65535) {
+    CorrectParam = true;
+    CurrentGainCT2 = ThingToTest;
+  }
+
+  if (CorrectParam == true) {
+    //put it into EEPROM
+    EEPROM.update(12, highByte(ThingToTest));
+    EEPROM.update(13, lowByte(ThingToTest));
+    GetACCT2GAIN();
+  }
+  else {
+    Error(4);
+  }
+}
+
+void SetACPGAGAIN(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  unsigned short ThingToTest = short(Value.substring(Index + 1, End - 1).toInt());
+  bool CorrectParam = false;
+  if ( 1 <= ThingToTest <= 65535) {
+    CorrectParam = true;
+    PGAGain = ThingToTest;
+  }
+
+  if (CorrectParam == true) {
+    //put it into EEPROM
+    EEPROM.update(14, highByte(ThingToTest));
+    EEPROM.update(15, lowByte(ThingToTest));
+    GetACPGAGAIN();
+  }
+  else {
+    Error(4);
+  }
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -1752,6 +1928,54 @@ void ParamCommandToCall(int Index, String CommandRaw) {
       //Enable/disable AC energy Monitoring
       SetACEnmon(CommandRaw);
       break;
+    case 9:
+      //SET AC FREQUNECY 50/60 Hz
+      unsigned short CurrentFREQ = LineFreq;
+      SetACFREAK(CommandRaw);
+      if (CurrentFREQ != LineFreq) {
+        SetupEnergyMonitor();
+      }
+      break;
+    case 10:
+      //SET AC PGAGAIN
+      unsigned short CurrentPGAGain = PGAGain;
+      SetACPGAGAIN(CommandRaw);
+      if (CurrentPGAGain != PGAGain) {
+        SetupEnergyMonitor();
+      }
+      break;
+    case 11:
+      //SET AC VOLTAGEGAIN
+      unsigned short CurrentVOLTAGEGAIN = VoltageGain;
+      SetACVOLTAGEGAIN(CommandRaw);
+      if (CurrentPGAGain != VoltageGain) {
+        SetupEnergyMonitor();
+      }
+      break;
+    case 12:
+      //SET AC LEGS
+      unsigned short CurrentACLEGS = NumberOfACLegs;
+      SetACLEGS(CommandRaw);
+      if (CurrentPGAGain != NumberOfACLegs) {
+        SetupEnergyMonitor();
+      }
+      break;
+    case 13:
+      //SET AC CT1 GAIN
+      unsigned short CurrentCT1GAIN = CurrentGainCT1;
+
+      if (CurrentPGAGain != CurrentGainCT1) {
+        SetupEnergyMonitor();
+      }
+      break;
+    case 14:
+      //SET AC CT2 GAIN
+      unsigned short CurrentCT2GAIN = CurrentGainCT2;
+
+      if (CurrentPGAGain != CurrentGainCT2) {
+        SetupEnergyMonitor();
+      }
+      break;
   }
 }
 
@@ -1857,6 +2081,30 @@ void CommandToCall(int Index) {
     case 22:
       //Show System Time
       GetSystemTime();
+      break;
+    case 23:
+      //Show AC VOLTAGEGAIN
+      GetACVOLTAGEGAIN();
+      break;
+    case 24:
+      //Show AC FREQUENCY
+      GetACFREQ();
+      break;
+    case 25:
+      //Show AC PGAGAIN
+      GetACPGAGAIN();
+      break;
+    case 26:
+      //Show AC LEGS
+      GetACLEGS();
+      break;
+    case 27:
+      //Show AC CT1GAIN
+      GetACCT1GAIN();
+      break;
+    case 28:
+      //Show AC CT2GAIN
+      GetACCT2GAIN();
       break;
   }
 }
