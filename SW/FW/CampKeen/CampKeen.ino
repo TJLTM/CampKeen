@@ -24,52 +24,10 @@ int DisplayCounter = 0;
 #define LCDEnable 10
 #define LCDPowerOut 5
 //-----------------------------------------------------------
-// ATM90E32 energy monitor settings and calibrations
-/*
-   The Calibration values for the Voltage and Current Gain I had to
-   Use some meters to test and calibrate these values and these are
-   what I have put in.
-*/
+// ATM90E32 energy monitor
 ATM90E32 eic{}; // Energy Monitor Object
-
-/* 4485 for 60 Hz (North America)
-  389 for 50 hz (rest of the world)
-*/
-unsigned short LineFreq = 4485;
-
-/* 0 for 10A (1x)
-   21 for 100A (2x)
-   42 for between 100A - 200A (4x)
-*/
-unsigned short PGAGain = 21;
-
-/*
-   For meter <= v1.3:
-      42080 - 9v AC Transformer - Jameco 112336
-      32428 - 12v AC Transformer - Jameco 167151
-   For meter > v1.4:
-      37106 - 9v AC Transformer - Jameco 157041
-      38302 - 9v AC Transformer - Jameco 112336
-      29462 - 12v AC Transformer - Jameco 167151
-   For Meters > v1.4 purchased after 11/1/2019 and rev.3
-      7611 - 9v AC Transformer - Jameco 157041
-*/
-unsigned short VoltageGain = 1975;
-
-/* 25498 - SCT-013-000 100A/50mA
-   39473 - SCT-016 120A/40mA
-   46539 - Magnalab 100A
-*/
-unsigned short CurrentGainCT1 = 34500;
-unsigned short CurrentGainCT2 = 34500;
-/*
-   IF your panel has both sides of the 240 volt tansformer
-   for the split phase grid then this needs to be set to 2
-   if you only have 1 leg ie only 120 volt then you need to
-   set this to 1
-*/
+unsigned short LineFreq,PGAGain,VoltageGain,CurrentGainCT1,CurrentGainCT2;
 int NumberOfACLegs = 1;
-
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
@@ -81,16 +39,15 @@ bool WarningActive = false;
 int ArrayOfWarnings[7] = {};
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
-String TempUnits = "F";
-String PressureUnits = "PSI";
 bool LCDSetup = false;
-//WaterSourceSelection //false = pump //true = City Water
+//WaterSourceSelection false = pump true = City Water
 bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
 bool EnableACEnergyMonitoring = false;
-//Figure out if i want to store these in EEPROM
-String Units = "I"; // address 0
-bool UseWaterPumpSense = false; // address 1
-bool StreamingData = false; // address 2
+bool UseWaterPumpSense = false;
+bool StreamingData = false;
+String Units = "I";
+String TempUnits = "F";
+String PressureUnits = "PSI";
 const String StatesForOutput[2] = {"Off", "On"};
 //-----------------------------------------------------------
 /*
