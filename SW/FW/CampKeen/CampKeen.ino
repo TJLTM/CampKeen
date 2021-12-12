@@ -26,13 +26,13 @@ int DisplayCounter = 0;
 //-----------------------------------------------------------
 // ATM90E32 energy monitor
 ATM90E32 eic{}; // Energy Monitor Object
-unsigned short LineFreq,PGAGain,VoltageGain,CurrentGainCT1,CurrentGainCT2;
+unsigned short LineFreq, PGAGain, VoltageGain, CurrentGainCT1, CurrentGainCT2;
 int NumberOfACLegs = 1;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.3";
+const String FWVersion = "0.8.4";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -1213,6 +1213,8 @@ void serialEvent() {
 
 void OutputAllData() {
   GetDeviceInfo();
+  GetSystemTime();
+  AllWarningMessages();
   GetStreamingState();
   GetWaterPumpSense();
   GetACEnmon();
@@ -1229,6 +1231,12 @@ void OutputAllData() {
   GetHeadUnitTemp();
   GetGenStatus();
   GetEnergyStatus();
+  GetACVOLTAGEGAIN();
+  GetACFREQ();
+  GetACPGAGAIN();
+  GetACLEGS();
+  GetACCT1GAIN();
+  GetACCT2GAIN();
 }
 
 void GetWaterSource() {
@@ -1414,8 +1422,13 @@ void OutputWarningMessage(int ID) {
 }
 
 void AllWarningMessages() {
-  for (int i = 1; i <= 7; i++) {
-    OutputWarningMessage(i);
+  if (WarningActive == true) {
+    for (int i = 1; i <= 7; i++) {
+      OutputWarningMessage(i);
+    }
+  }
+  else {
+    ControlComPort.println("%R," + GetCurrentTime() + ",Warning,None");
   }
 }
 
@@ -2009,12 +2022,7 @@ void CommandToCall(int Index) {
       break;
     case 14:
       //WARNING
-      if (WarningActive == true) {
-        AllWarningMessages();
-      }
-      else {
-        ControlComPort.println("%R," + GetCurrentTime() + ",Warning,None");
-      }
+      AllWarningMessages();
       break;
     case 15:
       //WATER
