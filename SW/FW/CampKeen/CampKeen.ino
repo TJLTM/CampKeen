@@ -10,7 +10,8 @@
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
-                            "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT"
+                            "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
+                            "RESET"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
@@ -18,6 +19,7 @@ char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREA
                             };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
+int WhichSerialPort;
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
@@ -33,7 +35,7 @@ int NumberOfACLegs;
 // System Level
 const String DeviceName = "CampKeen";
 const String FWVersion = "0.8.6";
-const int DisplayInvterval = 3000;
+const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int ArrayOfWarnings[7] = {};
@@ -185,9 +187,9 @@ bool HoldingTankAlarm = false;
 #define GreyWaterPower 32
 //-----------------------------------------------------------
 void setup() {
+  rtc.begin();
   ControlComPort.begin(115200);
   inputString.reserve(200);
-  int WhichSerialPort = GetFromEEPROMSerialPort();
 
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
@@ -243,7 +245,7 @@ void setup() {
 
   //Energy
   //Load from EEProm
-  LineFreq = GetFromEEPROMACFREQ(); //Load from EEProm
+  LineFreq = GetFromEEPROMACFREQ();
   PGAGain = GetFromEEPROMACPGAGain();
   VoltageGain = GetFromEEPROMACVOLTAGEGAIN();
   CurrentGainCT1 = GetFromEEPROMACCurrentGainCT1();
@@ -254,11 +256,11 @@ void setup() {
   SetupEnergyMonitor();
 
   //Set up displays and output on the Serial Port
-  ControlComPort.println("Starting " + DeviceName);
-  ControlComPort.println("FW: " + FWVersion);
+  SendItOut("Starting " + DeviceName);
+  SendItOut("FW: " + FWVersion);
   Units = GetFromEEPROMUnits();
   SetUnitsForOutput();
-  ControlComPort.println("Units: " + String(Units));
+  SendItOut("Units: " + String(Units));
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -266,20 +268,14 @@ void setup() {
   lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
   ForceCompleteUpdateOfAllStates();
-  ControlComPort.print("System Initialized and values populated:");
-  ControlComPort.println(GetCurrentTime());
+  SendItOut("System Initialized and values populated:" + GetCurrentTime());
   lcd.setCursor(0, 1);
   lcd.print("System Initialized");
   lcd.setCursor(0, 2);
-  delay(750);
-  lcd.clear();
-  lcd.setCursor(0, 0);
   lcd.print(GetCurrentTime());
-  lcd.setCursor(0, 1);
-  lcd.print(FWVersion);
-  lcd.setCursor(0, 2);
-  lcd.print("Units: " + String(Units));
-  delay(1000);
+  lcd.setCursor(0, 3);
+  lcd.print(FWVersion + " Units: " + Units);
+  delay(2000);
   digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
 }
 
@@ -355,9 +351,9 @@ void LCDControl() {
       SetupLCD();
     }
     LCDOutput();
-    LCDDisplay();
   }
   else {
+    lcd.clear();
     LCDSetup = false;
     digitalWrite(LCDPowerOut, LOW);
   }
@@ -366,8 +362,8 @@ void LCDControl() {
 void SetupLCD() {
   lcd.init();
   lcd.backlight();
-  rtc.begin();
   LCDSetup = true;
+  DisplayCounter = 0;
 }
 
 void LCDOutput() {
@@ -404,12 +400,22 @@ void LCDDisplay() {
       lcd.setCursor(0, 2);
       lcd.print("Grey Water");
       lcd.setCursor(15, 2);
-      lcd.print(LastGreyWater);
+      if (LastGreyWater == "1/4" || LastGreyWater == "1/2" || LastGreyWater == "3/4" || LastGreyWater == "Full") {
+        lcd.print(LastGreyWater);
+      }
+      else {
+        lcd.print("ERROR");
+      }
 
       lcd.setCursor(0, 3);
       lcd.print("Sewage");
-      lcd.setCursor(5, 15);
-      lcd.print(LastSewageLevel);
+      lcd.setCursor(15, 3);
+      if (LastSewageLevel == "1/4" || LastSewageLevel == "1/2" || LastSewageLevel == "3/4" || LastSewageLevel == "Full") {
+        lcd.print(LastSewageLevel);
+      }
+      else {
+        lcd.print("ERROR");
+      }
       break;
     case 1:
       //Electrical
@@ -426,23 +432,23 @@ void LCDDisplay() {
     case 2:
       //Generator
       lcd.setCursor(0, 0);
-      lcd.print("Generator Fuel");
-      lcd.setCursor(15, 0);
+      lcd.print("Gen Fuel");
+      lcd.setCursor(12, 0);
       lcd.print(LastGenFuel);
 
       lcd.setCursor(0, 1);
       lcd.print("Enclosure");
-      lcd.setCursor(15, 1);
+      lcd.setCursor(12, 1);
       lcd.print(LastGenEnclosureTemp, 1);
 
       lcd.setCursor(0, 2);
       lcd.print("Head Right");
-      lcd.setCursor(15, 2);
+      lcd.setCursor(12, 2);
       lcd.print(LastGenHeadRightTemp, 1);
 
       lcd.setCursor(0, 3);
       lcd.print("Head Left");
-      lcd.setCursor(15, 3);
+      lcd.setCursor(12, 3);
       lcd.print(LastGenHeadLeftTemp, 1);
       break;
     case 3:
@@ -476,12 +482,12 @@ void LCDDisplay() {
 
       lcd.setCursor(0, 1);
       lcd.print("Front AC");
-      lcd.setCursor(6, 1);
+      lcd.setCursor(15, 1);
       lcd.print(LastFrontACTemp, 1);
 
       lcd.setCursor(0, 2);
       lcd.print("Fridge");
-      lcd.setCursor(6, 2);
+      lcd.setCursor(15, 2);
       lcd.print(LastFridgeTemp, 1);
 
       lcd.setCursor(0, 3);
@@ -492,22 +498,22 @@ void LCDDisplay() {
     case 5:
       lcd.setCursor(0, 0);
       lcd.print("Watts");
-      lcd.setCursor(15, 0);
+      lcd.setCursor(12, 0);
       lcd.print(LastACWatts, 1);
       //Amps
       lcd.setCursor(0, 1);
       lcd.print("AC Amps");
-      lcd.setCursor(15, 1);
+      lcd.setCursor(12, 1);
       lcd.print(LastACCurrent);
       //Voltage
       lcd.setCursor(0, 2);
       lcd.print("AC Voltage");
-      lcd.setCursor(15, 2);
+      lcd.setCursor(12, 2);
       lcd.print(LastACVoltage);
 
       lcd.setCursor(0, 3);
       lcd.print("PF");
-      lcd.setCursor(15, 3);
+      lcd.setCursor(12, 3);
       lcd.print(LastPowerFactor, 0);
       break;
   }
@@ -618,7 +624,7 @@ void EnergyMetering() {
   //if true the MCU is not getting data from the energy meter
   //set all AC Values to 0
   if (sys0 == 65535 || sys0 == 0) {
-    ControlComPort.println(GetCurrentTime() + ",Error,Not receiving data from energy meter");
+    SendItOut(GetCurrentTime() + ",Error,Not receiving data from energy meter");
     LastACVoltage = 0;
     LastACCurrent = 0;
     LastPowerFactor = 0;
@@ -1039,6 +1045,10 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
+void SendItOut(String Message) {
+  ControlComPort.println(Message);
+}
+
 char GetFromEEPROMUnits() {
   char Value = EEPROM.read(0);
   if (Value != 'I' && Value != 'M') {
@@ -1119,14 +1129,11 @@ unsigned short GetFromEEPROMACFREQ() {
 }
 
 int GetFromEEPROMSerialPort() {
-  int Value = 0;
-  if (EEPROM.read(2) != 1 || EEPROM.read(2) != 2) {
-    Value = EEPROM.read(2);
-  }
-  else {
-    EEPROM.update(2, 1);
+  int Value = EEPROM.read(2);
+  if (Value != 0 || Value != 1) {
+    EEPROM.update(2, 0);
     //default this value to USB
-    Value = 1;
+    Value = 0;
   }
   return Value;
 }
@@ -1136,9 +1143,16 @@ int GetFromEEPROMSerialPort() {
 void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
 
 void RebootDisBitch() {
-  ControlComPort.println("%R," + GetCurrentTime() + ",Rebooting");
+  SendItOut("%R," + GetCurrentTime() + ",Rebooting");
   delay(2000);
   resetFunc();
+}
+
+void MIBFLASH(){ 
+  for (int i = 0 ; i < EEPROM.length() ; i++) {
+    EEPROM.write(i, 0);
+  }
+  RebootDisBitch();
 }
 float ConvertCtoF(float C) {
   float F = (1.8 * C) + 32;
@@ -1271,63 +1285,63 @@ void OutputAllData() {
 }
 
 void GetWaterSource() {
-  ControlComPort.println("%R," + GetCurrentTime() + ",Water Source," + LastSource);
+  SendItOut("%R," + GetCurrentTime() + ",Water Source," + LastSource);
 }
 
 void GetWaterLevel() {
-  ControlComPort.println("%R," + LastTimeWaterLevel + ",Water Tank Level," + LastWaterLevel);
+  SendItOut("%R," + LastTimeWaterLevel + ",Water Tank Level," + LastWaterLevel);
 }
 
 void GetSewageLevel() {
-  ControlComPort.println("%R," + LastTimeSewageLevel + ",Sewage," + LastSewageLevel);
+  SendItOut("%R," + LastTimeSewageLevel + ",Sewage," + LastSewageLevel);
 }
 
 void GetGreyLevel() {
-  ControlComPort.println("%R," + LastTimeGreyWater + ",Grey," + LastGreyWater);
+  SendItOut("%R," + LastTimeGreyWater + ",Grey," + LastGreyWater);
 }
 
 void GetLPGLevel() {
-  ControlComPort.println("%R," + LastTimeWaterLevel   + ",LPG," + LastLPGLevel);
+  SendItOut("%R," + LastTimeWaterLevel   + ",LPG," + LastLPGLevel);
 }
 
 void GetDCBatteryVoltage() {
-  ControlComPort.println("%R," + LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage);
+  SendItOut("%R," + LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage);
 }
 
 void GetRTCBatteryVotlage() {
-  ControlComPort.println("%R," + LastTimeRTCVoltage + ",RTCBattery," + LastRTCVoltage);
+  SendItOut("%R," + LastTimeRTCVoltage + ",RTCBattery," + LastRTCVoltage);
 }
 
 void GetNTCTemps() {
-  ControlComPort.println("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Units," + TempUnits + ",Front AC Temp,"
-                         + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp,"
-                         + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge,"
-                         + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
+  SendItOut("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Units," + TempUnits + ",Front AC Temp,"
+            + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp,"
+            + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge,"
+            + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
 }
 
 void GetHeadUnitTemp() {
-  ControlComPort.println("%R," + LastTimeRTCTemp + ",Head Unit Temp,Units," + TempUnits + "," + LastRTCTemp);
+  SendItOut("%R," + LastTimeRTCTemp + ",Head Unit Temp,Units," + TempUnits + "," + LastRTCTemp);
 }
 
 void GetGenStatus() {
-  ControlComPort.println("%R," + LastTimeGenSensors + ",Generator Fuel Pressure,Units," + PressureUnits + ","
-                         + LastGenFuel + ",Generator Temps, Enclosure,Units," + TempUnits + "," + LastGenEnclosureTemp +
-                         ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
+  SendItOut("%R," + LastTimeGenSensors + ",Generator Fuel Pressure,Units," + PressureUnits + ","
+            + LastGenFuel + ",Generator Temps, Enclosure,Units," + TempUnits + "," + LastGenEnclosureTemp +
+            ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
 }
 
 void GetEnergyStatus() {
-  ControlComPort.println("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
-                         ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
-                         + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
-                         + LastACHarmonic + ",W(harmonic)");
+  SendItOut("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
+            ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
+            + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
+            + LastACHarmonic + ",W(harmonic)");
 }
 
 void GetUnits() {
-  ControlComPort.println("%R,Units," + String(Units));
+  SendItOut("%R,Units," + String(Units));
 }
 
 void GetDeviceInfo() {
-  ControlComPort.println("%R," + DeviceName + ",FW," + FWVersion);
+  SendItOut("%R," + DeviceName + ",FW," + FWVersion);
 }
 
 void GetStreamingState() {
@@ -1335,7 +1349,7 @@ void GetStreamingState() {
   if (StreamingData == true) {
     State = StatesForOutput[1];
   }
-  ControlComPort.println("%R,StreamingData," + State);
+  SendItOut("%R,StreamingData," + State);
 }
 
 void GetWaterPumpSense() {
@@ -1343,7 +1357,7 @@ void GetWaterPumpSense() {
   if (UseWaterPumpSense == true) {
     State = StatesForOutput[1];
   }
-  ControlComPort.println("%R,WaterPumpSense," + State);
+  SendItOut("%R,WaterPumpSense," + State);
 }
 
 void GetWaterState() {
@@ -1351,11 +1365,11 @@ void GetWaterState() {
   if (WaterOn == true) {
     State = StatesForOutput[1];
   }
-  ControlComPort.println("%R,Water," + State);
+  SendItOut("%R,Water," + State);
 }
 
 void GetSystemTime() {
-  ControlComPort.println("%R,System Time," + GetCurrentTime());
+  SendItOut("%R,System Time," + GetCurrentTime());
 }
 
 void GetACEnmon() {
@@ -1363,36 +1377,36 @@ void GetACEnmon() {
   if (EnableACEnergyMonitoring == true) {
     State = StatesForOutput[1];
   }
-  ControlComPort.println("%R,AC Energy Monitoring," + State);
+  SendItOut("%R,AC Energy Monitoring," + State);
 }
 
 void GetACVOLTAGEGAIN() {
-  ControlComPort.println("%R,ACVOLTAGEGAIN," + String(VoltageGain));
+  SendItOut("%R,ACVOLTAGEGAIN," + String(VoltageGain));
 }
 
 void GetACFREQ() {
   if (LineFreq == 4485) {
-    ControlComPort.println("%R,ACFREQ,60");
+    SendItOut("%R,ACFREQ,60");
   }
   if (LineFreq == 389) {
-    ControlComPort.println("%R,ACFREQ,50");
+    SendItOut("%R,ACFREQ,50");
   }
 }
 
 void GetACPGAGAIN() {
-  ControlComPort.println("%R,ACPGAGAIN," + String(PGAGain));
+  SendItOut("%R,ACPGAGAIN," + String(PGAGain));
 }
 
 void GetACLEGS() {
-  ControlComPort.println("%R,ACLEGS," + String(NumberOfACLegs));
+  SendItOut("%R,ACLEGS," + String(NumberOfACLegs));
 }
 
 void GetACCT1GAIN() {
-  ControlComPort.println("%R,ACCT1GAIN," + String(CurrentGainCT1));
+  SendItOut("%R,ACCT1GAIN," + String(CurrentGainCT1));
 }
 
 void GetACCT2GAIN() {
-  ControlComPort.println("%R,ACCT2GAIN," + String(CurrentGainCT2));
+  SendItOut("%R,ACCT2GAIN," + String(CurrentGainCT2));
 }
 
 //------------------------------------------------------------------
@@ -1400,7 +1414,7 @@ void GetACCT2GAIN() {
 //------------------------------------------------------------------
 void Error(int Number) {
   const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform", "command can not be processed", "Invalid Parameter", "Invalid Command Format"};
-  ControlComPort.println("%R,Error," + String(Errors[Number]));
+  SendItOut("%R,Error," + String(Errors[Number]));
 }
 
 void Warning() {
@@ -1448,7 +1462,7 @@ void OutputWarningMessage(int ID) {
         Message = "LPG Level is low";
         break;
     }
-    ControlComPort.println("%R," + GetCurrentTime() + ",Warning," + Message);
+    SendItOut("%R," + GetCurrentTime() + ",Warning," + Message);
   }
 }
 
@@ -1459,7 +1473,7 @@ void AllWarningMessages() {
     }
   }
   else {
-    ControlComPort.println("%R," + GetCurrentTime() + ",Warning,None");
+    SendItOut("%R," + GetCurrentTime() + ",Warning,None");
   }
 }
 
@@ -1630,7 +1644,7 @@ void PrinOutputState(int Output) {
   if (CurrentState == 1) {
     String State = StatesForOutput[1];
   }
-  ControlComPort.println("%R," + GetCurrentTime() + ",Output," + Output + "," + State);
+  SendItOut("%R," + GetCurrentTime() + ",Output," + Output + "," + State);
 }
 
 void ReadInputState(String Value) {
@@ -1651,7 +1665,7 @@ void PrintInputState(int Input, int CurrentInputRead) {
   if (CurrentInputRead == 1) {
     String State = StatesForOutput[1];
   }
-  ControlComPort.println("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
+  SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
 }
 
 void SetRTCDateTime(String Value) {
@@ -1682,32 +1696,32 @@ void SetRTCDateTime(String Value) {
   }
 
   if (2021 > TimeArray[0]) {
-    ControlComPort.println("%R,Error,Can't set the year older than when i made this mess : " + String(TimeArray[0]));
+    SendItOut("%R,Error,Can't set the year older than when i made this mess : " + String(TimeArray[0]));
     CorrectParam = false;
   }
 
   if (1 > TimeArray[1] ||  TimeArray[1] > 12) {
-    ControlComPort.println("%R,Error,Month 1-12 accepted : " + String(TimeArray[1]));
+    SendItOut("%R,Error,Month 1-12 accepted : " + String(TimeArray[1]));
     CorrectParam = false;
   }
 
   if (1 > TimeArray[2] ||  TimeArray[2] > 31) {
-    ControlComPort.println("%R,Error,Date 1-31 accepted : " + String(TimeArray[2]));
+    SendItOut("%R,Error,Date 1-31 accepted : " + String(TimeArray[2]));
     CorrectParam = false;
   }
 
   if (0 > TimeArray[3] ||  TimeArray[3] > 24) {
-    ControlComPort.println("%R,Error,Hour 0-23 accepted : " + String(TimeArray[3]));
+    SendItOut("%R,Error,Hour 0-23 accepted : " + String(TimeArray[3]));
     CorrectParam = false;
   }
 
   if (0 > TimeArray[4] || TimeArray[4] >= 60) {
-    ControlComPort.println("%R,Error,Min 0-59 accepted : " + String(TimeArray[4]));
+    SendItOut("%R,Error,Min 0-59 accepted : " + String(TimeArray[4]));
     CorrectParam = false;
   }
 
   if (0 > TimeArray[5] ||  TimeArray[5] >= 60) {
-    ControlComPort.println("%R,Error,Sec 0-59 accepted : " + String(TimeArray[5]));
+    SendItOut("%R,Error,Sec 0-59 accepted : " + String(TimeArray[5]));
     CorrectParam = false;
   }
 
@@ -1852,26 +1866,27 @@ void SetACPGAGAIN(String Value) {
 }
 
 void SetPort(String Value) {
-  int Index = Value.indexOf("*");
-  int End = Value.indexOf("\r");
-  String ThingToTest = Value.substring(Index + 1, End - 1);
-  bool CorrectParam = false;
-  if (ThingToTest == "USB") {
-    EEPROM.update(2, 1);
-    CorrectParam = true;
-  }
-
-  if (ThingToTest == "RS232") {
-    EEPROM.update(2, 2);
-    CorrectParam = true;
-  }
-
-  if (CorrectParam == true) {
-    ControlComPort.println("%R," + GetCurrentTime() + ",Requires Reboot to take affect. Set to " + ThingToTest);
-  }
-  else {
-    Error(4);
-  }
+  SendItOut("%R," + GetCurrentTime() + ",Currently not working");
+//  int Index = Value.indexOf("*");
+//  int End = Value.indexOf("\r");
+//  String ThingToTest = Value.substring(Index + 1, End - 1);
+//  bool CorrectParam = false;
+//  if (ThingToTest == "USB") {
+//    EEPROM.update(2, 0);
+//    CorrectParam = true;
+//  }
+//
+//  if (ThingToTest == "RS232") {
+//    EEPROM.update(2, 1);
+//    CorrectParam = true;
+//  }
+//
+//  if (CorrectParam == true) {
+//    SendItOut("%R," + GetCurrentTime() + ",Requires Reboot to take affect. Set to " + ThingToTest);
+//  }
+//  else {
+//    Error(4);
+//  }
 }
 
 /*
@@ -1894,7 +1909,7 @@ String PainlessInstructionSet(String & TestString) {
       if (FindStart != -1) { //case 1
         if (FindStart != 0) { //case 2
           //Serial.println("PIS Case 2");
-          ControlComPort.println("%R," + GetCurrentTime() + ",Error,BAD Command Format No Start or Stop Delimiters");
+          SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format No Start or Stop Delimiters");
           TestString.remove(0, FindStart);
         }
         else { //Case 3 & Case 5 & Case 4
@@ -1902,7 +1917,7 @@ String PainlessInstructionSet(String & TestString) {
           int FindStart1 = Case5Test.indexOf('%');
           int FindEnd1 = Case5Test.indexOf('\r');
           if ((FindEnd1 > FindStart1) && (FindStart1 != -1)) {
-            ControlComPort.println("%R," + GetCurrentTime() + ",Error,BAD Command Format - No End Delimiter");
+            SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No End Delimiter");
             //Serial.println("PIS Case 5");
             TestString.remove(0, FindStart1 + 1);
           }
@@ -1945,6 +1960,7 @@ String PainlessInstructionSet(String & TestString) {
         //Serial.println("PIS Case 1");
         Search = 0;
         TestString = "";
+        SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No Start Command Character");
       }
     }//if TestString is empty
     else { //Exit Search While if Buffer is empty
@@ -2106,17 +2122,17 @@ void CommandToCall(int Index) {
     case 19:
       //Force Update of all states
       ForceCompleteUpdateOfAllStates();
-      ControlComPort.println("%R," + GetCurrentTime() + ",All States Updated");
+      SendItOut("%R," + GetCurrentTime() + ",All States Updated");
       break;
     case 20:
       //Reset Warnings
       ResetWarnings();
-      ControlComPort.println("%R," + GetCurrentTime() + ",Reset Warnings");
+      SendItOut("%R," + GetCurrentTime() + ",Reset Warnings");
       break;
     case 21:
       //Reset All alarms and warnings
       ResetAllAlarmsAndWarnings();
-      ControlComPort.println("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings");
+      SendItOut("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings");
       break;
     case 22:
       //Show System Time
@@ -2149,6 +2165,10 @@ void CommandToCall(int Index) {
     case 29:
       //Reboot the MCU
       RebootDisBitch();
+      break;
+    case 30:
+      //reset to defaults
+      MIBFLASH();
       break;
   }
 }
