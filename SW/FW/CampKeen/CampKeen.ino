@@ -1149,6 +1149,7 @@ void RebootDisBitch() {
 }
 
 void MIBFLASH(){ 
+  SendItOut("%R," + GetCurrentTime() + ",Reseting wait for reboot Message");
   for (int i = 0 ; i < EEPROM.length() ; i++) {
     EEPROM.write(i, 0);
   }
