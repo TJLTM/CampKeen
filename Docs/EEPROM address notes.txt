@@ -1,6 +1,6 @@
 Memory Address in EEPROM
 1 - Units
-2 - Resevred for possible future use
+2 - Which Serial Port to use for communication 
 3 - Resevred for possible future use
 4 - Resevred for possible future use
 5 - Resevred for possible future use

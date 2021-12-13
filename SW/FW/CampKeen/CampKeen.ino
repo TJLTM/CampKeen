@@ -10,11 +10,11 @@
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
-                            "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?"
+                            "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
-                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
+                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETSERIAL"
                             };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
@@ -32,7 +32,7 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.5";
+const String FWVersion = "0.8.6";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -187,6 +187,7 @@ bool HoldingTankAlarm = false;
 void setup() {
   ControlComPort.begin(115200);
   inputString.reserve(200);
+  int WhichSerialPort = GetFromEEPROMSerialPort();
 
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
@@ -1116,9 +1117,29 @@ unsigned short GetFromEEPROMACFREQ() {
   }
   return Value;
 }
+
+int GetFromEEPROMSerialPort() {
+  int Value = 0;
+  if (EEPROM.read(2) != 1 || EEPROM.read(2) != 2) {
+    Value = EEPROM.read(2);
+  }
+  else {
+    EEPROM.update(2, 1);
+    //default this value to USB
+    Value = 1;
+  }
+  return Value;
+}
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
+void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
+
+void RebootDisBitch() {
+  ControlComPort.println("%R," + GetCurrentTime() + ",Rebooting");
+  delay(2000);
+  resetFunc();
+}
 float ConvertCtoF(float C) {
   float F = (1.8 * C) + 32;
   return F;
@@ -1830,6 +1851,29 @@ void SetACPGAGAIN(String Value) {
   }
 }
 
+void SetPort(String Value) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "USB") {
+    EEPROM.update(2, 1);
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "RS232") {
+    EEPROM.update(2, 2);
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    ControlComPort.println("%R," + GetCurrentTime() + ",Requires Reboot to take affect. Set to " + ThingToTest);
+  }
+  else {
+    Error(4);
+  }
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -1973,6 +2017,10 @@ void ParamCommandToCall(int Index, String CommandRaw) {
       //SET AC CT2 GAIN
       SetACCT2GAIN(CommandRaw);
       break;
+    case 15:
+      //Set which Serial Port to use
+      SetPort(CommandRaw);
+      break;
   }
 }
 
@@ -2097,6 +2145,10 @@ void CommandToCall(int Index) {
     case 28:
       //Show AC CT2GAIN
       GetACCT2GAIN();
+      break;
+    case 29:
+      //Reboot the MCU
+      RebootDisBitch();
       break;
   }
 }
