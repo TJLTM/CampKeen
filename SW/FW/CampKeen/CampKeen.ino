@@ -27,7 +27,7 @@ int DisplayCounter = 0;
 // ATM90E32 energy monitor
 ATM90E32 eic{}; // Energy Monitor Object
 unsigned short LineFreq, PGAGain, VoltageGain, CurrentGainCT1, CurrentGainCT2;
-int NumberOfACLegs = 1;
+int NumberOfACLegs;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
@@ -45,9 +45,8 @@ bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
 bool EnableACEnergyMonitoring = false;
 bool UseWaterPumpSense = false;
 bool StreamingData = false;
-char Units = "I";
-String TempUnits = "F";
-String PressureUnits = "PSI";
+char Units;
+String TempUnits, PressureUnits;
 const String StatesForOutput[2] = {"Off", "On"};
 //-----------------------------------------------------------
 /*
