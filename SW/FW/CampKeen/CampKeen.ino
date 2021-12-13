@@ -32,7 +32,7 @@ int NumberOfACLegs = 1;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.4";
+const String FWVersion = "0.8.5";
 const int DisplayInvterval = 3000;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -45,7 +45,7 @@ bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
 bool EnableACEnergyMonitoring = false;
 bool UseWaterPumpSense = false;
 bool StreamingData = false;
-String Units = "I";
+char Units = "I";
 String TempUnits = "F";
 String PressureUnits = "PSI";
 const String StatesForOutput[2] = {"Off", "On"};
@@ -256,7 +256,9 @@ void setup() {
   //Set up displays and output on the Serial Port
   ControlComPort.println("Starting " + DeviceName);
   ControlComPort.println("FW: " + FWVersion);
+  Units = GetFromEEPROMUnits();
   SetUnitsForOutput();
+  ControlComPort.println("Units: " + String(Units));
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -276,7 +278,7 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.print(FWVersion);
   lcd.setCursor(0, 2);
-  lcd.print("Units: " + Units);
+  lcd.print("Units: " + String(Units));
   delay(1000);
   digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
 }
@@ -664,7 +666,7 @@ void EnergyMetering() {
     LastACHarmonic = eic.GetTotalActiveHarPower();
     LastACRealPower =  eic.GetTotalActivePower();
 
-    if (Units == "I") {
+    if (Units == 'I') {
       LastATM90E32Temp = ConvertCtoF(eic.GetTemperature());
     }
     else {
@@ -682,7 +684,7 @@ void GeneratorSensors() {
   }
   //Sensors i'm using drop out at .5 volts and anything below that will show neg pressure. DN 102 translates to 0.5V
   if ((FuelPressureSum / Samples) > 102) {
-    if (Units == "I") {
+    if (Units == 'I') {
       LastGenFuel = (7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75;
     }
     else {
@@ -697,7 +699,7 @@ void GeneratorSensors() {
   uint16_t rtd0 = GenHeadR.readRTD();
   float ratio0 = rtd0;
   ratio0 /= 32768;
-  if (Units == "I") {
+  if (Units == 'I') {
     LastGenHeadRightTemp = ConvertCtoF(GenHeadR.temperature(RNOMINAL, RREF));
   }
   else {
@@ -707,7 +709,7 @@ void GeneratorSensors() {
   uint16_t rtd1 = GenHeadL.readRTD();
   float ratio1 = rtd1;
   ratio1 /= 32768;
-  if (Units == "I") {
+  if (Units == 'I') {
     LastGenHeadLeftTemp = ConvertCtoF(GenHeadL.temperature(RNOMINAL, RREF));
   }
   else {
@@ -717,7 +719,7 @@ void GeneratorSensors() {
   uint16_t rtd2 = GenEnclosure.readRTD();
   float ratio2 = rtd2;
   ratio2 /= 32768;
-  if (Units == "I") {
+  if (Units == 'I') {
     LastGenEnclosureTemp = ConvertCtoF(GenEnclosure.temperature(RNOMINAL, RREF));
   }
   else {
@@ -962,7 +964,7 @@ void ReadOtherTempSensors() {
 
   float VoutACF = ConversionFactor * analogRead(FrontACTemp);
   float R1ACF = log(R2 * ((5.0 / VoutACF) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastFrontACTemp = ConvertCtoF(NTCReadInC(R2, R1ACF));
   }
   else {
@@ -971,7 +973,7 @@ void ReadOtherTempSensors() {
 
   float VoutACB = ConversionFactor * analogRead(BackACTemp);
   float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastBackACTemp = ConvertCtoF(NTCReadInC(R2, R1ACB));
   }
   else {
@@ -980,7 +982,7 @@ void ReadOtherTempSensors() {
 
   float VoutHallway = ConversionFactor * analogRead(HallwayTemp);
   float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastHallwayTemp = ConvertCtoF( NTCReadInC(R2, R1Hallway));
   }
   else {
@@ -989,7 +991,7 @@ void ReadOtherTempSensors() {
 
   float VoutBathroom = ConversionFactor * analogRead(BathroomTemp);
   float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastBathroomTemp = ConvertCtoF(NTCReadInC(R2, R1Bathroom));
   }
   else {
@@ -998,7 +1000,7 @@ void ReadOtherTempSensors() {
 
   float VoutFreezer = ConversionFactor * analogRead(Freezer);
   float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastFreezerTemp = ConvertCtoF(NTCReadInC(R2, R1Freezer));
   }
   else {
@@ -1007,7 +1009,7 @@ void ReadOtherTempSensors() {
 
   float VoutFridge = ConversionFactor * analogRead(Refridgerator);
   float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastFridgeTemp = ConvertCtoF(NTCReadInC(R2, R1Fridge));
   }
   else {
@@ -1016,7 +1018,7 @@ void ReadOtherTempSensors() {
 
   float VoutOutside = ConversionFactor * analogRead(Outside);
   float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastOutsideTemp = ConvertCtoF(NTCReadInC(R2, R1Outside));
   }
   else {
@@ -1025,7 +1027,7 @@ void ReadOtherTempSensors() {
 
   float VoutBackCabin = ConversionFactor * analogRead(BackCabin);
   float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
-  if (Units == "I") {
+  if (Units == 'I') {
     LastBackCabinTemp = ConvertCtoF(NTCReadInC(R2, R1BackCabin));
   }
   else {
@@ -1037,9 +1039,18 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
+char GetFromEEPROMUnits() {
+  char Value = EEPROM.read(0);
+  if (Value != 'I' && Value != 'M') {
+    Value = 'I';
+    EEPROM.update(0, Value);
+  }
+  return Value;
+}
+
 unsigned short GetFromEEPROMACVOLTAGEGAIN() {
   unsigned short Value = EEPROM.read(8) << 8 | EEPROM.read(9);
-  if (Value == 65535) {
+  if (Value == 65535 || Value == 0) {
     Value = 1975;
     EEPROM.update(8, highByte(Value));
     EEPROM.update(9, lowByte(Value));
@@ -1049,7 +1060,7 @@ unsigned short GetFromEEPROMACVOLTAGEGAIN() {
 
 unsigned short GetFromEEPROMACCurrentGainCT1() {
   unsigned short Value = EEPROM.read(10) << 8 | EEPROM.read(11);
-  if (Value == 65535) {
+  if (Value == 65535 || Value == 0) {
     Value = 34500;
     EEPROM.update(10, highByte(Value));
     EEPROM.update(11, lowByte(Value));
@@ -1059,7 +1070,7 @@ unsigned short GetFromEEPROMACCurrentGainCT1() {
 
 unsigned short GetFromEEPROMACCurrentGainCT2() {
   unsigned short Value = EEPROM.read(12) << 8 | EEPROM.read(13);
-  if (Value == 65535) {
+  if (Value == 65535 || Value == 0) {
     Value = 34500;
     EEPROM.update(12, highByte(Value));
     EEPROM.update(13, lowByte(Value));
@@ -1069,7 +1080,7 @@ unsigned short GetFromEEPROMACCurrentGainCT2() {
 
 unsigned short GetFromEEPROMACPGAGain() {
   unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
-  if (Value == 65535) {
+  if (Value == 65535 || Value == 0) {
     Value = 21;
     EEPROM.update(14, highByte(Value));
     EEPROM.update(15, lowByte(Value));
@@ -1079,7 +1090,7 @@ unsigned short GetFromEEPROMACPGAGain() {
 
 int GetFromEEPROMACLegs() {
   int Value = EEPROM.read(7);
-  if (0 < Value > 3) {
+  if (0 >= Value || Value >= 3) {
     Value = 1;
     EEPROM.update(7, Value);
   }
@@ -1129,7 +1140,7 @@ String GetCurrentTime() {
                           + ":" + String(now.second());
 
   LastTimeRTCTemp = DateTimeString;
-  if (Units == "I") {
+  if (Units == 'I') {
     LastRTCTemp = ConvertCtoF(rtc.getTemperature());
   }
   else {
@@ -1292,7 +1303,7 @@ void GetEnergyStatus() {
 }
 
 void GetUnits() {
-  ControlComPort.println("%R,Units," + Units);
+  ControlComPort.println("%R,Units," + String(Units));
 }
 
 void GetDeviceInfo() {
@@ -1455,21 +1466,26 @@ void ResetAllAlarmsAndWarnings() {
 //Commands
 //------------------------------------------------------------------
 void SetUnits(String Value) {
+  char CurrentUnits = Units;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   if (ThingToTest.length() == 1) {
     bool CorrectParam = false;
     if (ThingToTest == "I") {
-      Units = "I";
+      Units = 'I';
       CorrectParam = true;
     }
     if (ThingToTest == "M") {
-      Units = "M";
+      Units = 'M';
       CorrectParam = true;
     }
     if (CorrectParam == true) {
+      EEPROM.update(0, Units);
       GetUnits();
+      if (CurrentUnits != Units) {
+        ForceCompleteUpdateOfAllStates();
+      }
     }
     else {
       Error(4);
