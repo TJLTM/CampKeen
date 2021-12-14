@@ -7,19 +7,22 @@
 #include <ATM90E32.h>
 
 #define ControlComPort Serial
+#define RS232 Serial2
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET"
+                            "RESET", "WATERDURATION?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
-                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETSERIAL"
+                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
+                             "SETWATERDURATION", "READANALOG"
                             };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
-int WhichSerialPort;
+String inputStringRS232 = "";         // a String to hold incoming data
+bool stringCompleteRS232 = false;     // whether the string is complete
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
@@ -34,11 +37,12 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.8.6";
+const String FWVersion = "0.9.0";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int ArrayOfWarnings[7] = {};
+int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 bool LCDSetup = false;
@@ -46,7 +50,8 @@ bool LCDSetup = false;
 bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
 bool EnableACEnergyMonitoring = false;
 bool UseWaterPumpSense = false;
-bool StreamingData = false;
+bool StreamingDataUSB = false;
+bool StreamingDataRS232 = false;
 char Units;
 String TempUnits, PressureUnits;
 const String StatesForOutput[2] = {"Off", "On"};
@@ -166,7 +171,8 @@ int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
 /*
    Not sure how i'm going to deal with ADCs as spare analog inputs
 */
-#define SPADC2 15
+int SpareAnalog[] = {15};
+int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // Holding Tank
@@ -188,8 +194,10 @@ bool HoldingTankAlarm = false;
 //-----------------------------------------------------------
 void setup() {
   rtc.begin();
+  RS232.begin(115200);
   ControlComPort.begin(115200);
   inputString.reserve(200);
+  inputStringRS232.reserve(200);
 
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
@@ -256,11 +264,15 @@ void setup() {
   SetupEnergyMonitor();
 
   //Set up displays and output on the Serial Port
-  SendItOut("Starting " + DeviceName);
-  SendItOut("FW: " + FWVersion);
+  SendItOut("Starting " + DeviceName, 0);
+  SendItOut("Starting " + DeviceName, 1);
+  SendItOut("FW: " + FWVersion, 0);
+  SendItOut("FW: " + FWVersion, 1);
   Units = GetFromEEPROMUnits();
   SetUnitsForOutput();
-  SendItOut("Units: " + String(Units));
+  SendItOut("Units: " + String(Units), 0);
+  SendItOut("Units: " + String(Units), 1);
+  WaterDurationInSeconds = GetFromEEPROMWaterDuration();
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -268,7 +280,8 @@ void setup() {
   lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
   ForceCompleteUpdateOfAllStates();
-  SendItOut("System Initialized and values populated:" + GetCurrentTime());
+  SendItOut("System Initialized and values populated:" + GetCurrentTime(), 0);
+  SendItOut("System Initialized and values populated:" + GetCurrentTime(), 1);
   lcd.setCursor(0, 1);
   lcd.print("System Initialized");
   lcd.setCursor(0, 2);
@@ -299,9 +312,13 @@ void loop() {
     //Read Generator Sensors
     GeneratorSensors();
     NTCTimer = millis();
-    if (StreamingData == true) {
-      GetNTCTemps();
-      GetGenStatus();
+    if (StreamingDataUSB == true) {
+      GetNTCTemps(0);
+      GetGenStatus(0);
+    }
+    if (StreamingDataRS232 == true) {
+      GetNTCTemps(1);
+      GetGenStatus(1);
     }
   }
 
@@ -309,8 +326,11 @@ void loop() {
     //Read Energy
     EnergyMetering();
     EnergyTimer = millis();
-    if (StreamingData == true) {
-      GetEnergyStatus();
+    if (StreamingDataUSB == true) {
+      GetEnergyStatus(0);
+    }
+    if (StreamingDataRS232 == true) {
+      GetEnergyStatus(1);
     }
   }
 
@@ -318,9 +338,13 @@ void loop() {
     //ReadLPG and Water Tank at 1/2 hour intervals
     ReadWaterAndLPG();
     WATERLPGtimer = millis();
-    if (StreamingData == true) {
-      GetWaterLevel();
-      GetLPGLevel();
+    if (StreamingDataUSB == true) {
+      GetWaterLevel(0);
+      GetLPGLevel(0);
+    }
+    if (StreamingDataRS232 == true) {
+      GetWaterLevel(0);
+      GetLPGLevel(0);
     }
   }
 
@@ -328,17 +352,43 @@ void loop() {
     //Read DC voltage at 5 min intervals
     ReadBatteryVoltages();
     FiveMinTimer = millis();
-    if (StreamingData == true) {
-      GetDCBatteryVoltage();
-      GetRTCBatteryVotlage();
+    if (StreamingDataUSB == true) {
+      GetDCBatteryVoltage(0);
+      GetRTCBatteryVotlage(0);
+    }
+    if (StreamingDataRS232 == true) {
+      GetDCBatteryVoltage(1);
+      GetRTCBatteryVotlage(1);
     }
   }
 
   if (stringComplete) {
-    inputString = PainlessInstructionSet(inputString);
+    inputString = PainlessInstructionSet(inputString, 0);
     stringComplete = false;
   }
+
+  serialRS232();
+  if (stringCompleteRS232) {
+    stringCompleteRS232 = PainlessInstructionSet(inputStringRS232, 1);
+    stringCompleteRS232 = false;
+  }
 }
+
+
+void serialRS232() {
+  while (RS232.available()) {
+    // get the new byte:
+    char inChar = (char)RS232.read();
+    // add it to the inputString:
+    inputStringRS232 += inChar;
+    // if the incoming character is a carriage return, set a flag so the main loop can
+    // do something about it:
+    if (inChar == '\r') {
+      stringCompleteRS232 = true;
+    }
+  }
+}
+
 
 //------------------------------------------------------------------
 //LCD
@@ -537,13 +587,16 @@ void WaterControl() {
     TurnOffWater();
     delay(1000);
     TurnOnWater();
-    if (StreamingData == true) {
-      GetWaterSource();
+    if (StreamingDataUSB == true) {
+      GetWaterSource(0);
+    }
+    if (StreamingDataRS232 == true) {
+      GetWaterSource(1);
     }
   }
 
-  //if the water is on and the timer says it's been on for more than 2.5 mins turn off.
-  if (WaterOn == true && (abs(millis() - WaterTimer) > 150000)) {
+  //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
+  if (WaterOn == true && (abs(millis() - WaterTimer) > WaterDurationInSeconds * 1000)) {
     TurnOffWater();
   }
   //Check to see if any of the buttons are pressed
@@ -624,7 +677,7 @@ void EnergyMetering() {
   //if true the MCU is not getting data from the energy meter
   //set all AC Values to 0
   if (sys0 == 65535 || sys0 == 0) {
-    SendItOut(GetCurrentTime() + ",Error,Not receiving data from energy meter");
+    //SendItOut(GetCurrentTime() + ",Error,Not receiving data from energy meter", WhichPort);
     LastACVoltage = 0;
     LastACCurrent = 0;
     LastPowerFactor = 0;
@@ -756,8 +809,10 @@ void HoldingTankMonitoring() {
        update on their correct interval
     */
     if ((millis() - GreyTankTimer) > 10000) {
-      GetGreyLevel();
-      GetSewageLevel();
+      GetGreyLevel(0);
+      GetSewageLevel(0);
+      GetGreyLevel(1);
+      GetSewageLevel(1);
       GreyTankTimer = millis();
       ShitterTankTimer = millis();
     }
@@ -782,8 +837,10 @@ void HoldingTankMonitoring() {
 
 void ReadSewageTank() {
   // Turn On votlage to tank
-  digitalWrite(SewagePower, HIGH);
-  delay(2000); // Have to put this in here for the Relay to completely close
+  if (digitalRead(SewagePower) == LOW) {
+    digitalWrite(SewagePower, HIGH);
+    delay(2000); // Have to put this in here for the Relay to completely close
+  }
   byte TankStatus;
   bitWrite(TankStatus, 0, digitalRead(S14)); //quater
   bitWrite(TankStatus, 1, digitalRead(S12)); //Half
@@ -828,8 +885,10 @@ void ReadSewageTank() {
 
 void ReadGreyTank() {
   // Turn On votlage to tank
-  digitalWrite(GreyWaterPower, HIGH);
-  delay(2000); // Have to put this in here for the Relay to completely close
+  if (digitalRead(GreyWaterPower) == LOW) {
+    digitalWrite(GreyWaterPower, HIGH);
+    delay(2000); // Have to put this in here for the Relay to completely close
+  }
   byte TankStatus;
   bitWrite(TankStatus, 0, digitalRead(G14)); //quater
   bitWrite(TankStatus, 1, digitalRead(G12)); //Half
@@ -1045,8 +1104,13 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
-void SendItOut(String Message) {
-  ControlComPort.println(Message);
+int GetFromEEPROMWaterDuration() {
+  int Value = EEPROM.read(3);
+  if (150 >= Value || Value >= 1800) {
+    Value = 150;
+    EEPROM.update(3, Value);
+  }
+  return Value;
 }
 
 char GetFromEEPROMUnits() {
@@ -1127,29 +1191,30 @@ unsigned short GetFromEEPROMACFREQ() {
   }
   return Value;
 }
-
-int GetFromEEPROMSerialPort() {
-  int Value = EEPROM.read(2);
-  if (Value != 0 || Value != 1) {
-    EEPROM.update(2, 0);
-    //default this value to USB
-    Value = 0;
-  }
-  return Value;
-}
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
+void SendItOut(String Message, int WhichPort) {
+  if (WhichPort == 0) {
+    ControlComPort.println(Message);
+  }
+  else {
+    RS232.println(Message);
+  }
+}
+
 void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
 
 void RebootDisBitch() {
-  SendItOut("%R," + GetCurrentTime() + ",Rebooting");
+  SendItOut("%R," + GetCurrentTime() + ",Rebooting", 0);
+  SendItOut("%R," + GetCurrentTime() + ",Rebooting", 1);
   delay(2000);
   resetFunc();
 }
 
-void MIBFLASH(){ 
-  SendItOut("%R," + GetCurrentTime() + ",Reseting wait for reboot Message");
+void MIBFLASH() {
+  SendItOut("%R," + GetCurrentTime() + ",Reseting wait for reboot Message", 0);
+  SendItOut("%R," + GetCurrentTime() + ",Reseting wait for reboot Message", 1);
   for (int i = 0 ; i < EEPROM.length() ; i++) {
     EEPROM.write(i, 0);
   }
@@ -1206,9 +1271,13 @@ void ReadAllInputs() {
     int CurrentInputRead = ReadInput(SpareInputs[i]);
     if (CurrentInputRead != LastInputState[i]) {
       LastInputState[i] = CurrentInputRead;
-      if (StreamingData == true) {
-        PrintInputState(i, CurrentInputRead);
+      if (StreamingDataUSB == true) {
+        PrintInputState(i, CurrentInputRead, 0);
       }
+      if (StreamingDataRS232 == true) {
+        PrintInputState(i, CurrentInputRead, 1);
+      }
+
     }
   }
 }
@@ -1257,165 +1326,174 @@ void serialEvent() {
   }
 }
 
-void OutputAllData() {
-  GetDeviceInfo();
-  GetSystemTime();
-  AllWarningMessages();
-  GetStreamingState();
-  GetWaterPumpSense();
-  GetACEnmon();
-  GetWaterState();
-  GetUnits();
-  GetWaterSource();
-  GetWaterLevel();
-  GetSewageLevel();
-  GetGreyLevel();
-  GetLPGLevel();
-  GetDCBatteryVoltage();
-  GetRTCBatteryVotlage();
-  GetNTCTemps();
-  GetHeadUnitTemp();
-  GetGenStatus();
-  GetEnergyStatus();
-  GetACVOLTAGEGAIN();
-  GetACFREQ();
-  GetACPGAGAIN();
-  GetACLEGS();
-  GetACCT1GAIN();
-  GetACCT2GAIN();
+void OutputAllData(int WhichPort) {
+  GetDeviceInfo(WhichPort);
+  GetSystemTime(WhichPort);
+  AllWarningMessages(WhichPort);
+  GetStreamingState(WhichPort);
+  GetWaterPumpSense(WhichPort);
+  GetACEnmon(WhichPort);
+  GetWaterState(WhichPort);
+  GetUnits(WhichPort);
+  GetWaterSource(WhichPort);
+  GetWaterLevel(WhichPort);
+  GetWaterDuration(WhichPort);
+  GetSewageLevel(WhichPort);
+  GetGreyLevel(WhichPort);
+  GetLPGLevel(WhichPort);
+  GetDCBatteryVoltage(WhichPort);
+  GetRTCBatteryVotlage(WhichPort);
+  GetNTCTemps(WhichPort);
+  GetHeadUnitTemp(WhichPort);
+  GetGenStatus(WhichPort);
+  GetEnergyStatus(WhichPort);
+  GetACVOLTAGEGAIN(WhichPort);
+  GetACFREQ(WhichPort);
+  GetACPGAGAIN(WhichPort);
+  GetACLEGS(WhichPort);
+  GetACCT1GAIN(WhichPort);
+  GetACCT2GAIN(WhichPort);
 }
 
-void GetWaterSource() {
-  SendItOut("%R," + GetCurrentTime() + ",Water Source," + LastSource);
+void GetWaterSource(int WhichPort) {
+  SendItOut("%R," + GetCurrentTime() + ",Water Source," + LastSource, WhichPort);
 }
 
-void GetWaterLevel() {
-  SendItOut("%R," + LastTimeWaterLevel + ",Water Tank Level," + LastWaterLevel);
+void GetWaterLevel(int WhichPort) {
+  SendItOut("%R," + LastTimeWaterLevel + ",Water Tank Level," + LastWaterLevel, WhichPort);
 }
 
-void GetSewageLevel() {
-  SendItOut("%R," + LastTimeSewageLevel + ",Sewage," + LastSewageLevel);
+void GetSewageLevel(int WhichPort) {
+  SendItOut("%R," + LastTimeSewageLevel + ",Sewage," + LastSewageLevel, WhichPort);
 }
 
-void GetGreyLevel() {
-  SendItOut("%R," + LastTimeGreyWater + ",Grey," + LastGreyWater);
+void GetGreyLevel(int WhichPort) {
+  SendItOut("%R," + LastTimeGreyWater + ",Grey," + LastGreyWater, WhichPort);
 }
 
-void GetLPGLevel() {
-  SendItOut("%R," + LastTimeWaterLevel   + ",LPG," + LastLPGLevel);
+void GetLPGLevel(int WhichPort) {
+  SendItOut("%R," + LastTimeWaterLevel   + ",LPG," + LastLPGLevel, WhichPort);
 }
 
-void GetDCBatteryVoltage() {
-  SendItOut("%R," + LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage);
+void GetDCBatteryVoltage(int WhichPort) {
+  SendItOut("%R," + LastTimeDCVoltage + ",Camper VDC," + LastDCVoltage, WhichPort);
 }
 
-void GetRTCBatteryVotlage() {
-  SendItOut("%R," + LastTimeRTCVoltage + ",RTCBattery," + LastRTCVoltage);
+void GetRTCBatteryVotlage(int WhichPort) {
+  SendItOut("%R," + LastTimeRTCVoltage + ",RTCBattery," + LastRTCVoltage, WhichPort);
 }
 
-void GetNTCTemps() {
+void GetNTCTemps(int WhichPort) {
   SendItOut("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Units," + TempUnits + ",Front AC Temp,"
             + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp,"
             + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge,"
-            + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp);
+            + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp, WhichPort);
 }
 
-void GetHeadUnitTemp() {
-  SendItOut("%R," + LastTimeRTCTemp + ",Head Unit Temp,Units," + TempUnits + "," + LastRTCTemp);
+void GetHeadUnitTemp(int WhichPort) {
+  SendItOut("%R," + LastTimeRTCTemp + ",Head Unit Temp,Units," + TempUnits + "," + LastRTCTemp, WhichPort);
 }
 
-void GetGenStatus() {
+void GetGenStatus(int WhichPort) {
   SendItOut("%R," + LastTimeGenSensors + ",Generator Fuel Pressure,Units," + PressureUnits + ","
             + LastGenFuel + ",Generator Temps, Enclosure,Units," + TempUnits + "," + LastGenEnclosureTemp +
-            ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp);
+            ",Right Head Temp," + LastGenHeadRightTemp + ",Left Head Temp," + LastGenHeadLeftTemp, WhichPort);
 }
 
-void GetEnergyStatus() {
+void GetEnergyStatus(int WhichPort) {
   SendItOut("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
             ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
             + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
-            + LastACHarmonic + ",W(harmonic)");
+            + LastACHarmonic + ",W(harmonic)", WhichPort);
 }
 
-void GetUnits() {
-  SendItOut("%R,Units," + String(Units));
+void GetUnits(int WhichPort) {
+  SendItOut("%R,Units," + String(Units), WhichPort);
 }
 
-void GetDeviceInfo() {
-  SendItOut("%R," + DeviceName + ",FW," + FWVersion);
+void GetDeviceInfo(int WhichPort) {
+  SendItOut("%R," + DeviceName + ",FW," + FWVersion, WhichPort);
 }
 
-void GetStreamingState() {
-  String State = StatesForOutput[0];
-  if (StreamingData == true) {
-    State = StatesForOutput[1];
+void GetStreamingState(int WhichPort) {
+  String USBState = StatesForOutput[0];
+  String RS232State = StatesForOutput[0];
+  if (StreamingDataUSB == true) {
+    USBState = StatesForOutput[1];
   }
-  SendItOut("%R,StreamingData," + State);
+  if (StreamingDataRS232 == true) {
+    RS232State = StatesForOutput[1];
+  }
+  SendItOut("%R,StreamingData,USB," + USBState + ",RS232," + RS232State , WhichPort);
 }
 
-void GetWaterPumpSense() {
+void GetWaterPumpSense(int WhichPort) {
   String State = StatesForOutput[0];
   if (UseWaterPumpSense == true) {
     State = StatesForOutput[1];
   }
-  SendItOut("%R,WaterPumpSense," + State);
+  SendItOut("%R,WaterPumpSense," + State, WhichPort);
 }
 
-void GetWaterState() {
+void GetWaterState(int WhichPort) {
   String State = StatesForOutput[0];
   if (WaterOn == true) {
     State = StatesForOutput[1];
   }
-  SendItOut("%R,Water," + State);
+  SendItOut("%R,Water," + State, WhichPort);
 }
 
-void GetSystemTime() {
-  SendItOut("%R,System Time," + GetCurrentTime());
+void GetSystemTime(int WhichPort) {
+  SendItOut("%R,System Time," + GetCurrentTime(), WhichPort);
 }
 
-void GetACEnmon() {
+void GetACEnmon(int WhichPort) {
   String State = StatesForOutput[0];
   if (EnableACEnergyMonitoring == true) {
     State = StatesForOutput[1];
   }
-  SendItOut("%R,AC Energy Monitoring," + State);
+  SendItOut("%R,AC Energy Monitoring," + State, WhichPort);
 }
 
-void GetACVOLTAGEGAIN() {
-  SendItOut("%R,ACVOLTAGEGAIN," + String(VoltageGain));
+void GetACVOLTAGEGAIN(int WhichPort) {
+  SendItOut("%R,ACVOLTAGEGAIN," + String(VoltageGain), WhichPort);
 }
 
-void GetACFREQ() {
+void GetACFREQ(int WhichPort) {
   if (LineFreq == 4485) {
-    SendItOut("%R,ACFREQ,60");
+    SendItOut("%R,ACFREQ,60", WhichPort);
   }
   if (LineFreq == 389) {
-    SendItOut("%R,ACFREQ,50");
+    SendItOut("%R,ACFREQ,50", WhichPort);
   }
 }
 
-void GetACPGAGAIN() {
-  SendItOut("%R,ACPGAGAIN," + String(PGAGain));
+void GetACPGAGAIN(int WhichPort) {
+  SendItOut("%R,ACPGAGAIN," + String(PGAGain), WhichPort);
 }
 
-void GetACLEGS() {
-  SendItOut("%R,ACLEGS," + String(NumberOfACLegs));
+void GetACLEGS(int WhichPort) {
+  SendItOut("%R,ACLEGS," + String(NumberOfACLegs), WhichPort);
 }
 
-void GetACCT1GAIN() {
-  SendItOut("%R,ACCT1GAIN," + String(CurrentGainCT1));
+void GetACCT1GAIN(int WhichPort) {
+  SendItOut("%R,ACCT1GAIN," + String(CurrentGainCT1), WhichPort);
 }
 
-void GetACCT2GAIN() {
-  SendItOut("%R,ACCT2GAIN," + String(CurrentGainCT2));
+void GetACCT2GAIN(int WhichPort) {
+  SendItOut("%R,ACCT2GAIN," + String(CurrentGainCT2), WhichPort);
+}
+
+void GetWaterDuration(int WhichPort) {
+  SendItOut("%R,WATERDURATION,Units,Seconds," + String(WaterDurationInSeconds), WhichPort);
 }
 
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
-void Error(int Number) {
+void Error(int Number, int WhichPort) {
   const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform", "command can not be processed", "Invalid Parameter", "Invalid Command Format"};
-  SendItOut("%R,Error," + String(Errors[Number]));
+  SendItOut("%R,Error," + String(Errors[Number]), WhichPort);
 }
 
 void Warning() {
@@ -1463,18 +1541,19 @@ void OutputWarningMessage(int ID) {
         Message = "LPG Level is low";
         break;
     }
-    SendItOut("%R," + GetCurrentTime() + ",Warning," + Message);
+    SendItOut("%R," + GetCurrentTime() + ",Warning," + Message, 0);
+    SendItOut("%R," + GetCurrentTime() + ",Warning," + Message, 1);
   }
 }
 
-void AllWarningMessages() {
+void AllWarningMessages(int WhichPort) {
   if (WarningActive == true) {
     for (int i = 1; i <= 7; i++) {
       OutputWarningMessage(i);
     }
   }
   else {
-    SendItOut("%R," + GetCurrentTime() + ",Warning,None");
+    SendItOut("%R," + GetCurrentTime() + ",Warning,None", WhichPort);
   }
 }
 
@@ -1500,7 +1579,7 @@ void ResetAllAlarmsAndWarnings() {
 //------------------------------------------------------------------
 //Commands
 //------------------------------------------------------------------
-void SetUnits(String Value) {
+void SetUnits(String Value, int WhichPort) {
   char CurrentUnits = Units;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -1517,22 +1596,22 @@ void SetUnits(String Value) {
     }
     if (CorrectParam == true) {
       EEPROM.update(0, Units);
-      GetUnits();
+      GetUnits(WhichPort);
       if (CurrentUnits != Units) {
         ForceCompleteUpdateOfAllStates();
       }
     }
     else {
-      Error(4);
+      Error(4, WhichPort);
     }
   }
   else {
-    Error(1);
+    Error(1, WhichPort);
   }
   SetUnitsForOutput();
 }
 
-void SetWaterPumpSenseOverRide(String Value) {
+void SetWaterPumpSenseOverRide(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
@@ -1547,14 +1626,14 @@ void SetWaterPumpSenseOverRide(String Value) {
   }
 
   if (CorrectParam == true) {
-    GetWaterPumpSense();
+    GetWaterPumpSense(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetWater(String Value) {
+void SetWater(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
@@ -1569,36 +1648,52 @@ void SetWater(String Value) {
   }
 
   if (CorrectParam == true) {
-    GetWaterState();
+    GetWaterState(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetStreamingData(String Value) {
+void SetStreamingData(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
-  String ThingToTest = Value.substring(Index + 1, End - 1);
+  String Start = Value.substring(Index + 1, End - 1);
+  int SecondParam = Start.indexOf("*");
+  String SerialPortName  = Start.substring(0, SecondParam);
+  String State = Start.substring(SecondParam + 1, End - 1);
   bool CorrectParam = false;
-  if (ThingToTest == "OFF") {
-    StreamingData = false;
-    CorrectParam = true;
+  if (SerialPortName == "USB") {
+    if (State == "OFF") {
+      StreamingDataUSB = false;
+      CorrectParam = true;
+    }
+    if (State == "ON") {
+      StreamingDataUSB = true;
+      CorrectParam = true;
+    }
   }
-  if (ThingToTest == "ON") {
-    StreamingData = true;
-    CorrectParam = true;
+
+  if (SerialPortName == "RS232") {
+    if (State == "OFF") {
+      StreamingDataRS232 = false;
+      CorrectParam = true;
+    }
+    if (State == "ON") {
+      StreamingDataRS232 = true;
+      CorrectParam = true;
+    }
   }
 
   if (CorrectParam == true) {
-    GetStreamingState();
+    GetStreamingState(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetOutputState(String Value) {
+void SetOutputState(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String Start = Value.substring(Index + 1, End - 1);
@@ -1616,60 +1711,81 @@ void SetOutputState(String Value) {
       CorrectParam = true;
     }
     if (CorrectParam == true) {
-      PrinOutputState(Number);
+      PrinOutputState(Number, WhichPort);
     }
     else {
-      Error(4);
+      Error(4, WhichPort);
     }
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void GetOutputState(String Value) {
+void GetOutputState(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
   if (ThingToTest > 0 && ThingToTest <= (SpareOutputSize)) {
-    PrinOutputState(ThingToTest);
+    PrinOutputState(ThingToTest, WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void PrinOutputState(int Output) {
+void PrinOutputState(int Output, int WhichPort) {
   int CurrentState = ReadOutput(Output);
   String State = StatesForOutput[0];
   if (CurrentState == 1) {
     String State = StatesForOutput[1];
   }
-  SendItOut("%R," + GetCurrentTime() + ",Output," + Output + "," + State);
+  SendItOut("%R," + GetCurrentTime() + ",Output," + Output + "," + State, WhichPort);
 }
 
-void ReadInputState(String Value) {
+void ReadInputState(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
   if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
     int CurrentInputRead = ReadInput(ThingToTest);
-    PrintInputState(ThingToTest, CurrentInputRead);
+    PrintInputState(ThingToTest, CurrentInputRead, WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void PrintInputState(int Input, int CurrentInputRead) {
+void PrintInputState(int Input, int CurrentInputRead, int WhichPort) {
   String State = StatesForOutput[0];
   if (CurrentInputRead == 1) {
     String State = StatesForOutput[1];
   }
-  SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + State);
+  SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + State, WhichPort);
 }
 
-void SetRTCDateTime(String Value) {
+//void ReadAnalogInputs(String Value) {
+//  int Index = Value.indexOf("*");
+//  int End = Value.indexOf("\r");
+//  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
+//  if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
+//    int CurrentInputRead = ReadInput(ThingToTest);
+//    PrintAnalogValue(ThingToTest, CurrentInputRead);
+//  }
+//  else {
+//    Error(4);
+//  }
+//}
+//
+//void PrintAnalogValue(int AnalogNumber) {
+//  float Value = ;
+//  if (CurrentInputRead == 1) {
+//    String State = StatesForOutput[1];
+//  }
+//  SendItOut("%R," + GetCurrentTime() + ",Analog,Units,V," + Input + "," + Value, WhichPort);
+//}
+
+void SetRTCDateTime(String Value, int WhichPort) {
   // need to set Year Month Day Hour Min Second
   //rtc.adjust(DateTime(year, month, day, hour, minute, seconds));
   //Example 8-19-2020 5:25:45 PM settime*2020:8:19:17:25:45\r
@@ -1697,46 +1813,46 @@ void SetRTCDateTime(String Value) {
   }
 
   if (2021 > TimeArray[0]) {
-    SendItOut("%R,Error,Can't set the year older than when i made this mess : " + String(TimeArray[0]));
+    SendItOut("%R,Error,Can't set the year older than when i made this mess : " + String(TimeArray[0]), WhichPort);
     CorrectParam = false;
   }
 
   if (1 > TimeArray[1] ||  TimeArray[1] > 12) {
-    SendItOut("%R,Error,Month 1-12 accepted : " + String(TimeArray[1]));
+    SendItOut("%R,Error,Month 1-12 accepted : " + String(TimeArray[1]), WhichPort);
     CorrectParam = false;
   }
 
   if (1 > TimeArray[2] ||  TimeArray[2] > 31) {
-    SendItOut("%R,Error,Date 1-31 accepted : " + String(TimeArray[2]));
+    SendItOut("%R,Error,Date 1-31 accepted : " + String(TimeArray[2]), WhichPort);
     CorrectParam = false;
   }
 
   if (0 > TimeArray[3] ||  TimeArray[3] > 24) {
-    SendItOut("%R,Error,Hour 0-23 accepted : " + String(TimeArray[3]));
+    SendItOut("%R,Error,Hour 0-23 accepted : " + String(TimeArray[3]), WhichPort);
     CorrectParam = false;
   }
 
   if (0 > TimeArray[4] || TimeArray[4] >= 60) {
-    SendItOut("%R,Error,Min 0-59 accepted : " + String(TimeArray[4]));
+    SendItOut("%R,Error,Min 0-59 accepted : " + String(TimeArray[4]), WhichPort);
     CorrectParam = false;
   }
 
   if (0 > TimeArray[5] ||  TimeArray[5] >= 60) {
-    SendItOut("%R,Error,Sec 0-59 accepted : " + String(TimeArray[5]));
+    SendItOut("%R,Error,Sec 0-59 accepted : " + String(TimeArray[5]), WhichPort);
     CorrectParam = false;
   }
 
   if (CorrectParam == true) {
     rtc.adjust(DateTime(TimeArray[0], TimeArray[1], TimeArray[2], TimeArray[3], TimeArray[4], TimeArray[5]));
     delay(100);
-    GetSystemTime();
+    GetSystemTime(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetACEnmon(String Value) {
+void SetACEnmon(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
@@ -1752,14 +1868,14 @@ void SetACEnmon(String Value) {
   }
 
   if (CorrectParam == true) {
-    GetACEnmon();
+    GetACEnmon(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetACFREAK(String Value) {
+void SetACFREAK(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
@@ -1777,14 +1893,14 @@ void SetACFREAK(String Value) {
   }
 
   if (CorrectParam == true) {
-    GetACFREQ();
+    GetACFREQ(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetACLEGS(String Value) {
+void SetACLEGS(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
@@ -1802,14 +1918,14 @@ void SetACLEGS(String Value) {
   if (CorrectParam == true) {
     //put it into EEPROM
     EEPROM.update(7, NumberOfACLegs);
-    GetACLEGS();
+    GetACLEGS(WhichPort);
   }
   else {
-    Error(4);
+    Error(4, WhichPort);
   }
 }
 
-void SetACVOLTAGEGAIN(String Value) {
+void SetACVOLTAGEGAIN(String Value, int WhichPort) {
   unsigned short CurrentVOLTAGEGAIN = VoltageGain;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -1817,14 +1933,14 @@ void SetACVOLTAGEGAIN(String Value) {
   VoltageGain = ThingToTest;
   EEPROM.update(8, highByte(ThingToTest));
   EEPROM.update(9, lowByte(ThingToTest));
-  GetACVOLTAGEGAIN();
+  GetACVOLTAGEGAIN(WhichPort);
   if (CurrentVOLTAGEGAIN != VoltageGain) {
     SetupEnergyMonitor();
   }
 
 }
 
-void SetACCT1GAIN(String Value) {
+void SetACCT1GAIN(String Value, int WhichPort) {
   unsigned short CurrentCT1GAIN = CurrentGainCT1;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -1832,13 +1948,13 @@ void SetACCT1GAIN(String Value) {
   CurrentGainCT1 = ThingToTest;
   EEPROM.update(10, highByte(ThingToTest));
   EEPROM.update(11, lowByte(ThingToTest));
-  GetACCT1GAIN();
+  GetACCT1GAIN(WhichPort);
   if (CurrentCT1GAIN != CurrentGainCT1) {
     SetupEnergyMonitor();
   }
 }
 
-void SetACCT2GAIN(String Value) {
+void SetACCT2GAIN(String Value, int WhichPort) {
   unsigned short CurrentCT2GAIN = CurrentGainCT2;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -1846,13 +1962,13 @@ void SetACCT2GAIN(String Value) {
   CurrentGainCT2 = ThingToTest;
   EEPROM.update(12, highByte(ThingToTest));
   EEPROM.update(13, lowByte(ThingToTest));
-  GetACCT2GAIN();
+  GetACCT2GAIN(WhichPort);
   if (CurrentCT2GAIN != CurrentGainCT2) {
     SetupEnergyMonitor();
   }
 }
 
-void SetACPGAGAIN(String Value) {
+void SetACPGAGAIN(String Value, int WhichPort) {
   unsigned short CurrentPGAGain = PGAGain;
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -1860,34 +1976,25 @@ void SetACPGAGAIN(String Value) {
   PGAGain = ThingToTest;
   EEPROM.update(14, highByte(ThingToTest));
   EEPROM.update(15, lowByte(ThingToTest));
-  GetACPGAGAIN();
+  GetACPGAGAIN(WhichPort);
   if (CurrentPGAGain != PGAGain) {
     SetupEnergyMonitor();
   }
 }
 
-void SetPort(String Value) {
-  SendItOut("%R," + GetCurrentTime() + ",Currently not working");
-//  int Index = Value.indexOf("*");
-//  int End = Value.indexOf("\r");
-//  String ThingToTest = Value.substring(Index + 1, End - 1);
-//  bool CorrectParam = false;
-//  if (ThingToTest == "USB") {
-//    EEPROM.update(2, 0);
-//    CorrectParam = true;
-//  }
-//
-//  if (ThingToTest == "RS232") {
-//    EEPROM.update(2, 1);
-//    CorrectParam = true;
-//  }
-//
-//  if (CorrectParam == true) {
-//    SendItOut("%R," + GetCurrentTime() + ",Requires Reboot to take affect. Set to " + ThingToTest);
-//  }
-//  else {
-//    Error(4);
-//  }
+void SetWaterDurationInSeconds(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  int ThingToTest = Value.substring(Index + 1, End - 1).toInt();
+  if (150 <= ThingToTest && ThingToTest <= 1800) {
+    WaterDurationInSeconds = ThingToTest;
+    EEPROM.update(3, ThingToTest);
+  }
+  else {
+    SendItOut("%R," + GetCurrentTime() + ",Error,WaterDuration must be between 150 and 1800 seconds", WhichPort);
+    Error(1, WhichPort);
+  }
+  GetWaterDuration(WhichPort);
 }
 
 /*
@@ -1900,7 +2007,7 @@ void SetPort(String Value) {
   case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
 */
 
-String PainlessInstructionSet(String & TestString) {
+String PainlessInstructionSet(String & TestString, int WhichPort) {
   int Search = 1;
   while (Search == 1) {
     int FindStart = TestString.indexOf('%');
@@ -1910,7 +2017,7 @@ String PainlessInstructionSet(String & TestString) {
       if (FindStart != -1) { //case 1
         if (FindStart != 0) { //case 2
           //Serial.println("PIS Case 2");
-          SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format No Start or Stop Delimiters");
+          SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format No Start or Stop Delimiters", WhichPort);
           TestString.remove(0, FindStart);
         }
         else { //Case 3 & Case 5 & Case 4
@@ -1918,7 +2025,7 @@ String PainlessInstructionSet(String & TestString) {
           int FindStart1 = Case5Test.indexOf('%');
           int FindEnd1 = Case5Test.indexOf('\r');
           if ((FindEnd1 > FindStart1) && (FindStart1 != -1)) {
-            SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No End Delimiter");
+            SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No End Delimiter", WhichPort);
             //Serial.println("PIS Case 5");
             TestString.remove(0, FindStart1 + 1);
           }
@@ -1934,7 +2041,7 @@ String PainlessInstructionSet(String & TestString) {
                   String ParamHeader = CommandCandidate.substring(FindStart, Param - 1);
                   ParamHeader.toUpperCase();
                   if (ParamHeader == ParameterCommands[i]) {
-                    ParamCommandToCall(i, CommandCandidate);
+                    ParamCommandToCall(i, CommandCandidate, WhichPort);
                   }
                 }
               }
@@ -1944,7 +2051,7 @@ String PainlessInstructionSet(String & TestString) {
                   //Non Parameter Commands
                   if (CommandCandidate == AcceptedCommands[i]) {
                     //Serial.println("PIS Case 3B");
-                    CommandToCall(i);
+                    CommandToCall(i, WhichPort);
                   }
                 }
               }
@@ -1961,7 +2068,7 @@ String PainlessInstructionSet(String & TestString) {
         //Serial.println("PIS Case 1");
         Search = 0;
         TestString = "";
-        SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No Start Command Character");
+        SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No Start Command Character", WhichPort);
       }
     }//if TestString is empty
     else { //Exit Search While if Buffer is empty
@@ -1972,196 +2079,203 @@ String PainlessInstructionSet(String & TestString) {
   return TestString;
 }//End of PIS Function
 
-void ParamCommandToCall(int Index, String CommandRaw) {
+void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
   switch (Index)
   {
     case 0:
       //Set Units
-      SetUnits(CommandRaw);
+      SetUnits(CommandRaw, WhichPort);
       break;
     case 1:
       //Set Water Pump Sense
-      SetWaterPumpSenseOverRide(CommandRaw);
+      SetWaterPumpSenseOverRide(CommandRaw, WhichPort);
       break;
     case 2:
       //Water
-      SetWater(CommandRaw);
+      SetWater(CommandRaw, WhichPort);
       break;
     case 3:
       //Set Streaming Data Output
-      SetStreamingData(CommandRaw);
+      SetStreamingData(CommandRaw, WhichPort);
       break;
     case 4:
       //Set Output State
-      SetOutputState(CommandRaw);
+      SetOutputState(CommandRaw, WhichPort);
       break;
     case 5:
       //Read Input State
-      ReadInputState(CommandRaw);
+      ReadInputState(CommandRaw, WhichPort);
       break;
     case 6:
       //Set RTC Datetime
-      SetRTCDateTime(CommandRaw);
+      SetRTCDateTime(CommandRaw, WhichPort);
       break;
     case 7:
       //Read OutputSate
-      GetOutputState(CommandRaw);
+      GetOutputState(CommandRaw, WhichPort);
       break;
     case 8:
       //Enable/disable AC energy Monitoring
-      SetACEnmon(CommandRaw);
+      SetACEnmon(CommandRaw, WhichPort);
       break;
     case 9:
       //SET AC FREQUNECY 50/60 Hz
-      SetACFREAK(CommandRaw);
+      SetACFREAK(CommandRaw, WhichPort);
       break;
     case 10:
       //SET AC PGAGAIN
-      SetACPGAGAIN(CommandRaw);
+      SetACPGAGAIN(CommandRaw, WhichPort);
       break;
     case 11:
       //SET AC VOLTAGEGAIN
-      SetACVOLTAGEGAIN(CommandRaw);
+      SetACVOLTAGEGAIN(CommandRaw, WhichPort);
       break;
     case 12:
-      SetACLEGS(CommandRaw);
+      SetACLEGS(CommandRaw, WhichPort);
       break;
     case 13:
       //SET AC CT1 GAIN
-      SetACCT1GAIN(CommandRaw);
+      SetACCT1GAIN(CommandRaw, WhichPort);
       break;
     case 14:
       //SET AC CT2 GAIN
-      SetACCT2GAIN(CommandRaw);
+      SetACCT2GAIN(CommandRaw, WhichPort);
       break;
     case 15:
-      //Set which Serial Port to use
-      SetPort(CommandRaw);
+      //Water Duration
+      SetWaterDurationInSeconds(CommandRaw, WhichPort);
       break;
+      //    case 16:
+      //      //AnalogInputs
+      //      ReadAnalogInputs(CommandRaw);
+      //      break;
   }
 }
 
-void CommandToCall(int Index) {
+void CommandToCall(int Index, int WhichPort) {
   switch (Index)
   {
     case 0:
       //UNITS
-      GetUnits();
+      GetUnits(WhichPort);
       break;
     case 1:
       //DEVICE INFORMATION
-      GetDeviceInfo();
+      GetDeviceInfo(WhichPort);
       break;
     case 2:
       //WATERSOURCE
-      GetWaterSource();
+      GetWaterSource(WhichPort);
       break;
     case 3:
       //WATERLEVEL
-      GetWaterLevel();
+      GetWaterLevel(WhichPort);
       break;
     case 4:
       //LPG LEVEL
-      GetLPGLevel();
+      GetLPGLevel(WhichPort);
       break;
     case 5:
       //SEWAGE LEVEL
-      GetSewageLevel();
+      GetSewageLevel(WhichPort);
       break;
     case 6:
       //GREY LEVEL
-      GetGreyLevel();
+      GetGreyLevel(WhichPort);
       break;
     case 7:
       //ENERGY MONITOR
-      GetEnergyStatus();
+      GetEnergyStatus(WhichPort);
       break;
     case 8:
       //CAMPER DV VOLTAGE
-      GetDCBatteryVoltage();
+      GetDCBatteryVoltage(WhichPort);
       break;
     case 9:
       //RTC BATTERY VOLTAGE
-      GetRTCBatteryVotlage();
+      GetRTCBatteryVotlage(WhichPort);
       break;
     case 10:
       //GENERATOR STATUS
-      GetGenStatus();
+      GetGenStatus(WhichPort);
       break;
     case 11:
       //NTC TEMPS
-      GetNTCTemps();
+      GetNTCTemps(WhichPort);
       break;
     case 12:
       //HEAD UNIT TEMP
-      GetHeadUnitTemp();
+      GetHeadUnitTemp(WhichPort);
       break;
     case 13:
       //WATERPUMPSENSE
-      GetWaterPumpSense();
+      GetWaterPumpSense(WhichPort);
       break;
     case 14:
       //WARNING
-      AllWarningMessages();
+      AllWarningMessages(WhichPort);
       break;
     case 15:
       //WATER
-      GetWaterState();
+      GetWaterState(WhichPort);
       break;
     case 16:
       //STREAMING
-      GetStreamingState();
+      GetStreamingState(WhichPort);
       break;
     case 17:
       //AC energy monitoring
-      GetACEnmon();
+      GetACEnmon(WhichPort);
       break;
     case 18:
       //Get All Data at one go
-      OutputAllData();
+      OutputAllData(WhichPort);
       break;
     case 19:
       //Force Update of all states
       ForceCompleteUpdateOfAllStates();
-      SendItOut("%R," + GetCurrentTime() + ",All States Updated");
+      SendItOut("%R," + GetCurrentTime() + ",All States Updated", 0);
+      SendItOut("%R," + GetCurrentTime() + ",All States Updated", 1);
       break;
     case 20:
       //Reset Warnings
       ResetWarnings();
-      SendItOut("%R," + GetCurrentTime() + ",Reset Warnings");
+      SendItOut("%R," + GetCurrentTime() + ",Reset Warnings", 0);
+      SendItOut("%R," + GetCurrentTime() + ",Reset Warnings", 1);
       break;
     case 21:
       //Reset All alarms and warnings
       ResetAllAlarmsAndWarnings();
-      SendItOut("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings");
+      SendItOut("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings", 0);
+      SendItOut("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings", 1);
       break;
     case 22:
       //Show System Time
-      GetSystemTime();
+      GetSystemTime(WhichPort);
       break;
     case 23:
       //Show AC VOLTAGEGAIN
-      GetACVOLTAGEGAIN();
+      GetACVOLTAGEGAIN(WhichPort);
       break;
     case 24:
       //Show AC FREQUENCY
-      GetACFREQ();
+      GetACFREQ(WhichPort);
       break;
     case 25:
       //Show AC PGAGAIN
-      GetACPGAGAIN();
+      GetACPGAGAIN(WhichPort);
       break;
     case 26:
       //Show AC LEGS
-      GetACLEGS();
+      GetACLEGS(WhichPort);
       break;
     case 27:
       //Show AC CT1GAIN
-      GetACCT1GAIN();
+      GetACCT1GAIN(WhichPort);
       break;
     case 28:
       //Show AC CT2GAIN
-      GetACCT2GAIN();
+      GetACCT2GAIN(WhichPort);
       break;
     case 29:
       //Reboot the MCU
@@ -2170,6 +2284,10 @@ void CommandToCall(int Index) {
     case 30:
       //reset to defaults
       MIBFLASH();
+      break;
+    case 31:
+      //WaterDuration
+      GetWaterDuration(WhichPort);
       break;
   }
 }
