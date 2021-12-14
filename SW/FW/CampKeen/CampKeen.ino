@@ -6,18 +6,18 @@
 #include <EEPROM.h>
 #include <ATM90E32.h>
 
-#define ControlComPort Serial
+#define USBSerial Serial
 #define RS232 Serial2
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
-                            "GETTIME", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?"
+                            "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
+                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
                              "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
-                             "SETWATERDURATION", "READANALOG"
+                             "SETWATERDURATION", "READANALOG", "SETSTREAMINGONBOOT"
                             };
 String inputString = "";         // a String to hold incoming data
 bool stringComplete = false;     // whether the string is complete
@@ -37,7 +37,7 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.9.0";
+const String FWVersion = "0.9.1";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -195,7 +195,7 @@ bool HoldingTankAlarm = false;
 void setup() {
   rtc.begin();
   RS232.begin(115200);
-  ControlComPort.begin(115200);
+  USBSerial.begin(115200);
   inputString.reserve(200);
   inputStringRS232.reserve(200);
 
@@ -260,18 +260,19 @@ void setup() {
   CurrentGainCT2 = GetFromEEPROMACCurrentGainCT2();
   NumberOfACLegs = GetFromEEPROMACLegs();
 
+  //Load Streaming Setting from EEProm
+  StreamingDataUSB = GetFromEEPROMStreamOnBootUSB();
+  StreamingDataRS232 = GetFromEEPROMStreamOnBootRS232();
+
   pinMode(EnergyMonitorCS, OUTPUT);
   SetupEnergyMonitor();
 
   //Set up displays and output on the Serial Port
-  SendItOut("Starting " + DeviceName, 0);
-  SendItOut("Starting " + DeviceName, 1);
-  SendItOut("FW: " + FWVersion, 0);
-  SendItOut("FW: " + FWVersion, 1);
+  BroadCast("Starting " + DeviceName);
+  BroadCast("FW: " + FWVersion);
   Units = GetFromEEPROMUnits();
   SetUnitsForOutput();
-  SendItOut("Units: " + String(Units), 0);
-  SendItOut("Units: " + String(Units), 1);
+  BroadCast("Units: " + String(Units));
   WaterDurationInSeconds = GetFromEEPROMWaterDuration();
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
@@ -280,8 +281,7 @@ void setup() {
   lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
   ForceCompleteUpdateOfAllStates();
-  SendItOut("System Initialized and values populated:" + GetCurrentTime(), 0);
-  SendItOut("System Initialized and values populated:" + GetCurrentTime(), 1);
+  BroadCast("System Initialized and values populated:" + GetCurrentTime());
   lcd.setCursor(0, 1);
   lcd.print("System Initialized");
   lcd.setCursor(0, 2);
@@ -677,7 +677,7 @@ void EnergyMetering() {
   //if true the MCU is not getting data from the energy meter
   //set all AC Values to 0
   if (sys0 == 65535 || sys0 == 0) {
-    //SendItOut(GetCurrentTime() + ",Error,Not receiving data from energy meter", WhichPort);
+    BroadCast(GetCurrentTime() + ",Error,Not receiving data from energy meter");
     LastACVoltage = 0;
     LastACCurrent = 0;
     LastPowerFactor = 0;
@@ -933,7 +933,7 @@ void ReadWaterAndLPG() {
   /*
      Using a 47 1% for R2 in both circuits
      LPG tank is as far as i can tell is a 0-122 ohm resistence and knowing that the 80% full at ~90 ohms
-     that is mapped to 100%. confusing yes. but it's how it works. anythign over the 80% mark will read as
+     that is mapped to 100%. confusing yes. but it's how it works. anything over the 80% mark will read as
      a greater percentage than 100
      The Water tank level was determined from setting the tank sensor at 1/4 1/2 3/4 and full. Anything above
      the full mark shows up as "EXTRA FULL"
@@ -1104,6 +1104,24 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
+int GetFromEEPROMStreamOnBootUSB() {
+  int Value = EEPROM.read(4);
+  if (0 > Value || Value >= 2) {
+    Value = 0;
+    EEPROM.update(4, Value);
+  }
+  return Value;
+}
+
+int GetFromEEPROMStreamOnBootRS232() {
+  int Value = EEPROM.read(5);
+  if (0 > Value || Value >= 2) {
+    Value = 0;
+    EEPROM.update(5, Value);
+  }
+  return Value;
+}
+
 int GetFromEEPROMWaterDuration() {
   int Value = EEPROM.read(3);
   if (150 >= Value || Value >= 1800) {
@@ -1194,9 +1212,14 @@ unsigned short GetFromEEPROMACFREQ() {
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
+void BroadCast(String Message) {
+  SendItOut(Message, 0);
+  SendItOut(Message, 1);
+}
+
 void SendItOut(String Message, int WhichPort) {
   if (WhichPort == 0) {
-    ControlComPort.println(Message);
+    USBSerial.println(Message);
   }
   else {
     RS232.println(Message);
@@ -1206,15 +1229,13 @@ void SendItOut(String Message, int WhichPort) {
 void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
 
 void RebootDisBitch() {
-  SendItOut("%R," + GetCurrentTime() + ",Rebooting", 0);
-  SendItOut("%R," + GetCurrentTime() + ",Rebooting", 1);
+  BroadCast("%R," + GetCurrentTime() + ",Rebooting");
   delay(2000);
   resetFunc();
 }
 
 void MIBFLASH() {
-  SendItOut("%R," + GetCurrentTime() + ",Reseting wait for reboot Message", 0);
-  SendItOut("%R," + GetCurrentTime() + ",Reseting wait for reboot Message", 1);
+  BroadCast("%R," + GetCurrentTime() + ",Reseting wait for reboot Message");
   for (int i = 0 ; i < EEPROM.length() ; i++) {
     EEPROM.write(i, 0);
   }
@@ -1313,9 +1334,9 @@ void ForceCompleteUpdateOfAllStates() {
   delay response. Multiple bytes of data may be available.
 */
 void serialEvent() {
-  while (ControlComPort.available()) {
+  while (USBSerial.available()) {
     // get the new byte:
-    char inChar = (char)ControlComPort.read();
+    char inChar = (char)USBSerial.read();
     // add it to the inputString:
     inputString += inChar;
     // if the incoming character is a carriage return, set a flag so the main loop can
@@ -1401,6 +1422,9 @@ void GetGenStatus(int WhichPort) {
 }
 
 void GetEnergyStatus(int WhichPort) {
+  if (LastTimeACVoltage == "" || EnableACEnergyMonitoring == false) {
+    LastTimeACVoltage = GetCurrentTime();
+  }
   SendItOut("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
             ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
             + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
@@ -1488,6 +1512,12 @@ void GetWaterDuration(int WhichPort) {
   SendItOut("%R,WATERDURATION,Units,Seconds," + String(WaterDurationInSeconds), WhichPort);
 }
 
+void GetStreamingOnBoot(int WhichPort) {
+  String USBState = StatesForOutput[GetFromEEPROMStreamOnBootUSB()];
+  String RS232State = StatesForOutput[GetFromEEPROMStreamOnBootRS232()];
+  SendItOut("%R,Streaming Data on boot,USB," + USBState + ",RS232," + RS232State , WhichPort);
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -1541,8 +1571,7 @@ void OutputWarningMessage(int ID) {
         Message = "LPG Level is low";
         break;
     }
-    SendItOut("%R," + GetCurrentTime() + ",Warning," + Message, 0);
-    SendItOut("%R," + GetCurrentTime() + ",Warning," + Message, 1);
+    BroadCast("%R," + GetCurrentTime() + ",Warning," + Message);
   }
 }
 
@@ -1655,7 +1684,7 @@ void SetWater(String Value, int WhichPort) {
   }
 }
 
-void SetStreamingData(String Value, int WhichPort) {
+void SetStreamingData(String Value, int WhoToSet, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String Start = Value.substring(Index + 1, End - 1);
@@ -1665,10 +1694,16 @@ void SetStreamingData(String Value, int WhichPort) {
   bool CorrectParam = false;
   if (SerialPortName == "USB") {
     if (State == "OFF") {
+      if (WhoToSet == 1) {
+        EEPROM.update(4, 0);
+      }
       StreamingDataUSB = false;
       CorrectParam = true;
     }
     if (State == "ON") {
+      if (WhoToSet == 1) {
+        EEPROM.update(4, 1);
+      }
       StreamingDataUSB = true;
       CorrectParam = true;
     }
@@ -1676,16 +1711,25 @@ void SetStreamingData(String Value, int WhichPort) {
 
   if (SerialPortName == "RS232") {
     if (State == "OFF") {
+      if (WhoToSet == 1) {
+        EEPROM.update(5, 0);
+      }
       StreamingDataRS232 = false;
       CorrectParam = true;
     }
     if (State == "ON") {
+      if (WhoToSet == 1) {
+        EEPROM.update(5, 1);
+      }
       StreamingDataRS232 = true;
       CorrectParam = true;
     }
   }
 
   if (CorrectParam == true) {
+    if (WhoToSet == 1) {
+    GetStreamingOnBoot(WhichPort);
+    }
     GetStreamingState(WhichPort);
   }
   else {
@@ -1764,26 +1808,26 @@ void PrintInputState(int Input, int CurrentInputRead, int WhichPort) {
   SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + State, WhichPort);
 }
 
-//void ReadAnalogInputs(String Value) {
-//  int Index = Value.indexOf("*");
-//  int End = Value.indexOf("\r");
-//  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
-//  if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
-//    int CurrentInputRead = ReadInput(ThingToTest);
-//    PrintAnalogValue(ThingToTest, CurrentInputRead);
-//  }
-//  else {
-//    Error(4);
-//  }
-//}
-//
-//void PrintAnalogValue(int AnalogNumber) {
-//  float Value = ;
-//  if (CurrentInputRead == 1) {
-//    String State = StatesForOutput[1];
-//  }
-//  SendItOut("%R," + GetCurrentTime() + ",Analog,Units,V," + Input + "," + Value, WhichPort);
-//}
+void ReadAnalogInputs(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
+  if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
+    int CurrentInputRead = ReadInput(ThingToTest);
+    //PrintAnalogValue(ThingToTest, CurrentInputRead);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
+void PrintAnalogValue(int AnalogNumber, int WhichPort) {
+  float Value = 0;
+  //  if (CurrentInputRead == 1) {
+  //    String State = StatesForOutput[1];
+  //  }
+  //  SendItOut("%R," + GetCurrentTime() + ",Analog,Units,V," + Input + "," + Value, WhichPort);
+}
 
 void SetRTCDateTime(String Value, int WhichPort) {
   // need to set Year Month Day Hour Min Second
@@ -1997,6 +2041,10 @@ void SetWaterDurationInSeconds(String Value, int WhichPort) {
   GetWaterDuration(WhichPort);
 }
 
+void SetStreamingForReboot(String Value, int WhichPort) {
+
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2096,7 +2144,7 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       break;
     case 3:
       //Set Streaming Data Output
-      SetStreamingData(CommandRaw, WhichPort);
+      SetStreamingData(CommandRaw, 0, WhichPort);
       break;
     case 4:
       //Set Output State
@@ -2145,10 +2193,14 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       //Water Duration
       SetWaterDurationInSeconds(CommandRaw, WhichPort);
       break;
-      //    case 16:
-      //      //AnalogInputs
-      //      ReadAnalogInputs(CommandRaw);
-      //      break;
+    case 16:
+      //AnalogInputs
+      ReadAnalogInputs(CommandRaw, WhichPort);
+      break;
+    case 17:
+      //SET STREAMING ON BOOT
+      SetStreamingData(CommandRaw, 1, WhichPort);
+      break;
   }
 }
 
@@ -2234,20 +2286,17 @@ void CommandToCall(int Index, int WhichPort) {
     case 19:
       //Force Update of all states
       ForceCompleteUpdateOfAllStates();
-      SendItOut("%R," + GetCurrentTime() + ",All States Updated", 0);
-      SendItOut("%R," + GetCurrentTime() + ",All States Updated", 1);
+      BroadCast("%R," + GetCurrentTime() + ",All States Updated");
       break;
     case 20:
       //Reset Warnings
       ResetWarnings();
-      SendItOut("%R," + GetCurrentTime() + ",Reset Warnings", 0);
-      SendItOut("%R," + GetCurrentTime() + ",Reset Warnings", 1);
+      BroadCast("%R," + GetCurrentTime() + ",Reset Warnings");
       break;
     case 21:
       //Reset All alarms and warnings
       ResetAllAlarmsAndWarnings();
-      SendItOut("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings", 0);
-      SendItOut("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings", 1);
+      BroadCast("%R," + GetCurrentTime() + ",Reset All Alarms and Warnings");
       break;
     case 22:
       //Show System Time
@@ -2288,6 +2337,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 31:
       //WaterDuration
       GetWaterDuration(WhichPort);
+      break;
+    case 32:
+      //Streaming on boot
+      GetStreamingOnBoot(WhichPort);
       break;
   }
 }
