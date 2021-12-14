@@ -1,7 +1,7 @@
 Memory Address in EEPROM
 1 - Units
-2 - Which Serial Port to use for communication 
-3 - Resevred for possible future use
+2 - Resevred for possible future use
+3 - WaterDuration - Data to be Stored Seconds in int
 4 - Resevred for possible future use
 5 - Resevred for possible future use
 6 - Energy Monitoring Frequency Data to be stored 50,60 
