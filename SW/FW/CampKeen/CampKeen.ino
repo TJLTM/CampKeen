@@ -12,12 +12,13 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?"
+                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
                              "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
-                             "SETWATERDURATION", "READANALOG", "SETSTREAMINGONBOOT"
+                             "SETWATERDURATION", "READANALOG", "SETSTREAMINGONBOOT", "SETACENMONONBOOT",
+                             "SETWATERPUMPSENSEONBOOT"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -35,7 +36,7 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.10.0";
+const String FWVersion = "0.10.1";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -46,8 +47,7 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, D
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
 bool WaterSourseSelection, WaterOn, LastSourceForCheck = false;
-bool EnableACEnergyMonitoring = false;
-bool UseWaterPumpSense = false;
+bool EnableACEnergyMonitoring, UseWaterPumpSense = false;
 bool StreamingDataUSB, StreamingDataRS232 = false;
 char Units;
 String TempUnits, PressureUnits;
@@ -221,6 +221,7 @@ void setup() {
 
   //Energy
   //Load from EEProm
+  EnableACEnergyMonitoring = GetFromEEPROMACENMONOnBoot();
   LineFreq = GetFromEEPROMACFREQ();
   PGAGain = GetFromEEPROMACPGAGain();
   VoltageGain = GetFromEEPROMACVOLTAGEGAIN();
@@ -242,6 +243,7 @@ void setup() {
   SetUnitsForOutput();
   BroadCast("Units: " + String(Units));
   WaterDurationInSeconds = GetFromEEPROMWaterDuration();
+  UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -1066,6 +1068,24 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
+int GetFromEEPROMWaterPumpSenseOnBoot() {
+  int Value = EEPROM.read(16);
+  if (0 > Value || Value >= 2) {
+    Value = 0;
+    EEPROM.update(16, Value);
+  }
+  return Value;
+}
+
+int GetFromEEPROMACENMONOnBoot() {
+  int Value = EEPROM.read(2);
+  if (0 > Value || Value >= 2) {
+    Value = 0;
+    EEPROM.update(2, Value);
+  }
+  return Value;
+}
+
 int GetFromEEPROMStreamOnBootUSB() {
   int Value = EEPROM.read(4);
   if (0 > Value || Value >= 2) {
@@ -1371,6 +1391,7 @@ void OutputAllData(int WhichPort) {
   GetStreamingOnBoot(WhichPort);
   GetStreamingState(WhichPort);
   ReadAllAnalogOneShot(WhichPort);
+  GETACENMONOnBoot(WhichPort);
 }
 
 void GetWaterSource(int WhichPort) {
@@ -1437,8 +1458,8 @@ void GetDeviceInfo(int WhichPort) {
 }
 
 void GetStreamingState(int WhichPort) {
-  SendItOut("%R,StreamingData,USB," + StatesForOutput[StreamingDataUSB] + ",RS232," + 
-  StatesForOutput[StreamingDataRS232] , WhichPort);
+  SendItOut("%R,StreamingData,USB," + StatesForOutput[StreamingDataUSB] + ",RS232," +
+            StatesForOutput[StreamingDataRS232] , WhichPort);
 }
 
 void GetWaterPumpSense(int WhichPort) {
@@ -1491,16 +1512,24 @@ void GetWaterDuration(int WhichPort) {
 }
 
 void GetStreamingOnBoot(int WhichPort) {
-  SendItOut("%R,Streaming Data on boot,USB," + StatesForOutput[GetFromEEPROMStreamOnBootUSB()] + ",RS232," + 
-  StatesForOutput[GetFromEEPROMStreamOnBootRS232()] , WhichPort);
+  SendItOut("%R,Streaming Data on boot,USB," + StatesForOutput[GetFromEEPROMStreamOnBootUSB()] + ",RS232," +
+            StatesForOutput[GetFromEEPROMStreamOnBootRS232()] , WhichPort);
 }
 
+void GETACENMONOnBoot(int WhichPort) {
+  SendItOut("%R,ACENMON on boot," + StatesForOutput[GetFromEEPROMACENMONOnBoot()], WhichPort);
+}
+
+void GETWaterpumpsenseBoot(int WhichPort) {
+  SendItOut("%R,Water Pump Sense on boot," + StatesForOutput[GetFromEEPROMWaterPumpSenseOnBoot()], WhichPort);
+}
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
 void Error(int Number, int WhichPort) {
-  const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform", 
-  "command can not be processed", "Invalid Parameter", "Invalid Command Format"};
+  const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform",
+                          "command can not be processed", "Invalid Parameter", "Invalid Command Format"
+                         };
   SendItOut("%R,Error," + String(Errors[Number]), WhichPort);
 }
 
@@ -1618,21 +1647,30 @@ void SetUnits(String Value, int WhichPort) {
   SetUnitsForOutput();
 }
 
-void SetWaterPumpSenseOverRide(String Value, int WhichPort) {
+void SetWaterPumpSenseOverRide(String Value, int WhoToSet, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
     UseWaterPumpSense = false;
+    if (WhoToSet == 1) {
+      EEPROM.update(16, 0);
+    }
     CorrectParam = true;
   }
   if (ThingToTest == "ON") {
     UseWaterPumpSense = true;
+    if (WhoToSet == 1) {
+      EEPROM.update(16, 1);
+    }
     CorrectParam = true;
   }
 
   if (CorrectParam == true) {
+    if (WhoToSet == 1) {
+      GETWaterpumpsenseBoot(WhichPort);
+    }
     GetWaterPumpSense(WhichPort);
   }
   else {
@@ -1862,22 +1900,31 @@ void SetRTCDateTime(String Value, int WhichPort) {
   }
 }
 
-void SetACEnmon(String Value, int WhichPort) {
+void SetACEnmon(String Value, int WhoToSet, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
     EnableACEnergyMonitoring = false;
+    if (WhoToSet == 1) {
+      EEPROM.update(2, 0);
+    }
     CorrectParam = true;
   }
 
   if (ThingToTest == "ON") {
     EnableACEnergyMonitoring = true;
+    if (WhoToSet == 1) {
+      EEPROM.update(2, 1);
+    }
     CorrectParam = true;
   }
 
   if (CorrectParam == true) {
+    if (WhoToSet == 1) {
+      GETACENMONOnBoot(WhichPort);
+    }
     GetACEnmon(WhichPort);
   }
   else {
@@ -2005,10 +2052,6 @@ void SetWaterDurationInSeconds(String Value, int WhichPort) {
   GetWaterDuration(WhichPort);
 }
 
-void SetStreamingForReboot(String Value, int WhichPort) {
-
-}
-
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2100,7 +2143,7 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       break;
     case 1:
       //Set Water Pump Sense
-      SetWaterPumpSenseOverRide(CommandRaw, WhichPort);
+      SetWaterPumpSenseOverRide(CommandRaw, 0, WhichPort);
       break;
     case 2:
       //Water
@@ -2128,7 +2171,7 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       break;
     case 8:
       //Enable/disable AC energy Monitoring
-      SetACEnmon(CommandRaw, WhichPort);
+      SetACEnmon(CommandRaw, 0, WhichPort);
       break;
     case 9:
       //SET AC FREQUNECY 50/60 Hz
@@ -2164,6 +2207,14 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
     case 17:
       //SET STREAMING ON BOOT
       SetStreamingData(CommandRaw, 1, WhichPort);
+      break;
+    case 18:
+      //SET ACEMON ON BOOT
+      SetACEnmon(CommandRaw, 1, WhichPort);
+      break;
+    case 19:
+      //SET Waterpumpsense ON BOOT
+      SetWaterPumpSenseOverRide(CommandRaw, 1, WhichPort);
       break;
   }
 }
@@ -2305,6 +2356,14 @@ void CommandToCall(int Index, int WhichPort) {
     case 32:
       //Streaming on boot
       GetStreamingOnBoot(WhichPort);
+      break;
+    case 33:
+      //ACENMON ON BOOT
+      GETACENMONOnBoot(WhichPort);
+      break;
+    case 34:
+      //Waterpumpsense ON BOOT
+      GETWaterpumpsenseBoot(WhichPort);
       break;
   }
 }
