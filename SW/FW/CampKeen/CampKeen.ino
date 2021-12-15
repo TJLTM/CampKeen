@@ -19,10 +19,8 @@ char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREA
                              "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
                              "SETWATERDURATION", "READANALOG", "SETSTREAMINGONBOOT"
                             };
-String inputString = "";         // a String to hold incoming data
-bool stringComplete = false;     // whether the string is complete
-String inputStringRS232 = "";         // a String to hold incoming data
-bool stringCompleteRS232 = false;     // whether the string is complete
+String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
+bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
 RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
@@ -37,7 +35,7 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.9.1";
+const String FWVersion = "0.10.0";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -47,11 +45,10 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, D
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
-bool WaterSourseSelection = false, WaterOn = false, LastSourceForCheck = false;
+bool WaterSourseSelection, WaterOn, LastSourceForCheck = false;
 bool EnableACEnergyMonitoring = false;
 bool UseWaterPumpSense = false;
-bool StreamingDataUSB = false;
-bool StreamingDataRS232 = false;
+bool StreamingDataUSB, StreamingDataRS232 = false;
 char Units;
 String TempUnits, PressureUnits;
 const String StatesForOutput[2] = {"Off", "On"};
@@ -61,50 +58,27 @@ const String StatesForOutput[2] = {"Off", "On"};
    that can be recalled if streaming is turned off
 */
 //Water and LPG
-String LastTimeWaterSource = "";
+String LastTimeWaterSource, LastTimeWaterLevel = "";
 String LastSource = "Tank";
 String LastWaterLevel = "Empty";
-String LastTimeWaterLevel = "";
 int LastLPGLevel = 0;
 //Holding tanks
-String LastSewageLevel = "Empty";
-String LastTimeSewageLevel = "";
-String LastGreyWater = "Empty";
-String LastTimeGreyWater = "";
+String LastSewageLevel, LastGreyWater = "Empty";
+String LastTimeSewageLevel, LastTimeGreyWater = "";
 //Battery Monitoring
-float LastDCVoltage = 0.0;
-String LastTimeDCVoltage = "";
-float LastRTCVoltage = 0.0;
-String LastTimeRTCVoltage = "";
+float LastDCVoltage, LastRTCVoltage = 0.0;
+String LastTimeDCVoltage, LastTimeRTCVoltage = "";
 //NTC Temps
 String LastTimeNTCTemp = "";
-float LastFrontACTemp = 0.0;
-float LastBackACTemp = 0.0;
-float LastOutsideTemp = 0.0;
-float LastBackCabinTemp = 0.0;
-float LastHallwayTemp = 0.0;
-float LastFreezerTemp = 0.0;
-float LastFridgeTemp = 0.0;
-float LastBathroomTemp = 0.0;
+float LastFrontACTemp, LastBackACTemp, LastOutsideTemp, LastBackCabinTemp, LastHallwayTemp, LastFreezerTemp, LastFridgeTemp,
+      LastBathroomTemp = 0.0;
 //Generator
 String LastTimeGenSensors = "";
-float LastGenEnclosureTemp = 0.0;
-float LastGenHeadRightTemp = 0.0;
-float LastGenHeadLeftTemp = 0.0;
-float LastGenFuel = 0.0;
+float LastGenEnclosureTemp, LastGenHeadRightTemp, LastGenHeadLeftTemp, LastGenFuel = 0.0;
 //AC&Energy Monitoring
 String LastTimeACVoltage = "";
-float LastACVoltage = 0.0;
-float LastACCurrent = 0.0;
-float LastPowerFactor = 0.0;
-float LastFreq = 0.0;
-float LastACWatts = 0.0;
-float LastACReactive = 0.0;
-float LastACApparent = 0.0;
-float LastACFundimental = 0.0;
-float LastACHarmonic = 0.0;
-float LastATM90E32Temp = 0.0;
-float LastACRealPower = 0.0;
+float LastACVoltage, LastACCurrent, LastPowerFactor, LastFreq, LastACWatts, LastACReactive, LastACApparent, LastACFundimental,
+      LastACHarmonic, LastATM90E32Temp, LastACRealPower = 0.0;
 //RTC TEMP
 float LastRTCTemp = 0.0;
 String LastTimeRTCTemp = "";
@@ -157,7 +131,7 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define WaterPumpOut 26
 //-----------------------------------------------------------
 //-----------------------------------------------------------
-//Spare IO
+//Spare IO and Analog
 /*
    Spare Inputs are indexed by their number +1 because I don't
    want to start at zero.
@@ -167,18 +141,12 @@ int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
 int LastInputState[] = {};
 int SpareOutputs[] = {12, 11, 24};
 int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
-
-/*
-   Not sure how i'm going to deal with ADCs as spare analog inputs
-*/
 int SpareAnalog[] = {15};
 int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // Holding Tank
-bool ShittersGettinFull = false;
-bool GreyGettinFull = false;
-bool HoldingTankAlarm = false;
+bool ShittersGettinFull, GreyGettinFull, HoldingTankAlarm = false;
 //SewageTankLevelPins
 #define S14 48
 #define S12 46
@@ -307,6 +275,8 @@ void loop() {
   HoldingTankMonitoring();
 
   if (abs(millis() - NTCTimer) > 3000) {
+    //Read Spare ADC
+    ReadAllAnalog();
     //Read NTC temp Sensors
     ReadOtherTempSensors();
     //Read Generator Sensors
@@ -735,19 +705,15 @@ void EnergyMetering() {
 }
 
 void GeneratorSensors() {
-  int Samples = 50;
-  long FuelPressureSum = 0;
+  float FuelPressureDN = ReadAnalog(25, GenFuelPressure);
 
-  for (int x = 0; x < Samples; x++) {
-    FuelPressureSum = FuelPressureSum + analogRead(GenFuelPressure);
-  }
   //Sensors i'm using drop out at .5 volts and anything below that will show neg pressure. DN 102 translates to 0.5V
-  if ((FuelPressureSum / Samples) > 102) {
+  if (FuelPressureDN > 102) {
     if (Units == 'I') {
-      LastGenFuel = (7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75;
+      LastGenFuel = (7.5 * ConversionFactor * FuelPressureDN) - 3.75;
     }
     else {
-      LastGenFuel = ConvertPSItoKPa((7.5 * ConversionFactor * (FuelPressureSum / Samples)) - 3.75);
+      LastGenFuel = ConvertPSItoKPa((7.5 * ConversionFactor * FuelPressureDN) - 3.75);
     }
   }
   else {
@@ -942,7 +908,7 @@ void ReadWaterAndLPG() {
   // Turn On votlage to tanks
   digitalWrite(TankPowerRelay, HIGH);
   delay(1000);
-  int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * analogRead(LPGSensor))) - 1));
+  int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * ReadAnalog(50, LPGSensor))) - 1));
   if (LPGResistence >= 122) {
     LastLPGLevel = "ERROR Check Tank Sensor";
   }
@@ -952,7 +918,7 @@ void ReadWaterAndLPG() {
 
   LastWaterLevel = "EXTRA FULL";
   LastTimeWaterLevel = GetCurrentTime();
-  float R1 = 47 * ((5.0 / (ConversionFactor * analogRead(WaterTankSensor))) - 1);
+  float R1 = 47 * ((5.0 / (ConversionFactor * ReadAnalog(50, WaterTankSensor))) - 1);
   if (R1 > 40)
   {
     LastWaterLevel = "Full";
@@ -988,17 +954,13 @@ void ReadWaterAndLPG() {
 //Other sensors
 //------------------------------------------------------------------
 void ReadBatteryVoltages() {
-  int Samples = 50;
-  float DCVoltageSum, RTCVoltageSum = 0;
+  float DCVoltageDN = ReadAnalog(50, Camper12VoltSensor);
+  float RTCVoltageDN = ReadAnalog(50, RTCBattery);
 
-  for (int x = 0; x < Samples; x++) {
-    DCVoltageSum = DCVoltageSum + analogRead(Camper12VoltSensor);
-    RTCVoltageSum = RTCVoltageSum + analogRead(RTCBattery);
-  }
-  LastDCVoltage = 3.8 * ConversionFactor * (DCVoltageSum / Samples) - 1.2;
+  LastDCVoltage = 3.8 * ConversionFactor * DCVoltageDN - 1.2;
   LastTimeDCVoltage = GetCurrentTime();
 
-  LastRTCVoltage = ConversionFactor * (RTCVoltageSum / Samples);
+  LastRTCVoltage = ConversionFactor * RTCVoltageDN;
   LastTimeRTCVoltage = LastTimeDCVoltage;
 
   if (LastDCVoltage < 10.5) {
@@ -1027,7 +989,7 @@ float NTCReadInC(int R2, float ResistenceRead) {
 void ReadOtherTempSensors() {
   int R2 = 10000;
 
-  float VoutACF = ConversionFactor * analogRead(FrontACTemp);
+  float VoutACF = ConversionFactor * ReadAnalog(10, FrontACTemp);
   float R1ACF = log(R2 * ((5.0 / VoutACF) - 1));
   if (Units == 'I') {
     LastFrontACTemp = ConvertCtoF(NTCReadInC(R2, R1ACF));
@@ -1036,7 +998,7 @@ void ReadOtherTempSensors() {
     LastFrontACTemp = NTCReadInC(R2, R1ACF);
   }
 
-  float VoutACB = ConversionFactor * analogRead(BackACTemp);
+  float VoutACB = ConversionFactor * ReadAnalog(10, BackACTemp);
   float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
   if (Units == 'I') {
     LastBackACTemp = ConvertCtoF(NTCReadInC(R2, R1ACB));
@@ -1045,7 +1007,7 @@ void ReadOtherTempSensors() {
     LastBackACTemp =  NTCReadInC(R2, R1ACB);
   }
 
-  float VoutHallway = ConversionFactor * analogRead(HallwayTemp);
+  float VoutHallway = ConversionFactor * ReadAnalog(10, HallwayTemp);
   float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
   if (Units == 'I') {
     LastHallwayTemp = ConvertCtoF( NTCReadInC(R2, R1Hallway));
@@ -1054,7 +1016,7 @@ void ReadOtherTempSensors() {
     LastHallwayTemp =  NTCReadInC(R2, R1Hallway);
   }
 
-  float VoutBathroom = ConversionFactor * analogRead(BathroomTemp);
+  float VoutBathroom = ConversionFactor * ReadAnalog(10, BathroomTemp);
   float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
   if (Units == 'I') {
     LastBathroomTemp = ConvertCtoF(NTCReadInC(R2, R1Bathroom));
@@ -1063,7 +1025,7 @@ void ReadOtherTempSensors() {
     LastBathroomTemp =  NTCReadInC(R2, R1Bathroom);
   }
 
-  float VoutFreezer = ConversionFactor * analogRead(Freezer);
+  float VoutFreezer = ConversionFactor * ReadAnalog(10, Freezer);
   float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
   if (Units == 'I') {
     LastFreezerTemp = ConvertCtoF(NTCReadInC(R2, R1Freezer));
@@ -1072,7 +1034,7 @@ void ReadOtherTempSensors() {
     LastFreezerTemp =  NTCReadInC(R2, R1Freezer);
   }
 
-  float VoutFridge = ConversionFactor * analogRead(Refridgerator);
+  float VoutFridge = ConversionFactor * ReadAnalog(10, Refridgerator);
   float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
   if (Units == 'I') {
     LastFridgeTemp = ConvertCtoF(NTCReadInC(R2, R1Fridge));
@@ -1081,7 +1043,7 @@ void ReadOtherTempSensors() {
     LastFridgeTemp =  NTCReadInC(R2, R1Fridge);
   }
 
-  float VoutOutside = ConversionFactor * analogRead(Outside);
+  float VoutOutside = ConversionFactor * ReadAnalog(10, Outside);
   float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
   if (Units == 'I') {
     LastOutsideTemp = ConvertCtoF(NTCReadInC(R2, R1Outside));
@@ -1090,7 +1052,7 @@ void ReadOtherTempSensors() {
     LastOutsideTemp =  NTCReadInC(R2, R1Outside);
   }
 
-  float VoutBackCabin = ConversionFactor * analogRead(BackCabin);
+  float VoutBackCabin = ConversionFactor * ReadAnalog(10, BackCabin);
   float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
   if (Units == 'I') {
     LastBackCabinTemp = ConvertCtoF(NTCReadInC(R2, R1BackCabin));
@@ -1241,6 +1203,7 @@ void MIBFLASH() {
   }
   RebootDisBitch();
 }
+
 float ConvertCtoF(float C) {
   float F = (1.8 * C) + 32;
   return F;
@@ -1313,6 +1276,37 @@ int ReadOutput(int Number) {
   return Value;
 }
 
+float ReadAnalog(int Samples, int PinNumber) {
+  long Sum = 0;
+  float Value = 0;
+  for (int x = 0; x < Samples; x++) {
+    Sum = Sum + analogRead(PinNumber);
+  }
+  Value = (Sum / Samples);
+  return Value;
+}
+
+void ReadAllAnalog() {
+  if (StreamingDataUSB == true || StreamingDataRS232 == true) {
+    for (int i = 0; i < SpareAnalogSize; i++) {
+      float CurrentAnalogRead = ReadAnalog(25, SpareAnalog[i]) * ConversionFactor;
+      if (StreamingDataUSB == true) {
+        PrintAnalogValue(i, CurrentAnalogRead, 0);
+      }
+      if (StreamingDataRS232 == true) {
+        PrintAnalogValue(i, CurrentAnalogRead, 1);
+      }
+    }
+  }
+}
+
+void ReadAllAnalogOneShot(int WhichOne) {
+  for (int i = 0; i < SpareAnalogSize; i++) {
+    float CurrentAnalogRead = ReadAnalog(25, SpareAnalog[i]) * ConversionFactor;
+    PrintAnalogValue(i, CurrentAnalogRead, WhichOne);
+  }
+}
+
 void ForceCompleteUpdateOfAllStates() {
   ReadGreyTank();
   ReadSewageTank();
@@ -1374,6 +1368,9 @@ void OutputAllData(int WhichPort) {
   GetACLEGS(WhichPort);
   GetACCT1GAIN(WhichPort);
   GetACCT2GAIN(WhichPort);
+  GetStreamingOnBoot(WhichPort);
+  GetStreamingState(WhichPort);
+  ReadAllAnalogOneShot(WhichPort);
 }
 
 void GetWaterSource(int WhichPort) {
@@ -1440,31 +1437,16 @@ void GetDeviceInfo(int WhichPort) {
 }
 
 void GetStreamingState(int WhichPort) {
-  String USBState = StatesForOutput[0];
-  String RS232State = StatesForOutput[0];
-  if (StreamingDataUSB == true) {
-    USBState = StatesForOutput[1];
-  }
-  if (StreamingDataRS232 == true) {
-    RS232State = StatesForOutput[1];
-  }
-  SendItOut("%R,StreamingData,USB," + USBState + ",RS232," + RS232State , WhichPort);
+  SendItOut("%R,StreamingData,USB," + StatesForOutput[StreamingDataUSB] + ",RS232," + 
+  StatesForOutput[StreamingDataRS232] , WhichPort);
 }
 
 void GetWaterPumpSense(int WhichPort) {
-  String State = StatesForOutput[0];
-  if (UseWaterPumpSense == true) {
-    State = StatesForOutput[1];
-  }
-  SendItOut("%R,WaterPumpSense," + State, WhichPort);
+  SendItOut("%R,WaterPumpSense," + StatesForOutput[UseWaterPumpSense], WhichPort);
 }
 
 void GetWaterState(int WhichPort) {
-  String State = StatesForOutput[0];
-  if (WaterOn == true) {
-    State = StatesForOutput[1];
-  }
-  SendItOut("%R,Water," + State, WhichPort);
+  SendItOut("%R,Water," + StatesForOutput[WaterOn], WhichPort);
 }
 
 void GetSystemTime(int WhichPort) {
@@ -1472,11 +1454,7 @@ void GetSystemTime(int WhichPort) {
 }
 
 void GetACEnmon(int WhichPort) {
-  String State = StatesForOutput[0];
-  if (EnableACEnergyMonitoring == true) {
-    State = StatesForOutput[1];
-  }
-  SendItOut("%R,AC Energy Monitoring," + State, WhichPort);
+  SendItOut("%R,AC Energy Monitoring," + StatesForOutput[EnableACEnergyMonitoring], WhichPort);
 }
 
 void GetACVOLTAGEGAIN(int WhichPort) {
@@ -1513,16 +1491,16 @@ void GetWaterDuration(int WhichPort) {
 }
 
 void GetStreamingOnBoot(int WhichPort) {
-  String USBState = StatesForOutput[GetFromEEPROMStreamOnBootUSB()];
-  String RS232State = StatesForOutput[GetFromEEPROMStreamOnBootRS232()];
-  SendItOut("%R,Streaming Data on boot,USB," + USBState + ",RS232," + RS232State , WhichPort);
+  SendItOut("%R,Streaming Data on boot,USB," + StatesForOutput[GetFromEEPROMStreamOnBootUSB()] + ",RS232," + 
+  StatesForOutput[GetFromEEPROMStreamOnBootRS232()] , WhichPort);
 }
 
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
 void Error(int Number, int WhichPort) {
-  const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform", "command can not be processed", "Invalid Parameter", "Invalid Command Format"};
+  const char* Errors[] = {"command not recognized", "command Parameter out of range", "command not supported on this platform", 
+  "command can not be processed", "Invalid Parameter", "Invalid Command Format"};
   SendItOut("%R,Error," + String(Errors[Number]), WhichPort);
 }
 
@@ -1728,7 +1706,7 @@ void SetStreamingData(String Value, int WhoToSet, int WhichPort) {
 
   if (CorrectParam == true) {
     if (WhoToSet == 1) {
-    GetStreamingOnBoot(WhichPort);
+      GetStreamingOnBoot(WhichPort);
     }
     GetStreamingState(WhichPort);
   }
@@ -1779,12 +1757,7 @@ void GetOutputState(String Value, int WhichPort) {
 }
 
 void PrinOutputState(int Output, int WhichPort) {
-  int CurrentState = ReadOutput(Output);
-  String State = StatesForOutput[0];
-  if (CurrentState == 1) {
-    String State = StatesForOutput[1];
-  }
-  SendItOut("%R," + GetCurrentTime() + ",Output," + Output + "," + State, WhichPort);
+  SendItOut("%R," + GetCurrentTime() + ",Output," + Output + "," + StatesForOutput[ReadOutput(Output)], WhichPort);
 }
 
 void ReadInputState(String Value, int WhichPort) {
@@ -1801,32 +1774,25 @@ void ReadInputState(String Value, int WhichPort) {
 }
 
 void PrintInputState(int Input, int CurrentInputRead, int WhichPort) {
-  String State = StatesForOutput[0];
-  if (CurrentInputRead == 1) {
-    String State = StatesForOutput[1];
-  }
-  SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + State, WhichPort);
+  SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + StatesForOutput[CurrentInputRead], WhichPort);
 }
 
 void ReadAnalogInputs(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
-  if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
-    int CurrentInputRead = ReadInput(ThingToTest);
-    //PrintAnalogValue(ThingToTest, CurrentInputRead);
+  if (ThingToTest > 0 && ThingToTest <= (SpareAnalogSize)) {
+    float CurrentAnalogRead = ReadAnalog(25, SpareAnalog[ThingToTest]) * ConversionFactor;;
+    PrintAnalogValue(ThingToTest, CurrentAnalogRead, WhichPort);
   }
   else {
     Error(4, WhichPort);
   }
 }
 
-void PrintAnalogValue(int AnalogNumber, int WhichPort) {
-  float Value = 0;
-  //  if (CurrentInputRead == 1) {
-  //    String State = StatesForOutput[1];
-  //  }
-  //  SendItOut("%R," + GetCurrentTime() + ",Analog,Units,V," + Input + "," + Value, WhichPort);
+void PrintAnalogValue(int AnalogNumber, float Value, int WhichPort) {
+  String Message = "%R," + GetCurrentTime() + ",Analog,Units,V," + String(AnalogNumber + 1) + "," + String(Value);
+  SendItOut(Message, WhichPort);
 }
 
 void SetRTCDateTime(String Value, int WhichPort) {
@@ -1960,7 +1926,6 @@ void SetACLEGS(String Value, int WhichPort) {
   }
 
   if (CorrectParam == true) {
-    //put it into EEPROM
     EEPROM.update(7, NumberOfACLegs);
     GetACLEGS(WhichPort);
   }
@@ -1981,7 +1946,6 @@ void SetACVOLTAGEGAIN(String Value, int WhichPort) {
   if (CurrentVOLTAGEGAIN != VoltageGain) {
     SetupEnergyMonitor();
   }
-
 }
 
 void SetACCT1GAIN(String Value, int WhichPort) {
