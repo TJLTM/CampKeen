@@ -36,7 +36,7 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.10.1";
+const String FWVersion = "0.10.2";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -315,8 +315,8 @@ void loop() {
       GetLPGLevel(0);
     }
     if (StreamingDataRS232 == true) {
-      GetWaterLevel(0);
-      GetLPGLevel(0);
+      GetWaterLevel(1);
+      GetLPGLevel(1);
     }
   }
 
@@ -346,7 +346,6 @@ void loop() {
   }
 }
 
-
 void serialRS232() {
   while (RS232.available()) {
     // get the new byte:
@@ -360,8 +359,6 @@ void serialRS232() {
     }
   }
 }
-
-
 //------------------------------------------------------------------
 //LCD
 //------------------------------------------------------------------
@@ -1392,6 +1389,7 @@ void OutputAllData(int WhichPort) {
   GetStreamingState(WhichPort);
   ReadAllAnalogOneShot(WhichPort);
   GETACENMONOnBoot(WhichPort);
+  GETWaterpumpsenseBoot(WhichPort);
 }
 
 void GetWaterSource(int WhichPort) {
