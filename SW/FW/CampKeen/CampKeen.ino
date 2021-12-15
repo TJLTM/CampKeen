@@ -36,11 +36,12 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.10.2";
+const String FWVersion = "0.10.3";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
-int ArrayOfWarnings[7] = {};
+int TotalWarnings = 7;
+int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
@@ -235,6 +236,9 @@ void setup() {
 
   pinMode(EnergyMonitorCS, OUTPUT);
   SetupEnergyMonitor();
+
+  //Set Warning Array up with -1 for being cleared.
+  ResetWarnings();
 
   //Set up displays and output on the Serial Port
   BroadCast("Starting " + DeviceName);
@@ -1546,8 +1550,10 @@ void Warning() {
 
 void AddWarningToList(int WarningID) {
   WarningActive = true;
-  ArrayOfWarnings[WarningID] = WarningID;
-  OutputWarningMessage(WarningID);
+  if (ArrayOfWarnings[WarningID] != WarningID) {
+    ArrayOfWarnings[WarningID] = WarningID;
+    OutputWarningMessage(WarningID);
+  }
 }
 
 void OutputWarningMessage(int ID) {
@@ -1581,12 +1587,14 @@ void OutputWarningMessage(int ID) {
 }
 
 void AllWarningMessages(int WhichPort) {
-  if (WarningActive == true) {
-    for (int i = 1; i <= 7; i++) {
+  for (int i = 1; i <= TotalWarnings; i++) {
+    if (ArrayOfWarnings[i] != -1) {
       OutputWarningMessage(i);
+      WarningActive = true;
     }
   }
-  else {
+  
+  if (WarningActive == false) {
     SendItOut("%R," + GetCurrentTime() + ",Warning,None", WhichPort);
   }
 }
@@ -1600,7 +1608,9 @@ void ResetAlarm() {
 }
 
 void ResetWarnings() {
-  ArrayOfWarnings[7] = {};
+  for (int i = 1; i <= TotalWarnings; i++) {
+    ArrayOfWarnings[i] = -1;
+  }
   WarningActive = false;
   digitalWrite(WarningLED, LOW);
 }
