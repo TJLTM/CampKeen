@@ -1189,11 +1189,11 @@ unsigned short GetFromEEPROMACCurrentGainCT2() {
 
 unsigned short GetFromEEPROMACPGAGain() {
   unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
-  if (Value == 65535 || Value == 0) {
-    Value = 21;
-    EEPROM.update(14, highByte(Value));
-    EEPROM.update(15, lowByte(Value));
-  }
+//  if (Value == 65535 || Value == 0) {
+//    Value = 21;
+//    EEPROM.update(14, highByte(Value));
+//    EEPROM.update(15, lowByte(Value));
+//  }
   return Value;
 }
 
