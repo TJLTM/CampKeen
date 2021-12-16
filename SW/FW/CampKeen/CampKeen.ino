@@ -353,20 +353,6 @@ void loop() {
     stringCompleteRS232 = false;
   }
 }
-
-void serialRS232() {
-  while (RS232.available()) {
-    // get the new byte:
-    char inChar = (char)RS232.read();
-    // add it to the inputString:
-    inputStringRS232 += inChar;
-    // if the incoming character is a carriage return, set a flag so the main loop can
-    // do something about it:
-    if (inChar == '\r') {
-      stringCompleteRS232 = true;
-    }
-  }
-}
 //------------------------------------------------------------------
 //LCD
 //------------------------------------------------------------------
@@ -1229,20 +1215,6 @@ unsigned short GetFromEEPROMACFREQ() {
 //------------------------------------------------------------------
 //Helper functions
 //------------------------------------------------------------------
-void BroadCast(String Message) {
-  SendItOut(Message, 0);
-  SendItOut(Message, 1);
-}
-
-void SendItOut(String Message, int WhichPort) {
-  if (WhichPort == 0) {
-    USBSerial.println(Message);
-  }
-  else {
-    RS232.println(Message);
-  }
-}
-
 void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
 
 void RebootDisBitch() {
@@ -1396,6 +1368,37 @@ void serialEvent() {
   }
 }
 
+void serialRS232() {
+  while (RS232.available()) {
+    // get the new byte:
+    char inChar = (char)RS232.read();
+    // add it to the inputString:
+    inputStringRS232 += inChar;
+    // if the incoming character is a carriage return, set a flag so the main loop can
+    // do something about it:
+    if (inChar == '\r') {
+      stringCompleteRS232 = true;
+    }
+  }
+}
+
+void BroadCast(String Message) {
+  SendItOut(Message, 0);
+  SendItOut(Message, 1);
+}
+
+void SendItOut(String Message, int WhichPort) {
+  if (WhichPort == 0) {
+    USBSerial.println(Message);
+  }
+  else {
+    RS232.println(Message);
+  }
+}
+
+//------------------------------------------------------------------
+//Serial Output
+//------------------------------------------------------------------
 void OutputAllData(int WhichPort) {
   GetDeviceInfo(WhichPort);
   GetSystemTime(WhichPort);
