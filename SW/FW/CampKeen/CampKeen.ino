@@ -36,7 +36,7 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 // System Level
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.10.3";
+const String FWVersion = "0.10.4";
 const int DisplayInvterval = 7500;
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
@@ -564,7 +564,7 @@ void WaterControl() {
     TurnOffWater();
     delay(1000);
     TurnOnWater();
-    Serial.println("Source Switch");
+    //Serial.println("Source Switch");
     if (StreamingDataUSB == true) {
       GetWaterSource(0);
     }
@@ -572,11 +572,11 @@ void WaterControl() {
       GetWaterSource(1);
     }
   }
-
+  
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
-  if (WaterOn == true && (abs(millis() - WaterTimer) > (WaterDurationInSeconds * 1000))) {
+  if (WaterOn == true && (abs(millis() - WaterTimer) > (long(WaterDurationInSeconds) * 1000))) {
     TurnOffWater();
-    Serial.println("WaterDurationInSeconds turn off");
+    //Serial.println("WaterDurationInSeconds turn off");
   }
   //  //Check to see if any of the buttons are pressed
   int KicthenButtonState = digitalRead(KitchWaterButton);
@@ -828,7 +828,7 @@ void HoldingTankMonitoring() {
       HoldingTankAlarm = true;
       TurnOffWater();
       ALARM();
-      Serial.println("turning off water due to alarm");
+      //Serial.println("turning off water due to alarm");
     }
     else {
       // if the tanks drop below full make sure the alarm is off
@@ -1726,7 +1726,7 @@ void SetWater(String Value, int WhichPort) {
   String ThingToTest = Value.substring(Index + 1, End - 1);
   if (ThingToTest == "OFF") {
     TurnOffWater();
-    Serial.println("turning off from command");
+    //Serial.println("turning off from command");
   }
   if (ThingToTest == "ON") {
     TurnOnWater();
