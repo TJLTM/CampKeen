@@ -6,6 +6,10 @@
 #include <EEPROM.h>
 #include <ATM90E32.h>
 
+
+//-----------------------------------------------------------
+// Serial Communication, UI 
+//-----------------------------------------------------------
 #define USBSerial Serial
 #define RS232 Serial2
 char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
@@ -22,7 +26,6 @@ char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREA
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
-RTC_DS3231 rtc;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
 #define LCDEnable 10
@@ -35,9 +38,9 @@ int NumberOfACLegs;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // System Level
+RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.10.4";
-const int DisplayInvterval = 7500;
+const String FWVersion = "0.10.5";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
@@ -45,10 +48,8 @@ int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
-bool LCDSetup = false;
-//WaterSourceSelection false = pump true = City Water
 bool WaterSourseSelection, WaterOn, LastSourceForCheck, LastWaterState , EnableACEnergyMonitoring,
-     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232 = false;
+     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
 char Units;
 String TempUnits, PressureUnits;
 const String StatesForOutput[2] = {"Off", "On"};
@@ -136,13 +137,13 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
    Spare Inputs are indexed by their number +1 because I don't
    want to start at zero.
 */
-int SpareInputs[] = {9, 8, 7, 6};
-int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
+const int SpareInputs[] = {9, 8, 7, 6};
+const int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
 int LastInputState[] = {};
-int SpareOutputs[] = {12, 11, 24};
-int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
-int SpareAnalog[] = {15};
-int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
+const int SpareOutputs[] = {12, 11, 24};
+const int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
+const int SpareAnalog[] = {15};
+const int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 // Holding Tank
@@ -217,7 +218,8 @@ void setup() {
   pinMode(RTDGenEnclosure, OUTPUT);
   /*
       Please Reference Adafruit_MAX31865
-      docs for setup of these boards
+      docs for setup of these boards if 
+      you are going to use 4 or 2 wire
   */
   GenHeadR.begin(MAX31865_3WIRE);
   GenHeadL.begin(MAX31865_3WIRE);
@@ -270,8 +272,21 @@ void setup() {
 }
 
 void loop() {
+  /*
+   * All the basic functions that need to be handled
+   * everytime the loop comes back around
+   */
   ReadAllInputs();
+  LCDControl();
+  WaterControl();
+  HoldingTankMonitoring();
 
+
+  /*
+   * Handle reseting the warnings and alarms
+   * If reset High warnings/alarms are 
+   * flushed and silenced until brought low
+   */
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarmsAndWarnings();
   }
@@ -279,16 +294,17 @@ void loop() {
     Warning();
   }
 
-  LCDControl();
-  WaterControl();
-  HoldingTankMonitoring();
 
+  /*
+   * Read Sensors at 3 Second intervals
+   * Sensors to be read:
+   * Spare Analog
+   * NTC Temp sensors
+   * Generator Fuel Pressure & Temp sensors
+   */
   if (abs(millis() - NTCTimer) > 3000) {
-    //Read Spare ADC
     ReadAllAnalog();
-    //Read NTC temp Sensors
     ReadOtherTempSensors();
-    //Read Generator Sensors
     GeneratorSensors();
     NTCTimer = millis();
     if (StreamingDataUSB == true) {
@@ -301,8 +317,12 @@ void loop() {
     }
   }
 
-  if ((abs(millis() - EnergyTimer) > 3000) && EnableACEnergyMonitoring == true) {
-    //Read Energy
+
+  /*
+   * Read Energy Montioring at 10 Second Intervals if 
+   * enabled and mmodule is installed 
+   */
+  if ((abs(millis() - EnergyTimer) > 10000) && EnableACEnergyMonitoring == true) {
     EnergyMetering();
     EnergyTimer = millis();
     if (StreamingDataUSB == true) {
@@ -313,8 +333,14 @@ void loop() {
     }
   }
 
+
+  /*
+   * Read Sensors at 30 Min Intervals
+   * Sensors to be read:
+   * Water Tank Level
+   * LPG Tank Level 
+   */
   if (abs(millis() - WATERLPGtimer) > 1800000) {
-    //ReadLPG and Water Tank at 1/2 hour intervals
     ReadWaterAndLPG();
     WATERLPGtimer = millis();
     if (StreamingDataUSB == true) {
@@ -327,8 +353,14 @@ void loop() {
     }
   }
 
+
+  /*
+   *  Read Sensors at 5 Min Intervals 
+   *  Sensors to be read:
+   *  Camper Battery Voltage
+   *  RTC Battery Voltage
+   */
   if (abs(millis() - FiveMinTimer) > 300000) {
-    //Read DC voltage at 5 min intervals
     ReadBatteryVoltages();
     FiveMinTimer = millis();
     if (StreamingDataUSB == true) {
@@ -341,6 +373,11 @@ void loop() {
     }
   }
 
+
+  /*
+   * Handle the Incoming commands from the Serial Ports 
+   * after all the other operations have been done
+   */
   if (stringComplete) {
     inputString = PainlessInstructionSet(inputString, 0);
     stringComplete = false;
@@ -379,7 +416,7 @@ void SetupLCD() {
 }
 
 void LCDOutput() {
-  if (abs(millis() - DisplayTimer) > DisplayInvterval)
+  if (abs(millis() - DisplayTimer) > 7500)
   {
     lcd.clear();
     LCDDisplay();
@@ -666,7 +703,7 @@ void EnergyMetering() {
   //if true the MCU is not getting data from the energy meter
   //set all AC Values to 0
   if (sys0 == 65535 || sys0 == 0) {
-    BroadCast(GetCurrentTime() + ",Error,Not receiving data from energy meter");
+    BroadCast("R," + GetCurrentTime() + ",Error,Not receiving data from energy meter");
     LastACVoltage = 0;
     LastACCurrent = 0;
     LastPowerFactor = 0;
