@@ -47,9 +47,8 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, D
      EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
 bool LCDSetup = false;
 //WaterSourceSelection false = pump true = City Water
-bool WaterSourseSelection, WaterOn, LastSourceForCheck, LastWaterState = false;
-bool EnableACEnergyMonitoring, UseWaterPumpSense = false;
-bool StreamingDataUSB, StreamingDataRS232 = false;
+bool WaterSourseSelection, WaterOn, LastSourceForCheck, LastWaterState , EnableACEnergyMonitoring,
+     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232 = false;
 char Units;
 String TempUnits, PressureUnits;
 const String StatesForOutput[2] = {"Off", "On"};
@@ -550,7 +549,6 @@ void WaterControl() {
     TurnOffWater();
     delay(1000);
     TurnOnWater();
-    //Serial.println("Source Switch");
     if (StreamingDataUSB == true) {
       GetWaterSource(0);
     }
@@ -558,11 +556,10 @@ void WaterControl() {
       GetWaterSource(1);
     }
   }
-  
+
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   if (WaterOn == true && (abs(millis() - WaterTimer) > (long(WaterDurationInSeconds) * 1000))) {
     TurnOffWater();
-    //Serial.println("WaterDurationInSeconds turn off");
   }
   //  //Check to see if any of the buttons are pressed
   int KicthenButtonState = digitalRead(KitchWaterButton);
@@ -814,7 +811,6 @@ void HoldingTankMonitoring() {
       HoldingTankAlarm = true;
       TurnOffWater();
       ALARM();
-      //Serial.println("turning off water due to alarm");
     }
     else {
       // if the tanks drop below full make sure the alarm is off
@@ -1175,11 +1171,11 @@ unsigned short GetFromEEPROMACCurrentGainCT2() {
 
 unsigned short GetFromEEPROMACPGAGain() {
   unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
-//  if (Value == 65535 || Value == 0) {
-//    Value = 21;
-//    EEPROM.update(14, highByte(Value));
-//    EEPROM.update(15, lowByte(Value));
-//  }
+  //  if (Value == 65535 || Value == 0) {
+  //    Value = 21;
+  //    EEPROM.update(14, highByte(Value));
+  //    EEPROM.update(15, lowByte(Value));
+  //  }
   return Value;
 }
 
@@ -1729,7 +1725,6 @@ void SetWater(String Value, int WhichPort) {
   String ThingToTest = Value.substring(Index + 1, End - 1);
   if (ThingToTest == "OFF") {
     TurnOffWater();
-    //Serial.println("turning off from command");
   }
   if (ThingToTest == "ON") {
     TurnOnWater();
