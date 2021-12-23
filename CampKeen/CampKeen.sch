@@ -411,18 +411,18 @@ $EndComp
 $Comp
 L SamacSys_Parts:S8411-45R RTCBattery1
 U 1 1 610C27B2
-P 4350 13750
-F 0 "RTCBattery1" H 4642 13385 50  0000 C CNN
-F 1 "S8411-45R" H 4642 13476 50  0000 C CNN
-F 2 "SamacSys_Parts:S8411-45R_1" H 5000 13850 50  0001 L CNN
-F 3 "https://cdn.harwin.com/pdfs/S8411R.pdf" H 5000 13750 50  0001 L CNN
-F 4 "HARWIN - S8411-45R - HOLDER, COIN CELL, CR1220, FULL REEL" H 5000 13650 50  0001 L CNN "Description"
-F 5 "" H 5000 13550 50  0001 L CNN "Height"
-F 6 "855-S8411-45R" H 5000 13450 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/Harwin/S8411-45R?qs=Qom7kyPojXY6B0JhnWxDgQ%3D%3D" H 5000 13350 50  0001 L CNN "Mouser Price/Stock"
-F 8 "Harwin" H 5000 13250 50  0001 L CNN "Manufacturer_Name"
-F 9 "S8411-45R" H 5000 13150 50  0001 L CNN "Manufacturer_Part_Number"
-	1    4350 13750
+P 4800 13750
+F 0 "RTCBattery1" H 5092 13385 50  0000 C CNN
+F 1 "S8411-45R" H 5092 13476 50  0000 C CNN
+F 2 "SamacSys_Parts:S8411-45R_1" H 5450 13850 50  0001 L CNN
+F 3 "https://cdn.harwin.com/pdfs/S8411R.pdf" H 5450 13750 50  0001 L CNN
+F 4 "HARWIN - S8411-45R - HOLDER, COIN CELL, CR1220, FULL REEL" H 5450 13650 50  0001 L CNN "Description"
+F 5 "" H 5450 13550 50  0001 L CNN "Height"
+F 6 "855-S8411-45R" H 5450 13450 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Harwin/S8411-45R?qs=Qom7kyPojXY6B0JhnWxDgQ%3D%3D" H 5450 13350 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Harwin" H 5450 13250 50  0001 L CNN "Manufacturer_Name"
+F 9 "S8411-45R" H 5450 13150 50  0001 L CNN "Manufacturer_Part_Number"
+	1    4800 13750
 	1    0    0    1   
 $EndComp
 $Comp
@@ -488,9 +488,9 @@ Wire Wire Line
 	4050 13750 4050 13850
 Connection ~ 4050 13850
 Wire Wire Line
-	4350 13650 4250 13650
+	4800 13650 4250 13650
 Wire Wire Line
-	4350 13750 4050 13750
+	4800 13750 4050 13750
 Connection ~ 4050 13750
 Wire Wire Line
 	4050 14400 4050 14150
@@ -1874,20 +1874,20 @@ Wire Wire Line
 Wire Wire Line
 	8750 2650 8800 2650
 $Sheet
-S 11100 4650 1250 550 
+S 10750 8300 1250 550 
 U 62665296
 F0 "Tanks" 50
 F1 "file62665295.sch" 50
-F2 "1-4IN" I L 11100 4700 50 
-F3 "1-4OUT" I R 12350 4700 50 
-F4 "3-4IN" I L 11100 4900 50 
-F5 "3-4OUT" I R 12350 4900 50 
-F6 "1-2IN" I L 11100 4800 50 
-F7 "1-2OUT" I R 12350 4800 50 
-F8 "FullIN" I L 11100 5000 50 
-F9 "FullOUT" I R 12350 5000 50 
-F10 "TankPowerIN" I R 12350 5100 50 
-F11 "TankPowerOut" I L 11100 5100 50 
+F2 "1-4IN" I L 10750 8350 50 
+F3 "1-4OUT" I R 12000 8350 50 
+F4 "3-4IN" I L 10750 8550 50 
+F5 "3-4OUT" I R 12000 8550 50 
+F6 "1-2IN" I L 10750 8450 50 
+F7 "1-2OUT" I R 12000 8450 50 
+F8 "FullIN" I L 10750 8650 50 
+F9 "FullOUT" I R 12000 8650 50 
+F10 "TankPowerIN" I R 12000 8750 50 
+F11 "TankPowerOut" I L 10750 8750 50 
 $EndSheet
 $Sheet
 S 15900 2050 750  450 
@@ -1950,16 +1950,16 @@ Wire Wire Line
 Wire Wire Line
 	14700 2450 15000 2450
 $Sheet
-S 11100 6150 1250 350 
+S 10750 9900 1250 350 
 U 64106FF4
 F0 "Water and LPG" 50
 F1 "file64106FF3.sch" 50
-F2 "TankPowerIn" I R 12350 6200 50 
-F3 "TankPowerOut" I L 11100 6200 50 
-F4 "LPGIn" I R 12350 6300 50 
-F5 "WaterIn" I R 12350 6400 50 
-F6 "WaterOut" I L 11100 6300 50 
-F7 "LPGOut" I L 11100 6400 50 
+F2 "TankPowerIn" I R 12000 9950 50 
+F3 "TankPowerOut" I L 10750 9950 50 
+F4 "LPGIn" I R 12000 10050 50 
+F5 "WaterIn" I R 12000 10150 50 
+F6 "WaterOut" I L 10750 10050 50 
+F7 "LPGOut" I L 10750 10150 50 
 $EndSheet
 Text GLabel 22200 4050 2    50   Input ~ 0
 SDA
@@ -1974,20 +1974,20 @@ SDA
 Text GLabel 4150 13300 2    50   Input ~ 0
 SCL
 $Sheet
-S 11100 5400 1250 550 
+S 10750 9150 1250 550 
 U 6479D118
 F0 "sheet6479D10C" 50
 F1 "file62665295.sch" 50
-F2 "1-4IN" I L 11100 5450 50 
-F3 "1-4OUT" I R 12350 5450 50 
-F4 "3-4IN" I L 11100 5650 50 
-F5 "3-4OUT" I R 12350 5650 50 
-F6 "1-2IN" I L 11100 5550 50 
-F7 "1-2OUT" I R 12350 5550 50 
-F8 "FullIN" I L 11100 5750 50 
-F9 "FullOUT" I R 12350 5750 50 
-F10 "TankPowerIN" I R 12350 5850 50 
-F11 "TankPowerOut" I L 11100 5850 50 
+F2 "1-4IN" I L 10750 9200 50 
+F3 "1-4OUT" I R 12000 9200 50 
+F4 "3-4IN" I L 10750 9400 50 
+F5 "3-4OUT" I R 12000 9400 50 
+F6 "1-2IN" I L 10750 9300 50 
+F7 "1-2OUT" I R 12000 9300 50 
+F8 "FullIN" I L 10750 9500 50 
+F9 "FullOUT" I R 12000 9500 50 
+F10 "TankPowerIN" I R 12000 9600 50 
+F11 "TankPowerOut" I L 10750 9600 50 
 $EndSheet
 Connection ~ 20050 5400
 Wire Wire Line
@@ -2025,108 +2025,92 @@ F 3 "" H 21100 4050 50  0000 C CNN
 	1    21100 5100
 	0    -1   1    0   
 $EndComp
-Text GLabel 12550 5550 2    50   Input ~ 0
+Text GLabel 14150 10450 0    50   Input ~ 0
 G1-2
-Text GLabel 12550 5650 2    50   Input ~ 0
+Text GLabel 14150 10650 0    50   Input ~ 0
 G3-4
-Text GLabel 12550 5750 2    50   Input ~ 0
+Text GLabel 15550 10750 2    50   Input ~ 0
 G4-4
-Text GLabel 12550 4700 2    50   Input ~ 0
+Text GLabel 14150 8450 0    50   Input ~ 0
 S1-4
-Text GLabel 12550 4800 2    50   Input ~ 0
+Text GLabel 14150 8650 0    50   Input ~ 0
 S1-2
-Text GLabel 12550 4900 2    50   Input ~ 0
+Text GLabel 14150 8850 0    50   Input ~ 0
 S3-4
-Text GLabel 12550 5000 2    50   Input ~ 0
+Text GLabel 15550 8950 2    50   Input ~ 0
 S4-4
-Text GLabel 12550 5450 2    50   Input ~ 0
+Text GLabel 14150 10250 0    50   Input ~ 0
 G1-4
 Text GLabel 21400 4550 1    50   Input ~ 0
 GreyV
 Text GLabel 21500 4550 1    50   Input ~ 0
 STV
 $Sheet
-S 14300 4750 1700 450 
+S 10550 4700 1700 450 
 U 627AE565
 F0 "Inputs With Interrupts" 50
 F1 "file627AE564.sch" 50
-F2 "AlarmResetIn" I L 14300 4800 50 
-F3 "AlarmResetTTL" I R 16000 4800 50 
-F4 "KitchenIn" I L 14300 4900 50 
-F5 "KitchenTTL" I R 16000 4900 50 
-F6 "BathroomIn" I L 14300 5000 50 
-F7 "BathroomTTL" I R 16000 5000 50 
-F8 "SpareInterruptIn" I L 14300 5100 50 
-F9 "SpareInterruptTTL" I R 16000 5100 50 
+F2 "AlarmResetIn" I L 10550 4750 50 
+F3 "AlarmResetTTL" I R 12250 4750 50 
+F4 "KitchenIn" I L 10550 4850 50 
+F5 "KitchenTTL" I R 12250 4850 50 
+F6 "BathroomIn" I L 10550 4950 50 
+F7 "BathroomTTL" I R 12250 4950 50 
+F8 "SpareInterruptIn" I L 10550 5050 50 
+F9 "SpareInterruptTTL" I R 12250 5050 50 
 $EndSheet
 $Sheet
-S 14300 5400 1700 1100
+S 10550 5350 1700 1100
 U 619922D7
 F0 "Inputs" 50
 F1 "file619922D6.sch" 50
-F2 "WaterPumpSenseIn" I L 14300 5500 50 
-F3 "WaterPumpSenseTTL" I R 16000 5500 50 
-F4 "EnableLCDIn" I L 14300 5600 50 
-F5 "EnableLCDTTL" I R 16000 5600 50 
-F6 "LCDBackLIGHTIn" I L 14300 5700 50 
-F7 "LCDBackLIGHTTTL" I R 16000 5700 50 
-F8 "WaterSourceIn" I L 14300 5800 50 
-F9 "WaterSourceTTL" I R 16000 5800 50 
-F10 "SP1In" I L 14300 5900 50 
-F11 "SP1TTL" I R 16000 5900 50 
-F12 "SP2In" I L 14300 6000 50 
-F13 "SP2TTL" I R 16000 6000 50 
-F14 "SP3In" I L 14300 6100 50 
-F15 "SP3TTL" I R 16000 6100 50 
-F16 "SP4In" I L 14300 6200 50 
-F17 "SP4TTL" I R 16000 6200 50 
-F18 "SP5In" I L 14300 6300 50 
-F19 "SP5TTL" I R 16000 6300 50 
-F20 "SP6In" I L 14300 6400 50 
-F21 "SP6TTL" I R 16000 6400 50 
+F2 "WaterPumpSenseIn" I L 10550 5450 50 
+F3 "WaterPumpSenseTTL" I R 12250 5450 50 
+F4 "EnableLCDIn" I L 10550 5550 50 
+F5 "EnableLCDTTL" I R 12250 5550 50 
+F6 "LCDBackLIGHTIn" I L 10550 5650 50 
+F7 "LCDBackLIGHTTTL" I R 12250 5650 50 
+F8 "WaterSourceIn" I L 10550 5750 50 
+F9 "WaterSourceTTL" I R 12250 5750 50 
+F10 "SP1In" I L 10550 5850 50 
+F11 "SP1TTL" I R 12250 5850 50 
+F12 "SP2In" I L 10550 5950 50 
+F13 "SP2TTL" I R 12250 5950 50 
+F14 "SP3In" I L 10550 6050 50 
+F15 "SP3TTL" I R 12250 6050 50 
+F16 "SP4In" I L 10550 6150 50 
+F17 "SP4TTL" I R 12250 6150 50 
+F18 "SP5In" I L 10550 6250 50 
+F19 "SP5TTL" I R 12250 6250 50 
+F20 "SP6In" I L 10550 6350 50 
+F21 "SP6TTL" I R 12250 6350 50 
 $EndSheet
 $Sheet
-S 10650 7950 1900 850 
+S 7100 12250 1900 850 
 U 61B4978A
 F0 "Outputs - 12V" 50
 F1 "file61B49789.sch" 50
-F2 "BathroomPumpLEDTTL" I R 12550 8050 50 
-F3 "BathroomPumpLEDOut" I L 10650 8050 50 
-F4 "KitchenPumpLEDTTL" I R 12550 8150 50 
-F5 "KitchenPumpLEDOut" I L 10650 8150 50 
-F6 "WarningLEDTTL" I R 12550 8250 50 
-F7 "WarningLEDOut" I L 10650 8250 50 
-F8 "WarningAlarmTTL" I R 12550 8350 50 
-F9 "WarningAlarmOut" I L 10650 8350 50 
-F10 "CityWaterValveTTL" I R 12550 8450 50 
-F11 "CityWaterValveOut" I L 10650 8450 50 
-F12 "WaterPumpTTL" I R 12550 8550 50 
-F13 "WaterPumpOut" I L 10650 8550 50 
+F2 "BathroomPumpLEDTTL" I R 9000 12350 50 
+F3 "BathroomPumpLEDOut" I L 7100 12350 50 
+F4 "KitchenPumpLEDTTL" I R 9000 12450 50 
+F5 "KitchenPumpLEDOut" I L 7100 12450 50 
+F6 "WarningLEDTTL" I R 9000 12550 50 
+F7 "WarningLEDOut" I L 7100 12550 50 
+F8 "WarningAlarmTTL" I R 9000 12650 50 
+F9 "WarningAlarmOut" I L 7100 12650 50 
+F10 "CityWaterValveTTL" I R 9000 12750 50 
+F11 "CityWaterValveOut" I L 7100 12750 50 
+F12 "WaterPumpTTL" I R 9000 12850 50 
+F13 "WaterPumpOut" I L 7100 12850 50 
 $EndSheet
-Wire Wire Line
-	12350 5450 12550 5450
-Wire Wire Line
-	12550 5550 12350 5550
-Wire Wire Line
-	12350 5650 12550 5650
-Wire Wire Line
-	12550 5750 12350 5750
-Wire Wire Line
-	12550 5000 12350 5000
-Wire Wire Line
-	12350 4900 12550 4900
-Wire Wire Line
-	12550 4800 12350 4800
-Wire Wire Line
-	12350 4700 12550 4700
-Text GLabel 12550 5850 2    50   Input ~ 0
+Text GLabel 12200 9600 2    50   Input ~ 0
 GreyV
-Text GLabel 12550 5100 2    50   Input ~ 0
+Text GLabel 12200 8750 2    50   Input ~ 0
 STV
 Wire Wire Line
-	12550 5100 12350 5100
+	12200 8750 12000 8750
 Wire Wire Line
-	12550 5850 12350 5850
+	12200 9600 12000 9600
 Wire Wire Line
 	20600 4900 20600 4550
 Wire Wire Line
@@ -2185,14 +2169,14 @@ Wire Wire Line
 	20150 2600 20750 2600
 Wire Wire Line
 	20750 2700 20150 2700
-Text GLabel 12550 6300 2    50   Input ~ 0
+Text GLabel 12200 10050 2    50   Input ~ 0
 A1
-Text GLabel 12550 6400 2    50   Input ~ 0
+Text GLabel 12200 10150 2    50   Input ~ 0
 A2
 Wire Wire Line
-	12350 6300 12550 6300
+	12000 10050 12200 10050
 Wire Wire Line
-	12350 6400 12550 6400
+	12000 10150 12200 10150
 Wire Notes Line
 	500  8850 6150 8850
 Wire Notes Line
@@ -2261,9 +2245,9 @@ Text Notes 3050 14800 0    197  ~ 0
 RTC
 Text Notes 5100 8700 0    197  ~ 0
 Power
-Text Notes 10100 4300 0    197  ~ 0
+Text Notes 10350 3900 0    197  ~ 0
 RS232
-Text Notes 13800 4300 0    197  ~ 0
+Text Notes 13600 4250 0    197  ~ 0
 Temps: RTD and NTC
 Wire Notes Line
 	16850 4350 9850 4350
@@ -2287,13 +2271,13 @@ Wire Wire Line
 	21550 3650 22200 3650
 Wire Wire Line
 	21550 3750 22200 3750
-Text GLabel 16250 4800 2    50   Input ~ 0
+Text GLabel 14200 5050 0    50   Input ~ 0
 AlarmTTL
-Text GLabel 16250 4900 2    50   Input ~ 0
+Text GLabel 14200 5250 0    50   Input ~ 0
 KitchenTTL
-Text GLabel 16250 5000 2    50   Input ~ 0
+Text GLabel 14200 5450 0    50   Input ~ 0
 BathRoomTTL
-Text GLabel 16250 5100 2    50   Input ~ 0
+Text GLabel 15500 5150 2    50   Input ~ 0
 SpareTTL
 Text GLabel 22200 2900 2    50   Input ~ 0
 AlarmTTL
@@ -2307,54 +2291,26 @@ Wire Wire Line
 	21550 3000 22200 3000
 Wire Wire Line
 	21550 2900 22200 2900
-Wire Wire Line
-	16000 4800 16250 4800
-Wire Wire Line
-	16250 4900 16000 4900
-Wire Wire Line
-	16000 5000 16250 5000
-Wire Wire Line
-	16250 5100 16000 5100
-Text GLabel 16300 5500 2    50   Input ~ 0
+Text GLabel 15500 5350 2    50   Input ~ 0
 WPS
-Text GLabel 16300 5600 2    50   Input ~ 0
+Text GLabel 15500 5550 2    50   Input ~ 0
 ENLCD
-Text GLabel 16300 5700 2    50   Input ~ 0
+Text GLabel 14200 6700 0    50   Input ~ 0
 LCBBACK
-Text GLabel 16300 5800 2    50   Input ~ 0
+Text GLabel 14200 6900 0    50   Input ~ 0
 WSS
-Text GLabel 16300 5900 2    50   Input ~ 0
+Text GLabel 14200 7100 0    50   Input ~ 0
 SPIn1
-Text GLabel 16300 6000 2    50   Input ~ 0
+Text GLabel 15500 6800 2    50   Input ~ 0
 SPIn2
-Text GLabel 16300 6100 2    50   Input ~ 0
+Text GLabel 15500 7000 2    50   Input ~ 0
 SPIn3
-Text GLabel 16300 6200 2    50   Input ~ 0
+Text GLabel 15500 7200 2    50   Input ~ 0
 SPIn4
-Text GLabel 16300 6300 2    50   Input ~ 0
+Text GLabel 15550 8550 2    50   Input ~ 0
 SPIn5
-Text GLabel 16300 6400 2    50   Input ~ 0
+Text GLabel 15550 8750 2    50   Input ~ 0
 SPIn6
-Wire Wire Line
-	16300 5500 16000 5500
-Wire Wire Line
-	16000 5600 16300 5600
-Wire Wire Line
-	16300 5700 16000 5700
-Wire Wire Line
-	16000 5800 16300 5800
-Wire Wire Line
-	16300 5900 16000 5900
-Wire Wire Line
-	16000 6000 16300 6000
-Wire Wire Line
-	16300 6100 16000 6100
-Wire Wire Line
-	16000 6200 16300 6200
-Wire Wire Line
-	16300 6300 16000 6300
-Wire Wire Line
-	16000 6400 16300 6400
 Text GLabel 20900 5800 3    50   Input ~ 0
 WPS
 Text GLabel 21000 5800 3    50   Input ~ 0
@@ -2395,30 +2351,30 @@ Wire Wire Line
 	21700 5400 21700 5800
 Wire Wire Line
 	21800 5400 21800 5800
-Text GLabel 12750 8050 2    50   Input ~ 0
+Text GLabel 9200 12350 2    50   Input ~ 0
 BRLED
-Text GLabel 12750 8150 2    50   Input ~ 0
+Text GLabel 9200 12450 2    50   Input ~ 0
 KLED
-Text GLabel 12750 8250 2    50   Input ~ 0
+Text GLabel 9200 12550 2    50   Input ~ 0
 WLED
-Text GLabel 12750 8350 2    50   Input ~ 0
+Text GLabel 9200 12650 2    50   Input ~ 0
 WSiren
-Text GLabel 12750 8450 2    50   Input ~ 0
+Text GLabel 9200 12750 2    50   Input ~ 0
 CWV
-Text GLabel 12750 8550 2    50   Input ~ 0
+Text GLabel 9200 12850 2    50   Input ~ 0
 WP
 Wire Wire Line
-	12750 8050 12550 8050
+	9200 12350 9000 12350
 Wire Wire Line
-	12550 8150 12750 8150
+	9000 12450 9200 12450
 Wire Wire Line
-	12750 8250 12550 8250
+	9200 12550 9000 12550
 Wire Wire Line
-	12550 8350 12750 8350
+	9000 12650 9200 12650
 Wire Wire Line
-	12750 8450 12550 8450
+	9200 12750 9000 12750
 Wire Wire Line
-	12550 8550 12750 8550
+	9000 12850 9200 12850
 Text GLabel 22200 2500 2    50   Input ~ 0
 BRLED
 Text GLabel 22200 2600 2    50   Input ~ 0
@@ -2443,9 +2399,9 @@ Wire Wire Line
 	21550 2600 22200 2600
 Wire Wire Line
 	21550 2500 22200 2500
-Text GLabel 12650 9150 2    50   Input ~ 0
+Text GLabel 9100 13450 2    50   Input ~ 0
 LCDBL
-Text GLabel 12650 9250 2    50   Input ~ 0
+Text GLabel 9100 13550 2    50   Input ~ 0
 LCDPOWER
 Text GLabel 22200 2100 2    50   Input ~ 0
 LCDBL
@@ -2455,12 +2411,12 @@ Wire Wire Line
 	21900 5400 21900 5800
 Wire Wire Line
 	21550 2100 22200 2100
-Text GLabel 12550 6200 2    50   Input ~ 0
+Text GLabel 12200 9950 2    50   Input ~ 0
 RTankPOWER
 Text GLabel 21900 4700 1    50   Input ~ 0
 RTankPOWER
 Wire Wire Line
-	12550 6200 12350 6200
+	12200 9950 12000 9950
 Wire Wire Line
 	1350 10400 1400 10400
 Wire Wire Line
@@ -2498,13 +2454,13 @@ F 9 "BK/HTC-15M" H 3750 500 50  0001 L CNN "Manufacturer_Part_Number"
 	1    3100 1100
 	0    -1   1    0   
 $EndComp
-Text GLabel 12700 9700 2    50   Input ~ 0
+Text GLabel 9150 14000 2    50   Input ~ 0
 SO1
-Text GLabel 12700 9800 2    50   Input ~ 0
+Text GLabel 9150 14100 2    50   Input ~ 0
 SO2
-Text GLabel 12700 9900 2    50   Input ~ 0
+Text GLabel 9150 14200 2    50   Input ~ 0
 SO3
-Text GLabel 12700 10000 2    50   Input ~ 0
+Text GLabel 9150 14300 2    50   Input ~ 0
 SO4
 Text GLabel 22200 1700 2    50   Input ~ 0
 SO1
@@ -2523,13 +2479,13 @@ Wire Wire Line
 Wire Wire Line
 	21550 1700 22200 1700
 Wire Wire Line
-	12700 9700 12550 9700
+	9150 14000 9000 14000
 Wire Wire Line
-	12550 9800 12700 9800
+	9000 14100 9150 14100
 Wire Wire Line
-	12700 9900 12550 9900
+	9150 14200 9000 14200
 Wire Wire Line
-	12550 10000 12700 10000
+	9000 14300 9150 14300
 Text GLabel 21800 4550 1    50   Input ~ 0
 EnCS
 Wire Wire Line
@@ -2808,31 +2764,31 @@ Text GLabel 9250 4200 2    50   Input ~ 0
 A13
 Wire Wire Line
 	20150 3950 20750 3950
-Text GLabel 12700 10100 2    50   Input ~ 0
+Text GLabel 9150 14400 2    50   Input ~ 0
 SO5
 Wire Wire Line
-	12700 10100 12550 10100
+	9150 14400 9000 14400
 Text GLabel 22200 3450 2    50   Input ~ 0
 SO5
 Wire Wire Line
 	21550 3450 22200 3450
 $Sheet
-S 10650 9600 1900 700 
+S 7100 13900 1900 700 
 U 63F3F92C
 F0 "SpareOuts" 50
 F1 "file63F3F92B.sch" 50
-F2 "SPOut1TTL" I R 12550 9700 50 
-F3 "SPOut1" I L 10650 9700 50 
-F4 "SPOut2TTL" I R 12550 9800 50 
-F5 "SPOut2" I L 10650 9800 50 
-F6 "SPOut3TTL" I R 12550 9900 50 
-F7 "SPOut3" I L 10650 9900 50 
-F8 "SPOut4TTL" I R 12550 10000 50 
-F9 "SPOut4" I L 10650 10000 50 
-F10 "SPOut5TTL" I R 12550 10100 50 
-F11 "SPOut5" I L 10650 10100 50 
-F12 "SPOut6TTL" I R 12550 10200 50 
-F13 "SPOut6" I L 10650 10200 50 
+F2 "SPOut1TTL" I R 9000 14000 50 
+F3 "SPOut1" I L 7100 14000 50 
+F4 "SPOut2TTL" I R 9000 14100 50 
+F5 "SPOut2" I L 7100 14100 50 
+F6 "SPOut3TTL" I R 9000 14200 50 
+F7 "SPOut3" I L 7100 14200 50 
+F8 "SPOut4TTL" I R 9000 14300 50 
+F9 "SPOut4" I L 7100 14300 50 
+F10 "SPOut5TTL" I R 9000 14400 50 
+F11 "SPOut5" I L 7100 14400 50 
+F12 "SPOut6TTL" I R 9000 14500 50 
+F13 "SPOut6" I L 7100 14500 50 
 $EndSheet
 Wire Wire Line
 	21550 1600 22200 1600
@@ -2948,29 +2904,29 @@ F 9 "1727751" H 8200 7150 50  0001 L CNN "Manufacturer_Part_Number"
 	1    7450 7750
 	1    0    0    -1  
 $EndComp
-Text GLabel 10950 6300 0    50   Input ~ 0
+Text GLabel 10600 10050 0    50   Input ~ 0
 IO11
-Text GLabel 10950 4700 0    50   Input ~ 0
+Text GLabel 10600 8350 0    50   Input ~ 0
 IO12
-Text GLabel 10950 5450 0    50   Input ~ 0
+Text GLabel 10600 9200 0    50   Input ~ 0
 IO13
-Text GLabel 10950 6200 0    50   Input ~ 0
+Text GLabel 10600 9950 0    50   Input ~ 0
 IO14
-Text GLabel 10950 4800 0    50   Input ~ 0
+Text GLabel 10600 8450 0    50   Input ~ 0
 IO15
-Text GLabel 10950 5550 0    50   Input ~ 0
+Text GLabel 10600 9300 0    50   Input ~ 0
 IO16
-Text GLabel 10950 5100 0    50   Input ~ 0
+Text GLabel 10600 8750 0    50   Input ~ 0
 IO17
-Text GLabel 10950 4900 0    50   Input ~ 0
+Text GLabel 10600 8550 0    50   Input ~ 0
 IO18
-Text GLabel 10950 5650 0    50   Input ~ 0
+Text GLabel 10600 9400 0    50   Input ~ 0
 IO19
-Text GLabel 10950 5850 0    50   Input ~ 0
+Text GLabel 10600 9600 0    50   Input ~ 0
 IO110
-Text GLabel 10950 5000 0    50   Input ~ 0
+Text GLabel 10600 8650 0    50   Input ~ 0
 IO111
-Text GLabel 10950 5750 0    50   Input ~ 0
+Text GLabel 10600 9500 0    50   Input ~ 0
 IO112
 Text GLabel 7350 6750 0    50   Input ~ 0
 IO11
@@ -2996,27 +2952,27 @@ Text GLabel 8450 7150 2    50   Input ~ 0
 IO111
 Text GLabel 8450 7250 2    50   Input ~ 0
 IO112
-Text GLabel 10500 8250 0    50   Input ~ 0
+Text GLabel 6950 12550 0    50   Input ~ 0
 IO22
-Text GLabel 14150 5100 0    50   Input ~ 0
+Text GLabel 10400 5050 0    50   Input ~ 0
 IO23
-Text GLabel 14150 5500 0    50   Input ~ 0
+Text GLabel 10400 5450 0    50   Input ~ 0
 IO24
-Text GLabel 10500 8050 0    50   Input ~ 0
+Text GLabel 6950 12350 0    50   Input ~ 0
 IO25
-Text GLabel 14150 5000 0    50   Input ~ 0
+Text GLabel 10400 4950 0    50   Input ~ 0
 IO26
-Text GLabel 14150 5700 0    50   Input ~ 0
+Text GLabel 10400 5650 0    50   Input ~ 0
 IO27
-Text GLabel 10500 8150 0    50   Input ~ 0
+Text GLabel 6950 12450 0    50   Input ~ 0
 IO28
-Text GLabel 14150 4900 0    50   Input ~ 0
+Text GLabel 10400 4850 0    50   Input ~ 0
 IO29
-Text GLabel 10950 6400 0    50   Input ~ 0
+Text GLabel 10600 10150 0    50   Input ~ 0
 IO210
-Text GLabel 10500 8350 0    50   Input ~ 0
+Text GLabel 6950 12650 0    50   Input ~ 0
 IO211
-Text GLabel 14150 4800 0    50   Input ~ 0
+Text GLabel 10400 4750 0    50   Input ~ 0
 IO212
 Text GLabel 7350 7850 0    50   Input ~ 0
 IO22
@@ -3040,19 +2996,19 @@ Text GLabel 8450 8150 2    50   Input ~ 0
 IO211
 Text GLabel 8450 8250 2    50   Input ~ 0
 IO212
-Text GLabel 14150 6300 0    50   Input ~ 0
+Text GLabel 10400 6250 0    50   Input ~ 0
 IO31
-Text GLabel 10500 10100 0    50   Input ~ 0
+Text GLabel 6950 14400 0    50   Input ~ 0
 IO32
-Text GLabel 10500 9250 0    50   Input ~ 0
+Text GLabel 6950 13550 0    50   Input ~ 0
 IO33
-Text GLabel 14150 6400 0    50   Input ~ 0
+Text GLabel 10400 6350 0    50   Input ~ 0
 IO34
-Text GLabel 10500 8550 0    50   Input ~ 0
+Text GLabel 6950 12850 0    50   Input ~ 0
 IO35
-Text GLabel 10500 8450 0    50   Input ~ 0
+Text GLabel 6950 12750 0    50   Input ~ 0
 IO38
-Text GLabel 14150 5800 0    50   Input ~ 0
+Text GLabel 10400 5750 0    50   Input ~ 0
 IO311
 Text GLabel 7350 8700 0    50   Input ~ 0
 IO31
@@ -3068,21 +3024,21 @@ Text GLabel 8450 8800 2    50   Input ~ 0
 IO38
 Text GLabel 8450 9100 2    50   Input ~ 0
 IO311
-Text GLabel 14150 5900 0    50   Input ~ 0
+Text GLabel 10400 5850 0    50   Input ~ 0
 IO41
-Text GLabel 10500 9700 0    50   Input ~ 0
+Text GLabel 6950 14000 0    50   Input ~ 0
 IO42
-Text GLabel 14150 6000 0    50   Input ~ 0
+Text GLabel 10400 5950 0    50   Input ~ 0
 IO44
-Text GLabel 10500 9800 0    50   Input ~ 0
+Text GLabel 6950 14100 0    50   Input ~ 0
 IO45
-Text GLabel 14150 6100 0    50   Input ~ 0
+Text GLabel 10400 6050 0    50   Input ~ 0
 IO47
-Text GLabel 10500 9900 0    50   Input ~ 0
+Text GLabel 6950 14200 0    50   Input ~ 0
 IO48
-Text GLabel 10500 10000 0    50   Input ~ 0
+Text GLabel 6950 14300 0    50   Input ~ 0
 IO411
-Text GLabel 14150 5600 0    50   Input ~ 0
+Text GLabel 10400 5550 0    50   Input ~ 0
 IO412
 Text GLabel 7350 9650 0    50   Input ~ 0
 IO41
@@ -3199,108 +3155,108 @@ Wire Wire Line
 Wire Wire Line
 	8450 9650 8350 9650
 Wire Wire Line
-	10950 4700 11100 4700
+	10600 8350 10750 8350
 Wire Wire Line
-	10950 4800 11100 4800
+	10600 8450 10750 8450
 Wire Wire Line
-	10950 4900 11100 4900
+	10600 8550 10750 8550
 Wire Wire Line
-	10950 5000 11100 5000
+	10600 8650 10750 8650
 Wire Wire Line
-	10950 5100 11100 5100
+	10600 8750 10750 8750
 Wire Wire Line
-	10950 5450 11100 5450
+	10600 9200 10750 9200
 Wire Wire Line
-	10950 5550 11100 5550
+	10600 9300 10750 9300
 Wire Wire Line
-	10950 5650 11100 5650
+	10600 9400 10750 9400
 Wire Wire Line
-	10950 5750 11100 5750
+	10600 9500 10750 9500
 Wire Wire Line
-	10950 5850 11100 5850
+	10600 9600 10750 9600
 Wire Wire Line
-	10950 6200 11100 6200
+	10600 9950 10750 9950
 Wire Wire Line
-	10950 6300 11100 6300
+	10600 10050 10750 10050
 Wire Wire Line
-	10950 6400 11100 6400
-Text GLabel 14150 6200 0    50   Input ~ 0
+	10600 10150 10750 10150
+Text GLabel 10400 6150 0    50   Input ~ 0
 IO410
-Text GLabel 10500 9150 0    50   Input ~ 0
+Text GLabel 6950 13450 0    50   Input ~ 0
 IO49
 Wire Notes Line
 	9850 500  9850 11350
 Text Notes 6900 11200 0    197  ~ 0
 IO Terminals
 Wire Wire Line
-	10500 8050 10650 8050
+	6950 12350 7100 12350
 Wire Wire Line
-	10500 8150 10650 8150
+	6950 12450 7100 12450
 Wire Wire Line
-	10650 8250 10500 8250
+	7100 12550 6950 12550
 Wire Wire Line
-	10500 8350 10650 8350
+	6950 12650 7100 12650
 Wire Wire Line
-	10650 8450 10500 8450
+	7100 12750 6950 12750
 Wire Wire Line
-	10500 8550 10650 8550
+	6950 12850 7100 12850
 Wire Wire Line
-	10500 9700 10650 9700
+	6950 14000 7100 14000
 Wire Wire Line
-	10650 9800 10500 9800
+	7100 14100 6950 14100
 Wire Wire Line
-	10500 9900 10650 9900
+	6950 14200 7100 14200
 Wire Wire Line
-	10650 10000 10500 10000
+	7100 14300 6950 14300
 Wire Wire Line
-	10500 10100 10650 10100
+	6950 14400 7100 14400
 Wire Wire Line
-	14150 6400 14300 6400
+	10400 6350 10550 6350
 Wire Wire Line
-	14300 6300 14150 6300
+	10550 6250 10400 6250
 Wire Wire Line
-	14150 6200 14300 6200
+	10400 6150 10550 6150
 Wire Wire Line
-	14300 6100 14150 6100
+	10550 6050 10400 6050
 Wire Wire Line
-	14150 6000 14300 6000
+	10400 5950 10550 5950
 Wire Wire Line
-	14300 5900 14150 5900
+	10550 5850 10400 5850
 Wire Wire Line
-	14150 4800 14300 4800
+	10400 4750 10550 4750
 Wire Wire Line
-	14150 5000 14300 5000
+	10400 4950 10550 4950
 Wire Wire Line
-	14150 4900 14300 4900
+	10400 4850 10550 4850
 Wire Wire Line
-	14300 5100 14150 5100
+	10550 5050 10400 5050
 Wire Wire Line
-	14150 5800 14300 5800
+	10400 5750 10550 5750
 Wire Wire Line
-	14300 5600 14150 5600
+	10550 5550 10400 5550
 Wire Wire Line
-	14150 5500 14300 5500
+	10400 5450 10550 5450
 Wire Wire Line
-	14150 5700 14300 5700
+	10400 5650 10550 5650
 $Sheet
-S 10650 9050 1900 300 
+S 7100 13350 1900 300 
 U 61A6AEB3
 F0 "Outputs - 5V" 50
 F1 "file61A6AEB2.sch" 50
-F2 "LCDBacklightTTL" I R 12550 9150 50 
-F3 "LCDBacklightOut" I L 10650 9150 50 
-F4 "LCDPowerTTL" I R 12550 9250 50 
-F5 "LCDPowerOut" I L 10650 9250 50 
+F2 "LCDBacklightTTL" I R 9000 13450 50 
+F3 "LCDBacklightOut" I L 7100 13450 50 
+F4 "LCDPowerTTL" I R 9000 13550 50 
+F5 "LCDPowerOut" I L 7100 13550 50 
 $EndSheet
 Wire Wire Line
-	10500 9150 10650 9150
+	6950 13450 7100 13450
 Wire Wire Line
-	10500 9250 10650 9250
+	6950 13550 7100 13550
 Wire Wire Line
-	12550 9250 12650 9250
+	9000 13550 9100 13550
 Wire Wire Line
-	12650 9150 12550 9150
-Text GLabel 12700 10200 2    50   Input ~ 0
+	9100 13450 9000 13450
+Text GLabel 9150 14500 2    50   Input ~ 0
 SO6
 Text GLabel 22200 3550 2    50   Input ~ 0
 SO6
@@ -3318,29 +3274,21 @@ F 3 "~" H 4700 2500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	12700 10200 12550 10200
-Text GLabel 10500 10200 0    50   Input ~ 0
+	9150 14500 9000 14500
+Text GLabel 6950 14500 0    50   Input ~ 0
 SpareOut6
 Wire Wire Line
-	10500 10200 10650 10200
+	6950 14500 7100 14500
 Text GLabel 4500 2850 0    50   Input ~ 0
 SpareOut6
 Wire Wire Line
 	4500 2850 4500 2600
-Text Notes 10400 7050 0    197  ~ 0
+Text Notes 10550 10850 0    197  ~ 0
 Tank Sensors
-Text Notes 14800 7050 0    197  ~ 0
+Text Notes 10950 6850 0    197  ~ 0
 Inputs
-Wire Notes Line
-	6150 11350 13750 11350
-Wire Notes Line
-	13750 500  13750 11350
-Text Notes 10450 11200 0    197  ~ 0
+Text Notes 7500 15100 0    197  ~ 0
 Outputs
-Wire Notes Line
-	16950 450  16950 7200
-Wire Notes Line
-	9850 7200 16950 7200
 Wire Wire Line
 	2400 1100 1650 1100
 Wire Wire Line
@@ -3358,8 +3306,6 @@ Wire Notes Line
 	19200 500  19200 6500
 Wire Notes Line
 	19200 6500 22900 6500
-Wire Notes Line
-	16950 2250 19200 2250
 Wire Wire Line
 	3650 2000 3650 1900
 $Comp
@@ -3390,45 +3336,402 @@ F 9 "SR305-TP" H 5000 1850 50  0001 L CNN "Manufacturer_Part_Number"
 	1    4500 2400
 	-1   0    0    -1  
 $EndComp
-$Comp
-L power:+5VL #PWR097
-U 1 1 61AB0C18
-P 5800 5900
-F 0 "#PWR097" H 5800 5750 50  0001 C CNN
-F 1 "+5VL" H 5815 6073 50  0000 C CNN
-F 2 "" H 5800 5900 50  0001 C CNN
-F 3 "" H 5800 5900 50  0001 C CNN
-	1    5800 5900
-	1    0    0    -1  
-$EndComp
-$Comp
-L SamacSys_Parts:SR305-TP D5
-U 1 1 61AB378D
-P 5750 6300
-F 0 "D5" H 6150 6567 50  0000 C CNN
-F 1 "SR305-TP" H 6150 6476 50  0000 C CNN
-F 2 "DIOAD2860W130L840D505" H 6250 6450 50  0001 L CNN
-F 3 "https://componentsearchengine.com/Datasheets/1/SR305-TP.pdf" H 6250 6350 50  0001 L CNN
-F 4 "Schottky Diodes & Rectifiers Rectifier 50V 80A" H 6250 6250 50  0001 L CNN "Description"
-F 5 "" H 6250 6150 50  0001 L CNN "Height"
-F 6 "833-SR305-TP" H 6250 6050 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=833-SR305-TP" H 6250 5950 50  0001 L CNN "Mouser Price/Stock"
-F 8 "Micro Commercial Components (MCC)" H 6250 5850 50  0001 L CNN "Manufacturer_Name"
-F 9 "SR305-TP" H 6250 5750 50  0001 L CNN "Manufacturer_Part_Number"
-	1    5750 6300
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	5650 6300 5800 6300
-Wire Wire Line
-	5800 6300 5800 5900
 Wire Wire Line
 	7250 7750 7450 7750
 Wire Wire Line
 	4400 6300 4600 6300
 Wire Wire Line
 	4700 6300 5050 6300
-Connection ~ 5050 6300
-Text Notes 4150 5650 0    50   ~ 0
-5V - Clean Voltage Line\n5VL - Dirty Logic line for external interfacing
+$Comp
+L SamacSys_Parts:SN7404DR IC7
+U 1 1 61CAB975
+P 14350 4950
+F 0 "IC7" H 14850 5215 50  0000 C CNN
+F 1 "SN7404DR" H 14850 5124 50  0000 C CNN
+F 2 "SOIC127P600X175-14N" H 15200 5050 50  0001 L CNN
+F 3 "http://www.ti.com/lit/gpn/sn7404" H 15200 4950 50  0001 L CNN
+F 4 "Inverter 6-Element Bipolar 14-Pin SOIC T/R" H 15200 4850 50  0001 L CNN "Description"
+F 5 "1.75" H 15200 4750 50  0001 L CNN "Height"
+F 6 "595-SN7404DR" H 15200 4650 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/SN7404DR?qs=QViXGNcIEAuHlhJRgdRtQw%3D%3D" H 15200 4550 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Texas Instruments" H 15200 4450 50  0001 L CNN "Manufacturer_Name"
+F 9 "SN7404DR" H 15200 4350 50  0001 L CNN "Manufacturer_Part_Number"
+	1    14350 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR056
+U 1 1 621B560E
+P 14350 5650
+F 0 "#PWR056" H 14350 5400 50  0001 C CNN
+F 1 "GND" H 14355 5477 50  0000 C CNN
+F 2 "" H 14350 5650 50  0001 C CNN
+F 3 "" H 14350 5650 50  0001 C CNN
+	1    14350 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0103
+U 1 1 62235797
+P 15350 4850
+F 0 "#PWR0103" H 15350 4700 50  0001 C CNN
+F 1 "+5V" H 15365 5023 50  0000 C CNN
+F 2 "" H 15350 4850 50  0001 C CNN
+F 3 "" H 15350 4850 50  0001 C CNN
+	1    15350 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14350 5650 14350 5550
+Wire Wire Line
+	15350 4950 15350 4850
+$Comp
+L SamacSys_Parts:SN7404DR IC8
+U 1 1 623B7C46
+P 14350 6600
+F 0 "IC8" H 14850 6865 50  0000 C CNN
+F 1 "SN7404DR" H 14850 6774 50  0000 C CNN
+F 2 "SOIC127P600X175-14N" H 15200 6700 50  0001 L CNN
+F 3 "http://www.ti.com/lit/gpn/sn7404" H 15200 6600 50  0001 L CNN
+F 4 "Inverter 6-Element Bipolar 14-Pin SOIC T/R" H 15200 6500 50  0001 L CNN "Description"
+F 5 "1.75" H 15200 6400 50  0001 L CNN "Height"
+F 6 "595-SN7404DR" H 15200 6300 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/SN7404DR?qs=QViXGNcIEAuHlhJRgdRtQw%3D%3D" H 15200 6200 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Texas Instruments" H 15200 6100 50  0001 L CNN "Manufacturer_Name"
+F 9 "SN7404DR" H 15200 6000 50  0001 L CNN "Manufacturer_Part_Number"
+	1    14350 6600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR097
+U 1 1 623B7C4C
+P 14350 7300
+F 0 "#PWR097" H 14350 7050 50  0001 C CNN
+F 1 "GND" H 14355 7127 50  0000 C CNN
+F 2 "" H 14350 7300 50  0001 C CNN
+F 3 "" H 14350 7300 50  0001 C CNN
+	1    14350 7300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0105
+U 1 1 623B7C52
+P 15350 6500
+F 0 "#PWR0105" H 15350 6350 50  0001 C CNN
+F 1 "+5V" H 15365 6673 50  0000 C CNN
+F 2 "" H 15350 6500 50  0001 C CNN
+F 3 "" H 15350 6500 50  0001 C CNN
+	1    15350 6500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14350 7300 14350 7200
+Wire Wire Line
+	15350 6600 15350 6500
+$Comp
+L SamacSys_Parts:SN7404DR IC9
+U 1 1 623F9265
+P 14350 8350
+F 0 "IC9" H 14850 8615 50  0000 C CNN
+F 1 "SN7404DR" H 14850 8524 50  0000 C CNN
+F 2 "SOIC127P600X175-14N" H 15200 8450 50  0001 L CNN
+F 3 "http://www.ti.com/lit/gpn/sn7404" H 15200 8350 50  0001 L CNN
+F 4 "Inverter 6-Element Bipolar 14-Pin SOIC T/R" H 15200 8250 50  0001 L CNN "Description"
+F 5 "1.75" H 15200 8150 50  0001 L CNN "Height"
+F 6 "595-SN7404DR" H 15200 8050 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/SN7404DR?qs=QViXGNcIEAuHlhJRgdRtQw%3D%3D" H 15200 7950 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Texas Instruments" H 15200 7850 50  0001 L CNN "Manufacturer_Name"
+F 9 "SN7404DR" H 15200 7750 50  0001 L CNN "Manufacturer_Part_Number"
+	1    14350 8350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR099
+U 1 1 623F926B
+P 14350 9050
+F 0 "#PWR099" H 14350 8800 50  0001 C CNN
+F 1 "GND" H 14355 8877 50  0000 C CNN
+F 2 "" H 14350 9050 50  0001 C CNN
+F 3 "" H 14350 9050 50  0001 C CNN
+	1    14350 9050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0107
+U 1 1 623F9271
+P 15350 8250
+F 0 "#PWR0107" H 15350 8100 50  0001 C CNN
+F 1 "+5V" H 15365 8423 50  0000 C CNN
+F 2 "" H 15350 8250 50  0001 C CNN
+F 3 "" H 15350 8250 50  0001 C CNN
+	1    15350 8250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14350 9050 14350 8950
+Wire Wire Line
+	15350 8350 15350 8250
+$Comp
+L SamacSys_Parts:SN7404DR IC10
+U 1 1 6243A4DB
+P 14350 10150
+F 0 "IC10" H 14850 10415 50  0000 C CNN
+F 1 "SN7404DR" H 14850 10324 50  0000 C CNN
+F 2 "SOIC127P600X175-14N" H 15200 10250 50  0001 L CNN
+F 3 "http://www.ti.com/lit/gpn/sn7404" H 15200 10150 50  0001 L CNN
+F 4 "Inverter 6-Element Bipolar 14-Pin SOIC T/R" H 15200 10050 50  0001 L CNN "Description"
+F 5 "1.75" H 15200 9950 50  0001 L CNN "Height"
+F 6 "595-SN7404DR" H 15200 9850 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/SN7404DR?qs=QViXGNcIEAuHlhJRgdRtQw%3D%3D" H 15200 9750 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Texas Instruments" H 15200 9650 50  0001 L CNN "Manufacturer_Name"
+F 9 "SN7404DR" H 15200 9550 50  0001 L CNN "Manufacturer_Part_Number"
+	1    14350 10150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0101
+U 1 1 6243A4E1
+P 14350 10850
+F 0 "#PWR0101" H 14350 10600 50  0001 C CNN
+F 1 "GND" H 14355 10677 50  0000 C CNN
+F 2 "" H 14350 10850 50  0001 C CNN
+F 3 "" H 14350 10850 50  0001 C CNN
+	1    14350 10850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0109
+U 1 1 6243A4E7
+P 15350 10050
+F 0 "#PWR0109" H 15350 9900 50  0001 C CNN
+F 1 "+5V" H 15365 10223 50  0000 C CNN
+F 2 "" H 15350 10050 50  0001 C CNN
+F 3 "" H 15350 10050 50  0001 C CNN
+	1    15350 10050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14350 10850 14350 10750
+Wire Wire Line
+	15350 10150 15350 10050
+Wire Wire Line
+	14350 5050 14200 5050
+Wire Wire Line
+	14200 5250 14350 5250
+Wire Wire Line
+	14200 5450 14350 5450
+Wire Wire Line
+	15500 5150 15350 5150
+Wire Wire Line
+	15500 5550 15350 5550
+Wire Wire Line
+	15500 5350 15350 5350
+Wire Wire Line
+	14200 7100 14350 7100
+Wire Wire Line
+	14350 6900 14200 6900
+Wire Wire Line
+	14200 6700 14350 6700
+Wire Wire Line
+	15350 6800 15500 6800
+Wire Wire Line
+	15350 7000 15500 7000
+Wire Wire Line
+	15500 7200 15350 7200
+Wire Wire Line
+	15550 8550 15350 8550
+Wire Wire Line
+	15550 8750 15350 8750
+Wire Wire Line
+	14350 8850 14150 8850
+Wire Wire Line
+	14150 8650 14350 8650
+Wire Wire Line
+	14350 8450 14150 8450
+Wire Wire Line
+	15550 8950 15350 8950
+Wire Wire Line
+	14350 10650 14150 10650
+Wire Wire Line
+	14350 10450 14150 10450
+Wire Wire Line
+	14150 10250 14350 10250
+Wire Wire Line
+	15550 10750 15350 10750
+Wire Wire Line
+	14200 4750 14200 4950
+Wire Wire Line
+	14200 4950 14350 4950
+Wire Wire Line
+	12250 4750 14200 4750
+Wire Wire Line
+	12250 4850 13750 4850
+Wire Wire Line
+	13750 4850 13750 5150
+Wire Wire Line
+	13750 5150 14350 5150
+Wire Wire Line
+	14350 5350 13600 5350
+Wire Wire Line
+	13600 5350 13600 4950
+Wire Wire Line
+	13600 4950 12250 4950
+Wire Wire Line
+	15350 5050 15550 5050
+Wire Wire Line
+	15550 5050 15550 4550
+Wire Wire Line
+	15550 4550 12500 4550
+Wire Wire Line
+	12500 4550 12500 5050
+Wire Wire Line
+	12500 5050 12250 5050
+Wire Wire Line
+	12250 5450 13300 5450
+Wire Wire Line
+	13300 5900 16350 5900
+Wire Wire Line
+	16350 5900 16350 5250
+Wire Wire Line
+	16350 5250 15350 5250
+Wire Wire Line
+	13300 5450 13300 5900
+Wire Wire Line
+	15350 5450 16100 5450
+Wire Wire Line
+	16100 5450 16100 5950
+Wire Wire Line
+	16100 5950 13250 5950
+Wire Wire Line
+	13250 5950 13250 5550
+Wire Wire Line
+	13250 5550 12250 5550
+Wire Notes Line
+	16850 450  16850 11350
+Wire Notes Line
+	6150 11350 16850 11350
+Wire Wire Line
+	14350 6600 13200 6600
+Wire Wire Line
+	13200 6600 13200 5650
+Wire Wire Line
+	13200 5650 12250 5650
+Wire Wire Line
+	14350 6800 13150 6800
+Wire Wire Line
+	13150 6800 13150 5750
+Wire Wire Line
+	13150 5750 12250 5750
+Wire Wire Line
+	12250 5850 13100 5850
+Wire Wire Line
+	13100 5850 13100 7000
+Wire Wire Line
+	13100 7000 14350 7000
+Wire Wire Line
+	12250 5950 13050 5950
+Wire Wire Line
+	13050 5950 13050 7550
+Wire Wire Line
+	13050 7550 16450 7550
+Wire Wire Line
+	16450 7550 16450 6700
+Wire Wire Line
+	16450 6700 15350 6700
+Wire Wire Line
+	12250 6050 13000 6050
+Wire Wire Line
+	13000 6050 13000 7600
+Wire Wire Line
+	13000 7600 16500 7600
+Wire Wire Line
+	16500 7600 16500 6900
+Wire Wire Line
+	16500 6900 15350 6900
+Wire Wire Line
+	15350 7100 16550 7100
+Wire Wire Line
+	16550 7100 16550 7650
+Wire Wire Line
+	16550 7650 12950 7650
+Wire Wire Line
+	12950 7650 12950 6150
+Wire Wire Line
+	12950 6150 12250 6150
+Wire Wire Line
+	12250 6250 12900 6250
+Wire Wire Line
+	12900 6250 12900 7700
+Wire Wire Line
+	12900 7700 15750 7700
+Wire Wire Line
+	15750 7700 15750 8450
+Wire Wire Line
+	15750 8450 15350 8450
+Wire Wire Line
+	12250 6350 12850 6350
+Wire Wire Line
+	12850 6350 12850 7750
+Wire Wire Line
+	12850 7750 16000 7750
+Wire Wire Line
+	16000 7750 16000 8650
+Wire Wire Line
+	16000 8650 15350 8650
+Wire Wire Line
+	14350 8350 12000 8350
+Wire Wire Line
+	14350 8550 13750 8550
+Wire Wire Line
+	13750 8550 13750 8450
+Wire Wire Line
+	13750 8450 12000 8450
+Wire Wire Line
+	12000 8550 13700 8550
+Wire Wire Line
+	13700 8550 13700 8750
+Wire Wire Line
+	13700 8750 14350 8750
+Wire Wire Line
+	12000 8650 13650 8650
+Wire Wire Line
+	13650 8650 13650 9300
+Wire Wire Line
+	13650 9300 15900 9300
+Wire Wire Line
+	15900 9300 15900 8850
+Wire Wire Line
+	15900 8850 15350 8850
+Wire Wire Line
+	12000 9200 13600 9200
+Wire Wire Line
+	13600 9200 13600 10150
+Wire Wire Line
+	13600 10150 14350 10150
+Wire Wire Line
+	14350 10350 13550 10350
+Wire Wire Line
+	13550 10350 13550 9300
+Wire Wire Line
+	13550 9300 12000 9300
+Wire Wire Line
+	12000 9400 13500 9400
+Wire Wire Line
+	13500 9400 13500 10550
+Wire Wire Line
+	13500 10550 14350 10550
+Wire Wire Line
+	12000 9500 13450 9500
+Wire Wire Line
+	13450 9500 13450 11100
+Wire Wire Line
+	13450 11100 15950 11100
+Wire Wire Line
+	15950 11100 15950 10650
+Wire Wire Line
+	15950 10650 15350 10650
+NoConn ~ 15350 10550
+NoConn ~ 15350 10450
+NoConn ~ 15350 10350
+NoConn ~ 15350 10250
 $EndSCHEMATC

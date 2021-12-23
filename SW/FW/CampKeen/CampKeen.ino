@@ -438,18 +438,18 @@ void LCDDisplay() {
       //Tank Levels
       lcd.setCursor(0, 0);
       lcd.print("Water");
-      lcd.setCursor(15, 0);
+      lcd.setCursor(14, 0);
       lcd.print(LastWaterLevel);
 
       lcd.setCursor(0, 1);
       lcd.print("LPG");
-      lcd.setCursor(15, 1);
+      lcd.setCursor(14, 1);
       lcd.print(LastLPGLevel);
 
       lcd.setCursor(0, 2);
       lcd.print("Grey Water");
-      lcd.setCursor(15, 2);
-      if (LastGreyWater == "1/4" || LastGreyWater == "1/2" || LastGreyWater == "3/4" || LastGreyWater == "Full") {
+      lcd.setCursor(14, 2);
+      if (LastGreyWater == "Empty" || LastGreyWater == "1/4" || LastGreyWater == "1/2" || LastGreyWater == "3/4" || LastGreyWater == "Full") {
         lcd.print(LastGreyWater);
       }
       else {
@@ -458,8 +458,8 @@ void LCDDisplay() {
 
       lcd.setCursor(0, 3);
       lcd.print("Sewage");
-      lcd.setCursor(15, 3);
-      if (LastSewageLevel == "1/4" || LastSewageLevel == "1/2" || LastSewageLevel == "3/4" || LastSewageLevel == "Full") {
+      lcd.setCursor(14, 3);
+      if (LastSewageLevel == "Empty" || LastSewageLevel == "1/4" || LastSewageLevel == "1/2" || LastSewageLevel == "3/4" || LastSewageLevel == "Full") {
         lcd.print(LastSewageLevel);
       }
       else {
