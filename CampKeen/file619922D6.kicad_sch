@@ -1621,7 +1621,7 @@
     (uuid f3de2775-f0cf-4183-8569-58c2de09dee1)
   )
 
-  (symbol (lib_id "Device:R") (at 53.34 87.63 0)
+  (symbol (lib_id "Device:R") (at 53.34 87.63 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061994cea)
     (property "Reference" "R59" (id 0) (at 55.118 86.4616 0)
@@ -1640,7 +1640,7 @@
     (pin "2" (uuid e1828ddb-e37f-457e-b5ad-62430abdf39f))
   )
 
-  (symbol (lib_id "power:GND") (at 67.31 95.25 0)
+  (symbol (lib_id "power:GND") (at 67.31 95.25 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061994cf0)
     (property "Reference" "#PWR0106" (id 0) (at 67.31 101.6 0)
@@ -1656,7 +1656,7 @@
     (pin "1" (uuid 2195e2f2-da04-4bd6-a319-2c21e265eda5))
   )
 
-  (symbol (lib_id "Device:R") (at 140.97 58.42 0)
+  (symbol (lib_id "Device:R") (at 140.97 58.42 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061994cf8)
     (property "Reference" "R63" (id 0) (at 142.748 57.2516 0)
@@ -1675,7 +1675,7 @@
     (pin "2" (uuid 12329062-f4b0-4e36-8915-019dd5e69532))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 76.2 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 76.2 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061994d0d)
     (property "Reference" "Q20" (id 0) (at 69.9516 75.0316 0)
@@ -1695,7 +1695,7 @@
     (pin "3" (uuid f674502c-d975-418d-a3a1-1d904963ab58))
   )
 
-  (symbol (lib_id "Device:C") (at 43.18 87.63 0)
+  (symbol (lib_id "Device:C") (at 43.18 87.63 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061994d13)
     (property "Reference" "C28" (id 0) (at 46.101 86.4616 0)
@@ -1714,7 +1714,7 @@
     (pin "2" (uuid fdade018-debe-4645-9dd7-2d7c3ffbe937))
   )
 
-  (symbol (lib_id "Device:R") (at 53.34 130.81 0)
+  (symbol (lib_id "Device:R") (at 53.34 130.81 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619c5cdd)
     (property "Reference" "R60" (id 0) (at 55.118 129.6416 0)
@@ -1733,7 +1733,7 @@
     (pin "2" (uuid 2f602ec4-7a44-40e6-a667-94f41bbf5036))
   )
 
-  (symbol (lib_id "power:GND") (at 67.31 138.43 0)
+  (symbol (lib_id "power:GND") (at 67.31 138.43 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619c5ce3)
     (property "Reference" "#PWR0108" (id 0) (at 67.31 144.78 0)
@@ -1749,7 +1749,7 @@
     (pin "1" (uuid 8115ed4f-d5d7-4839-a63d-a99094742eb7))
   )
 
-  (symbol (lib_id "Device:R") (at 148.59 58.42 0)
+  (symbol (lib_id "Device:R") (at 148.59 58.42 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619c5ceb)
     (property "Reference" "R64" (id 0) (at 150.368 57.2516 0)
@@ -1768,7 +1768,7 @@
     (pin "2" (uuid b8b0cefe-4db0-4dd6-b26b-e227cbb24e7d))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 119.38 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 119.38 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619c5d00)
     (property "Reference" "Q21" (id 0) (at 69.9516 118.2116 0)
@@ -1788,7 +1788,7 @@
     (pin "3" (uuid e9da25f2-a680-45c2-8f43-700de870251c))
   )
 
-  (symbol (lib_id "Device:C") (at 43.18 130.81 0)
+  (symbol (lib_id "Device:C") (at 43.18 130.81 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619c5d06)
     (property "Reference" "C29" (id 0) (at 46.101 129.6416 0)
@@ -1807,7 +1807,7 @@
     (pin "2" (uuid eada5b16-dc2c-460e-9d40-44fdd1bc4ed0))
   )
 
-  (symbol (lib_id "Device:R") (at 53.34 171.45 0)
+  (symbol (lib_id "Device:R") (at 53.34 171.45 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619f4c9b)
     (property "Reference" "R61" (id 0) (at 55.118 170.2816 0)
@@ -1826,7 +1826,7 @@
     (pin "2" (uuid 60571f3b-50cf-4524-a82b-19f9127aa945))
   )
 
-  (symbol (lib_id "power:GND") (at 67.31 179.07 0)
+  (symbol (lib_id "power:GND") (at 67.31 179.07 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619f4ca1)
     (property "Reference" "#PWR0110" (id 0) (at 67.31 185.42 0)
@@ -1842,7 +1842,7 @@
     (pin "1" (uuid 3e495ac4-b11f-4e38-b2d2-d494623eabe5))
   )
 
-  (symbol (lib_id "Device:R") (at 133.35 58.42 0)
+  (symbol (lib_id "Device:R") (at 133.35 58.42 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619f4ca9)
     (property "Reference" "R65" (id 0) (at 135.128 57.2516 0)
@@ -1861,7 +1861,7 @@
     (pin "2" (uuid b24ce7c7-0154-43f1-b8a3-d77f7357f530))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 160.02 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 160.02 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619f4cbe)
     (property "Reference" "Q22" (id 0) (at 69.9516 158.8516 0)
@@ -1881,7 +1881,7 @@
     (pin "3" (uuid 82e2af63-1f5f-43e9-b0e3-c660b4fb8f2d))
   )
 
-  (symbol (lib_id "Device:C") (at 43.18 171.45 0)
+  (symbol (lib_id "Device:C") (at 43.18 171.45 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619f4cc4)
     (property "Reference" "C30" (id 0) (at 46.101 170.2816 0)
@@ -1900,7 +1900,7 @@
     (pin "2" (uuid a2df1543-a1ae-4349-b268-8ee09f6d5b68))
   )
 
-  (symbol (lib_id "Device:R") (at 53.34 214.63 0)
+  (symbol (lib_id "Device:R") (at 53.34 214.63 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619fb7a5)
     (property "Reference" "R62" (id 0) (at 55.118 213.4616 0)
@@ -1919,7 +1919,7 @@
     (pin "2" (uuid 70168a4d-b0df-4420-8e8b-0527ef78ad2b))
   )
 
-  (symbol (lib_id "power:GND") (at 67.31 222.25 0)
+  (symbol (lib_id "power:GND") (at 67.31 222.25 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619fb7ab)
     (property "Reference" "#PWR0112" (id 0) (at 67.31 228.6 0)
@@ -1935,7 +1935,7 @@
     (pin "1" (uuid 674c24d2-62b1-428f-8da3-e3ac441b9dea))
   )
 
-  (symbol (lib_id "Device:R") (at 125.73 58.42 0)
+  (symbol (lib_id "Device:R") (at 125.73 58.42 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619fb7b3)
     (property "Reference" "R66" (id 0) (at 127.508 57.2516 0)
@@ -1954,7 +1954,7 @@
     (pin "2" (uuid c84f7357-ba09-468d-8a79-98228254bd2d))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 203.2 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 64.77 203.2 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619fb7c8)
     (property "Reference" "Q23" (id 0) (at 69.9516 202.0316 0)
@@ -1974,7 +1974,7 @@
     (pin "3" (uuid 9ce489ea-22eb-4499-89ac-977740a81da9))
   )
 
-  (symbol (lib_id "Device:C") (at 43.18 214.63 0)
+  (symbol (lib_id "Device:C") (at 43.18 214.63 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000619fb7ce)
     (property "Reference" "C31" (id 0) (at 46.101 213.4616 0)
@@ -1993,7 +1993,7 @@
     (pin "2" (uuid ab53bdc6-ce0d-4241-8996-ce7f96233d93))
   )
 
-  (symbol (lib_id "Device:R") (at 194.31 168.91 0)
+  (symbol (lib_id "Device:R") (at 194.31 168.91 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061aa89a1)
     (property "Reference" "R67" (id 0) (at 196.088 167.7416 0)
@@ -2012,7 +2012,7 @@
     (pin "2" (uuid 0a6fc38f-f8bb-4374-9914-fb31e6e5f7b2))
   )
 
-  (symbol (lib_id "power:GND") (at 208.28 176.53 0)
+  (symbol (lib_id "power:GND") (at 208.28 176.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061aa89a7)
     (property "Reference" "#PWR0114" (id 0) (at 208.28 182.88 0)
@@ -2028,7 +2028,7 @@
     (pin "1" (uuid 23dee6f5-9187-40c4-a4e7-1fdd1c51e8ff))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 205.74 157.48 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 205.74 157.48 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061aa89c4)
     (property "Reference" "Q24" (id 0) (at 210.9216 156.3116 0)
@@ -2048,7 +2048,7 @@
     (pin "3" (uuid 14c79143-404b-470f-9e77-f6cee9499293))
   )
 
-  (symbol (lib_id "Device:C") (at 184.15 168.91 0)
+  (symbol (lib_id "Device:C") (at 184.15 168.91 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061aa89ca)
     (property "Reference" "C32" (id 0) (at 187.071 167.7416 0)
@@ -2067,7 +2067,7 @@
     (pin "2" (uuid 2c0d0192-02c5-4a67-9b5d-ff3136f78653))
   )
 
-  (symbol (lib_id "Device:R") (at 208.28 196.85 0)
+  (symbol (lib_id "Device:R") (at 208.28 196.85 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ac6543)
     (property "Reference" "R74" (id 0) (at 210.058 195.6816 0)
@@ -2086,7 +2086,7 @@
     (pin "2" (uuid ed7ca3bf-5f95-4e7c-bf72-a8e6897a53a9))
   )
 
-  (symbol (lib_id "power:GND") (at 222.25 204.47 0)
+  (symbol (lib_id "power:GND") (at 222.25 204.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ac6549)
     (property "Reference" "#PWR0122" (id 0) (at 222.25 210.82 0)
@@ -2102,7 +2102,7 @@
     (pin "1" (uuid 2b66803c-5664-41f5-91f0-fd0a355416df))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 219.71 185.42 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 219.71 185.42 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ac6566)
     (property "Reference" "Q28" (id 0) (at 224.8916 184.2516 0)
@@ -2122,7 +2122,7 @@
     (pin "3" (uuid 1e8cc241-200d-4f20-96c7-13ccf4701b7e))
   )
 
-  (symbol (lib_id "Device:C") (at 198.12 196.85 0)
+  (symbol (lib_id "Device:C") (at 198.12 196.85 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ac656c)
     (property "Reference" "C36" (id 0) (at 201.041 195.6816 0)
@@ -2141,7 +2141,7 @@
     (pin "2" (uuid fabef479-a9dd-4453-8e34-5176db66b1a7))
   )
 
-  (symbol (lib_id "Device:R") (at 220.98 224.79 0)
+  (symbol (lib_id "Device:R") (at 220.98 224.79 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acb02d)
     (property "Reference" "R68" (id 0) (at 222.758 223.6216 0)
@@ -2160,7 +2160,7 @@
     (pin "2" (uuid fa35cfd7-bd1a-4b1d-9b62-e22bd0f483f3))
   )
 
-  (symbol (lib_id "power:GND") (at 234.95 232.41 0)
+  (symbol (lib_id "power:GND") (at 234.95 232.41 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acb033)
     (property "Reference" "#PWR0116" (id 0) (at 234.95 238.76 0)
@@ -2176,7 +2176,7 @@
     (pin "1" (uuid ab4e1151-82a5-444b-a0e1-13f18e781eec))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 232.41 213.36 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 232.41 213.36 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acb050)
     (property "Reference" "Q25" (id 0) (at 237.5916 212.1916 0)
@@ -2196,7 +2196,7 @@
     (pin "3" (uuid 1062d296-4d6a-4b3e-9f29-d3d305b3303f))
   )
 
-  (symbol (lib_id "Device:C") (at 210.82 224.79 0)
+  (symbol (lib_id "Device:C") (at 210.82 224.79 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acb056)
     (property "Reference" "C33" (id 0) (at 213.741 223.6216 0)
@@ -2215,7 +2215,7 @@
     (pin "2" (uuid af49318e-88f4-45de-92e0-89cce36323dd))
   )
 
-  (symbol (lib_id "Device:R") (at 234.95 252.73 0)
+  (symbol (lib_id "Device:R") (at 234.95 252.73 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acfee8)
     (property "Reference" "R75" (id 0) (at 236.728 251.5616 0)
@@ -2234,7 +2234,7 @@
     (pin "2" (uuid b511aef1-3b57-41b2-9d41-14185bab7b1b))
   )
 
-  (symbol (lib_id "power:GND") (at 248.92 260.35 0)
+  (symbol (lib_id "power:GND") (at 248.92 260.35 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acfeee)
     (property "Reference" "#PWR0124" (id 0) (at 248.92 266.7 0)
@@ -2250,7 +2250,7 @@
     (pin "1" (uuid 70ccd035-fb5c-4f3d-8667-2d47e2a52672))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 246.38 241.3 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 246.38 241.3 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acff0b)
     (property "Reference" "Q29" (id 0) (at 251.5616 240.1316 0)
@@ -2270,7 +2270,7 @@
     (pin "3" (uuid cdbe998f-8022-49e9-ac4f-34ba90f7ab0f))
   )
 
-  (symbol (lib_id "Device:C") (at 224.79 252.73 0)
+  (symbol (lib_id "Device:C") (at 224.79 252.73 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061acff11)
     (property "Reference" "C37" (id 0) (at 227.711 251.5616 0)
@@ -2289,7 +2289,7 @@
     (pin "2" (uuid db3e683f-a96f-411c-90e4-6af1eeca9a00))
   )
 
-  (symbol (lib_id "Device:R") (at 78.74 345.44 0)
+  (symbol (lib_id "Device:R") (at 78.74 345.44 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ad5ffe)
     (property "Reference" "R69" (id 0) (at 80.518 344.2716 0)
@@ -2308,7 +2308,7 @@
     (pin "2" (uuid 0c2f3eaf-b3e7-4140-8945-a10b3c90c28a))
   )
 
-  (symbol (lib_id "power:GND") (at 92.71 353.06 0)
+  (symbol (lib_id "power:GND") (at 92.71 353.06 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ad6004)
     (property "Reference" "#PWR0118" (id 0) (at 92.71 359.41 0)
@@ -2324,7 +2324,7 @@
     (pin "1" (uuid a01755df-86c4-4a62-95cc-ecf2809c8a1a))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 90.17 334.01 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 90.17 334.01 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ad6021)
     (property "Reference" "Q26" (id 0) (at 95.3516 332.8416 0)
@@ -2344,7 +2344,7 @@
     (pin "3" (uuid 070fa47b-0aa9-4b79-86e0-7090f7c8877f))
   )
 
-  (symbol (lib_id "Device:C") (at 68.58 345.44 0)
+  (symbol (lib_id "Device:C") (at 68.58 345.44 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ad6027)
     (property "Reference" "C34" (id 0) (at 71.501 344.2716 0)
@@ -2363,7 +2363,7 @@
     (pin "2" (uuid 51ef263c-4d2a-43a4-bbab-8084a7574d0a))
   )
 
-  (symbol (lib_id "Device:R") (at 182.88 355.6 0)
+  (symbol (lib_id "Device:R") (at 182.88 355.6 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061adb4c1)
     (property "Reference" "R73" (id 0) (at 184.658 354.4316 0)
@@ -2382,7 +2382,7 @@
     (pin "2" (uuid 69e65d6a-3cdc-4251-8299-f83e84f85ca6))
   )
 
-  (symbol (lib_id "power:GND") (at 196.85 363.22 0)
+  (symbol (lib_id "power:GND") (at 196.85 363.22 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061adb4c7)
     (property "Reference" "#PWR0120" (id 0) (at 196.85 369.57 0)
@@ -2398,7 +2398,7 @@
     (pin "1" (uuid 53b720a2-c33b-4858-b4ed-b9c720f74386))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 194.31 344.17 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 194.31 344.17 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061adb4e4)
     (property "Reference" "Q27" (id 0) (at 199.4916 343.0016 0)
@@ -2418,7 +2418,7 @@
     (pin "3" (uuid 553c46e0-0346-4dd6-9c1a-125bd21572fc))
   )
 
-  (symbol (lib_id "Device:C") (at 172.72 355.6 0)
+  (symbol (lib_id "Device:C") (at 172.72 355.6 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061adb4ea)
     (property "Reference" "C35" (id 0) (at 175.641 354.4316 0)
@@ -2437,7 +2437,7 @@
     (pin "2" (uuid 85a3fc1d-adf6-4c23-b50b-560ca519eefc))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 71.12 67.31 0)
+  (symbol (lib_id "Diode:1N4007") (at 71.12 67.31 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061cd23f7)
     (property "Reference" "D5" (id 0) (at 71.12 61.7982 0))
@@ -2452,7 +2452,7 @@
     (pin "2" (uuid 56ebfdd4-e028-4450-8f52-6a8c87e57381))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 212.09 148.59 0)
+  (symbol (lib_id "Diode:1N4007") (at 212.09 148.59 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ea5ac8)
     (property "Reference" "D22" (id 0) (at 212.09 143.0782 0))
@@ -2467,7 +2467,7 @@
     (pin "2" (uuid d78d573e-cde6-4a68-a2b9-97967007fbe8))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 226.06 176.53 0)
+  (symbol (lib_id "Diode:1N4007") (at 226.06 176.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ea9e92)
     (property "Reference" "D23" (id 0) (at 226.06 171.0182 0))
@@ -2482,7 +2482,7 @@
     (pin "2" (uuid f89cbc5d-058a-4022-9eff-3a1c1cf5e29f))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 71.12 110.49 0)
+  (symbol (lib_id "Diode:1N4007") (at 71.12 110.49 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061eadf2a)
     (property "Reference" "D17" (id 0) (at 71.12 104.9782 0))
@@ -2497,7 +2497,7 @@
     (pin "2" (uuid 2f0a0665-da74-4ab7-9842-e4fbc7b102c6))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 238.76 204.47 0)
+  (symbol (lib_id "Diode:1N4007") (at 238.76 204.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061eb2545)
     (property "Reference" "D24" (id 0) (at 238.76 198.9582 0))
@@ -2512,7 +2512,7 @@
     (pin "2" (uuid 1e3ac481-5d63-4163-917d-f803070592b6))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 71.12 151.13 0)
+  (symbol (lib_id "Diode:1N4007") (at 71.12 151.13 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061eb8200)
     (property "Reference" "D18" (id 0) (at 71.12 145.6182 0))
@@ -2527,7 +2527,7 @@
     (pin "2" (uuid 9bb33d73-8bf9-4d7d-88e5-58026d5dbe32))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 71.12 194.31 0)
+  (symbol (lib_id "Diode:1N4007") (at 71.12 194.31 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ebc9a3)
     (property "Reference" "D19" (id 0) (at 71.12 188.7982 0))
@@ -2542,7 +2542,7 @@
     (pin "2" (uuid dad4cab0-d748-47df-beae-8248099cf685))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 96.52 325.12 0)
+  (symbol (lib_id "Diode:1N4007") (at 96.52 325.12 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ec0ab2)
     (property "Reference" "D20" (id 0) (at 96.52 319.6082 0))
@@ -2557,7 +2557,7 @@
     (pin "2" (uuid 525f0916-2ee1-450e-8c29-19d8b0c4c6de))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 200.66 335.28 0)
+  (symbol (lib_id "Diode:1N4007") (at 200.66 335.28 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ec5241)
     (property "Reference" "D21" (id 0) (at 200.66 329.7682 0))
@@ -2572,7 +2572,7 @@
     (pin "2" (uuid 0bc865a5-b2f9-4250-aa9c-7cde34db911e))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 252.73 232.41 0)
+  (symbol (lib_id "Diode:1N4007") (at 252.73 232.41 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ec954f)
     (property "Reference" "D25" (id 0) (at 252.73 226.8982 0))
@@ -2634,7 +2634,7 @@
     (pin "9" (uuid deb52071-5967-4bea-abd3-18ec89d3a79e))
   )
 
-  (symbol (lib_id "power:+5V") (at 125.73 48.26 0)
+  (symbol (lib_id "power:+5V") (at 125.73 48.26 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061f8e3b8)
     (property "Reference" "#PWR0165" (id 0) (at 125.73 52.07 0)
@@ -2650,7 +2650,7 @@
     (pin "1" (uuid 25545c85-5f3e-45cb-8a45-5d4689dfa3b1))
   )
 
-  (symbol (lib_id "power:+5V") (at 133.35 48.26 0)
+  (symbol (lib_id "power:+5V") (at 133.35 48.26 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061f93092)
     (property "Reference" "#PWR0166" (id 0) (at 133.35 52.07 0)
@@ -2666,7 +2666,7 @@
     (pin "1" (uuid de2143e8-0cbc-45f0-91db-4f2939d3f420))
   )
 
-  (symbol (lib_id "power:+5V") (at 140.97 48.26 0)
+  (symbol (lib_id "power:+5V") (at 140.97 48.26 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061f97c52)
     (property "Reference" "#PWR0167" (id 0) (at 140.97 52.07 0)
@@ -2682,7 +2682,7 @@
     (pin "1" (uuid 83dd1bc7-b910-4950-8b55-83ef9534c5cc))
   )
 
-  (symbol (lib_id "power:+5V") (at 148.59 48.26 0)
+  (symbol (lib_id "power:+5V") (at 148.59 48.26 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061f9c9be)
     (property "Reference" "#PWR0168" (id 0) (at 148.59 52.07 0)
@@ -2698,7 +2698,7 @@
     (pin "1" (uuid 4f504131-6115-4359-912b-f35e744326e7))
   )
 
-  (symbol (lib_id "Device:R") (at 236.22 55.88 0)
+  (symbol (lib_id "Device:R") (at 236.22 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009e96)
     (property "Reference" "R129" (id 0) (at 237.998 54.7116 0)
@@ -2717,7 +2717,7 @@
     (pin "2" (uuid 96c0baa6-1230-465a-a805-8781fecab2ca))
   )
 
-  (symbol (lib_id "Device:R") (at 243.84 55.88 0)
+  (symbol (lib_id "Device:R") (at 243.84 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009e9c)
     (property "Reference" "R131" (id 0) (at 245.618 54.7116 0)
@@ -2736,7 +2736,7 @@
     (pin "2" (uuid 2c2edfd1-0910-4683-9b11-324fb21e0d16))
   )
 
-  (symbol (lib_id "Device:R") (at 228.6 55.88 0)
+  (symbol (lib_id "Device:R") (at 228.6 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009ea2)
     (property "Reference" "R128" (id 0) (at 230.378 54.7116 0)
@@ -2755,7 +2755,7 @@
     (pin "2" (uuid 8388e18f-b7db-49be-b831-3e2eae6fc144))
   )
 
-  (symbol (lib_id "Device:R") (at 220.98 55.88 0)
+  (symbol (lib_id "Device:R") (at 220.98 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009ea8)
     (property "Reference" "R127" (id 0) (at 222.758 54.7116 0)
@@ -2774,7 +2774,7 @@
     (pin "2" (uuid 0f7f5736-73d3-48d8-a7db-d81cc6252c7d))
   )
 
-  (symbol (lib_id "power:+5V") (at 220.98 45.72 0)
+  (symbol (lib_id "power:+5V") (at 220.98 45.72 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009eae)
     (property "Reference" "#PWR0169" (id 0) (at 220.98 49.53 0)
@@ -2790,7 +2790,7 @@
     (pin "1" (uuid 598483d5-163b-475c-83a1-684fb184809e))
   )
 
-  (symbol (lib_id "power:+5V") (at 228.6 45.72 0)
+  (symbol (lib_id "power:+5V") (at 228.6 45.72 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009eb4)
     (property "Reference" "#PWR0170" (id 0) (at 228.6 49.53 0)
@@ -2806,7 +2806,7 @@
     (pin "1" (uuid 166e3d52-afca-4ca8-8e3f-0e81101d8411))
   )
 
-  (symbol (lib_id "power:+5V") (at 236.22 45.72 0)
+  (symbol (lib_id "power:+5V") (at 236.22 45.72 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009eba)
     (property "Reference" "#PWR0171" (id 0) (at 236.22 49.53 0)
@@ -2822,7 +2822,7 @@
     (pin "1" (uuid 913da19f-7e83-4f3b-917c-c8dbaa1a298c))
   )
 
-  (symbol (lib_id "power:+5V") (at 243.84 45.72 0)
+  (symbol (lib_id "power:+5V") (at 243.84 45.72 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062009ec0)
     (property "Reference" "#PWR0172" (id 0) (at 243.84 49.53 0)
@@ -2838,7 +2838,7 @@
     (pin "1" (uuid 14277f09-5828-4bef-a55b-0a577f13ec6b))
   )
 
-  (symbol (lib_id "Device:R") (at 281.94 139.7 0)
+  (symbol (lib_id "Device:R") (at 281.94 139.7 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0a4)
     (property "Reference" "R134" (id 0) (at 283.718 138.5316 0)
@@ -2857,7 +2857,7 @@
     (pin "2" (uuid ae0bf007-2c9d-4a73-b3d0-8e0ae12d22c9))
   )
 
-  (symbol (lib_id "Device:R") (at 289.56 139.7 0)
+  (symbol (lib_id "Device:R") (at 289.56 139.7 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0aa)
     (property "Reference" "R135" (id 0) (at 291.338 138.5316 0)
@@ -2876,7 +2876,7 @@
     (pin "2" (uuid 203d76d0-1052-46ae-a7a6-f8259e09d159))
   )
 
-  (symbol (lib_id "Device:R") (at 274.32 139.7 0)
+  (symbol (lib_id "Device:R") (at 274.32 139.7 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0b1)
     (property "Reference" "R133" (id 0) (at 276.098 138.5316 0)
@@ -2895,7 +2895,7 @@
     (pin "2" (uuid c7ff192a-cc63-4eb7-9ae1-ff75956be99c))
   )
 
-  (symbol (lib_id "Device:R") (at 266.7 139.7 0)
+  (symbol (lib_id "Device:R") (at 266.7 139.7 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0b8)
     (property "Reference" "R132" (id 0) (at 268.478 138.5316 0)
@@ -2961,7 +2961,7 @@
     (pin "9" (uuid 9622ecc9-2280-45ce-be8b-defb56bc3602))
   )
 
-  (symbol (lib_id "power:+5V") (at 266.7 129.54 0)
+  (symbol (lib_id "power:+5V") (at 266.7 129.54 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0d5)
     (property "Reference" "#PWR0173" (id 0) (at 266.7 133.35 0)
@@ -2977,7 +2977,7 @@
     (pin "1" (uuid f9ea3f1e-bbbe-48cd-9eca-cab2e35eed2a))
   )
 
-  (symbol (lib_id "power:+5V") (at 274.32 129.54 0)
+  (symbol (lib_id "power:+5V") (at 274.32 129.54 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0db)
     (property "Reference" "#PWR0174" (id 0) (at 274.32 133.35 0)
@@ -2993,7 +2993,7 @@
     (pin "1" (uuid 8dca231a-7a3b-4038-8ee7-0c872c0c7cc9))
   )
 
-  (symbol (lib_id "power:+5V") (at 281.94 129.54 0)
+  (symbol (lib_id "power:+5V") (at 281.94 129.54 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0e1)
     (property "Reference" "#PWR0175" (id 0) (at 281.94 133.35 0)
@@ -3009,7 +3009,7 @@
     (pin "1" (uuid 1501be80-87ba-4fa4-8cfb-0d8f8fba6aec))
   )
 
-  (symbol (lib_id "power:+5V") (at 289.56 129.54 0)
+  (symbol (lib_id "power:+5V") (at 289.56 129.54 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0e7)
     (property "Reference" "#PWR0176" (id 0) (at 289.56 133.35 0)
@@ -3025,7 +3025,7 @@
     (pin "1" (uuid 97da1807-7c85-4cae-87a9-d0983327c4f5))
   )
 
-  (symbol (lib_id "Device:R") (at 377.19 137.16 0)
+  (symbol (lib_id "Device:R") (at 377.19 137.16 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f0fd)
     (property "Reference" "R138" (id 0) (at 378.968 135.9916 0)
@@ -3044,7 +3044,7 @@
     (pin "2" (uuid ca4119e7-0ccd-4468-af69-690a2633ead6))
   )
 
-  (symbol (lib_id "Device:R") (at 384.81 137.16 0)
+  (symbol (lib_id "Device:R") (at 384.81 137.16 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f103)
     (property "Reference" "R139" (id 0) (at 386.588 135.9916 0)
@@ -3063,7 +3063,7 @@
     (pin "2" (uuid 17282933-a81a-4b61-8ca9-db5ca090bd86))
   )
 
-  (symbol (lib_id "Device:R") (at 369.57 137.16 0)
+  (symbol (lib_id "Device:R") (at 369.57 137.16 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f109)
     (property "Reference" "R137" (id 0) (at 371.348 135.9916 0)
@@ -3082,7 +3082,7 @@
     (pin "2" (uuid a3d30bdf-c68b-4ea0-97c2-1ef75d6f7f78))
   )
 
-  (symbol (lib_id "Device:R") (at 361.95 137.16 0)
+  (symbol (lib_id "Device:R") (at 361.95 137.16 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f10f)
     (property "Reference" "R136" (id 0) (at 363.728 135.9916 0)
@@ -3101,7 +3101,7 @@
     (pin "2" (uuid d6f1af51-0e95-41dd-a8b8-9ae612c65faa))
   )
 
-  (symbol (lib_id "power:+5V") (at 361.95 127 0)
+  (symbol (lib_id "power:+5V") (at 361.95 127 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f115)
     (property "Reference" "#PWR0177" (id 0) (at 361.95 130.81 0)
@@ -3117,7 +3117,7 @@
     (pin "1" (uuid 9280e48f-bc81-469e-897a-a0d1e8f16506))
   )
 
-  (symbol (lib_id "power:+5V") (at 369.57 127 0)
+  (symbol (lib_id "power:+5V") (at 369.57 127 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f11b)
     (property "Reference" "#PWR0178" (id 0) (at 369.57 130.81 0)
@@ -3133,7 +3133,7 @@
     (pin "1" (uuid 6aadae28-7197-43a0-ada3-0c09939cd024))
   )
 
-  (symbol (lib_id "power:+5V") (at 377.19 127 0)
+  (symbol (lib_id "power:+5V") (at 377.19 127 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f121)
     (property "Reference" "#PWR0179" (id 0) (at 377.19 130.81 0)
@@ -3149,7 +3149,7 @@
     (pin "1" (uuid 11f41cfe-3fc1-4e7b-8256-ae3816fc9398))
   )
 
-  (symbol (lib_id "power:+5V") (at 384.81 127 0)
+  (symbol (lib_id "power:+5V") (at 384.81 127 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006205f127)
     (property "Reference" "#PWR0180" (id 0) (at 384.81 130.81 0)
@@ -3165,7 +3165,7 @@
     (pin "1" (uuid 449aa4fd-01df-4352-b690-80e85a4798b8))
   )
 
-  (symbol (lib_id "Device:R") (at 102.87 313.69 0)
+  (symbol (lib_id "Device:R") (at 102.87 313.69 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000622556b3)
     (property "Reference" "R124" (id 0) (at 104.648 312.5216 0)
@@ -3184,7 +3184,7 @@
     (pin "2" (uuid e163bc5e-146a-4fa5-8b35-c5afcf306ecc))
   )
 
-  (symbol (lib_id "power:+5V") (at 102.87 303.53 0)
+  (symbol (lib_id "power:+5V") (at 102.87 303.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000622556b9)
     (property "Reference" "#PWR0181" (id 0) (at 102.87 307.34 0)
@@ -3200,7 +3200,7 @@
     (pin "1" (uuid 896dca97-c39b-4601-9bf9-cd3e123f007c))
   )
 
-  (symbol (lib_id "Device:R") (at 132.08 313.69 0)
+  (symbol (lib_id "Device:R") (at 132.08 313.69 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006227114b)
     (property "Reference" "R125" (id 0) (at 133.858 312.5216 0)
@@ -3219,7 +3219,7 @@
     (pin "2" (uuid 925730e4-95c9-4c63-8650-486fa63f2212))
   )
 
-  (symbol (lib_id "power:+5V") (at 132.08 303.53 0)
+  (symbol (lib_id "power:+5V") (at 132.08 303.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062271151)
     (property "Reference" "#PWR0185" (id 0) (at 132.08 307.34 0)
@@ -3270,7 +3270,7 @@
     (pin "4" (uuid b868dcd4-3a02-4fb0-9750-dc85febd6913))
   )
 
-  (symbol (lib_id "power:GND") (at 213.36 86.36 0)
+  (symbol (lib_id "power:GND") (at 213.36 86.36 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062284ee3)
     (property "Reference" "#PWR0182" (id 0) (at 213.36 92.71 0)
@@ -3286,7 +3286,7 @@
     (pin "1" (uuid d469820a-9cb5-40d5-b8ac-bedb08233feb))
   )
 
-  (symbol (lib_id "power:GND") (at 354.33 167.64 0)
+  (symbol (lib_id "power:GND") (at 354.33 167.64 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006228de96)
     (property "Reference" "#PWR0183" (id 0) (at 354.33 173.99 0)
@@ -3302,7 +3302,7 @@
     (pin "1" (uuid 26551ff6-d2b6-499a-9b1f-76cc044dd976))
   )
 
-  (symbol (lib_id "power:GND") (at 129.54 330.2 0)
+  (symbol (lib_id "power:GND") (at 129.54 330.2 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000622aa02e)
     (property "Reference" "#PWR0184" (id 0) (at 129.54 336.55 0)
@@ -3318,7 +3318,7 @@
     (pin "1" (uuid 407373e5-e8fc-447e-a621-ad297aea2948))
   )
 
-  (symbol (lib_id "Device:R") (at 207.01 323.85 0)
+  (symbol (lib_id "Device:R") (at 207.01 323.85 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000623551c7)
     (property "Reference" "R126" (id 0) (at 208.788 322.6816 0)
@@ -3337,7 +3337,7 @@
     (pin "2" (uuid f6fc3347-9bff-480d-8fe1-a8ed7bfe4ecb))
   )
 
-  (symbol (lib_id "power:+5V") (at 207.01 313.69 0)
+  (symbol (lib_id "power:+5V") (at 207.01 313.69 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000623551cd)
     (property "Reference" "#PWR0186" (id 0) (at 207.01 317.5 0)
@@ -3388,7 +3388,7 @@
     (pin "4" (uuid 8657ebd4-6149-4492-bac5-2ce6f77c5b3b))
   )
 
-  (symbol (lib_id "power:GND") (at 233.68 340.36 0)
+  (symbol (lib_id "power:GND") (at 233.68 340.36 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000623551e0)
     (property "Reference" "#PWR0187" (id 0) (at 233.68 346.71 0)
@@ -3404,7 +3404,7 @@
     (pin "1" (uuid 733d9787-fb36-4c4f-beb1-0bd5f86157ec))
   )
 
-  (symbol (lib_id "power:+5V") (at 236.22 313.69 0)
+  (symbol (lib_id "power:+5V") (at 236.22 313.69 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000623551e8)
     (property "Reference" "#PWR0188" (id 0) (at 236.22 317.5 0)
@@ -3420,7 +3420,7 @@
     (pin "1" (uuid 1a3dca5e-9f4a-44a8-b3e2-f1721faa1094))
   )
 
-  (symbol (lib_id "Device:R") (at 236.22 323.85 0)
+  (symbol (lib_id "Device:R") (at 236.22 323.85 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000623551ee)
     (property "Reference" "R130" (id 0) (at 237.998 322.6816 0)

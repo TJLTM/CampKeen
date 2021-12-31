@@ -562,7 +562,7 @@
     (uuid e254fbf4-1596-4274-a2c3-cd2c87e0c836)
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 170.18 85.09 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 170.18 85.09 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94b90)
     (property "Reference" "Q55" (id 0) (at 181.102 81.3816 0)
@@ -600,7 +600,7 @@
     (pin "3" (uuid c1ae6448-e348-46fd-9029-51d233ebdaed))
   )
 
-  (symbol (lib_id "Device:R") (at 135.89 118.11 0)
+  (symbol (lib_id "Device:R") (at 135.89 118.11 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94b96)
     (property "Reference" "R115" (id 0) (at 137.668 116.9416 0)
@@ -619,7 +619,7 @@
     (pin "2" (uuid a42a267c-2977-47f2-a013-98a3171ee80a))
   )
 
-  (symbol (lib_id "power:GND") (at 149.86 125.73 0)
+  (symbol (lib_id "power:GND") (at 149.86 125.73 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94b9c)
     (property "Reference" "#PWR0149" (id 0) (at 149.86 132.08 0)
@@ -635,7 +635,7 @@
     (pin "1" (uuid 74a3d13a-075d-4844-a897-5f4193592b0f))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 147.32 106.68 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 147.32 106.68 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94ba7)
     (property "Reference" "Q54" (id 0) (at 152.5016 105.5116 0)
@@ -655,7 +655,7 @@
     (pin "3" (uuid 2e4db022-da2e-4605-9a39-ffcb19da3b9c))
   )
 
-  (symbol (lib_id "Device:R") (at 149.86 78.74 0)
+  (symbol (lib_id "Device:R") (at 149.86 78.74 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94bae)
     (property "Reference" "R116" (id 0) (at 151.638 77.5716 0)
@@ -674,7 +674,7 @@
     (pin "2" (uuid 131eb33e-ee22-4373-9714-7c200e6113e2))
   )
 
-  (symbol (lib_id "power:+5V") (at 162.56 53.34 0)
+  (symbol (lib_id "power:+5V") (at 162.56 53.34 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94bd7)
     (property "Reference" "#PWR0150" (id 0) (at 162.56 57.15 0)
@@ -690,7 +690,7 @@
     (pin "1" (uuid 4491de66-df2d-41c6-bd50-4eef980ed9f5))
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 232.41 85.09 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 232.41 85.09 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94be3)
     (property "Reference" "Q57" (id 0) (at 243.332 81.3816 0)
@@ -728,7 +728,7 @@
     (pin "3" (uuid 1b08b5ee-7349-49ed-92af-dd5ac6cbea49))
   )
 
-  (symbol (lib_id "Device:R") (at 198.12 118.11 0)
+  (symbol (lib_id "Device:R") (at 198.12 118.11 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94be9)
     (property "Reference" "R118" (id 0) (at 199.898 116.9416 0)
@@ -747,7 +747,7 @@
     (pin "2" (uuid e6aeae6c-cb32-4163-afe2-60a206f080f2))
   )
 
-  (symbol (lib_id "power:GND") (at 212.09 125.73 0)
+  (symbol (lib_id "power:GND") (at 212.09 125.73 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94bef)
     (property "Reference" "#PWR0151" (id 0) (at 212.09 132.08 0)
@@ -763,7 +763,7 @@
     (pin "1" (uuid 2aab71fb-a5ac-4c3e-9d5c-6c5d52c6e0d2))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 209.55 106.68 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 209.55 106.68 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94bfa)
     (property "Reference" "Q56" (id 0) (at 214.7316 105.5116 0)
@@ -783,7 +783,7 @@
     (pin "3" (uuid d415987f-c06d-4f1e-ba86-9fa63d01bdbb))
   )
 
-  (symbol (lib_id "Device:R") (at 212.09 78.74 0)
+  (symbol (lib_id "Device:R") (at 212.09 78.74 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94c01)
     (property "Reference" "R119" (id 0) (at 213.868 77.5716 0)
@@ -802,7 +802,7 @@
     (pin "2" (uuid 1357f14a-f489-446d-a560-a9cde8958077))
   )
 
-  (symbol (lib_id "power:+5V") (at 224.79 53.34 0)
+  (symbol (lib_id "power:+5V") (at 224.79 53.34 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061a94c2a)
     (property "Reference" "#PWR0152" (id 0) (at 224.79 57.15 0)

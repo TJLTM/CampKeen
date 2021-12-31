@@ -1043,7 +1043,7 @@
     (uuid f508a62c-3c21-46de-b321-51b8800cff11)
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 72.39 140.97 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 72.39 140.97 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f35)
     (property "Reference" "Q45" (id 0) (at 83.312 137.2616 0)
@@ -1081,7 +1081,7 @@
     (pin "3" (uuid 2d4c5ccc-3283-4fb8-9976-d63cd18c2b17))
   )
 
-  (symbol (lib_id "Device:R") (at 38.1 173.99 0)
+  (symbol (lib_id "Device:R") (at 38.1 173.99 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f3b)
     (property "Reference" "R98" (id 0) (at 39.878 172.8216 0)
@@ -1100,7 +1100,7 @@
     (pin "2" (uuid edc78ce3-fe13-43d9-80b6-4682ddafe4ed))
   )
 
-  (symbol (lib_id "power:GND") (at 52.07 181.61 0)
+  (symbol (lib_id "power:GND") (at 52.07 181.61 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f41)
     (property "Reference" "#PWR0138" (id 0) (at 52.07 187.96 0)
@@ -1116,7 +1116,7 @@
     (pin "1" (uuid d7b4c665-d80f-4490-916c-3c2327682a3c))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 49.53 162.56 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 49.53 162.56 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f4c)
     (property "Reference" "Q43" (id 0) (at 54.7116 161.3916 0)
@@ -1136,7 +1136,7 @@
     (pin "3" (uuid 992d8d26-507a-4fc0-9439-b53692caa65e))
   )
 
-  (symbol (lib_id "Device:R") (at 52.07 134.62 0)
+  (symbol (lib_id "Device:R") (at 52.07 134.62 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f53)
     (property "Reference" "R101" (id 0) (at 53.848 133.4516 0)
@@ -1155,7 +1155,7 @@
     (pin "2" (uuid aedae82a-4520-4091-a372-08dc14b42009))
   )
 
-  (symbol (lib_id "Device:R") (at 52.07 147.32 0)
+  (symbol (lib_id "Device:R") (at 52.07 147.32 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f59)
     (property "Reference" "R102" (id 0) (at 53.848 146.1516 0)
@@ -1174,7 +1174,7 @@
     (pin "2" (uuid f5205ac6-7c4c-4132-9e10-e1f8388c0f2d))
   )
 
-  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 64.77 120.65 90) (mirror x)
+  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 64.77 120.65 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f65)
     (property "Reference" "Z11" (id 0) (at 68.072 127.1016 90)
@@ -1211,7 +1211,7 @@
     (pin "2" (uuid 2790e7cd-49bd-4f62-a6a8-a71bdc4aea6a))
   )
 
-  (symbol (lib_id "power:+12V") (at 64.77 109.22 0) (mirror y)
+  (symbol (lib_id "power:+12V") (at 64.77 109.22 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061e49f7c)
     (property "Reference" "#PWR0140" (id 0) (at 64.77 113.03 0)
@@ -1227,7 +1227,7 @@
     (pin "1" (uuid 70e001af-39da-478d-ac24-e75fb869da20))
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 115.57 55.88 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 115.57 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337b6)
     (property "Reference" "Q47" (id 0) (at 126.492 52.1716 0)
@@ -1265,7 +1265,7 @@
     (pin "3" (uuid 095c4326-5a8c-4706-b087-3f02d0e89ed3))
   )
 
-  (symbol (lib_id "Device:R") (at 81.28 88.9 0)
+  (symbol (lib_id "Device:R") (at 81.28 88.9 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337bc)
     (property "Reference" "R103" (id 0) (at 83.058 87.7316 0)
@@ -1284,7 +1284,7 @@
     (pin "2" (uuid 404fd092-5485-4461-ae7f-b429f50cdf46))
   )
 
-  (symbol (lib_id "power:GND") (at 95.25 96.52 0)
+  (symbol (lib_id "power:GND") (at 95.25 96.52 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337c2)
     (property "Reference" "#PWR0141" (id 0) (at 95.25 102.87 0)
@@ -1300,7 +1300,7 @@
     (pin "1" (uuid 9e31d86f-c13f-4d3b-a422-fbbe8142f54d))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 92.71 77.47 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 92.71 77.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337cd)
     (property "Reference" "Q46" (id 0) (at 97.8916 76.3016 0)
@@ -1320,7 +1320,7 @@
     (pin "3" (uuid 3e8324ed-75b7-421d-b71b-b1c467c5498a))
   )
 
-  (symbol (lib_id "Device:R") (at 95.25 49.53 0)
+  (symbol (lib_id "Device:R") (at 95.25 49.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337d4)
     (property "Reference" "R104" (id 0) (at 97.028 48.3616 0)
@@ -1339,7 +1339,7 @@
     (pin "2" (uuid 08448346-4562-468e-80b2-dbc6b589ec0c))
   )
 
-  (symbol (lib_id "Device:R") (at 95.25 62.23 0)
+  (symbol (lib_id "Device:R") (at 95.25 62.23 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337da)
     (property "Reference" "R105" (id 0) (at 97.028 61.0616 0)
@@ -1358,7 +1358,7 @@
     (pin "2" (uuid efd48842-0731-486c-aa52-d3a438a77b1b))
   )
 
-  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 107.95 35.56 90) (mirror x)
+  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 107.95 35.56 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337e6)
     (property "Reference" "Z12" (id 0) (at 111.252 42.0116 90)
@@ -1395,7 +1395,7 @@
     (pin "2" (uuid 8831260c-b907-4fcd-8e17-88b31ed37154))
   )
 
-  (symbol (lib_id "power:+12V") (at 107.95 24.13 0) (mirror y)
+  (symbol (lib_id "power:+12V") (at 107.95 24.13 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c337fd)
     (property "Reference" "#PWR0142" (id 0) (at 107.95 27.94 0)
@@ -1411,7 +1411,7 @@
     (pin "1" (uuid 28f8a272-ad05-49f0-b9f0-48cb70ea1d36))
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 160.02 55.88 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 160.02 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b2f)
     (property "Reference" "Q49" (id 0) (at 170.942 52.1716 0)
@@ -1449,7 +1449,7 @@
     (pin "3" (uuid d0ed6de3-721e-407c-9bf8-745586787dd0))
   )
 
-  (symbol (lib_id "Device:R") (at 125.73 88.9 0)
+  (symbol (lib_id "Device:R") (at 125.73 88.9 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b35)
     (property "Reference" "R106" (id 0) (at 127.508 87.7316 0)
@@ -1468,7 +1468,7 @@
     (pin "2" (uuid c2287926-e428-4d63-a535-ec73a41b4900))
   )
 
-  (symbol (lib_id "power:GND") (at 139.7 96.52 0)
+  (symbol (lib_id "power:GND") (at 139.7 96.52 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b3b)
     (property "Reference" "#PWR0143" (id 0) (at 139.7 102.87 0)
@@ -1484,7 +1484,7 @@
     (pin "1" (uuid b6f54edb-84a0-4147-b9bd-5198d6bc18af))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 137.16 77.47 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 137.16 77.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b46)
     (property "Reference" "Q48" (id 0) (at 142.3416 76.3016 0)
@@ -1504,7 +1504,7 @@
     (pin "3" (uuid d1fea838-030d-4a43-b0a2-0be620d60b63))
   )
 
-  (symbol (lib_id "Device:R") (at 139.7 49.53 0)
+  (symbol (lib_id "Device:R") (at 139.7 49.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b4d)
     (property "Reference" "R107" (id 0) (at 141.478 48.3616 0)
@@ -1523,7 +1523,7 @@
     (pin "2" (uuid ad3ae0e8-cd1f-4c18-bad2-924f72c1ef66))
   )
 
-  (symbol (lib_id "Device:R") (at 139.7 62.23 0)
+  (symbol (lib_id "Device:R") (at 139.7 62.23 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b53)
     (property "Reference" "R108" (id 0) (at 141.478 61.0616 0)
@@ -1542,7 +1542,7 @@
     (pin "2" (uuid 590ed320-c484-4008-b597-4b22516bff0a))
   )
 
-  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 152.4 35.56 90) (mirror x)
+  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 152.4 35.56 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b5f)
     (property "Reference" "Z13" (id 0) (at 155.702 42.0116 90)
@@ -1579,7 +1579,7 @@
     (pin "2" (uuid 6961912d-f265-4ae0-ba8a-5783043466ed))
   )
 
-  (symbol (lib_id "power:+12V") (at 152.4 24.13 0) (mirror y)
+  (symbol (lib_id "power:+12V") (at 152.4 24.13 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c37b76)
     (property "Reference" "#PWR0144" (id 0) (at 152.4 27.94 0)
@@ -1595,7 +1595,7 @@
     (pin "1" (uuid 3db789a2-09bf-4eb9-a8d2-b664a5771886))
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 207.01 55.88 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 207.01 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e865)
     (property "Reference" "Q51" (id 0) (at 217.932 52.1716 0)
@@ -1633,7 +1633,7 @@
     (pin "3" (uuid 3821344f-e4e6-4c2e-89fb-7b200b8646a2))
   )
 
-  (symbol (lib_id "Device:R") (at 172.72 88.9 0)
+  (symbol (lib_id "Device:R") (at 172.72 88.9 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e86b)
     (property "Reference" "R109" (id 0) (at 174.498 87.7316 0)
@@ -1652,7 +1652,7 @@
     (pin "2" (uuid 7db86979-a425-451d-9d12-de5254c5fd31))
   )
 
-  (symbol (lib_id "power:GND") (at 186.69 96.52 0)
+  (symbol (lib_id "power:GND") (at 186.69 96.52 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e871)
     (property "Reference" "#PWR0145" (id 0) (at 186.69 102.87 0)
@@ -1668,7 +1668,7 @@
     (pin "1" (uuid fce90309-b0c6-4be2-a604-cfad1cb4d249))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 184.15 77.47 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 184.15 77.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e87c)
     (property "Reference" "Q50" (id 0) (at 189.3316 76.3016 0)
@@ -1688,7 +1688,7 @@
     (pin "3" (uuid 274af74c-b89a-496b-94cc-93a25fa75f32))
   )
 
-  (symbol (lib_id "Device:R") (at 186.69 49.53 0)
+  (symbol (lib_id "Device:R") (at 186.69 49.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e883)
     (property "Reference" "R110" (id 0) (at 188.468 48.3616 0)
@@ -1707,7 +1707,7 @@
     (pin "2" (uuid dbf868ea-9434-48d0-aa76-bef7f902a821))
   )
 
-  (symbol (lib_id "Device:R") (at 186.69 62.23 0)
+  (symbol (lib_id "Device:R") (at 186.69 62.23 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e889)
     (property "Reference" "R111" (id 0) (at 188.468 61.0616 0)
@@ -1726,7 +1726,7 @@
     (pin "2" (uuid 3b9e388a-be7a-4af7-a499-bceef79e3ca6))
   )
 
-  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 199.39 35.56 90) (mirror x)
+  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 199.39 35.56 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e895)
     (property "Reference" "Z14" (id 0) (at 202.692 42.0116 90)
@@ -1763,7 +1763,7 @@
     (pin "2" (uuid a1a60849-3103-49fd-bd33-f30d82f4dc7c))
   )
 
-  (symbol (lib_id "power:+12V") (at 199.39 24.13 0) (mirror y)
+  (symbol (lib_id "power:+12V") (at 199.39 24.13 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000062c3e8ac)
     (property "Reference" "#PWR0146" (id 0) (at 199.39 27.94 0)
@@ -1779,7 +1779,7 @@
     (pin "1" (uuid 1b71af5d-275e-4c37-b773-4ec0ee28f985))
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 66.04 55.88 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 66.04 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f66344)
     (property "Reference" "Q44" (id 0) (at 76.962 52.1716 0)
@@ -1817,7 +1817,7 @@
     (pin "3" (uuid 702ddf2b-1fe0-4d5e-996b-1c1b30f5903d))
   )
 
-  (symbol (lib_id "Device:R") (at 31.75 88.9 0)
+  (symbol (lib_id "Device:R") (at 31.75 88.9 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f6634a)
     (property "Reference" "R97" (id 0) (at 33.528 87.7316 0)
@@ -1836,7 +1836,7 @@
     (pin "2" (uuid 34d0cae0-308b-45e2-8a7c-1d594965afc3))
   )
 
-  (symbol (lib_id "power:GND") (at 45.72 96.52 0)
+  (symbol (lib_id "power:GND") (at 45.72 96.52 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f66350)
     (property "Reference" "#PWR0137" (id 0) (at 45.72 102.87 0)
@@ -1852,7 +1852,7 @@
     (pin "1" (uuid 4755c3da-4b1d-4254-9ac4-670ad42357ac))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 43.18 77.47 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 43.18 77.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f6635b)
     (property "Reference" "Q42" (id 0) (at 48.3616 76.3016 0)
@@ -1872,7 +1872,7 @@
     (pin "3" (uuid 18fae36d-0022-4cd3-a697-522a84454a34))
   )
 
-  (symbol (lib_id "Device:R") (at 45.72 49.53 0)
+  (symbol (lib_id "Device:R") (at 45.72 49.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f66362)
     (property "Reference" "R99" (id 0) (at 47.498 48.3616 0)
@@ -1891,7 +1891,7 @@
     (pin "2" (uuid c0ae5ae6-b376-487e-b3db-ec764f2df85f))
   )
 
-  (symbol (lib_id "Device:R") (at 45.72 62.23 0)
+  (symbol (lib_id "Device:R") (at 45.72 62.23 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f66368)
     (property "Reference" "R100" (id 0) (at 47.498 61.0616 0)
@@ -1910,7 +1910,7 @@
     (pin "2" (uuid d6a0720b-f931-45b4-b09d-7af773a96416))
   )
 
-  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 58.42 35.56 90) (mirror x)
+  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 58.42 35.56 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f66374)
     (property "Reference" "Z10" (id 0) (at 61.722 42.0116 90)
@@ -1947,7 +1947,7 @@
     (pin "2" (uuid e62a22a6-746e-4deb-9460-0ebafa42a282))
   )
 
-  (symbol (lib_id "power:+12V") (at 58.42 24.13 0) (mirror y)
+  (symbol (lib_id "power:+12V") (at 58.42 24.13 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000063f664bf)
     (property "Reference" "#PWR0139" (id 0) (at 58.42 27.94 0)
@@ -1963,7 +1963,7 @@
     (pin "1" (uuid 0f5d9312-7212-4a66-b492-ab013ae09308))
   )
 
-  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 254 55.88 0)
+  (symbol (lib_id "SamacSys_Parts:IRF9Z34NPBF") (at 254 55.88 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97ae)
     (property "Reference" "Q53" (id 0) (at 264.922 52.1716 0)
@@ -2001,7 +2001,7 @@
     (pin "3" (uuid 7b084592-fba5-4ea6-a9fc-752acbc9a8ab))
   )
 
-  (symbol (lib_id "Device:R") (at 219.71 88.9 0)
+  (symbol (lib_id "Device:R") (at 219.71 88.9 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97b4)
     (property "Reference" "R112" (id 0) (at 221.488 87.7316 0)
@@ -2020,7 +2020,7 @@
     (pin "2" (uuid 012f6773-88f4-45db-a2fb-7155abd6c07d))
   )
 
-  (symbol (lib_id "power:GND") (at 233.68 96.52 0)
+  (symbol (lib_id "power:GND") (at 233.68 96.52 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97ba)
     (property "Reference" "#PWR0147" (id 0) (at 233.68 102.87 0)
@@ -2036,7 +2036,7 @@
     (pin "1" (uuid 9bc9e197-e8d1-43cd-90be-2fc9fe4d4336))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 231.14 77.47 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 231.14 77.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97c5)
     (property "Reference" "Q52" (id 0) (at 236.3216 76.3016 0)
@@ -2056,7 +2056,7 @@
     (pin "3" (uuid 622bf153-de90-442a-8d92-619f9d89e9a5))
   )
 
-  (symbol (lib_id "Device:R") (at 233.68 49.53 0)
+  (symbol (lib_id "Device:R") (at 233.68 49.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97cc)
     (property "Reference" "R113" (id 0) (at 235.458 48.3616 0)
@@ -2075,7 +2075,7 @@
     (pin "2" (uuid 66393465-6990-4f0a-beb6-5a6275c5cd20))
   )
 
-  (symbol (lib_id "Device:R") (at 233.68 62.23 0)
+  (symbol (lib_id "Device:R") (at 233.68 62.23 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97d2)
     (property "Reference" "R114" (id 0) (at 235.458 61.0616 0)
@@ -2094,7 +2094,7 @@
     (pin "2" (uuid cfe2a938-6dad-4afc-903b-03bbc128585e))
   )
 
-  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 246.38 35.56 90) (mirror x)
+  (symbol (lib_id "SamacSys_Parts:BZX79C10") (at 246.38 35.56 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97de)
     (property "Reference" "Z15" (id 0) (at 249.682 42.0116 90)
@@ -2131,7 +2131,7 @@
     (pin "2" (uuid ad8672b4-670a-4620-b535-cb2f48434220))
   )
 
-  (symbol (lib_id "power:+12V") (at 246.38 24.13 0) (mirror y)
+  (symbol (lib_id "power:+12V") (at 246.38 24.13 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000642d97f5)
     (property "Reference" "#PWR0148" (id 0) (at 246.38 27.94 0)

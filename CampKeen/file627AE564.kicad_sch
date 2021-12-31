@@ -933,7 +933,7 @@
     (uuid e4d2c258-274a-4398-b6a0-528d81ed8508)
   )
 
-  (symbol (lib_id "Device:R") (at 52.07 120.65 0)
+  (symbol (lib_id "Device:R") (at 52.07 120.65 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000618f12b3)
     (property "Reference" "R55" (id 0) (at 53.848 119.4816 0)
@@ -952,7 +952,7 @@
     (pin "2" (uuid 8abb5f90-7efa-4409-beca-4606f411caa6))
   )
 
-  (symbol (lib_id "power:GND") (at 66.04 128.27 0)
+  (symbol (lib_id "power:GND") (at 66.04 128.27 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000618f12b9)
     (property "Reference" "#PWR0102" (id 0) (at 66.04 134.62 0)
@@ -968,7 +968,7 @@
     (pin "1" (uuid 5bcaabe3-a624-4d36-b368-a22c2c373754))
   )
 
-  (symbol (lib_id "Device:R") (at 204.47 68.58 0)
+  (symbol (lib_id "Device:R") (at 204.47 68.58 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000618f12c1)
     (property "Reference" "R57" (id 0) (at 206.248 67.4116 0)
@@ -987,7 +987,7 @@
     (pin "2" (uuid dceaf03d-7a49-4fe6-a385-359ffb7f02c7))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 63.5 109.22 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 63.5 109.22 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000618f12d6)
     (property "Reference" "Q18" (id 0) (at 68.6816 108.0516 0)
@@ -1007,7 +1007,7 @@
     (pin "3" (uuid 3319eb98-03d0-4092-8ca6-fc95249cc8e2))
   )
 
-  (symbol (lib_id "Device:C") (at 41.91 120.65 0)
+  (symbol (lib_id "Device:C") (at 41.91 120.65 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000618f12dc)
     (property "Reference" "C26" (id 0) (at 44.831 119.4816 0)
@@ -1090,7 +1090,7 @@
     (pin "1" (uuid 4dbf8b53-1c05-410a-8f5f-3845868a0db3))
   )
 
-  (symbol (lib_id "Device:R") (at 97.79 57.15 0)
+  (symbol (lib_id "Device:R") (at 97.79 57.15 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ca1ccb)
     (property "Reference" "R121" (id 0) (at 99.568 55.9816 0)
@@ -1125,7 +1125,7 @@
     (pin "1" (uuid 7ae12eca-c52d-4e80-b3db-68828438c4cb))
   )
 
-  (symbol (lib_id "Device:R") (at 133.35 57.15 0)
+  (symbol (lib_id "Device:R") (at 133.35 57.15 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ca47c5)
     (property "Reference" "R14" (id 0) (at 135.128 55.9816 0)
@@ -1160,7 +1160,7 @@
     (pin "1" (uuid b5c2e289-7f54-4807-a470-c6474881ca6e))
   )
 
-  (symbol (lib_id "Device:R") (at 120.65 57.15 0)
+  (symbol (lib_id "Device:R") (at 120.65 57.15 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ca664f)
     (property "Reference" "R117" (id 0) (at 122.428 55.9816 0)
@@ -1195,7 +1195,7 @@
     (pin "1" (uuid 89e63239-08a3-4f5a-b559-13e9d25b6ab8))
   )
 
-  (symbol (lib_id "Device:R") (at 109.22 57.15 0)
+  (symbol (lib_id "Device:R") (at 109.22 57.15 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061ca8277)
     (property "Reference" "R120" (id 0) (at 110.998 55.9816 0)
@@ -1277,7 +1277,7 @@
     (pin "9" (uuid ed289fcb-fc99-48e1-a06b-0e38b10f8c2a))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 66.04 87.63 90)
+  (symbol (lib_id "Diode:1N4007") (at 66.04 87.63 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061cf45ae)
     (property "Reference" "D14" (id 0) (at 60.5282 87.63 0))
@@ -1292,7 +1292,7 @@
     (pin "2" (uuid c13fd6cf-da62-4295-ba9e-91651d24b044))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 78.74 90.17 90)
+  (symbol (lib_id "Diode:1N4007") (at 78.74 90.17 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061cf45b4)
     (property "Reference" "D15" (id 0) (at 73.2282 90.17 0))
@@ -1307,7 +1307,7 @@
     (pin "2" (uuid 980f1097-47ba-4523-a8e1-9d867293b77d))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 91.44 95.25 90)
+  (symbol (lib_id "Diode:1N4007") (at 91.44 95.25 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061cf45ba)
     (property "Reference" "D16" (id 0) (at 85.9282 95.25 0))
@@ -1322,7 +1322,7 @@
     (pin "2" (uuid 97c63aad-3c60-4ec4-be3f-cc35bca03179))
   )
 
-  (symbol (lib_id "Diode:1N4007") (at 62.23 73.66 0) (mirror x)
+  (symbol (lib_id "Diode:1N4007") (at 62.23 73.66 0) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061cf45c0)
     (property "Reference" "D13" (id 0) (at 62.23 79.1718 0))
@@ -1337,7 +1337,7 @@
     (pin "2" (uuid bc181265-d5e2-4b24-8825-205950433019))
   )
 
-  (symbol (lib_id "power:GND") (at 184.15 91.44 0)
+  (symbol (lib_id "power:GND") (at 184.15 91.44 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000061d587eb)
     (property "Reference" "#PWR0164" (id 0) (at 184.15 97.79 0)
@@ -1353,7 +1353,7 @@
     (pin "1" (uuid 8a7b1238-0643-457b-b451-f90775b3e6d0))
   )
 
-  (symbol (lib_id "Device:R") (at 38.1 92.71 0)
+  (symbol (lib_id "Device:R") (at 38.1 92.71 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627b13bc)
     (property "Reference" "R51" (id 0) (at 39.878 91.5416 0)
@@ -1372,7 +1372,7 @@
     (pin "2" (uuid 48df54e3-eb6f-457c-a72f-01431bca0125))
   )
 
-  (symbol (lib_id "power:GND") (at 52.07 100.33 0)
+  (symbol (lib_id "power:GND") (at 52.07 100.33 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627b13c2)
     (property "Reference" "#PWR098" (id 0) (at 52.07 106.68 0)
@@ -1388,7 +1388,7 @@
     (pin "1" (uuid b2765cbe-29cb-4f81-bf0b-eb98d362d038))
   )
 
-  (symbol (lib_id "Device:R") (at 180.34 63.5 0)
+  (symbol (lib_id "Device:R") (at 180.34 63.5 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627b13ca)
     (property "Reference" "R53" (id 0) (at 182.118 62.3316 0)
@@ -1407,7 +1407,7 @@
     (pin "2" (uuid d9125154-9f3f-4a63-94ef-88bb51eff3ce))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 49.53 81.28 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 49.53 81.28 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627b13df)
     (property "Reference" "Q16" (id 0) (at 54.7116 80.1116 0)
@@ -1427,7 +1427,7 @@
     (pin "3" (uuid 4c34f848-bdfc-4fc2-abd9-4cbed2811a7c))
   )
 
-  (symbol (lib_id "Device:C") (at 27.94 92.71 0)
+  (symbol (lib_id "Device:C") (at 27.94 92.71 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627b13e5)
     (property "Reference" "C24" (id 0) (at 30.861 91.5416 0)
@@ -1446,7 +1446,7 @@
     (pin "2" (uuid 4f664f07-87a2-4c1b-896b-34da886aae84))
   )
 
-  (symbol (lib_id "Device:R") (at 64.77 148.59 0)
+  (symbol (lib_id "Device:R") (at 64.77 148.59 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627ba46d)
     (property "Reference" "R56" (id 0) (at 66.548 147.4216 0)
@@ -1465,7 +1465,7 @@
     (pin "2" (uuid 6c577c67-3202-4ffb-b367-ee2591d57874))
   )
 
-  (symbol (lib_id "power:GND") (at 78.74 156.21 0)
+  (symbol (lib_id "power:GND") (at 78.74 156.21 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627ba473)
     (property "Reference" "#PWR0104" (id 0) (at 78.74 162.56 0)
@@ -1481,7 +1481,7 @@
     (pin "1" (uuid d124034a-ed6c-4dc0-8bce-44fa85c97730))
   )
 
-  (symbol (lib_id "Device:R") (at 232.41 73.66 0)
+  (symbol (lib_id "Device:R") (at 232.41 73.66 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627ba47b)
     (property "Reference" "R58" (id 0) (at 234.188 72.4916 0)
@@ -1500,7 +1500,7 @@
     (pin "2" (uuid a80c6810-1da8-42c2-8461-db38ba6d930e))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 76.2 137.16 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 76.2 137.16 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627ba490)
     (property "Reference" "Q19" (id 0) (at 81.3816 135.9916 0)
@@ -1520,7 +1520,7 @@
     (pin "3" (uuid 472aebb9-8b80-46cf-958f-94af21a64ca3))
   )
 
-  (symbol (lib_id "Device:C") (at 54.61 148.59 0)
+  (symbol (lib_id "Device:C") (at 54.61 148.59 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627ba496)
     (property "Reference" "C27" (id 0) (at 57.531 147.4216 0)
@@ -1539,7 +1539,7 @@
     (pin "2" (uuid 47e2d04a-aea0-4702-a09c-191ad88a08ba))
   )
 
-  (symbol (lib_id "Device:R") (at 77.47 176.53 0)
+  (symbol (lib_id "Device:R") (at 77.47 176.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627c28ff)
     (property "Reference" "R52" (id 0) (at 79.248 175.3616 0)
@@ -1558,7 +1558,7 @@
     (pin "2" (uuid 01d282c8-300a-48bc-8604-8f0ab33a5a37))
   )
 
-  (symbol (lib_id "power:GND") (at 91.44 184.15 0)
+  (symbol (lib_id "power:GND") (at 91.44 184.15 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627c2905)
     (property "Reference" "#PWR0100" (id 0) (at 91.44 190.5 0)
@@ -1574,7 +1574,7 @@
     (pin "1" (uuid 3242c2c7-0e05-418e-84a4-832a8179ac88))
   )
 
-  (symbol (lib_id "Device:R") (at 256.54 78.74 0)
+  (symbol (lib_id "Device:R") (at 256.54 78.74 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627c290d)
     (property "Reference" "R54" (id 0) (at 258.318 77.5716 0)
@@ -1593,7 +1593,7 @@
     (pin "2" (uuid 8c2a8ff1-b890-4b38-b586-f88f4ca2e603))
   )
 
-  (symbol (lib_id "Transistor_FET:2N7000") (at 88.9 165.1 0)
+  (symbol (lib_id "Transistor_FET:2N7000") (at 88.9 165.1 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627c2922)
     (property "Reference" "Q17" (id 0) (at 94.0816 163.9316 0)
@@ -1613,7 +1613,7 @@
     (pin "3" (uuid e18efd66-a3df-4017-b3a2-fd285e4f81cd))
   )
 
-  (symbol (lib_id "Device:C") (at 67.31 176.53 0)
+  (symbol (lib_id "Device:C") (at 67.31 176.53 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-0000627c2928)
     (property "Reference" "C25" (id 0) (at 70.231 175.3616 0)
