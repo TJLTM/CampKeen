@@ -9726,38 +9726,6 @@
     (pin "1" (uuid 8c3acb6f-db84-42bf-bfb8-c2470a3a75bf))
   )
 
-  (symbol (lib_id "power:+5P") (at 105.41 322.58 0) (unit 1)
-    (in_bom yes) (on_board yes)
-    (uuid 00000000-0000-0000-0000-0000660c4928)
-    (property "Reference" "#PWR020" (id 0) (at 105.41 326.39 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5P" (id 1) (at 105.791 318.1858 0))
-    (property "Footprint" "" (id 2) (at 105.41 322.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (id 3) (at 105.41 322.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 9fca5b71-a175-42a0-9d6f-e740d5aacdd1))
-  )
-
-  (symbol (lib_id "power:+5P") (at 113.03 322.58 0) (unit 1)
-    (in_bom yes) (on_board yes)
-    (uuid 00000000-0000-0000-0000-0000661f5fdf)
-    (property "Reference" "#PWR025" (id 0) (at 113.03 326.39 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5P" (id 1) (at 113.411 318.1858 0))
-    (property "Footprint" "" (id 2) (at 113.03 322.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (id 3) (at 113.03 322.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 20e6d2d8-cc77-4536-8909-c0a4b5d338a2))
-  )
-
   (symbol (lib_id "power:+5P") (at 50.8 331.47 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000066242857)
@@ -10055,6 +10023,22 @@
     (pin "1" (uuid f518fa11-b689-442e-abad-c1225141d5a0))
   )
 
+  (symbol (lib_id "power:+5V") (at 105.41 322.58 0) (unit 1)
+    (in_bom yes) (on_board yes)
+    (uuid 690d928a-65bd-4540-8c8a-f88ba1134d88)
+    (property "Reference" "#PWR?" (id 0) (at 105.41 326.39 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (id 1) (at 105.791 318.1858 0))
+    (property "Footprint" "" (id 2) (at 105.41 322.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (id 3) (at 105.41 322.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 3a31a286-e6f4-4c52-b280-990f3b2fb393))
+  )
+
   (symbol (lib_id "Connector_Generic:Conn_01x02") (at 133.35 160.02 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 8bdc0399-6034-4083-8f09-056a91eb80d5)
@@ -10084,6 +10068,22 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 77840a95-e3fb-4fe3-b8f7-66767ee27f8d))
+  )
+
+  (symbol (lib_id "power:+5V") (at 113.03 322.58 0) (unit 1)
+    (in_bom yes) (on_board yes)
+    (uuid f0f750d5-98b5-40d1-ae9d-6417e3cf1979)
+    (property "Reference" "#PWR?" (id 0) (at 113.03 326.39 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (id 1) (at 113.411 318.1858 0))
+    (property "Footprint" "" (id 2) (at 113.03 322.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (id 3) (at 113.03 322.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 363b3a9c-279d-43a4-a600-03c0a7d56995))
   )
 
   (sheet (at 267.97 135.89) (size 43.18 27.94) (fields_autoplaced)
@@ -10614,9 +10614,6 @@
     (path "/00000000-0000-0000-0000-0000610c6889"
       (reference "#PWR019") (unit 1) (value "GND") (footprint "")
     )
-    (path "/00000000-0000-0000-0000-0000660c4928"
-      (reference "#PWR020") (unit 1) (value "+5P") (footprint "")
-    )
     (path "/00000000-0000-0000-0000-000061e87fa3"
       (reference "#PWR021") (unit 1) (value "+12V") (footprint "")
     )
@@ -10628,9 +10625,6 @@
     )
     (path "/00000000-0000-0000-0000-000064f3228d"
       (reference "#PWR024") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/00000000-0000-0000-0000-0000661f5fdf"
-      (reference "#PWR025") (unit 1) (value "+5P") (footprint "")
     )
     (path "/00000000-0000-0000-0000-0000649eb68c"
       (reference "#PWR026") (unit 1) (value "GND") (footprint "")
@@ -11117,6 +11111,12 @@
     )
     (path "/00000000-0000-0000-0000-0000619922d7/00000000-0000-0000-0000-0000623551e8"
       (reference "#PWR0188") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/690d928a-65bd-4540-8c8a-f88ba1134d88"
+      (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/f0f750d5-98b5-40d1-ae9d-6417e3cf1979"
+      (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000063086201"
       (reference "5VOut1") (unit 1) (value "VS") (footprint "SamacSys_Parts:BK_HTC-15M")
