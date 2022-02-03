@@ -28,8 +28,8 @@ String inputString, inputStringRS232 = "";         // a String to hold incoming 
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
-#define LCDEnable 10
-#define LCDPowerOut 5
+#define LCDEnable 41
+#define LCDPowerOut 23
 //-----------------------------------------------------------
 // ATM90E32 energy monitor
 ATM90E32 eic{}; // Energy Monitor Object
@@ -86,7 +86,7 @@ String LastTimeRTCTemp = "";
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Generator, Energy Monitoring, and Voltage
-#define GenFuelPressure A13
+#define GenFuelPressure A12
 #define RTDGenHeadRCS 45
 #define RTDGenHeadLCS 47
 #define RTDGenEnclosure 49
@@ -97,7 +97,7 @@ Adafruit_MAX31865 GenHeadL = Adafruit_MAX31865(RTDGenHeadLCS);
 Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
 #define RTCBattery A14
-#define EnergyMonitorCS 41
+#define EnergyMonitorCS 24
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -109,26 +109,27 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Refridgerator A8
 #define Outside A9
 #define BackCabin A10
+#define FrontCabin A11
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Alarm
-#define LEDBacklightOut 4
-#define AlarmOut 35
-#define WarningLED 33
-#define AlarmReset 25
+#define LEDBacklightOut 8
+#define AlarmOut 4
+#define WarningLED 5
+#define AlarmReset 3
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //Water Control / Tanks and LPG Tank
 #define LPGSensor A1
 #define WaterTankSensor A2
-#define TankPowerRelay 43
-#define WaterSourceSelectionInput 28
-#define WaterPumpSense 23
-#define KitchWaterButton 2
-#define BathroomWaterButton 3
-#define CityWaterValve 37
-#define KitchenWaterButtonLED 31
-#define BathroomWaterButtonLED 29
+#define TankPowerRelay 22
+#define WaterSourceSelectionInput 37
+#define WaterPumpSense 43
+#define KitchWaterButton 18
+#define BathroomWaterButton 19
+#define CityWaterValve 28
+#define KitchenWaterButtonLED 6
+#define BathroomWaterButtonLED 7
 #define WaterPumpOut 26
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -137,12 +138,12 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
    Spare Inputs are indexed by their number +1 because I don't
    want to start at zero.
 */
-const int SpareInputs[] = {9, 8, 7, 6};
+const int SpareInputs[] = {35, 33, 31, 29, 27, 25};
 const int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
 int LastInputState[] = {};
-const int SpareOutputs[] = {12, 11, 24};
+const int SpareOutputs[] = {12, 11, 10, 9, 14, 15};
 const int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
-const int SpareAnalog[] = {15};
+const int SpareAnalog[] = {13,15};
 const int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
