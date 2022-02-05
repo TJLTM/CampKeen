@@ -12,22 +12,7 @@
 //-----------------------------------------------------------
 #define USBSerial Serial
 #define RS232 Serial2
-//char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", "LPG?", "SEWAGE?", "GREY?",
-//                            "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
-//                            "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
-//                            "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-//                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?"
-//                           };
-//char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
-//                             "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
-//                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
-//                             "SETWATERDURATION", "READANALOG", "SETSTREAMINGONBOOT", "SETACENMONONBOOT",
-//                             "SETWATERPUMPSENSEONBOOT"
-//                            };
-String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
-bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
 LiquidCrystal_I2C lcd(0x27, 20, 4);
-int DisplayCounter = 0;
 #define LCDEnable 41
 #define LCDPowerOut 23
 //-----------------------------------------------------------
@@ -123,8 +108,6 @@ void setup() {
   rtc.begin();
   RS232.begin(115200);
   USBSerial.begin(115200);
-  inputString.reserve(200);
-  inputStringRS232.reserve(200);
 
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
@@ -187,18 +170,90 @@ void loop() {
   //SewAgeTank();
   //GreyTank();
   //GeneralInputs();
-  
+  //LCDTesting();
+  //GeneralOutputs();
+  //SpareOutputWalk();
+  //ReadAllInputs();
+  //SpareAnalogRead();
   }
 
+void LCDTesting(){
+  USBSerial.print("LCDEnable:");
+  USBSerial.println(digitalRead(LCDEnable));
+  delay(1000);
+  USBSerial.print("LCDPowerOut:HIGH");
+  digitalWrite(LCDPowerOut, HIGH);
+  delay(5000);
+  USBSerial.print("LCDPowerOut:LOW");
+  digitalWrite(LCDPowerOut, LOW);
+  delay(5000);
+  
+}
+
 void GeneralOutputs(){
-  pinMode(LEDBacklightOut, OUTPUT);
-  pinMode(TankPowerRelay, OUTPUT);
-  pinMode(WaterPumpOut, OUTPUT);
-  pinMode(AlarmOut, OUTPUT);
-  pinMode(WarningLED, OUTPUT);
-  pinMode(CityWaterValve, OUTPUT);
-  pinMode(KitchenWaterButtonLED, OUTPUT);
-  pinMode(BathroomWaterButtonLED, OUTPUT);
+  USBSerial.print("LEDBacklightOut:HIGH");
+  digitalWrite(LEDBacklightOut, HIGH);
+  delay(5000);
+  USBSerial.print("LEDBacklightOut:LOW");
+  digitalWrite(LEDBacklightOut, LOW);
+  delay(5000);
+  
+
+  USBSerial.print("TankPowerRelay:HIGH");
+  digitalWrite(TankPowerRelay, HIGH);
+  delay(5000);
+  USBSerial.print("TankPowerRelay:LOW");
+  digitalWrite(TankPowerRelay, LOW);
+  delay(5000);
+  
+
+  USBSerial.print("WaterPumpOut:HIGH");
+  digitalWrite(WaterPumpOut, HIGH);
+  delay(5000);
+  USBSerial.print("WaterPumpOut:LOW");
+  digitalWrite(WaterPumpOut, LOW);
+  delay(5000);
+  
+
+  USBSerial.print("AlarmOut:HIGH");
+  digitalWrite(AlarmOut, HIGH);
+  delay(5000);
+  USBSerial.print("AlarmOut:LOW");
+  digitalWrite(AlarmOut, LOW);
+  delay(5000);
+  
+
+  USBSerial.print("WarningLED:HIGH");
+  digitalWrite(WarningLED, HIGH);
+  delay(5000);
+  USBSerial.print("WarningLED:LOW");
+  digitalWrite(WarningLED, LOW);
+  delay(5000);
+  
+
+  USBSerial.print("CityWaterValve:");
+  digitalWrite(CityWaterValve, HIGH);
+  delay(5000);
+  USBSerial.print("CityWaterValve:LOW");
+  digitalWrite(CityWaterValve, LOW);
+  delay(5000);
+  
+  
+
+  USBSerial.print("KitchenWaterButtonLED:");
+  digitalWrite(KitchenWaterButtonLED, HIGH);
+  delay(5000);
+  USBSerial.print("KitchenWaterButtonLED:LOW");
+  digitalWrite(KitchenWaterButtonLED, LOW);
+  delay(5000);
+  
+
+  USBSerial.print("BathroomWaterButtonLED:HIGH");
+  digitalWrite(BathroomWaterButtonLED, HIGH);
+  delay(5000);
+  USBSerial.print("BathroomWaterButtonLED:LOW");
+  digitalWrite(BathroomWaterButtonLED, LOW);
+  delay(5000);
 }
 
 void GeneralInputs(){
@@ -242,6 +297,17 @@ void GreyTank(){
 
 }
 
+void SpareOutputWalk(){
+    for (int i = 0; i <= SpareOutputSize; i++) {
+    USBSerial.print("Output " + String(i) + ": High");
+    digitalWrite(SpareOutputs[i],HIGH);
+    delay(5000);
+    USBSerial.print("Output " + String(i) + ": Low");
+    digitalWrite(SpareOutputs[i],LOW);
+    delay(5000);
+  }
+  
+}
 
 void ReadAllInputs() {
   for (int i = 1; i <= SpareInputSize; i++) {
