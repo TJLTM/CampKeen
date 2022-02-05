@@ -7,6 +7,12 @@
 #include <ATM90E32.h>
 
 
+/*
+ * Add LCD Output
+ * Energy Monitor Coms Testing 
+ * MAX31865 temp read 
+ */
+
 //-----------------------------------------------------------
 // Serial Communication, UI 
 //-----------------------------------------------------------
@@ -153,11 +159,7 @@ void setup() {
   pinMode(RTDGenHeadRCS, OUTPUT);
   pinMode(RTDGenHeadLCS, OUTPUT);
   pinMode(RTDGenEnclosure, OUTPUT);
-  /*
-      Please Reference Adafruit_MAX31865
-      docs for setup of these boards if 
-      you are going to use 4 or 2 wire
-  */
+
   GenHeadR.begin(MAX31865_3WIRE);
   GenHeadL.begin(MAX31865_3WIRE);
   GenEnclosure.begin(MAX31865_3WIRE);
@@ -175,6 +177,9 @@ void loop() {
   //SpareOutputWalk();
   //ReadAllInputs();
   //SpareAnalogRead();
+  //ReadADCsVoltages();
+  //ReadOtherTempSensors();
+  //ReadWaterAndLPG();
   }
 
 void LCDTesting(){
@@ -187,7 +192,6 @@ void LCDTesting(){
   USBSerial.print("LCDPowerOut:LOW");
   digitalWrite(LCDPowerOut, LOW);
   delay(5000);
-  
 }
 
 void GeneralOutputs(){
@@ -198,7 +202,6 @@ void GeneralOutputs(){
   digitalWrite(LEDBacklightOut, LOW);
   delay(5000);
   
-
   USBSerial.print("TankPowerRelay:HIGH");
   digitalWrite(TankPowerRelay, HIGH);
   delay(5000);
@@ -206,7 +209,6 @@ void GeneralOutputs(){
   digitalWrite(TankPowerRelay, LOW);
   delay(5000);
   
-
   USBSerial.print("WaterPumpOut:HIGH");
   digitalWrite(WaterPumpOut, HIGH);
   delay(5000);
@@ -214,22 +216,19 @@ void GeneralOutputs(){
   digitalWrite(WaterPumpOut, LOW);
   delay(5000);
   
-
   USBSerial.print("AlarmOut:HIGH");
   digitalWrite(AlarmOut, HIGH);
   delay(5000);
   USBSerial.print("AlarmOut:LOW");
   digitalWrite(AlarmOut, LOW);
   delay(5000);
-  
-
+ 
   USBSerial.print("WarningLED:HIGH");
   digitalWrite(WarningLED, HIGH);
   delay(5000);
   USBSerial.print("WarningLED:LOW");
   digitalWrite(WarningLED, LOW);
   delay(5000);
-  
 
   USBSerial.print("CityWaterValve:");
   digitalWrite(CityWaterValve, HIGH);
@@ -237,8 +236,6 @@ void GeneralOutputs(){
   USBSerial.print("CityWaterValve:LOW");
   digitalWrite(CityWaterValve, LOW);
   delay(5000);
-  
-  
 
   USBSerial.print("KitchenWaterButtonLED:");
   digitalWrite(KitchenWaterButtonLED, HIGH);
@@ -246,7 +243,6 @@ void GeneralOutputs(){
   USBSerial.print("KitchenWaterButtonLED:LOW");
   digitalWrite(KitchenWaterButtonLED, LOW);
   delay(5000);
-  
 
   USBSerial.print("BathroomWaterButtonLED:HIGH");
   digitalWrite(BathroomWaterButtonLED, HIGH);
@@ -306,7 +302,6 @@ void SpareOutputWalk(){
     digitalWrite(SpareOutputs[i],LOW);
     delay(5000);
   }
-  
 }
 
 void ReadAllInputs() {
@@ -321,4 +316,82 @@ void ReadAllInputs() {
 int ReadInput(int Number) {
   int Value = digitalRead(SpareInputs[Number]);
   return Value;
+}
+
+void ReadADCsVoltages() {
+  USBSerial.print("DCVoltageDN:");
+  USBSerial.println(ReadAnalog(50, Camper12VoltSensor));
+  USBSerial.print("RTCVoltageDN:");
+  USBSerial.println(ReadAnalog(50, RTCBattery));
+  delay(5000);
+}
+
+
+float ReadAnalog(int Samples, int PinNumber) {
+  long Sum = 0;
+  float Value = 0;
+  for (int x = 0; x < Samples; x++) {
+    Sum = Sum + analogRead(PinNumber);
+  }
+  Value = (Sum / Samples);
+  return Value;
+}
+
+
+void ReadOtherTempSensors() {
+  int R2 = 10000;
+
+  float VoutACF = ConversionFactor * ReadAnalog(10, FrontACTemp);
+  float R1ACF = log(R2 * ((5.0 / VoutACF) - 1));
+  USBSerial.print("R1ACF:");
+  USBSerial.println(R1ACF);
+  
+  float VoutACB = ConversionFactor * ReadAnalog(10, BackACTemp);
+  float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
+  USBSerial.print("R1ACB:");
+  USBSerial.println(R1ACB);
+
+  float VoutHallway = ConversionFactor * ReadAnalog(10, HallwayTemp);
+  float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
+  USBSerial.print("R1Hallway:");
+  USBSerial.println(R1Hallway);
+
+  float VoutBathroom = ConversionFactor * ReadAnalog(10, BathroomTemp);
+  float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
+  USBSerial.print("R1Bathroom:");
+  USBSerial.println(R1Bathroom);
+
+  float VoutFreezer = ConversionFactor * ReadAnalog(10, Freezer);
+  float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
+  USBSerial.print("R1Freezer:");
+  USBSerial.println(R1Freezer);
+
+  float VoutFridge = ConversionFactor * ReadAnalog(10, Refridgerator);
+  float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
+  USBSerial.print("R1Fridge:");
+  USBSerial.println(R1Fridge);
+
+  float VoutOutside = ConversionFactor * ReadAnalog(10, Outside);
+  float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
+  USBSerial.print(":");
+  USBSerial.println();
+
+  float VoutBackCabin = ConversionFactor * ReadAnalog(10, BackCabin);
+  float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
+  USBSerial.print("R1BackCabin:");
+  USBSerial.println(R1BackCabin);
+  delay(10000);
+}
+
+
+void ReadWaterAndLPG() {
+  int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * ReadAnalog(50, LPGSensor))) - 1));
+  USBSerial.print("LPGResistence:");
+  USBSerial.println(LPGResistence);
+
+  float R1 = 47 * ((5.0 / (ConversionFactor * ReadAnalog(50, WaterTankSensor))) - 1);
+  USBSerial.print("WaterResistance:");
+  USBSerial.println(R1);
+  delay(5000);
+  
 }
