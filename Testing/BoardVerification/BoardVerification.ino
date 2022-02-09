@@ -196,15 +196,15 @@ void setup() {
 }
 
 void loop() {
-  //SewAgeTank();
-  //GreyTank();
-  //GeneralInputs();
+  //SewAgeTank(); //Pass
+  //GreyTank(); //Pass
+  //GeneralInputs(); //Pass
   //LCDTesting();
-  //GeneralOutputs();
-  //SpareOutputWalk();
-  //ReadAllInputs();
+  //GeneralOutputs(); //Pass
+  //SpareOutputWalk(); // Spare Out 5 needs hardware replaced. 2n7000
+  //ReadAllInputs(); // IC8 may need to be replaced
   //SpareAnalogRead();
-  //ReadADCsVoltages();
+  //ReadADCsVoltages(); //Pass
   //ReadOtherTempSensors();
   //ReadWaterAndLPG();
   //readRTD();
@@ -224,60 +224,79 @@ void LCDTesting(){
 }
 
 void GeneralOutputs(){
-  USBSerial.print("LEDBacklightOut:HIGH");
+  USBSerial.println("Next: LEDBacklightOut");
+  delay(5000);
+  USBSerial.println("LEDBacklightOut:HIGH");
   digitalWrite(LEDBacklightOut, HIGH);
   delay(5000);
-  USBSerial.print("LEDBacklightOut:LOW");
+  USBSerial.println("LEDBacklightOut:LOW");
   digitalWrite(LEDBacklightOut, LOW);
   delay(5000);
-  
-  USBSerial.print("TankPowerRelay:HIGH");
+
+  USBSerial.println("Next: TankPowerRelay");
+  delay(5000);
+  USBSerial.println("TankPowerRelay:HIGH");
   digitalWrite(TankPowerRelay, HIGH);
   delay(5000);
-  USBSerial.print("TankPowerRelay:LOW");
+  USBSerial.println("TankPowerRelay:LOW");
   digitalWrite(TankPowerRelay, LOW);
   delay(5000);
-  
-  USBSerial.print("WaterPumpOut:HIGH");
+
+  USBSerial.println("Next: WaterPumpOut");
+  delay(5000);
+  USBSerial.println("WaterPumpOut:HIGH");
   digitalWrite(WaterPumpOut, HIGH);
   delay(5000);
-  USBSerial.print("WaterPumpOut:LOW");
+  USBSerial.println("WaterPumpOut:LOW");
   digitalWrite(WaterPumpOut, LOW);
   delay(5000);
-  
-  USBSerial.print("AlarmOut:HIGH");
+
+  USBSerial.println("Next: AlarmOut");
+  delay(5000);
+  USBSerial.println("AlarmOut:HIGH");
   digitalWrite(AlarmOut, HIGH);
   delay(5000);
-  USBSerial.print("AlarmOut:LOW");
+  USBSerial.println("AlarmOut:LOW");
   digitalWrite(AlarmOut, LOW);
   delay(5000);
- 
-  USBSerial.print("WarningLED:HIGH");
+
+  USBSerial.println("Next: WarningLED");
+  delay(5000);
+  USBSerial.println("WarningLED:HIGH");
   digitalWrite(WarningLED, HIGH);
   delay(5000);
-  USBSerial.print("WarningLED:LOW");
+  USBSerial.println("WarningLED:LOW");
   digitalWrite(WarningLED, LOW);
   delay(5000);
 
-  USBSerial.print("CityWaterValve:");
+  USBSerial.println("Next: CityWaterValve");
+  delay(5000);
+  USBSerial.println("CityWaterValve:HIGH");
   digitalWrite(CityWaterValve, HIGH);
   delay(5000);
-  USBSerial.print("CityWaterValve:LOW");
+  USBSerial.println("CityWaterValve:LOW");
   digitalWrite(CityWaterValve, LOW);
   delay(5000);
 
-  USBSerial.print("KitchenWaterButtonLED:");
+  USBSerial.println("Next: KitchenWaterButtonLED");
+  delay(5000);
+  USBSerial.println("KitchenWaterButtonLED:HIGH");
   digitalWrite(KitchenWaterButtonLED, HIGH);
   delay(5000);
-  USBSerial.print("KitchenWaterButtonLED:LOW");
+  USBSerial.println("KitchenWaterButtonLED:LOW");
   digitalWrite(KitchenWaterButtonLED, LOW);
   delay(5000);
 
-  USBSerial.print("BathroomWaterButtonLED:HIGH");
+  USBSerial.println("Next: BathroomWaterButtonLED");
+  delay(5000);
+  USBSerial.println("BathroomWaterButtonLED:HIGH");
   digitalWrite(BathroomWaterButtonLED, HIGH);
   delay(5000);
-  USBSerial.print("BathroomWaterButtonLED:LOW");
+  USBSerial.println("BathroomWaterButtonLED:LOW");
   digitalWrite(BathroomWaterButtonLED, LOW);
+  delay(5000);
+
+  USBSerial.println("Finished Loop");
   delay(5000);
 }
 
@@ -324,20 +343,19 @@ void GreyTank(){
 
 void SpareOutputWalk(){
     for (int i = 0; i <= SpareOutputSize; i++) {
-    USBSerial.print("Output " + String(i) + ": High");
+    USBSerial.println("Output " + String(i) + " " + String(SpareOutputs[i]) + ": High");
     digitalWrite(SpareOutputs[i],HIGH);
-    delay(5000);
-    USBSerial.print("Output " + String(i) + ": Low");
+    delay(5500);
+    USBSerial.println("Output " + String(i) + ": Low");
     digitalWrite(SpareOutputs[i],LOW);
-    delay(5000);
+    delay(5500);
   }
 }
 
 void ReadAllInputs() {
-  for (int i = 1; i <= SpareInputSize; i++) {
-    int CurrentInputRead = ReadInput(SpareInputs[i]);
-    USBSerial.print("Input " + String(i) + ":");
-    USBSerial.println(digitalRead(CurrentInputRead));
+  for (int i = 0; i < SpareInputSize; i++) {
+    USBSerial.print("Input " + String(i+1) + " "+ String(SpareInputs[i]) + ":");
+    USBSerial.println(digitalRead(SpareInputs[i]));
     delay(1000);
   }
 }
@@ -355,6 +373,13 @@ void ReadADCsVoltages() {
   delay(5000);
 }
 
+void SpareAnalogRead() {
+  for (int i = 0; i < SpareAnalogSize; i++) {
+      USBSerial.print("SpareAnalogRead:" + String(SpareAnalog[i]) + ":");
+      USBSerial.println(ReadAnalog(25, SpareAnalog[i]));
+  }
+  delay(5000);
+}
 
 float ReadAnalog(int Samples, int PinNumber) {
   long Sum = 0;
