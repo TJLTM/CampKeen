@@ -201,9 +201,9 @@ void loop() {
   //GeneralInputs(); //Pass
   //LCDTesting();
   //GeneralOutputs(); //Pass
-  //SpareOutputWalk(); // Spare Out 5 needs hardware replaced. 2n7000
-  //ReadAllInputs(); // IC8 may need to be replaced
-  //SpareAnalogRead();
+  //SpareOutputWalk(); // Pass
+  //ReadAllInputs(); // Spare Input #1 is failing at the port level. not sure if board defect or MCU defect, or code. 
+  //SpareAnalogRead(); // Pass
   //ReadADCsVoltages(); //Pass
   //ReadOtherTempSensors();
   //ReadWaterAndLPG();
@@ -343,10 +343,10 @@ void GreyTank(){
 
 void SpareOutputWalk(){
     for (int i = 0; i <= SpareOutputSize; i++) {
-    USBSerial.println("Output " + String(i) + " " + String(SpareOutputs[i]) + ": High");
+    USBSerial.println("Output " + String(i+1) + " " + String(SpareOutputs[i]) + ": High");
     digitalWrite(SpareOutputs[i],HIGH);
     delay(5500);
-    USBSerial.println("Output " + String(i) + ": Low");
+    USBSerial.println("Output " + String(i+1) + ": Low");
     digitalWrite(SpareOutputs[i],LOW);
     delay(5500);
   }
@@ -376,7 +376,7 @@ void ReadADCsVoltages() {
 void SpareAnalogRead() {
   for (int i = 0; i < SpareAnalogSize; i++) {
       USBSerial.print("SpareAnalogRead:" + String(SpareAnalog[i]) + ":");
-      USBSerial.println(ReadAnalog(25, SpareAnalog[i]));
+      USBSerial.println(ReadAnalog(25, SpareAnalog[i])*ConversionFactor);
   }
   delay(5000);
 }
@@ -390,7 +390,6 @@ float ReadAnalog(int Samples, int PinNumber) {
   Value = (Sum / Samples);
   return Value;
 }
-
 
 void ReadOtherTempSensors() {
   int R2 = 10000;
@@ -437,7 +436,6 @@ void ReadOtherTempSensors() {
   delay(10000);
 }
 
-
 void ReadWaterAndLPG() {
   int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * ReadAnalog(50, LPGSensor))) - 1));
   USBSerial.print("LPGResistence:");
@@ -449,7 +447,6 @@ void ReadWaterAndLPG() {
   delay(5000);
   
 }
-
 
 void EnergyMonitor(){
     float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
@@ -504,7 +501,6 @@ void EnergyMonitor(){
     
     delay(1000);
 }
-
 
 void readRTD(){
   uint16_t rtd0 = GenHeadR.readRTD();
