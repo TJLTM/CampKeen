@@ -202,10 +202,10 @@ void loop() {
   //LCDTesting();
   //GeneralOutputs(); //Pass
   //SpareOutputWalk(); // Pass
-  //ReadAllInputs(); // Spare Input #1 is failing at the port level. not sure if board defect or MCU defect, or code. 
+  //ReadAllInputs(); // Spare Input #1 is failing due to a board defect that is bridging to ground somewhere along the trace between the hex inverter and the MCU pin
   //SpareAnalogRead(); // Pass
   //ReadADCsVoltages(); //Pass
-  //ReadOtherTempSensors();
+  ReadOtherTempSensors();
   //ReadWaterAndLPG();
   //readRTD();
   //EnergyMonitor();
@@ -395,44 +395,49 @@ void ReadOtherTempSensors() {
   int R2 = 10000;
 
   float VoutACF = ConversionFactor * ReadAnalog(10, FrontACTemp);
-  float R1ACF = log(R2 * ((5.0 / VoutACF) - 1));
+  float R1ACF = R2 * ((5.0 / VoutACF) - 1);
   USBSerial.print("R1ACF:");
   USBSerial.println(R1ACF);
   
   float VoutACB = ConversionFactor * ReadAnalog(10, BackACTemp);
-  float R1ACB = log(R2 * ((5.0 / VoutACB) - 1));
+  float R1ACB = R2 * ((5.0 / VoutACB) - 1);
   USBSerial.print("R1ACB:");
   USBSerial.println(R1ACB);
 
   float VoutHallway = ConversionFactor * ReadAnalog(10, HallwayTemp);
-  float R1Hallway = log(R2 * ((5.0 / VoutHallway) - 1));
+  float R1Hallway = R2 * ((5.0 / VoutHallway) - 1);
   USBSerial.print("R1Hallway:");
   USBSerial.println(R1Hallway);
 
   float VoutBathroom = ConversionFactor * ReadAnalog(10, BathroomTemp);
-  float R1Bathroom = log(R2 * ((5.0 / VoutBathroom) - 1));
+  float R1Bathroom = R2 * ((5.0 / VoutBathroom) - 1);
   USBSerial.print("R1Bathroom:");
   USBSerial.println(R1Bathroom);
 
   float VoutFreezer = ConversionFactor * ReadAnalog(10, Freezer);
-  float R1Freezer = log(R2 * ((5.0 / VoutFreezer) - 1));
+  float R1Freezer = R2 * ((5.0 / VoutFreezer) - 1);
   USBSerial.print("R1Freezer:");
   USBSerial.println(R1Freezer);
 
   float VoutFridge = ConversionFactor * ReadAnalog(10, Refridgerator);
-  float R1Fridge = log(R2 * ((5.0 / VoutFridge) - 1));
+  float R1Fridge = R2 * ((5.0 / VoutFridge) - 1);
   USBSerial.print("R1Fridge:");
   USBSerial.println(R1Fridge);
 
   float VoutOutside = ConversionFactor * ReadAnalog(10, Outside);
-  float R1Outside = log(R2 * ((5.0 / VoutOutside) - 1));
-  USBSerial.print(":");
-  USBSerial.println();
+  float R1Outside = R2 * ((5.0 / VoutOutside) - 1);
+  USBSerial.print("R1Outside:");
+  USBSerial.println(R1Outside);
 
   float VoutBackCabin = ConversionFactor * ReadAnalog(10, BackCabin);
-  float R1BackCabin = log(R2 * ((5.0 / VoutBackCabin) - 1));
+  float R1BackCabin = R2 * ((5.0 / VoutBackCabin) - 1);
   USBSerial.print("R1BackCabin:");
   USBSerial.println(R1BackCabin);
+
+  float VoutFrontCabin = ConversionFactor * ReadAnalog(10, FrontCabin);
+  float R1FrontCabin = R2 * ((5.0 / VoutFrontCabin) - 1);
+  USBSerial.print("R1FrontCabin:");
+  USBSerial.println(R1FrontCabin);
   delay(10000);
 }
 
