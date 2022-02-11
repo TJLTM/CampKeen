@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "0.10.5";
+const String FWVersion = "1.0.0";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
@@ -1035,6 +1035,9 @@ float NTCReadInC(int R2, float ResistenceRead) {
      Using the Resistence that is calced from an ADC read, a known calibrated resistence
      value, and https://en.wikipedia.org/wiki/Steinhart%E2%80%93Hart_equation to get the
      tempetature from these values.
+
+     int R2 == Calibrated static resistor used 
+     float ResistenceRead == Log() of the resistence value read 
   */
   float c1 = 1.009249522e-03;
   float c2 = 2.378405444e-04;
