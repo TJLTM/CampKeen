@@ -7,42 +7,42 @@
 #include <ATM90E32.h>
 
 /***** CALIBRATION SETTINGS *****/
-/* 
- * 4485 for 60 Hz (North America)
- * 389 for 50 hz (rest of the world)
- */
-unsigned short LineFreq = 4485;         
-
-/* 
- * 0 for 10A (1x)
- * 21 for 100A (2x)
- * 42 for between 100A - 200A (4x)
- */
-unsigned short PGAGain = 21;            
-
-/* 
- * For meter <= v1.3:
- *    42080 - 9v AC Transformer - Jameco 112336
- *    32428 - 12v AC Transformer - Jameco 167151
- * For meter > v1.4:
- *    37106 - 9v AC Transformer - Jameco 157041
- *    38302 - 9v AC Transformer - Jameco 112336
- *    29462 - 12v AC Transformer - Jameco 167151
- * For Meters > v1.4 purchased after 11/1/2019 and rev.3
- *    7611 - 9v AC Transformer - Jameco 157041
- */
-unsigned short VoltageGain = 4005;     
-                                       
 /*
- * 25498 - SCT-013-000 100A/50mA
- * 39473 - SCT-016 120A/40mA
- * 46539 - Magnalab 100A
- */                                  
-unsigned short CurrentGainCT1 = 25498;  
-unsigned short CurrentGainCT2 = 25498; 
+   4485 for 60 Hz (North America)
+   389 for 50 hz (rest of the world)
+*/
+unsigned short LineFreq = 4485;
+
+/*
+   0 for 10A (1x)
+   21 for 100A (2x)
+   42 for between 100A - 200A (4x)
+*/
+unsigned short PGAGain = 21;
+
+/*
+   For meter <= v1.3:
+      42080 - 9v AC Transformer - Jameco 112336
+      32428 - 12v AC Transformer - Jameco 167151
+   For meter > v1.4:
+      37106 - 9v AC Transformer - Jameco 157041
+      38302 - 9v AC Transformer - Jameco 112336
+      29462 - 12v AC Transformer - Jameco 167151
+   For Meters > v1.4 purchased after 11/1/2019 and rev.3
+      7611 - 9v AC Transformer - Jameco 157041
+*/
+unsigned short VoltageGain = 4005;
+
+/*
+   25498 - SCT-013-000 100A/50mA
+   39473 - SCT-016 120A/40mA
+   46539 - Magnalab 100A
+*/
+unsigned short CurrentGainCT1 = 25498;
+unsigned short CurrentGainCT2 = 25498;
 
 //-----------------------------------------------------------
-// Serial Communication, UI 
+// Serial Communication, UI
 //-----------------------------------------------------------
 #define USBSerial Serial
 #define RS232 Serial2
@@ -117,7 +117,7 @@ const int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
 int LastInputState[] = {};
 const int SpareOutputs[] = {12, 11, 10, 9, 14, 15};
 const int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
-const int SpareAnalog[] = {13,15};
+const int SpareAnalog[] = {13, 15};
 const int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -199,19 +199,21 @@ void loop() {
   //SewAgeTank(); //Pass
   //GreyTank(); //Pass
   //GeneralInputs(); //Pass
-  //LCDTesting();
+  //LCDTesting(); // Need to design and test I2C bus extension buffer. 
   //GeneralOutputs(); //Pass
   //SpareOutputWalk(); // Pass
   //ReadAllInputs(); // Spare Input #1 is failing due to a board defect that is bridging to ground somewhere along the trace between the hex inverter and the MCU pin
   //SpareAnalogRead(); // Pass
   //ReadADCsVoltages(); //Pass
-  ReadOtherTempSensors();
-  //ReadWaterAndLPG();
-  //readRTD();
-  //EnergyMonitor();
-  }
+  //ReadOtherTempSensors(); //Pass
+  //ReadWaterAndLPG(); // Pass <ay need to install a current limiter on to the 5V out for sensors.
+  //readRTD(); //Pass
+  //EnergyMonitor();  //Pass
+  //GetCurrentTime(); //Pass 
 
-void LCDTesting(){
+}
+
+void LCDTesting() {
   USBSerial.print("LCDEnable:");
   USBSerial.println(digitalRead(LCDEnable));
   delay(1000);
@@ -223,7 +225,7 @@ void LCDTesting(){
   delay(5000);
 }
 
-void GeneralOutputs(){
+void GeneralOutputs() {
   USBSerial.println("Next: LEDBacklightOut");
   delay(5000);
   USBSerial.println("LEDBacklightOut:HIGH");
@@ -300,7 +302,7 @@ void GeneralOutputs(){
   delay(5000);
 }
 
-void GeneralInputs(){
+void GeneralInputs() {
   USBSerial.print("AlarmReset:");
   USBSerial.println(digitalRead(AlarmReset));
   USBSerial.print("WaterSourceSelectionInput:");
@@ -314,7 +316,7 @@ void GeneralInputs(){
   delay(5000);
 }
 
-void SewAgeTank(){
+void SewAgeTank() {
   USBSerial.print("S14:");
   USBSerial.println(digitalRead(S14));
   USBSerial.print("S12:");
@@ -327,7 +329,7 @@ void SewAgeTank(){
   delay(5000);
 }
 
-void GreyTank(){
+void GreyTank() {
   USBSerial.print("G14:");
   USBSerial.println(digitalRead(G14));
   USBSerial.print("G12:");
@@ -341,20 +343,20 @@ void GreyTank(){
 
 }
 
-void SpareOutputWalk(){
-    for (int i = 0; i <= SpareOutputSize; i++) {
-    USBSerial.println("Output " + String(i+1) + " " + String(SpareOutputs[i]) + ": High");
-    digitalWrite(SpareOutputs[i],HIGH);
+void SpareOutputWalk() {
+  for (int i = 0; i <= SpareOutputSize; i++) {
+    USBSerial.println("Output " + String(i + 1) + " " + String(SpareOutputs[i]) + ": High");
+    digitalWrite(SpareOutputs[i], HIGH);
     delay(5500);
-    USBSerial.println("Output " + String(i+1) + ": Low");
-    digitalWrite(SpareOutputs[i],LOW);
+    USBSerial.println("Output " + String(i + 1) + ": Low");
+    digitalWrite(SpareOutputs[i], LOW);
     delay(5500);
   }
 }
 
 void ReadAllInputs() {
   for (int i = 0; i < SpareInputSize; i++) {
-    USBSerial.print("Input " + String(i+1) + " "+ String(SpareInputs[i]) + ":");
+    USBSerial.print("Input " + String(i + 1) + " " + String(SpareInputs[i]) + ":");
     USBSerial.println(digitalRead(SpareInputs[i]));
     delay(1000);
   }
@@ -375,8 +377,8 @@ void ReadADCsVoltages() {
 
 void SpareAnalogRead() {
   for (int i = 0; i < SpareAnalogSize; i++) {
-      USBSerial.print("SpareAnalogRead:" + String(SpareAnalog[i]) + ":");
-      USBSerial.println(ReadAnalog(25, SpareAnalog[i])*ConversionFactor);
+    USBSerial.print("SpareAnalogRead:" + String(SpareAnalog[i]) + ":");
+    USBSerial.println(ReadAnalog(25, SpareAnalog[i])*ConversionFactor);
   }
   delay(5000);
 }
@@ -398,7 +400,7 @@ void ReadOtherTempSensors() {
   float R1ACF = R2 * ((5.0 / VoutACF) - 1);
   USBSerial.print("R1ACF:");
   USBSerial.println(R1ACF);
-  
+
   float VoutACB = ConversionFactor * ReadAnalog(10, BackACTemp);
   float R1ACB = R2 * ((5.0 / VoutACB) - 1);
   USBSerial.print("R1ACB:");
@@ -442,6 +444,9 @@ void ReadOtherTempSensors() {
 }
 
 void ReadWaterAndLPG() {
+  USBSerial.println("TankPowerRelay:HIGH");
+  digitalWrite(TankPowerRelay, HIGH);
+
   int LPGResistence = 47 * (1 / ((5 / (ConversionFactor * ReadAnalog(50, LPGSensor))) - 1));
   USBSerial.print("LPGResistence:");
   USBSerial.println(LPGResistence);
@@ -450,85 +455,99 @@ void ReadWaterAndLPG() {
   USBSerial.print("WaterResistance:");
   USBSerial.println(R1);
   delay(5000);
-  
+
 }
 
-void EnergyMonitor(){
-    float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
+void EnergyMonitor() {
+  float voltageA, voltageC, totalVoltage, currentCT1, currentCT2, totalCurrent, realPower, powerFactor, temp, freq, totalWatts;
 
-    unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
-    unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
-    unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
-    unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
+  unsigned short sys0 = eic.GetSysStatus0(); //EMMState0
+  unsigned short sys1 = eic.GetSysStatus1(); //EMMState1
+  unsigned short en0 = eic.GetMeterStatus0();//EMMIntState0
+  unsigned short en1 = eic.GetMeterStatus1();//EMMIntState1
 
-    USBSerial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
-    USBSerial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
-    delay(10);
+  USBSerial.println("Sys Status: S0:0x" + String(sys0, HEX) + " S1:0x" + String(sys1, HEX));
+  USBSerial.println("Meter Status: E0:0x" + String(en0, HEX) + " E1:0x" + String(en1, HEX));
+  delay(10);
 
-    //if true the MCU is not getting data from the energy meter
-    if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
+  //if true the MCU is not getting data from the energy meter
+  if (sys0 == 65535 || sys0 == 0) Serial.println("Error: Not receiving data from energy meter - check your connections");
 
-    //get voltage
-    voltageA = eic.GetLineVoltageA();
-    voltageC = eic.GetLineVoltageC();
+  //get voltage
+  voltageA = eic.GetLineVoltageA();
+  voltageC = eic.GetLineVoltageC();
 
-    if (LineFreq = 4485) {
-      totalVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
-    }
-    else {
-      totalVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
-    }
+  if (LineFreq = 4485) {
+    totalVoltage = voltageA + voltageC;     //is split single phase, so only 120v per leg
+  }
+  else {
+    totalVoltage = voltageA;     //voltage should be 220-240 at the AC transformer
+  }
 
-    //get current
-    currentCT1 = eic.GetLineCurrentA();
-    currentCT2 = eic.GetLineCurrentC();
-    totalCurrent = currentCT1 + currentCT2;
+  //get current
+  currentCT1 = eic.GetLineCurrentA();
+  currentCT2 = eic.GetLineCurrentC();
+  totalCurrent = currentCT1 + currentCT2;
 
-    realPower = eic.GetTotalActivePower();
-    powerFactor = eic.GetTotalPowerFactor();
-    temp = eic.GetTemperature();
-    freq = eic.GetFrequency();
-    totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
+  realPower = eic.GetTotalActivePower();
+  powerFactor = eic.GetTotalPowerFactor();
+  temp = eic.GetTemperature();
+  freq = eic.GetFrequency();
+  totalWatts = (voltageA * currentCT1) + (voltageC * currentCT2);
 
-    USBSerial.println("Voltage 1: " + String(voltageA) + "V");
-    USBSerial.println("Voltage 2: " + String(voltageC) + "V");
-    USBSerial.println("Current 1: " + String(currentCT1) + "A");
-    USBSerial.println("Current 2: " + String(currentCT2) + "A");
-    USBSerial.println("Active Power: " + String(realPower) + "W");
-    USBSerial.println("Power Factor: " + String(powerFactor));
-    USBSerial.println("Fundimental Power: " + String(eic.GetTotalActiveFundPower()) + "W");
-    USBSerial.println("Harmonic Power: " + String(eic.GetTotalActiveHarPower()) + "W");
-    USBSerial.println("Reactive Power: " + String(eic.GetTotalReactivePower()) + "var");
-    USBSerial.println("Apparent Power: " + String(eic.GetTotalApparentPower()) + "VA");
-    USBSerial.println("Phase Angle A: " + String(eic.GetPhaseA()));
-    USBSerial.println("Chip Temp: " + String(temp) + "C");
-    USBSerial.println("Frequency: " + String(freq) + "Hz");
-    
-    delay(1000);
+  USBSerial.println("Voltage 1: " + String(voltageA) + "V");
+  USBSerial.println("Voltage 2: " + String(voltageC) + "V");
+  USBSerial.println("Current 1: " + String(currentCT1) + "A");
+  USBSerial.println("Current 2: " + String(currentCT2) + "A");
+  USBSerial.println("Active Power: " + String(realPower) + "W");
+  USBSerial.println("Power Factor: " + String(powerFactor));
+  USBSerial.println("Fundimental Power: " + String(eic.GetTotalActiveFundPower()) + "W");
+  USBSerial.println("Harmonic Power: " + String(eic.GetTotalActiveHarPower()) + "W");
+  USBSerial.println("Reactive Power: " + String(eic.GetTotalReactivePower()) + "var");
+  USBSerial.println("Apparent Power: " + String(eic.GetTotalApparentPower()) + "VA");
+  USBSerial.println("Phase Angle A: " + String(eic.GetPhaseA()));
+  USBSerial.println("Chip Temp: " + String(temp) + "C");
+  USBSerial.println("Frequency: " + String(freq) + "Hz");
+
+  delay(1000);
 }
 
-void readRTD(){
+void readRTD() {
   uint16_t rtd0 = GenHeadR.readRTD();
   float ratio0 = rtd0;
   ratio0 /= 32768;
   USBSerial.print("GenHeadR:");
   USBSerial.println(GenHeadR.temperature(RNOMINAL, RREF));
-  
+
 
   uint16_t rtd1 = GenHeadL.readRTD();
   float ratio1 = rtd1;
   ratio1 /= 32768;
   USBSerial.print("GenHeadL:");
   USBSerial.println(GenHeadL.temperature(RNOMINAL, RREF));
-  
+
 
   uint16_t rtd2 = GenEnclosure.readRTD();
   float ratio2 = rtd2;
   ratio2 /= 32768;
   USBSerial.print("GenEnclosure:");
   USBSerial.println(GenEnclosure.temperature(RNOMINAL, RREF));
-  
-  
 
+}
+
+
+String GetCurrentTime() {
+  DateTime now = rtc.now();
+  char buf1[20];
+
+  //Updated now.day to now.date
+  sprintf(buf1, "%02d:%02d:%02d %02d/%02d/%02d",  now.hour(), now.minute(), now.second(), now.day(), now.month(), now.year());
+
+
+  USBSerial.print("RTC Temp:");
+  USBSerial.println(rtc.getTemperature());
+  USBSerial.print("RTC:");
+  USBSerial.println(buf1);
+  delay(2500);
 
 }
