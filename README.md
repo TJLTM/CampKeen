@@ -31,8 +31,8 @@ Some Specs and Installation Notes:
 2. The Inputs are buffered and you can just supply 12Vdc in as a logical 'On' 
 3. Outputs, Althought technically you could power the waterpump directly off of the unit. this is not recommended. nor encouraged in any way, shape or form. These outputs are used to trigger remove 12Vdc relays like the following: https://www.summitracing.com/parts/pco-5591pt
 
+currently working on https://github.com/TJLTM/CampKeen-HomeAssistant-Custom-Integration this may roll into a true python package later on to handle communication 
+
 
 FUTURE: 
-I will be making either a Python package or something similar for Home Assistant for control and status of this on a separate system. and to be able to control certain parts of this via a separate interface. 
-
 Better docs with installatioin pictures for my setup. 
