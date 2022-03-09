@@ -16,7 +16,7 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?"
+                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?","STATUS?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
@@ -1280,21 +1280,18 @@ float ConvertPSItoKPa(float PSI) {
 
 String GetCurrentTime() {
   DateTime now = rtc.now();
-  String DateTimeString = String(now.year())
-                          + "/" + String(now.month())
-                          + "/" + String(now.day())
-                          + "-" + String(now.hour())
-                          + ":" + String(now.minute())
-                          + ":" + String(now.second());
+  
+  char buf1[20];
+  sprintf(buf1, "%02d:%02d:%02d-%02d/%02d/%02d",  now.hour(), now.minute(), now.second(), now.day(), now.month(), now.year());
 
-  LastTimeRTCTemp = DateTimeString;
+  LastTimeRTCTemp = buf1;
   if (Units == 'I') {
     LastRTCTemp = ConvertCtoF(rtc.getTemperature());
   }
   else {
     LastRTCTemp = rtc.getTemperature();
   }
-  return DateTimeString;
+  return buf1;
 }
 
 String GetCurrentDate() {
@@ -1463,6 +1460,27 @@ void OutputAllData(int WhichPort) {
   GetACLEGS(WhichPort);
   GetACCT1GAIN(WhichPort);
   GetACCT2GAIN(WhichPort);
+  GetStreamingOnBoot(WhichPort);
+  GetStreamingState(WhichPort);
+  ReadAllAnalogOneShot(WhichPort);
+  GETACENMONOnBoot(WhichPort);
+  GETWaterpumpsenseBoot(WhichPort);
+}
+
+void OutputLiveData(int WhichPort) {
+  GetWaterPumpSense(WhichPort);
+  GetWaterState(WhichPort);
+  GetWaterSource(WhichPort);
+  GetWaterLevel(WhichPort);
+  GetSewageLevel(WhichPort);
+  GetGreyLevel(WhichPort);
+  GetLPGLevel(WhichPort);
+  GetDCBatteryVoltage(WhichPort);
+  GetRTCBatteryVotlage(WhichPort);
+  GetNTCTemps(WhichPort);
+  GetHeadUnitTemp(WhichPort);
+  GetGenStatus(WhichPort);
+  GetEnergyStatus(WhichPort);
   GetStreamingOnBoot(WhichPort);
   GetStreamingState(WhichPort);
   ReadAllAnalogOneShot(WhichPort);
@@ -2439,6 +2457,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 34:
       //Waterpumpsense ON BOOT
       GETWaterpumpsenseBoot(WhichPort);
+      break;
+    case 35:
+      //Status update for live system stuff 
+      OutputLiveData(WhichPort);
       break;
   }
 }
