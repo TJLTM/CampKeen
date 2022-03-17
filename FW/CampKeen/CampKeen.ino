@@ -8,7 +8,7 @@
 
 
 //-----------------------------------------------------------
-// Serial Communication, UI 
+// Serial Communication, UI
 //-----------------------------------------------------------
 #define USBSerial Serial
 #define RS232 Serial2
@@ -16,7 +16,7 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?","STATUS?"
+                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
                              "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
@@ -72,7 +72,7 @@ String LastTimeDCVoltage, LastTimeRTCVoltage = "";
 //NTC Temps
 String LastTimeNTCTemp = "";
 float LastFrontACTemp, LastBackACTemp, LastOutsideTemp, LastBackCabinTemp, LastHallwayTemp, LastFreezerTemp, LastFridgeTemp,
-      LastBathroomTemp = 0.0;
+      LastBathroomTemp, LastFrontCabinTemp = 0.0;
 //Generator
 String LastTimeGenSensors = "";
 float LastGenEnclosureTemp, LastGenHeadRightTemp, LastGenHeadLeftTemp, LastGenFuel = 0.0;
@@ -143,7 +143,7 @@ const int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
 int LastInputState[] = {};
 const int SpareOutputs[] = {12, 11, 10, 9, 14, 15};
 const int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
-const int SpareAnalog[] = {13,15};
+const int SpareAnalog[] = {13, 15};
 const int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -219,7 +219,7 @@ void setup() {
   pinMode(RTDGenEnclosure, OUTPUT);
   /*
       Please Reference Adafruit_MAX31865
-      docs for setup of these boards if 
+      docs for setup of these boards if
       you are going to use 4 or 2 wire
   */
   GenHeadR.begin(MAX31865_3WIRE);
@@ -274,9 +274,9 @@ void setup() {
 
 void loop() {
   /*
-   * All the basic functions that need to be handled
-   * everytime the loop comes back around
-   */
+     All the basic functions that need to be handled
+     everytime the loop comes back around
+  */
   ReadAllInputs();
   LCDControl();
   WaterControl();
@@ -284,10 +284,10 @@ void loop() {
 
 
   /*
-   * Handle reseting the warnings and alarms
-   * If reset High warnings/alarms are 
-   * flushed and silenced until brought low
-   */
+     Handle reseting the warnings and alarms
+     If reset High warnings/alarms are
+     flushed and silenced until brought low
+  */
   if (digitalRead(AlarmReset) == HIGH) {
     ResetAllAlarmsAndWarnings();
   }
@@ -297,12 +297,12 @@ void loop() {
 
 
   /*
-   * Read Sensors at 3 Second intervals
-   * Sensors to be read:
-   * Spare Analog
-   * NTC Temp sensors
-   * Generator Fuel Pressure & Temp sensors
-   */
+     Read Sensors at 3 Second intervals
+     Sensors to be read:
+     Spare Analog
+     NTC Temp sensors
+     Generator Fuel Pressure & Temp sensors
+  */
   if (abs(millis() - NTCTimer) > 3000) {
     ReadAllAnalog();
     ReadOtherTempSensors();
@@ -320,9 +320,9 @@ void loop() {
 
 
   /*
-   * Read Energy Montioring at 10 Second Intervals if 
-   * enabled and mmodule is installed 
-   */
+     Read Energy Montioring at 10 Second Intervals if
+     enabled and mmodule is installed
+  */
   if ((abs(millis() - EnergyTimer) > 10000) && EnableACEnergyMonitoring == true) {
     EnergyMetering();
     EnergyTimer = millis();
@@ -336,11 +336,11 @@ void loop() {
 
 
   /*
-   * Read Sensors at 30 Min Intervals
-   * Sensors to be read:
-   * Water Tank Level
-   * LPG Tank Level 
-   */
+     Read Sensors at 30 Min Intervals
+     Sensors to be read:
+     Water Tank Level
+     LPG Tank Level
+  */
   if (abs(millis() - WATERLPGtimer) > 1800000) {
     ReadWaterAndLPG();
     WATERLPGtimer = millis();
@@ -356,11 +356,11 @@ void loop() {
 
 
   /*
-   *  Read Sensors at 5 Min Intervals 
-   *  Sensors to be read:
-   *  Camper Battery Voltage
-   *  RTC Battery Voltage
-   */
+      Read Sensors at 5 Min Intervals
+      Sensors to be read:
+      Camper Battery Voltage
+      RTC Battery Voltage
+  */
   if (abs(millis() - FiveMinTimer) > 300000) {
     ReadBatteryVoltages();
     FiveMinTimer = millis();
@@ -376,9 +376,9 @@ void loop() {
 
 
   /*
-   * Handle the Incoming commands from the Serial Ports 
-   * after all the other operations have been done
-   */
+     Handle the Incoming commands from the Serial Ports
+     after all the other operations have been done
+  */
   if (stringComplete) {
     inputString = PainlessInstructionSet(inputString, 0);
     stringComplete = false;
@@ -1036,8 +1036,8 @@ float NTCReadInC(int R2, float ResistenceRead) {
      value, and https://en.wikipedia.org/wiki/Steinhart%E2%80%93Hart_equation to get the
      tempetature from these values.
 
-     int R2 == Calibrated static resistor used 
-     float ResistenceRead == Log() of the resistence value read 
+     int R2 == Calibrated static resistor used
+     float ResistenceRead == Log() of the resistence value read
   */
   float c1 = 1.009249522e-03;
   float c2 = 2.378405444e-04;
@@ -1119,6 +1119,15 @@ void ReadOtherTempSensors() {
   }
   else {
     LastBackCabinTemp =  NTCReadInC(R2, R1BackCabin);
+  }
+
+  float VoutFrontCabin = ConversionFactor * ReadAnalog(10, FrontCabin);
+  float R1FrontCabin = log(R2 * ((5.0 / VoutFrontCabin) - 1));
+  if (Units == 'I') {
+    LastFrontCabinTemp = ConvertCtoF(NTCReadInC(R2, R1FrontCabin));
+  }
+  else {
+    LastFrontCabinTemp =  NTCReadInC(R2, R1FrontCabin);
   }
 
   LastTimeNTCTemp = GetCurrentTime();
@@ -1212,11 +1221,6 @@ unsigned short GetFromEEPROMACCurrentGainCT2() {
 
 unsigned short GetFromEEPROMACPGAGain() {
   unsigned short Value = EEPROM.read(14) << 8 | EEPROM.read(15);
-  //  if (Value == 65535 || Value == 0) {
-  //    Value = 21;
-  //    EEPROM.update(14, highByte(Value));
-  //    EEPROM.update(15, lowByte(Value));
-  //  }
   return Value;
 }
 
@@ -1280,7 +1284,7 @@ float ConvertPSItoKPa(float PSI) {
 
 String GetCurrentTime() {
   DateTime now = rtc.now();
-  
+
   char buf1[20];
   sprintf(buf1, "%02d:%02d:%02d-%02d/%02d/%02d",  now.hour(), now.minute(), now.second(), now.day(), now.month(), now.year());
 
@@ -1421,6 +1425,15 @@ void BroadCast(String Message) {
   SendItOut(Message, 1);
 }
 
+void CurrentSerialPort(int WhichPort) {
+  if (WhichPort == 0) {
+    USBSerial.println("%R,Current Port,USB");
+  }
+  else {
+    RS232.println("%R,Current Port,RS232");
+  }
+}
+
 void SendItOut(String Message, int WhichPort) {
   if (WhichPort == 0) {
     USBSerial.println(Message);
@@ -1520,7 +1533,7 @@ void GetNTCTemps(int WhichPort) {
   SendItOut("%R," + LastTimeNTCTemp + ",NTC Tempetatures,Units," + TempUnits + ",Front AC Temp,"
             + LastFrontACTemp + ",Back AC Temp," + LastBackACTemp + ",Under Awning Temp," + LastOutsideTemp + ",Back Cabin Temp,"
             + LastBackCabinTemp + ",Hallway Temp," + LastHallwayTemp + ",Freezer," + LastFreezerTemp + ",Fridge,"
-            + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp, WhichPort);
+            + LastFridgeTemp + ",Bathroom Temp," + LastBathroomTemp + ",Front Cabin Temp," + LastFrontCabinTemp, WhichPort);
 }
 
 void GetHeadUnitTemp(int WhichPort) {
@@ -2459,8 +2472,12 @@ void CommandToCall(int Index, int WhichPort) {
       GETWaterpumpsenseBoot(WhichPort);
       break;
     case 35:
-      //Status update for live system stuff 
+      //Status update for live system stuff
       OutputLiveData(WhichPort);
+      break;
+    case 36:
+      //Which port you are communicating on
+      CurrentSerialPort(WhichPort);
       break;
   }
 }
