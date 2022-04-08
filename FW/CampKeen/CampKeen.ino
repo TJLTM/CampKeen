@@ -892,7 +892,7 @@ void ReadSewageTank() {
       ShittersGettinFull = true;
       break;
     default:
-      LastGreyWater = "ERROR Check Tank:" + String(TankStatus, BIN);
+      LastSewageLevel = "ERROR Check Tank:" + String(TankStatus, BIN);
       AddWarningToList(3);
       break;
   }
