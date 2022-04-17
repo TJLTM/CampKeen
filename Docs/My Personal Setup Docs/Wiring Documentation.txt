@@ -12,11 +12,24 @@ Sewage/Grey
 -- Red/Black -- 12v Power
 
 Bathroom 
--- Red & White -- 12v Power
+-- Red & White -- 
+-- White -- 
 -- Green -- Button input
--- Black -- LED 
+-- Black -- LED GND
 
 Kitchen 
 -- Red -- Button input
--- Black -- LED
--- White & Green -- 12v Power 
+-- Black -- LED GND
+-- White & Green -- 
+-- Gren -- 
+
+
+LCD/Control panel 
+-- warning LED -- brown/white
+-- Alarm LED/Siren -- brown
+-- water source selection -- green 
+-- Alarm Reset -- orange
+-- Enable LCD -- green/white
+-- I2C SDA -- blue
+-- I2C SCL -- blue/white
+-- 5V -- orange/white
