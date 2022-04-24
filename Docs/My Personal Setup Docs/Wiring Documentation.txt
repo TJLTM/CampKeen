@@ -12,7 +12,7 @@ Sewage/Grey
 -- Red/Black -- 12v Power
 
 Bathroom 
--- Red & White -- 
+-- Red -- 
 -- White -- 
 -- Green -- Button input
 -- Black -- LED GND
@@ -20,8 +20,8 @@ Bathroom
 Kitchen 
 -- Red -- Button input
 -- Black -- LED GND
--- White & Green -- 
--- Gren -- 
+-- White -- 
+-- Green -- 
 
 
 LCD/Control panel 
