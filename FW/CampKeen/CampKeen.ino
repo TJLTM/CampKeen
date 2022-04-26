@@ -40,15 +40,15 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.0";
+const String FWVersion = "1.0.1";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
 int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
-     EnergyTimer, OutputTimer, HoldingTankTimer, LastTimeWaterWasTurnedOn, WarningBlinkTimer;
-bool WaterSourseSelection, WaterOn, LastSourceForCheck, LastWaterState , EnableACEnergyMonitoring,
+     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
+bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, ISRActionDone, LastSourceForCheck, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
 char Units;
 String TempUnits, PressureUnits;
@@ -606,31 +606,29 @@ void WaterControl() {
     TurnOnWater();
   }
 
-  //  if (abs(millis() - LastTimeWaterWasTurnedOn) > 2500 && (LastWaterState != WaterOn) ) {
-  //    LastWaterState = WaterOn;
-  //    if (WaterOn == true) {
-  //      TurnOnWater();
-  //      LastTimeWaterWasTurnedOn = millis();
-  //    }
-  //    else {
-  //      TurnOffWater();
-  //      LastTimeWaterWasTurnedOn = millis();
-  //    }
-  //  }
-
+  // need to test this and possibly set something in memory for which method is used for control
+  /*if (ISRActionDone == false) {
+    if (TurnOnWaterFromISR == true) {
+      TurnOnWater();
+    }
+    else {
+      TurnOffWater();
+    }
+    ISRActionDone = true;
+  }
+  */
 
   //Check the States of pump and or logical state and set the LEDs accordingly
   WaterLEDState();
 }
 
 void WaterButtonPressISR() {
-  Serial.println("Button Pressed");
+  ISRActionDone = false;
   if (WaterOn == false) {
-    TurnOnWater();
+    TurnOnWaterFromISR = true;
   }
   else {
-    TurnOffWater();
-    Serial.println("turning off from ISR");
+    TurnOnWaterFromISR = false;
   }
 }
 
