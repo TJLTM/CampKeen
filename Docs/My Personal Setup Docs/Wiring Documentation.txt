@@ -12,16 +12,16 @@ Sewage/Grey
 -- Red/Black -- 12v Power
 
 Bathroom 
--- Red -- 
--- White -- 
--- Green -- Button input
+-- Red -- LED Positive 
+-- White -- Button Positive
+-- Green -- Button input to CampKeen
 -- Black -- LED GND
 
 Kitchen 
--- Red -- Button input
+-- Red -- LED Positive
 -- Black -- LED GND
--- White -- 
--- Green -- 
+-- White -- Button Positive
+-- Green -- Button input to CampKeen
 
 
 LCD/Control panel 
