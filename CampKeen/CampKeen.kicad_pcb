@@ -17163,7 +17163,7 @@
   (gr_text "Bath" (at 279.268001 109.712269 180) (layer "F.SilkS") (tstamp df1e41b1-70e6-4e9c-976c-aec9e62390ea)
     (effects (font (size 0.889 0.889) (thickness 0.22225)))
   )
-  (gr_text "SO6" (at 252.598001 109.712269 180) (layer "F.SilkS") (tstamp e0ed172a-df4b-4647-8e50-f40998c306b8)
+  (gr_text "ENMON\nRLY" (at 252.566064 109.011513 180) (layer "F.SilkS") (tstamp e0ed172a-df4b-4647-8e50-f40998c306b8)
     (effects (font (size 0.889 0.889) (thickness 0.22225)))
   )
   (gr_text "LPG" (at 183.723 184.11) (layer "F.SilkS") (tstamp e0f03b95-0eb4-4fed-9b1a-3564bb334a58)
