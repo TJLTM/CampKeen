@@ -98,6 +98,7 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define Camper12VoltSensor A0
 #define RTCBattery A14
 #define EnergyMonitorCS 24
+#define EnergyMonTransformerEnable 15
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //NTC Temperature Sensors
@@ -141,7 +142,7 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 const int SpareInputs[] = {35, 33, 31, 29, 27, 25};
 const int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
 int LastInputState[] = {};
-const int SpareOutputs[] = {12, 11, 10, 9, 14, 15};
+const int SpareOutputs[] = {12, 11, 10, 9, 14};
 const int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
 const int SpareAnalog[] = {13, 15};
 const int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
@@ -185,6 +186,7 @@ void setup() {
   pinMode(WaterPumpSense, INPUT);
   pinMode(KitchWaterButton, INPUT);
   pinMode(BathroomWaterButton, INPUT);
+
 
   //Set interrupts for water control
   //attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
@@ -240,8 +242,10 @@ void setup() {
   StreamingDataUSB = GetFromEEPROMStreamOnBootUSB();
   StreamingDataRS232 = GetFromEEPROMStreamOnBootRS232();
 
+  pinMode(EnergyMonTransformerEnable, OUTPUT);
   pinMode(EnergyMonitorCS, OUTPUT);
   SetupEnergyMonitor();
+  EnablingPowerToTransformerForEnergyMonitoring();
 
   //Set Warning Array up with -1 for being cleared.
   ResetWarnings();
@@ -615,7 +619,7 @@ void WaterControl() {
       TurnOffWater();
     }
     ISRActionDone = true;
-  }
+    }
   */
 
   //Check the States of pump and or logical state and set the LEDs accordingly
@@ -689,6 +693,15 @@ void WaterLEDState() {
 //------------------------------------------------------------------
 void SetupEnergyMonitor() {
   eic.begin(EnergyMonitorCS, LineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2);
+}
+
+void EnablingPowerToTransformerForEnergyMonitoring() {
+  if (EnableACEnergyMonitoring == true) {
+    digitalWrite(EnergyMonTransformerEnable, HIGH);
+  }
+  else {
+    digitalWrite(EnergyMonTransformerEnable, LOW);
+  }
 }
 
 void EnergyMetering() {
@@ -1148,6 +1161,7 @@ int GetFromEEPROMACENMONOnBoot() {
     Value = 0;
     EEPROM.update(2, Value);
   }
+
   return Value;
 }
 
@@ -2004,6 +2018,37 @@ void SetRTCDateTime(String Value, int WhichPort) {
   }
 }
 
+void SetACEnmonOnBooot(String Value, int WhoToSet, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    if (WhoToSet == 1) {
+      EEPROM.update(2, 0);
+    }
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "ON") {
+    if (WhoToSet == 1) {
+      EEPROM.update(2, 1);
+    }
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    if (WhoToSet == 1) {
+      GETACENMONOnBoot(WhichPort);
+    }
+    GetACEnmon(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
+
 void SetACEnmon(String Value, int WhoToSet, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
@@ -2034,6 +2079,7 @@ void SetACEnmon(String Value, int WhoToSet, int WhichPort) {
   else {
     Error(4, WhichPort);
   }
+  EnablingPowerToTransformerForEnergyMonitoring();
 }
 
 void SetACFREAK(String Value, int WhichPort) {
@@ -2314,7 +2360,7 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       break;
     case 18:
       //SET ACEMON ON BOOT
-      SetACEnmon(CommandRaw, 1, WhichPort);
+      SetACEnmonOnBooot(CommandRaw, 1, WhichPort);
       break;
     case 19:
       //SET Waterpumpsense ON BOOT
