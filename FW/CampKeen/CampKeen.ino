@@ -277,6 +277,37 @@ void setup() {
 }
 
 void loop() {
+  //MainApplication();
+  Testing();
+  /*
+    Handle the Incoming commands from the Serial Ports
+    after all the other operations have been done
+  */
+  if (stringComplete) {
+    inputString = PainlessInstructionSet(inputString, 0);
+    stringComplete = false;
+  }
+
+  serialRS232();
+  if (stringCompleteRS232) {
+    stringCompleteRS232 = PainlessInstructionSet(inputStringRS232, 1);
+    stringCompleteRS232 = false;
+  }
+}
+
+
+void Testing() {
+  //ReadAllInputs();
+  //LCDControl();
+  //WaterControl();
+  HoldingTankMonitoring();
+  //ReadAllAnalog();
+  //ReadOtherTempSensors();
+  //GeneratorSensors();
+  //EnergyMetering();
+}
+
+void MainApplication() {
   /*
      All the basic functions that need to be handled
      everytime the loop comes back around
@@ -376,22 +407,6 @@ void loop() {
       GetDCBatteryVoltage(1);
       GetRTCBatteryVotlage(1);
     }
-  }
-
-
-  /*
-     Handle the Incoming commands from the Serial Ports
-     after all the other operations have been done
-  */
-  if (stringComplete) {
-    inputString = PainlessInstructionSet(inputString, 0);
-    stringComplete = false;
-  }
-
-  serialRS232();
-  if (stringCompleteRS232) {
-    stringCompleteRS232 = PainlessInstructionSet(inputStringRS232, 1);
-    stringCompleteRS232 = false;
   }
 }
 //------------------------------------------------------------------
