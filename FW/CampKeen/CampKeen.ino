@@ -308,7 +308,7 @@ void loop() {
      Generator Fuel Pressure & Temp sensors
   */
   if (abs(millis() - NTCTimer) > 3000) {
-    ReadAllAnalog();
+    //ReadAllAnalog();
     ReadOtherTempSensors();
     GeneratorSensors();
     NTCTimer = millis();
@@ -702,6 +702,8 @@ void EnablingPowerToTransformerForEnergyMonitoring() {
   else {
     digitalWrite(EnergyMonTransformerEnable, LOW);
   }
+  delay(5000);
+  SetupEnergyMonitor();
 }
 
 void EnergyMetering() {
