@@ -2924,7 +2924,7 @@
     (model "C:\\SamacSys_PCB_Library\\KiCad\\SamacSys_Parts.3dshapes\\S8411-45R.stp"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
+      (rotate (xyz -90 0 0))
     )
   )
 
@@ -3916,6 +3916,11 @@
       (net 271 "unconnected-(IC3-Pad7)") (pinfunction "ON/~{OFF}") (pintype "passive+no_connect") (tstamp 1d901cb2-360a-4708-b3ed-e4b172d3996f))
     (pad "8" smd rect locked (at 0 0 180) (size 10.41 10.800001) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 1 "GND") (pinfunction "EP") (pintype "passive") (tstamp 8edcf05f-b0d5-49a3-b916-fcd5f9b197b1))
+    (model "${KICAD6_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/TO-263-7_TabPin8.wrl"
+      (offset (xyz 1.6764 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 180))
+    )
   )
 
   (footprint "Inductor_THT:L_Axial_L9.5mm_D4.0mm_P15.24mm_Horizontal_Fastron_SMCC" (layer "F.Cu")
