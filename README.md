@@ -36,3 +36,6 @@ currently working on https://github.com/TJLTM/CampKeen-HomeAssistant-Custom-Inte
 
 FUTURE: 
 Better docs with installatioin pictures for my setup. 
+
+![alt text](https://github.com/TJLTM/CampKeen/blob/master/Docs/Pictures/3DR1.PNG)
+![alt text](https://github.com/TJLTM/CampKeen/blob/master/Docs/Pictures/3Dr2.PNG)
