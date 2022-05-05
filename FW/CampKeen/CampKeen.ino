@@ -1514,7 +1514,7 @@ void OutputLiveData(int WhichPort) {
 }
 
 void GetWaterSource(int WhichPort) {
-  SendItOut("%R," + GetCurrentTime() + ",Water Source," + LastSource, WhichPort);
+  SendItOut("%R,Water Source," + LastSource, WhichPort);
 }
 
 void GetWaterLevel(int WhichPort) {
@@ -1562,10 +1562,15 @@ void GetEnergyStatus(int WhichPort) {
   if (LastTimeACVoltage == "" || EnableACEnergyMonitoring == false) {
     LastTimeACVoltage = GetCurrentTime();
   }
-  SendItOut("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
-            ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
-            + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
-            + LastACHarmonic + ",W(harmonic)", WhichPort);
+  if (EnableACEnergyMonitoring == true) {
+    SendItOut("%R," + LastTimeACVoltage + ",Energy Monitor," + LastACVoltage + ",V," + LastACCurrent +
+              ",A,"  + LastPowerFactor + ",PF," + LastACRealPower + ",W{real)," + LastFreq + ",Hz," + LastACWatts + ",W(total),"
+              + LastACReactive + ",var(reactive),"  + LastACApparent + ",VA(apparent)," + LastACFundimental + ",W(fundimental),"
+              + LastACHarmonic + ",W(harmonic)", WhichPort);
+  }
+  else {
+    SendItOut("%R," + LastTimeACVoltage + ",Energy Monitor,disabled" , WhichPort);
+  }
 }
 
 void GetUnits(int WhichPort) {
@@ -1586,7 +1591,7 @@ void GetWaterPumpSense(int WhichPort) {
 }
 
 void GetWaterState(int WhichPort) {
-  SendItOut("%R,Water," + GetCurrentTime() + "," + StatesForOutput[WaterOn], WhichPort);
+  SendItOut("%R,Water," + StatesForOutput[WaterOn], WhichPort);
 }
 
 void GetSystemTime(int WhichPort) {
@@ -2018,62 +2023,45 @@ void SetRTCDateTime(String Value, int WhichPort) {
   }
 }
 
-void SetACEnmonOnBooot(String Value, int WhoToSet, int WhichPort) {
+void SetACEnmonOnBooot(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
-    if (WhoToSet == 1) {
-      EEPROM.update(2, 0);
-    }
+    EEPROM.update(2, 0);
     CorrectParam = true;
   }
 
   if (ThingToTest == "ON") {
-    if (WhoToSet == 1) {
-      EEPROM.update(2, 1);
-    }
+    EEPROM.update(2, 1);
     CorrectParam = true;
   }
 
   if (CorrectParam == true) {
-    if (WhoToSet == 1) {
-      GETACENMONOnBoot(WhichPort);
-    }
-    GetACEnmon(WhichPort);
+    GETACENMONOnBoot(WhichPort);
   }
   else {
     Error(4, WhichPort);
   }
 }
 
-
-void SetACEnmon(String Value, int WhoToSet, int WhichPort) {
+void SetACEnmon(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
     EnableACEnergyMonitoring = false;
-    if (WhoToSet == 1) {
-      EEPROM.update(2, 0);
-    }
     CorrectParam = true;
   }
 
   if (ThingToTest == "ON") {
     EnableACEnergyMonitoring = true;
-    if (WhoToSet == 1) {
-      EEPROM.update(2, 1);
-    }
     CorrectParam = true;
   }
 
   if (CorrectParam == true) {
-    if (WhoToSet == 1) {
-      GETACENMONOnBoot(WhichPort);
-    }
     GetACEnmon(WhichPort);
   }
   else {
@@ -2321,7 +2309,7 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       break;
     case 8:
       //Enable/disable AC energy Monitoring
-      SetACEnmon(CommandRaw, 0, WhichPort);
+      SetACEnmon(CommandRaw, WhichPort);
       break;
     case 9:
       //SET AC FREQUNECY 50/60 Hz
@@ -2360,7 +2348,7 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       break;
     case 18:
       //SET ACEMON ON BOOT
-      SetACEnmonOnBooot(CommandRaw, 1, WhichPort);
+      SetACEnmonOnBooot(CommandRaw, WhichPort);
       break;
     case 19:
       //SET Waterpumpsense ON BOOT
