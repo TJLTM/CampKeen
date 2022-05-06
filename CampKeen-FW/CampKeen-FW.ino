@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.1";
+const String FWVersion = "1.0.2";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
@@ -186,10 +186,10 @@ void setup() {
   pinMode(KitchWaterButton, INPUT);
   pinMode(BathroomWaterButton, INPUT);
 
-
   //Set interrupts for water control
   //attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
   //attachInterrupt(digitalPinToInterrupt(BathroomWaterButton), WaterButtonPressISR, RISING);
+  //interrupts();
 
   pinMode(LEDBacklightOut, OUTPUT);
   pinMode(TankPowerRelay, OUTPUT);
@@ -330,7 +330,7 @@ void MainApplication() {
      Generator Fuel Pressure & Temp sensors
   */
   if (abs(millis() - NTCTimer) > 3000) {
-    //ReadAllAnalog();
+    ReadAllAnalog();
     ReadOtherTempSensors();
     GeneratorSensors();
     NTCTimer = millis();
