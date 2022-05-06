@@ -48,7 +48,7 @@ int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
-bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, ISRActionDone, LastSourceForCheck, EnableACEnergyMonitoring,
+bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, ISRActionDone, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
 char Units;
 String TempUnits, PressureUnits;
@@ -60,7 +60,6 @@ const String StatesForOutput[2] = {"Off", "On"};
 */
 //Water and LPG
 String LastTimeWaterSource, LastTimeWaterLevel = "";
-String LastSource = "Tank";
 String LastWaterLevel = "Empty";
 int LastLPGLevel = 0;
 //Holding tanks
@@ -244,7 +243,6 @@ void setup() {
 
   pinMode(EnergyMonTransformerEnable, OUTPUT);
   pinMode(EnergyMonitorCS, OUTPUT);
-  SetupEnergyMonitor();
   EnablingPowerToTransformerForEnergyMonitoring();
 
   //Set Warning Array up with -1 for being cleared.
@@ -277,8 +275,8 @@ void setup() {
 }
 
 void loop() {
-  //MainApplication();
-  Testing();
+  MainApplication();
+  //Testing();
   /*
     Handle the Incoming commands from the Serial Ports
     after all the other operations have been done
@@ -297,14 +295,7 @@ void loop() {
 
 
 void Testing() {
-  //ReadAllInputs();
-  //LCDControl();
-  //WaterControl();
-  HoldingTankMonitoring();
-  //ReadAllAnalog();
-  //ReadOtherTempSensors();
-  //GeneratorSensors();
-  //EnergyMetering();
+
 }
 
 void MainApplication() {
@@ -409,6 +400,8 @@ void MainApplication() {
     }
   }
 }
+
+
 //------------------------------------------------------------------
 //LCD
 //------------------------------------------------------------------
@@ -592,14 +585,12 @@ void LCDDisplay() {
 //------------------------------------------------------------------
 void WaterControl() {
   //Read Current Water Source Selection
-  LastSourceForCheck = WaterSourseSelection;
+  bool LastSourceForCheck = WaterSourseSelection;
   if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
-    LastSource = "City";
   }
   else {
     WaterSourseSelection = false; //Tank
-    LastSource = "Tank";
   }
 
   if (WaterOn == true && (LastSourceForCheck != WaterSourseSelection)) {
@@ -615,13 +606,12 @@ void WaterControl() {
   }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
-  if (WaterOn == true && (abs(millis() - WaterTimer) > (long(WaterDurationInSeconds) * 1000))) {
+  unsigned long WaterDuration = WaterDurationInSeconds * 1000;
+  if (WaterOn == true && (abs(millis() - WaterTimer) > WaterDuration)) {
     TurnOffWater();
   }
   //  //Check to see if any of the buttons are pressed
-  int KicthenButtonState = digitalRead(KitchWaterButton);
-  int BathroomButtonState = digitalRead(BathroomWaterButton);
-  if (KicthenButtonState == HIGH || BathroomButtonState == HIGH) {
+  if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
     TurnOnWater();
   }
 
@@ -713,12 +703,12 @@ void SetupEnergyMonitor() {
 void EnablingPowerToTransformerForEnergyMonitoring() {
   if (EnableACEnergyMonitoring == true) {
     digitalWrite(EnergyMonTransformerEnable, HIGH);
+    delay(5000);
+    SetupEnergyMonitor();
   }
   else {
     digitalWrite(EnergyMonTransformerEnable, LOW);
   }
-  delay(5000);
-  SetupEnergyMonitor();
 }
 
 void EnergyMetering() {
@@ -898,6 +888,10 @@ void ReadSewageTank() {
   bitWrite(TankStatus, 2, digitalRead(S34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(S44)); //Full
 
+  Serial.print("Sewage Tank Reading:");
+  Serial.print(TankStatus);
+  Serial.print("   ");
+
   switch (TankStatus) {
     case 0:
       LastSewageLevel = "Empty";
@@ -926,7 +920,8 @@ void ReadSewageTank() {
   }
 
   LastTimeSewageLevel = GetCurrentTime();
-
+  Serial.println(LastSewageLevel);
+  Serial.println();
 
   if (ShittersGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
@@ -945,6 +940,10 @@ void ReadGreyTank() {
   bitWrite(TankStatus, 1, digitalRead(G12)); //Half
   bitWrite(TankStatus, 2, digitalRead(G34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(G44)); //Full
+
+  Serial.print("Grey Tank Reading:");
+  Serial.print(TankStatus);
+  Serial.print("   ");
 
   switch (TankStatus) {
     case 0:
@@ -974,6 +973,8 @@ void ReadGreyTank() {
   }
   LastTimeGreyWater = GetCurrentTime();
 
+  Serial.println(LastGreyWater);
+  Serial.println();
   if (GreyGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
     digitalWrite(GreyWaterPower, LOW);
@@ -1531,7 +1532,12 @@ void OutputLiveData(int WhichPort) {
 }
 
 void GetWaterSource(int WhichPort) {
-  SendItOut("%R,Water Source," + LastSource, WhichPort);
+  if (WaterSourseSelection == true) {
+    SendItOut("%R,Water Source,City", WhichPort);
+  }
+  else {
+    SendItOut("%R,Water Source,Tank", WhichPort);
+  }
 }
 
 void GetWaterLevel(int WhichPort) {
