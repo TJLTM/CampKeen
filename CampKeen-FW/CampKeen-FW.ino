@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.2";
+const String FWVersion = "1.0.3";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
@@ -601,8 +601,8 @@ void WaterControl() {
   }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
-  unsigned long WaterDuration = WaterDurationInSeconds * 1000;
-  if (WaterOn == true && (abs(millis() - WaterTimer) > WaterDuration)) {
+  long Delta = abs(millis() - WaterTimer) / 1000;
+  if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
     TurnOffWater();
   }
   //  //Check to see if any of the buttons are pressed
@@ -1830,13 +1830,17 @@ void SetWater(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
   if (ThingToTest == "OFF") {
     TurnOffWater();
+    CorrectParam = true;
   }
   if (ThingToTest == "ON") {
     TurnOnWater();
+    CorrectParam = true;
   }
-  else {
+
+  if (CorrectParam == false){
     Error(4, WhichPort);
   }
 }
