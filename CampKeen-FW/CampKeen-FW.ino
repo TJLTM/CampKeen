@@ -276,7 +276,6 @@ void setup() {
 
 void loop() {
   MainApplication();
-  //Testing();
   /*
     Handle the Incoming commands from the Serial Ports
     after all the other operations have been done
@@ -293,10 +292,6 @@ void loop() {
   }
 }
 
-
-void Testing() {
-
-}
 
 void MainApplication() {
   /*
@@ -888,9 +883,9 @@ void ReadSewageTank() {
   bitWrite(TankStatus, 2, digitalRead(S34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(S44)); //Full
 
-  Serial.print("Sewage Tank Reading:");
-  Serial.print(TankStatus);
-  Serial.print("   ");
+  //Serial.print("Sewage Tank Reading:");
+  //Serial.print(TankStatus);
+  //Serial.print("   ");
 
   switch (TankStatus) {
     case 0:
@@ -915,13 +910,13 @@ void ReadSewageTank() {
       break;
     default:
       LastSewageLevel = "ERROR Check Tank:" + String(TankStatus, BIN);
-      AddWarningToList(3);
+      AddWarningToList(4);
       break;
   }
 
   LastTimeSewageLevel = GetCurrentTime();
-  Serial.println(LastSewageLevel);
-  Serial.println();
+  //Serial.println(LastSewageLevel);
+  //Serial.println();
 
   if (ShittersGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
@@ -941,9 +936,9 @@ void ReadGreyTank() {
   bitWrite(TankStatus, 2, digitalRead(G34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(G44)); //Full
 
-  Serial.print("Grey Tank Reading:");
-  Serial.print(TankStatus);
-  Serial.print("   ");
+  //Serial.print("Grey Tank Reading:");
+  //Serial.print(TankStatus);
+  //Serial.print("   ");
 
   switch (TankStatus) {
     case 0:
@@ -973,8 +968,8 @@ void ReadGreyTank() {
   }
   LastTimeGreyWater = GetCurrentTime();
 
-  Serial.println(LastGreyWater);
-  Serial.println();
+  //Serial.println(LastGreyWater);
+  //Serial.println();
   if (GreyGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
     digitalWrite(GreyWaterPower, LOW);
