@@ -117,6 +117,24 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define AlarmReset 3
 //-----------------------------------------------------------
 //-----------------------------------------------------------
+// Spare Inputs Outputs and Analog
+#define SpareInput1 35
+#define SpareInput2 33
+#define SpareInput3 31
+#define SpareInput4 29
+#define SpareInput5 27
+#define SpareInput6 25
+
+#define SpareOutput1 12
+#define SpareOutput2 11
+#define SpareOutput3 10
+#define SpareOutput4 9
+#define SpareOutput5 14
+
+#define AUX1 13
+#define AUX2 15
+//-----------------------------------------------------------
+//-----------------------------------------------------------
 //Water Control / Tanks and LPG Tank
 #define LPGSensor A1
 #define WaterTankSensor A2
@@ -278,7 +296,6 @@ void MainApplication() {
   WaterControl();
   HoldingTankMonitoring();
 
-
   /*
      Handle reseting the warnings and alarms
      If reset High warnings/alarms are
@@ -290,7 +307,6 @@ void MainApplication() {
   else {
     Warning();
   }
-
 
   /*
      Read Sensors at 3 Second intervals
@@ -312,7 +328,6 @@ void MainApplication() {
     }
   }
 
-
   /*
      Read Energy Montioring at 10 Second Intervals if
      enabled and mmodule is installed
@@ -327,7 +342,6 @@ void MainApplication() {
       GetEnergyStatus(1);
     }
   }
-
 
   /*
      Read Sensors at 30 Min Intervals
@@ -348,7 +362,6 @@ void MainApplication() {
     }
   }
 
-
   /*
       Read Sensors at 5 Min Intervals
       Sensors to be read:
@@ -368,7 +381,6 @@ void MainApplication() {
     }
   }
 }
-
 
 //------------------------------------------------------------------
 //LCD
