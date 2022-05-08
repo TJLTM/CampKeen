@@ -18,15 +18,16 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?"
                            };
-char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ", 
-                             "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION", 
+char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
+                             "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 int DisplayCounter = 0;
-#define LCDEnable 41
+//#define LCDEnable 41
+#define LCDEnable 33
 #define LCDPowerOut 23
 //-----------------------------------------------------------
 // ATM90E32 energy monitor
@@ -38,7 +39,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.3";
+const String FWVersion = "1.0.5";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
@@ -46,11 +47,11 @@ int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
-bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, ISRActionDone, EnableACEnergyMonitoring,
+bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
+bool ISRActionDone = true;
 char Units;
 String TempUnits, PressureUnits;
-const String StatesForOutput[2] = {"Off", "On"};
 //-----------------------------------------------------------
 /*
    All the Stored Values and Times to have states
@@ -119,7 +120,7 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 //-----------------------------------------------------------
 // Spare Inputs Outputs and Analog
 #define SpareInput1 35
-#define SpareInput2 33
+//#define SpareInput2 33
 #define SpareInput3 31
 #define SpareInput4 29
 #define SpareInput5 27
@@ -181,9 +182,9 @@ void setup() {
   pinMode(BathroomWaterButton, INPUT);
 
   //Set interrupts for water control
-  //attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
-  //attachInterrupt(digitalPinToInterrupt(BathroomWaterButton), WaterButtonPressISR, RISING);
-  //interrupts();
+//  attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
+//  attachInterrupt(digitalPinToInterrupt(BathroomWaterButton), WaterButtonPressISR, RISING);
+//  interrupts();
 
   pinMode(LEDBacklightOut, OUTPUT);
   pinMode(TankPowerRelay, OUTPUT);
@@ -596,30 +597,28 @@ void WaterControl() {
     TurnOnWater();
   }
 
-  // need to test this and possibly set something in memory for which method is used for control
-  /*if (ISRActionDone == false) {
-    if (TurnOnWaterFromISR == true) {
-      TurnOnWater();
-    }
-    else {
-      TurnOffWater();
-    }
-    ISRActionDone = true;
-    }
-  */
+//  Serial.print("ISRActionDone:");
+//  Serial.println(ISRActionDone);
+//  if (ISRActionDone == false) {
+//    Serial.println("getting in here"); 
+//    if (WaterOn == true) {
+//      TurnOffWater();
+//    }
+//    else {
+//      TurnOnWater();
+//    }
+//    ISRActionDone = true;
+//    interrupts();
+//  }
+
 
   //Check the States of pump and or logical state and set the LEDs accordingly
   WaterLEDState();
 }
 
 void WaterButtonPressISR() {
+  noInterrupts();
   ISRActionDone = false;
-  if (WaterOn == false) {
-    TurnOnWaterFromISR = true;
-  }
-  else {
-    TurnOnWaterFromISR = false;
-  }
 }
 
 void TurnOnWater() {
@@ -1269,6 +1268,14 @@ unsigned short GetFromEEPROMACFREQ() {
 //------------------------------------------------------------------
 void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
 
+String StatesForOutput(int State) {
+  String Value = "Off";
+  if (State == 1) {
+    Value = "On";
+  }
+  return Value;
+}
+
 void RebootDisBitch() {
   BroadCast("%R," + GetCurrentTime() + ",Rebooting");
   delay(2000);
@@ -1536,16 +1543,16 @@ void GetDeviceInfo(int WhichPort) {
 }
 
 void GetStreamingState(int WhichPort) {
-  SendItOut("%R,StreamingData,USB," + StatesForOutput[StreamingDataUSB] + ",RS232," +
-            StatesForOutput[StreamingDataRS232] , WhichPort);
+  SendItOut("%R,StreamingData,USB," + StatesForOutput(StreamingDataUSB) + ",RS232," +
+            StatesForOutput(StreamingDataRS232) , WhichPort);
 }
 
 void GetWaterPumpSense(int WhichPort) {
-  SendItOut("%R,WaterPumpSense," + StatesForOutput[UseWaterPumpSense], WhichPort);
+  SendItOut("%R,WaterPumpSense," + StatesForOutput(UseWaterPumpSense), WhichPort);
 }
 
 void GetWaterState(int WhichPort) {
-  SendItOut("%R,Water," + StatesForOutput[WaterOn], WhichPort);
+  SendItOut("%R,Water," + StatesForOutput(WaterOn), WhichPort);
 }
 
 void GetSystemTime(int WhichPort) {
@@ -1553,7 +1560,7 @@ void GetSystemTime(int WhichPort) {
 }
 
 void GetACEnmon(int WhichPort) {
-  SendItOut("%R,AC Energy Monitoring," + StatesForOutput[EnableACEnergyMonitoring], WhichPort);
+  SendItOut("%R,AC Energy Monitoring," + StatesForOutput(EnableACEnergyMonitoring), WhichPort);
 }
 
 void GetACVOLTAGEGAIN(int WhichPort) {
@@ -1590,16 +1597,16 @@ void GetWaterDuration(int WhichPort) {
 }
 
 void GetStreamingOnBoot(int WhichPort) {
-  SendItOut("%R,Streaming Data on boot,USB," + StatesForOutput[GetFromEEPROMStreamOnBootUSB()] + ",RS232," +
-            StatesForOutput[GetFromEEPROMStreamOnBootRS232()] , WhichPort);
+  SendItOut("%R,Streaming Data on boot,USB," + StatesForOutput(GetFromEEPROMStreamOnBootUSB()) + ",RS232," +
+            StatesForOutput(GetFromEEPROMStreamOnBootRS232()) , WhichPort);
 }
 
 void GETACENMONOnBoot(int WhichPort) {
-  SendItOut("%R,ACENMON on boot," + StatesForOutput[GetFromEEPROMACENMONOnBoot()], WhichPort);
+  SendItOut("%R,ACENMON on boot," + StatesForOutput(GetFromEEPROMACENMONOnBoot()), WhichPort);
 }
 
 void GETWaterpumpsenseBoot(int WhichPort) {
-  SendItOut("%R,Water Pump Sense on boot," + StatesForOutput[GetFromEEPROMWaterPumpSenseOnBoot()], WhichPort);
+  SendItOut("%R,Water Pump Sense on boot," + StatesForOutput(GetFromEEPROMWaterPumpSenseOnBoot()), WhichPort);
 }
 //------------------------------------------------------------------
 //Alarm and Warnings
@@ -1776,7 +1783,7 @@ void SetWater(String Value, int WhichPort) {
     CorrectParam = true;
   }
 
-  if (CorrectParam == false){
+  if (CorrectParam == false) {
     Error(4, WhichPort);
   }
 }
