@@ -391,6 +391,7 @@ void LCDControl() {
     if (LCDSetup == false) {
       delay(250);
       SetupLCD();
+      delay(250);
     }
     LCDOutput();
   }
