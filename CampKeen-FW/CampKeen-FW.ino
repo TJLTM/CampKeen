@@ -293,7 +293,7 @@ void MainApplication() {
      All the basic functions that need to be handled
      everytime the loop comes back around
   */
-  LCDControl();
+  //LCDControl();
   WaterControl();
   HoldingTankMonitoring();
 
