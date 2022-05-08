@@ -18,11 +18,9 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?"
                            };
-char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETOUTPUT",
-                             "READINPUT", "SETTIME", "GETOUTPUT", "SETACENMON", "SETACFREQ", "SETACPGAGAIN",
-                             "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN",
-                             "SETWATERDURATION", "READANALOG", "SETSTREAMINGONBOOT", "SETACENMONONBOOT",
-                             "SETWATERPUMPSENSEONBOOT"
+char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ", 
+                             "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION", 
+                             "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -133,20 +131,6 @@ Adafruit_MAX31865 GenEnclosure = Adafruit_MAX31865(RTDGenEnclosure);
 #define WaterPumpOut 26
 //-----------------------------------------------------------
 //-----------------------------------------------------------
-//Spare IO and Analog
-/*
-   Spare Inputs are indexed by their number +1 because I don't
-   want to start at zero.
-*/
-const int SpareInputs[] = {35, 33, 31, 29, 27, 25};
-const int SpareInputSize = sizeof(SpareInputs) / sizeof(int);
-int LastInputState[] = {};
-const int SpareOutputs[] = {12, 11, 10, 9, 14};
-const int SpareOutputSize = sizeof(SpareOutputs) / sizeof(int);
-const int SpareAnalog[] = {13, 15};
-const int SpareAnalogSize = sizeof(SpareAnalog) / sizeof(int);
-//-----------------------------------------------------------
-//-----------------------------------------------------------
 // Holding Tank
 bool ShittersGettinFull, GreyGettinFull, HoldingTankAlarm = false;
 //SewageTankLevelPins
@@ -171,14 +155,6 @@ void setup() {
 
   pinMode(LCDEnable, INPUT);
   pinMode(LCDPowerOut, OUTPUT);
-
-  for (int i = 0; i <= SpareInputSize; i++) {
-    pinMode(SpareInputs[i], INPUT);
-    LastInputState[i] = digitalRead(SpareInputs[i]);
-  }
-  for (int i = 0; i <= SpareOutputSize; i++) {
-    pinMode(SpareOutputs[i], OUTPUT);
-  }
 
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
@@ -298,7 +274,6 @@ void MainApplication() {
      All the basic functions that need to be handled
      everytime the loop comes back around
   */
-  ReadAllInputs();
   LCDControl();
   WaterControl();
   HoldingTankMonitoring();
@@ -320,12 +295,10 @@ void MainApplication() {
   /*
      Read Sensors at 3 Second intervals
      Sensors to be read:
-     Spare Analog
      NTC Temp sensors
      Generator Fuel Pressure & Temp sensors
   */
   if (abs(millis() - NTCTimer) > 3000) {
-    ReadAllAnalog();
     ReadOtherTempSensors();
     GeneratorSensors();
     NTCTimer = millis();
@@ -1340,32 +1313,6 @@ void SetUnitsForOutput() {
   }
 }
 
-void ReadAllInputs() {
-  for (int i = 1; i <= SpareInputSize; i++) {
-    int CurrentInputRead = ReadInput(SpareInputs[i]);
-    if (CurrentInputRead != LastInputState[i]) {
-      LastInputState[i] = CurrentInputRead;
-      if (StreamingDataUSB == true) {
-        PrintInputState(i, CurrentInputRead, 0);
-      }
-      if (StreamingDataRS232 == true) {
-        PrintInputState(i, CurrentInputRead, 1);
-      }
-
-    }
-  }
-}
-
-int ReadInput(int Number) {
-  int Value = digitalRead(SpareInputs[Number]);
-  return Value;
-}
-
-int ReadOutput(int Number) {
-  int Value = digitalRead(SpareOutputs[Number - 1]);
-  return Value;
-}
-
 float ReadAnalog(int Samples, int PinNumber) {
   long Sum = 0;
   float Value = 0;
@@ -1376,27 +1323,6 @@ float ReadAnalog(int Samples, int PinNumber) {
   return Value;
 }
 
-void ReadAllAnalog() {
-  if (StreamingDataUSB == true || StreamingDataRS232 == true) {
-    for (int i = 0; i < SpareAnalogSize; i++) {
-      float CurrentAnalogRead = ReadAnalog(25, SpareAnalog[i]) * ConversionFactor;
-      if (StreamingDataUSB == true) {
-        PrintAnalogValue(i, CurrentAnalogRead, 0);
-      }
-      if (StreamingDataRS232 == true) {
-        PrintAnalogValue(i, CurrentAnalogRead, 1);
-      }
-    }
-  }
-}
-
-void ReadAllAnalogOneShot(int WhichOne) {
-  for (int i = 0; i < SpareAnalogSize; i++) {
-    float CurrentAnalogRead = ReadAnalog(25, SpareAnalog[i]) * ConversionFactor;
-    PrintAnalogValue(i, CurrentAnalogRead, WhichOne);
-  }
-}
-
 void ForceCompleteUpdateOfAllStates() {
   ReadGreyTank();
   ReadSewageTank();
@@ -1404,7 +1330,6 @@ void ForceCompleteUpdateOfAllStates() {
   ReadBatteryVoltages();
   ReadWaterAndLPG();
   GeneratorSensors();
-  ReadAllInputs();
   if (EnableACEnergyMonitoring == true) {
     EnergyMetering();
   }
@@ -1500,7 +1425,6 @@ void OutputAllData(int WhichPort) {
   GetACCT2GAIN(WhichPort);
   GetStreamingOnBoot(WhichPort);
   GetStreamingState(WhichPort);
-  ReadAllAnalogOneShot(WhichPort);
   GETACENMONOnBoot(WhichPort);
   GETWaterpumpsenseBoot(WhichPort);
 }
@@ -1521,7 +1445,6 @@ void OutputLiveData(int WhichPort) {
   GetEnergyStatus(WhichPort);
   GetStreamingOnBoot(WhichPort);
   GetStreamingState(WhichPort);
-  ReadAllAnalogOneShot(WhichPort);
   GETACENMONOnBoot(WhichPort);
   GETWaterpumpsenseBoot(WhichPort);
 }
@@ -1898,86 +1821,6 @@ void SetStreamingData(String Value, int WhoToSet, int WhichPort) {
   }
 }
 
-void SetOutputState(String Value, int WhichPort) {
-  int Index = Value.indexOf("*");
-  int End = Value.indexOf("\r");
-  String Start = Value.substring(Index + 1, End - 1);
-  int SecondParam = Start.indexOf("*");
-  int Number = Start.substring(0, SecondParam).toInt();
-  String State = Start.substring(SecondParam + 1);
-  if (Number > 0 && Number <= (SpareOutputSize)) {
-    bool CorrectParam = false;
-    if (State == "OFF") {
-      digitalWrite(SpareOutputs[Number - 1], LOW);
-      CorrectParam = true;
-    }
-    if (State == "ON") {
-      digitalWrite(SpareOutputs[Number - 1], HIGH);
-      CorrectParam = true;
-    }
-    if (CorrectParam == true) {
-      PrinOutputState(Number, WhichPort);
-    }
-    else {
-      Error(4, WhichPort);
-    }
-  }
-  else {
-    Error(4, WhichPort);
-  }
-}
-
-void GetOutputState(String Value, int WhichPort) {
-  int Index = Value.indexOf("*");
-  int End = Value.indexOf("\r");
-  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
-  if (ThingToTest > 0 && ThingToTest <= (SpareOutputSize)) {
-    PrinOutputState(ThingToTest, WhichPort);
-  }
-  else {
-    Error(4, WhichPort);
-  }
-}
-
-void PrinOutputState(int Output, int WhichPort) {
-  SendItOut("%R," + GetCurrentTime() + ",Output," + Output + "," + StatesForOutput[ReadOutput(Output)], WhichPort);
-}
-
-void ReadInputState(String Value, int WhichPort) {
-  int Index = Value.indexOf("*");
-  int End = Value.indexOf("\r");
-  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
-  if (ThingToTest > 0 && ThingToTest <= (SpareInputSize)) {
-    int CurrentInputRead = ReadInput(ThingToTest);
-    PrintInputState(ThingToTest, CurrentInputRead, WhichPort);
-  }
-  else {
-    Error(4, WhichPort);
-  }
-}
-
-void PrintInputState(int Input, int CurrentInputRead, int WhichPort) {
-  SendItOut("%R," + GetCurrentTime() + ",Input," + Input + "," + StatesForOutput[CurrentInputRead], WhichPort);
-}
-
-void ReadAnalogInputs(String Value, int WhichPort) {
-  int Index = Value.indexOf("*");
-  int End = Value.indexOf("\r");
-  int ThingToTest = (Value.substring(Index + 1, End - 1).toInt());
-  if (ThingToTest > 0 && ThingToTest <= (SpareAnalogSize)) {
-    float CurrentAnalogRead = ReadAnalog(25, SpareAnalog[ThingToTest]) * ConversionFactor;;
-    PrintAnalogValue(ThingToTest, CurrentAnalogRead, WhichPort);
-  }
-  else {
-    Error(4, WhichPort);
-  }
-}
-
-void PrintAnalogValue(int AnalogNumber, float Value, int WhichPort) {
-  String Message = "%R," + GetCurrentTime() + ",Analog,Units,V," + String(AnalogNumber + 1) + "," + String(Value);
-  SendItOut(Message, WhichPort);
-}
-
 void SetRTCDateTime(String Value, int WhichPort) {
   // need to set Year Month Day Hour Min Second
   //rtc.adjust(DateTime(year, month, day, hour, minute, seconds));
@@ -2314,65 +2157,49 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       SetStreamingData(CommandRaw, 0, WhichPort);
       break;
     case 4:
-      //Set Output State
-      SetOutputState(CommandRaw, WhichPort);
-      break;
-    case 5:
-      //Read Input State
-      ReadInputState(CommandRaw, WhichPort);
-      break;
-    case 6:
       //Set RTC Datetime
       SetRTCDateTime(CommandRaw, WhichPort);
       break;
-    case 7:
-      //Read OutputSate
-      GetOutputState(CommandRaw, WhichPort);
-      break;
-    case 8:
+    case 5:
       //Enable/disable AC energy Monitoring
       SetACEnmon(CommandRaw, WhichPort);
       break;
-    case 9:
+    case 6:
       //SET AC FREQUNECY 50/60 Hz
       SetACFREAK(CommandRaw, WhichPort);
       break;
-    case 10:
+    case 7:
       //SET AC PGAGAIN
       SetACPGAGAIN(CommandRaw, WhichPort);
       break;
-    case 11:
+    case 8:
       //SET AC VOLTAGEGAIN
       SetACVOLTAGEGAIN(CommandRaw, WhichPort);
       break;
-    case 12:
+    case 9:
       SetACLEGS(CommandRaw, WhichPort);
       break;
-    case 13:
+    case 10:
       //SET AC CT1 GAIN
       SetACCT1GAIN(CommandRaw, WhichPort);
       break;
-    case 14:
+    case 11:
       //SET AC CT2 GAIN
       SetACCT2GAIN(CommandRaw, WhichPort);
       break;
-    case 15:
+    case 12:
       //Water Duration
       SetWaterDurationInSeconds(CommandRaw, WhichPort);
       break;
-    case 16:
-      //AnalogInputs
-      ReadAnalogInputs(CommandRaw, WhichPort);
-      break;
-    case 17:
+    case 13:
       //SET STREAMING ON BOOT
       SetStreamingData(CommandRaw, 1, WhichPort);
       break;
-    case 18:
+    case 14:
       //SET ACEMON ON BOOT
       SetACEnmonOnBooot(CommandRaw, WhichPort);
       break;
-    case 19:
+    case 15:
       //SET Waterpumpsense ON BOOT
       SetWaterPumpSenseOverRide(CommandRaw, 1, WhichPort);
       break;
