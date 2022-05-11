@@ -16,7 +16,8 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?"
+                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
+                            "ALARM?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
@@ -41,7 +42,7 @@ RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
 const String FWVersion = "1.0.5";
 const float ConversionFactor = 5.0 / 1023;
-bool WarningActive = false;
+bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
 int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
@@ -182,9 +183,9 @@ void setup() {
   pinMode(BathroomWaterButton, INPUT);
 
   //Set interrupts for water control
-//  attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
-//  attachInterrupt(digitalPinToInterrupt(BathroomWaterButton), WaterButtonPressISR, RISING);
-//  interrupts();
+  //  attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
+  //  attachInterrupt(digitalPinToInterrupt(BathroomWaterButton), WaterButtonPressISR, RISING);
+  //  interrupts();
 
   pinMode(LEDBacklightOut, OUTPUT);
   pinMode(TankPowerRelay, OUTPUT);
@@ -597,19 +598,19 @@ void WaterControl() {
     TurnOnWater();
   }
 
-//  Serial.print("ISRActionDone:");
-//  Serial.println(ISRActionDone);
-//  if (ISRActionDone == false) {
-//    Serial.println("getting in here"); 
-//    if (WaterOn == true) {
-//      TurnOffWater();
-//    }
-//    else {
-//      TurnOnWater();
-//    }
-//    ISRActionDone = true;
-//    interrupts();
-//  }
+  //  Serial.print("ISRActionDone:");
+  //  Serial.println(ISRActionDone);
+  //  if (ISRActionDone == false) {
+  //    Serial.println("getting in here");
+  //    if (WaterOn == true) {
+  //      TurnOffWater();
+  //    }
+  //    else {
+  //      TurnOnWater();
+  //    }
+  //    ISRActionDone = true;
+  //    interrupts();
+  //  }
 
 
   //Check the States of pump and or logical state and set the LEDs accordingly
@@ -1548,7 +1549,7 @@ void GetStreamingState(int WhichPort) {
 }
 
 void GetWaterPumpSense(int WhichPort) {
-  SendItOut("%R,WaterPumpSense," + StatesForOutput(UseWaterPumpSense), WhichPort);
+  SendItOut("%R,Water Pump Sense," + StatesForOutput(UseWaterPumpSense), WhichPort);
 }
 
 void GetWaterState(int WhichPort) {
@@ -1602,11 +1603,20 @@ void GetStreamingOnBoot(int WhichPort) {
 }
 
 void GETACENMONOnBoot(int WhichPort) {
-  SendItOut("%R,ACENMON on boot," + StatesForOutput(GetFromEEPROMACENMONOnBoot()), WhichPort);
+  SendItOut("%R,AC Energy Monitoring on boot," + StatesForOutput(GetFromEEPROMACENMONOnBoot()), WhichPort);
 }
 
 void GETWaterpumpsenseBoot(int WhichPort) {
   SendItOut("%R,Water Pump Sense on boot," + StatesForOutput(GetFromEEPROMWaterPumpSenseOnBoot()), WhichPort);
+}
+
+void GetAlarmStatus(int WhichPort) {
+  String Message = "%R," + GetCurrentTime() + ",ALARM,Cleared";
+  if (AlarmActive == true) {
+    Message = "%R," + GetCurrentTime() + ",ALARM,Active";
+  }
+
+  SendItOut(Message, WhichPort);
 }
 //------------------------------------------------------------------
 //Alarm and Warnings
@@ -1665,7 +1675,7 @@ void OutputWarningMessage(int ID) {
         Message = "LPG Level is low";
         break;
     }
-    BroadCast("%R," + GetCurrentTime() + ",Warning," + Message);
+    BroadCast("%R,Warning," + Message);
   }
 }
 
@@ -1678,16 +1688,22 @@ void AllWarningMessages(int WhichPort) {
   }
 
   if (WarningActive == false) {
-    SendItOut("%R," + GetCurrentTime() + ",Warning,None", WhichPort);
+    SendItOut("%R,Warning,None", WhichPort);
   }
 }
 
 void ALARM() {
   digitalWrite(AlarmOut, HIGH);
+  AlarmActive = true;
+  GetAlarmStatus(0);
+  GetAlarmStatus(1);
 }
 
 void ResetAlarm() {
   digitalWrite(AlarmOut, LOW);
+  AlarmActive = false;
+  GetAlarmStatus(0);
+  GetAlarmStatus(1);
 }
 
 void ResetWarnings() {
@@ -2379,6 +2395,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 36:
       //Which port you are communicating on
       CurrentSerialPort(WhichPort);
+      break;
+    case 37:
+      //Alarm
+      GetAlarmStatus(WhichPort);
       break;
   }
 }
