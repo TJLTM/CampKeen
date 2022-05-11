@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.5";
+const String FWVersion = "1.0.6";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -51,6 +51,7 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, D
 bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
 bool ISRActionDone = true;
+bool ButtonsReleased = true;
 char Units;
 String TempUnits, PressureUnits;
 //-----------------------------------------------------------
@@ -594,9 +595,28 @@ void WaterControl() {
     TurnOffWater();
   }
   //  //Check to see if any of the buttons are pressed
+  //can't turn off once on from button except from API 
+//  if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
+//    TurnOnWater();
+//  }
+
+  //  //Check to see if any of the buttons are pressed
   if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
-    TurnOnWater();
+    if (ButtonsReleased == true) { //only do something if buttons have been released between reads
+      ButtonsReleased = false;
+      if (WaterOn == true) {
+        TurnOffWater();
+      }
+      else {
+        TurnOnWater();
+      }
+    }
   }
+
+  if (digitalRead(KitchWaterButton) == LOW || digitalRead(BathroomWaterButton) == LOW){
+    ButtonsReleased = true;
+  }
+
 
   //  Serial.print("ISRActionDone:");
   //  Serial.println(ISRActionDone);
