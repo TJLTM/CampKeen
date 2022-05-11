@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.6";
+const String FWVersion = "1.0.7";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -590,49 +590,55 @@ void WaterControl() {
   }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
+
+  bool SkipTurningOnIfIjustTurnedItOff = false;
   long Delta = abs(millis() - WaterTimer) / 1000;
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
     TurnOffWater();
+    SkipTurningOnIfIjustTurnedItOff = true;
   }
-  //  //Check to see if any of the buttons are pressed
-  //can't turn off once on from button except from API 
-//  if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
-//    TurnOnWater();
-//  }
 
-  //  //Check to see if any of the buttons are pressed
-  if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
-    if (ButtonsReleased == true) { //only do something if buttons have been released between reads
-      ButtonsReleased = false;
-      if (WaterOn == true) {
-        TurnOffWater();
-      }
-      else {
-        TurnOnWater();
+
+  if (SkipTurningOnIfIjustTurnedItOff == false) {
+    //  //Check to see if any of the buttons are pressed
+    //can't turn off once on from button except from API
+    //  if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
+    //    TurnOnWater();
+    //  }
+
+    //  //Check to see if any of the buttons are pressed
+    if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
+      if (ButtonsReleased == true) { //only do something if buttons have been released between reads
+        ButtonsReleased = false; //set flag to skip toggle
+        if (WaterOn == true) { //toggle the water on and off.
+          TurnOffWater();
+        }
+        else {
+          TurnOnWater();
+        }
       }
     }
+
+    if (digitalRead(KitchWaterButton) == LOW || digitalRead(BathroomWaterButton) == LOW) {
+      ButtonsReleased = true;
+    }
+
+
+    //  Serial.print("ISRActionDone:");
+    //  Serial.println(ISRActionDone);
+    //  if (ISRActionDone == false) {
+    //    Serial.println("getting in here");
+    //    if (WaterOn == true) {
+    //      TurnOffWater();
+    //    }
+    //    else {
+    //      TurnOnWater();
+    //    }
+    //    ISRActionDone = true;
+    //    interrupts();
+    //  }
+
   }
-
-  if (digitalRead(KitchWaterButton) == LOW || digitalRead(BathroomWaterButton) == LOW){
-    ButtonsReleased = true;
-  }
-
-
-  //  Serial.print("ISRActionDone:");
-  //  Serial.println(ISRActionDone);
-  //  if (ISRActionDone == false) {
-  //    Serial.println("getting in here");
-  //    if (WaterOn == true) {
-  //      TurnOffWater();
-  //    }
-  //    else {
-  //      TurnOnWater();
-  //    }
-  //    ISRActionDone = true;
-  //    interrupts();
-  //  }
-
-
   //Check the States of pump and or logical state and set the LEDs accordingly
   WaterLEDState();
 }
