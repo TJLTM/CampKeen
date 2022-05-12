@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.2";
+const String FWVersion = "1.0.3";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive = false;
 int TotalWarnings = 7;
@@ -276,7 +276,6 @@ void setup() {
 
 void loop() {
   MainApplication();
-  //Testing();
   /*
     Handle the Incoming commands from the Serial Ports
     after all the other operations have been done
@@ -293,10 +292,6 @@ void loop() {
   }
 }
 
-
-void Testing() {
-
-}
 
 void MainApplication() {
   /*
@@ -606,8 +601,8 @@ void WaterControl() {
   }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
-  unsigned long WaterDuration = WaterDurationInSeconds * 1000;
-  if (WaterOn == true && (abs(millis() - WaterTimer) > WaterDuration)) {
+  long Delta = abs(millis() - WaterTimer) / 1000;
+  if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
     TurnOffWater();
   }
   //  //Check to see if any of the buttons are pressed
@@ -888,9 +883,9 @@ void ReadSewageTank() {
   bitWrite(TankStatus, 2, digitalRead(S34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(S44)); //Full
 
-  Serial.print("Sewage Tank Reading:");
-  Serial.print(TankStatus);
-  Serial.print("   ");
+  //Serial.print("Sewage Tank Reading:");
+  //Serial.print(TankStatus);
+  //Serial.print("   ");
 
   switch (TankStatus) {
     case 0:
@@ -915,13 +910,13 @@ void ReadSewageTank() {
       break;
     default:
       LastSewageLevel = "ERROR Check Tank:" + String(TankStatus, BIN);
-      AddWarningToList(3);
+      AddWarningToList(4);
       break;
   }
 
   LastTimeSewageLevel = GetCurrentTime();
-  Serial.println(LastSewageLevel);
-  Serial.println();
+  //Serial.println(LastSewageLevel);
+  //Serial.println();
 
   if (ShittersGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
@@ -941,9 +936,9 @@ void ReadGreyTank() {
   bitWrite(TankStatus, 2, digitalRead(G34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(G44)); //Full
 
-  Serial.print("Grey Tank Reading:");
-  Serial.print(TankStatus);
-  Serial.print("   ");
+  //Serial.print("Grey Tank Reading:");
+  //Serial.print(TankStatus);
+  //Serial.print("   ");
 
   switch (TankStatus) {
     case 0:
@@ -973,8 +968,8 @@ void ReadGreyTank() {
   }
   LastTimeGreyWater = GetCurrentTime();
 
-  Serial.println(LastGreyWater);
-  Serial.println();
+  //Serial.println(LastGreyWater);
+  //Serial.println();
   if (GreyGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
     digitalWrite(GreyWaterPower, LOW);
@@ -1835,13 +1830,17 @@ void SetWater(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
   if (ThingToTest == "OFF") {
     TurnOffWater();
+    CorrectParam = true;
   }
   if (ThingToTest == "ON") {
     TurnOnWater();
+    CorrectParam = true;
   }
-  else {
+
+  if (CorrectParam == false){
     Error(4, WhichPort);
   }
 }
