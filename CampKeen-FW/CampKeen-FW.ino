@@ -16,7 +16,8 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?"
+                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
+                            "ALARM?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
@@ -39,9 +40,9 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.5";
+const String FWVersion = "1.0.9";
 const float ConversionFactor = 5.0 / 1023;
-bool WarningActive = false;
+bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
 int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
@@ -49,7 +50,7 @@ long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, D
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
 bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
-bool ISRActionDone = true;
+bool ButtonsReleased = true;
 char Units;
 String TempUnits, PressureUnits;
 //-----------------------------------------------------------
@@ -180,11 +181,6 @@ void setup() {
   pinMode(WaterPumpSense, INPUT);
   pinMode(KitchWaterButton, INPUT);
   pinMode(BathroomWaterButton, INPUT);
-
-  //Set interrupts for water control
-//  attachInterrupt(digitalPinToInterrupt(KitchWaterButton), WaterButtonPressISR, RISING);
-//  attachInterrupt(digitalPinToInterrupt(BathroomWaterButton), WaterButtonPressISR, RISING);
-//  interrupts();
 
   pinMode(LEDBacklightOut, OUTPUT);
   pinMode(TankPowerRelay, OUTPUT);
@@ -445,21 +441,21 @@ void LCDDisplay() {
       lcd.print("Grey Water");
       lcd.setCursor(14, 2);
       if (LastGreyWater == "Empty" || LastGreyWater == "1/4" || LastGreyWater == "1/2" || LastGreyWater == "3/4" || LastGreyWater == "Full") {
-        lcd.print(LastGreyWater);
+        lcd.setCursor(14, 3);
       }
       else {
-        lcd.print("ERROR");
+        lcd.setCursor(10, 3);
       }
-
+      lcd.print(LastGreyWater);
       lcd.setCursor(0, 3);
       lcd.print("Sewage");
-      lcd.setCursor(14, 3);
       if (LastSewageLevel == "Empty" || LastSewageLevel == "1/4" || LastSewageLevel == "1/2" || LastSewageLevel == "3/4" || LastSewageLevel == "Full") {
-        lcd.print(LastSewageLevel);
+        lcd.setCursor(14, 3);
       }
       else {
-        lcd.print("ERROR");
+        lcd.setCursor(10, 3);
       }
+      lcd.print(LastSewageLevel);
       break;
     case 1:
       //Electrical
@@ -588,37 +584,34 @@ void WaterControl() {
   }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
+  bool SkipTurningOnIfIjustTurnedItOff = false;
   long Delta = abs(millis() - WaterTimer) / 1000;
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
     TurnOffWater();
-  }
-  //  //Check to see if any of the buttons are pressed
-  if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
-    TurnOnWater();
+    SkipTurningOnIfIjustTurnedItOff = true;
   }
 
-//  Serial.print("ISRActionDone:");
-//  Serial.println(ISRActionDone);
-//  if (ISRActionDone == false) {
-//    Serial.println("getting in here"); 
-//    if (WaterOn == true) {
-//      TurnOffWater();
-//    }
-//    else {
-//      TurnOnWater();
-//    }
-//    ISRActionDone = true;
-//    interrupts();
-//  }
+  if (SkipTurningOnIfIjustTurnedItOff == false) {
+    //  //Check to see if any of the buttons are pressed
+    if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
+      if (ButtonsReleased == true) { //only do something if buttons have been released between reads
+        ButtonsReleased = false; //set flag to skip toggle
+        if (WaterOn == true) { //toggle the water on and off.
+          TurnOffWater();
+        }
+        else {
+          TurnOnWater();
+        }
+      }
+    }
 
+    if (digitalRead(KitchWaterButton) == LOW && digitalRead(BathroomWaterButton) == LOW) {
+      ButtonsReleased = true;
+    }
 
+  }
   //Check the States of pump and or logical state and set the LEDs accordingly
   WaterLEDState();
-}
-
-void WaterButtonPressISR() {
-  noInterrupts();
-  ISRActionDone = false;
 }
 
 void TurnOnWater() {
@@ -669,9 +662,7 @@ void WaterLEDState() {
       digitalWrite(KitchenWaterButtonLED, LOW);
       digitalWrite(BathroomWaterButtonLED, LOW);
     }
-
   }
-
 }
 //------------------------------------------------------------------
 //Generator and Energy
@@ -683,7 +674,7 @@ void SetupEnergyMonitor() {
 void EnablingPowerToTransformerForEnergyMonitoring() {
   if (EnableACEnergyMonitoring == true) {
     digitalWrite(EnergyMonTransformerEnable, HIGH);
-    delay(5000);
+    delay(2500);
     SetupEnergyMonitor();
   }
   else {
@@ -775,10 +766,9 @@ void GeneratorSensors() {
     LastGenFuel = 0.0;
   }
 
-
   uint16_t rtd0 = GenHeadR.readRTD();
-  float ratio0 = rtd0;
-  ratio0 /= 32768;
+  //float ratio0 = rtd0;
+  //ratio0 /= 32768;
   if (Units == 'I') {
     LastGenHeadRightTemp = ConvertCtoF(GenHeadR.temperature(RNOMINAL, RREF));
   }
@@ -787,8 +777,8 @@ void GeneratorSensors() {
   }
 
   uint16_t rtd1 = GenHeadL.readRTD();
-  float ratio1 = rtd1;
-  ratio1 /= 32768;
+  //float ratio1 = rtd1;
+  //ratio1 /= 32768;
   if (Units == 'I') {
     LastGenHeadLeftTemp = ConvertCtoF(GenHeadL.temperature(RNOMINAL, RREF));
   }
@@ -797,8 +787,8 @@ void GeneratorSensors() {
   }
 
   uint16_t rtd2 = GenEnclosure.readRTD();
-  float ratio2 = rtd2;
-  ratio2 /= 32768;
+  //float ratio2 = rtd2;
+  //ratio2 /= 32768;
   if (Units == 'I') {
     LastGenEnclosureTemp = ConvertCtoF(GenEnclosure.temperature(RNOMINAL, RREF));
   }
@@ -842,7 +832,7 @@ void HoldingTankMonitoring() {
   if (ShittersGettinFull == true || GreyGettinFull == true) {
     //Set Warning State
     AddWarningToList(2);
-    // Also put in a check for FUll State on either and turn off pump or city water
+    // Also put in a check for FULL State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
       TurnOffWater();
@@ -868,10 +858,6 @@ void ReadSewageTank() {
   bitWrite(TankStatus, 2, digitalRead(S34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(S44)); //Full
 
-  //Serial.print("Sewage Tank Reading:");
-  //Serial.print(TankStatus);
-  //Serial.print("   ");
-
   switch (TankStatus) {
     case 0:
       LastSewageLevel = "Empty";
@@ -894,14 +880,12 @@ void ReadSewageTank() {
       ShittersGettinFull = true;
       break;
     default:
-      LastSewageLevel = "ERROR Check Tank:" + String(TankStatus, BIN);
+      LastSewageLevel = "ERROR:" + String(TankStatus, BIN);
       AddWarningToList(4);
       break;
   }
 
   LastTimeSewageLevel = GetCurrentTime();
-  //Serial.println(LastSewageLevel);
-  //Serial.println();
 
   if (ShittersGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
@@ -920,10 +904,6 @@ void ReadGreyTank() {
   bitWrite(TankStatus, 1, digitalRead(G12)); //Half
   bitWrite(TankStatus, 2, digitalRead(G34)); //Three Quater
   bitWrite(TankStatus, 3, digitalRead(G44)); //Full
-
-  //Serial.print("Grey Tank Reading:");
-  //Serial.print(TankStatus);
-  //Serial.print("   ");
 
   switch (TankStatus) {
     case 0:
@@ -947,14 +927,12 @@ void ReadGreyTank() {
       GreyGettinFull = true;
       break;
     default:
-      LastGreyWater = "ERROR Check Tank:" + String(TankStatus, BIN);
+      LastGreyWater = "ERROR:" + String(TankStatus, BIN);
       AddWarningToList(4);
       break;
   }
   LastTimeGreyWater = GetCurrentTime();
 
-  //Serial.println(LastGreyWater);
-  //Serial.println();
   if (GreyGettinFull == false && WaterOn == false) {
     // Turn Off Voltage to tank
     digitalWrite(GreyWaterPower, LOW);
@@ -1012,7 +990,7 @@ void ReadWaterAndLPG() {
     OutputWarningMessage(6); //Water
   }
 
-  if (LastLPGLevel <= 25 || LastLPGLevel == "ERROR Check Tank Sensor") {
+  if (LastLPGLevel <= 25 || LastLPGLevel == "ERROR") {
     OutputWarningMessage(7); //LPG
   }
 }
@@ -1548,7 +1526,7 @@ void GetStreamingState(int WhichPort) {
 }
 
 void GetWaterPumpSense(int WhichPort) {
-  SendItOut("%R,WaterPumpSense," + StatesForOutput(UseWaterPumpSense), WhichPort);
+  SendItOut("%R,Water Pump Sense," + StatesForOutput(UseWaterPumpSense), WhichPort);
 }
 
 void GetWaterState(int WhichPort) {
@@ -1602,11 +1580,20 @@ void GetStreamingOnBoot(int WhichPort) {
 }
 
 void GETACENMONOnBoot(int WhichPort) {
-  SendItOut("%R,ACENMON on boot," + StatesForOutput(GetFromEEPROMACENMONOnBoot()), WhichPort);
+  SendItOut("%R,AC Energy Monitoring on boot," + StatesForOutput(GetFromEEPROMACENMONOnBoot()), WhichPort);
 }
 
 void GETWaterpumpsenseBoot(int WhichPort) {
   SendItOut("%R,Water Pump Sense on boot," + StatesForOutput(GetFromEEPROMWaterPumpSenseOnBoot()), WhichPort);
+}
+
+void GetAlarmStatus(int WhichPort) {
+  String Message = "%R," + GetCurrentTime() + ",ALARM,Cleared";
+  if (AlarmActive == true) {
+    Message = "%R," + GetCurrentTime() + ",ALARM,Active";
+  }
+
+  SendItOut(Message, WhichPort);
 }
 //------------------------------------------------------------------
 //Alarm and Warnings
@@ -1665,7 +1652,7 @@ void OutputWarningMessage(int ID) {
         Message = "LPG Level is low";
         break;
     }
-    BroadCast("%R," + GetCurrentTime() + ",Warning," + Message);
+    BroadCast("%R,Warning," + Message);
   }
 }
 
@@ -1678,16 +1665,22 @@ void AllWarningMessages(int WhichPort) {
   }
 
   if (WarningActive == false) {
-    SendItOut("%R," + GetCurrentTime() + ",Warning,None", WhichPort);
+    SendItOut("%R,Warning,None", WhichPort);
   }
 }
 
 void ALARM() {
   digitalWrite(AlarmOut, HIGH);
+  AlarmActive = true;
+  GetAlarmStatus(0);
+  GetAlarmStatus(1);
 }
 
 void ResetAlarm() {
   digitalWrite(AlarmOut, LOW);
+  AlarmActive = false;
+  GetAlarmStatus(0);
+  GetAlarmStatus(1);
 }
 
 void ResetWarnings() {
@@ -2379,6 +2372,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 36:
       //Which port you are communicating on
       CurrentSerialPort(WhichPort);
+      break;
+    case 37:
+      //Alarm
+      GetAlarmStatus(WhichPort);
       break;
   }
 }
