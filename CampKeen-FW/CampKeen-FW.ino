@@ -40,7 +40,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.7";
+const String FWVersion = "1.0.8";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -619,7 +619,7 @@ void WaterControl() {
       }
     }
 
-    if (digitalRead(KitchWaterButton) == LOW || digitalRead(BathroomWaterButton) == LOW) {
+    if (digitalRead(KitchWaterButton) == LOW && digitalRead(BathroomWaterButton) == LOW) {
       ButtonsReleased = true;
     }
 
