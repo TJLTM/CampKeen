@@ -17,11 +17,12 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
-                             "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT"
+                             "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
+                             "SETWATERSOURCE"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -1595,6 +1596,13 @@ void GetAlarmStatus(int WhichPort) {
 
   SendItOut(Message, WhichPort);
 }
+
+void GetWaterSourceOverRide(int WhichPort) {
+  String Message = "%R,";
+
+  SendItOut(Message, WhichPort);
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -2068,6 +2076,14 @@ void SetWaterDurationInSeconds(String Value, int WhichPort) {
   GetWaterDuration(WhichPort);
 }
 
+void SetWaterSourceOverRide(String Value, int WhichPort) {
+
+}
+
+void SetWaterSource(String Value, int WhichPort) {
+
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2215,6 +2231,14 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
     case 15:
       //SET Waterpumpsense ON BOOT
       SetWaterPumpSenseOverRide(CommandRaw, 1, WhichPort);
+      break;
+    case 16:
+      //SETWATERSOURCEOVERRIDE
+      SetWaterSourceOverRide(CommandRaw, WhichPort);
+      break;
+    case 17:
+      //SETWATERSOURCE
+      SetWaterSource(CommandRaw, WhichPort);
       break;
   }
 }
@@ -2376,6 +2400,9 @@ void CommandToCall(int Index, int WhichPort) {
     case 37:
       //Alarm
       GetAlarmStatus(WhichPort);
+      break;
+    case 38:
+      GetWaterSourceOverRide(WhichPort);
       break;
   }
 }
