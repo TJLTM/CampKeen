@@ -17,12 +17,12 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
-                             "SETWATERSOURCE"
+                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.0.9";
+const String FWVersion = "1.1.0";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -50,7 +50,7 @@ int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
 bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
-     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup = false;
+     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, LastSourceForCheck = false;
 bool ButtonsReleased = true;
 char Units;
 String TempUnits, PressureUnits;
@@ -233,6 +233,11 @@ void setup() {
   StreamingDataUSB = GetFromEEPROMStreamOnBootUSB();
   StreamingDataRS232 = GetFromEEPROMStreamOnBootRS232();
 
+  //load system settings from EEProm
+  WaterDurationInSeconds = GetFromEEPROMWaterDuration();
+  UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
+  WaterSourceOverRide = GetFromEEPROMWaterSourceOverRideOnBoot();
+
   pinMode(EnergyMonTransformerEnable, OUTPUT);
   pinMode(EnergyMonitorCS, OUTPUT);
   EnablingPowerToTransformerForEnergyMonitoring();
@@ -246,8 +251,6 @@ void setup() {
   Units = GetFromEEPROMUnits();
   SetUnitsForOutput();
   BroadCast("Units: " + String(Units));
-  WaterDurationInSeconds = GetFromEEPROMWaterDuration();
-  UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   digitalWrite(LCDPowerOut, HIGH);
   delay(250);
   SetupLCD();
@@ -563,26 +566,28 @@ void LCDDisplay() {
 //Water Control
 //------------------------------------------------------------------
 void WaterControl() {
-  //Read Current Water Source Selection
-  bool LastSourceForCheck = WaterSourseSelection;
-  if (digitalRead(WaterSourceSelectionInput) == HIGH) {
+  if (WaterSourceOverRide == false) {
+    //Read Current Water Source Selection
+    LastSourceForCheck = WaterSourseSelection;
+    if (digitalRead(WaterSourceSelectionInput) == HIGH) {
     WaterSourseSelection = true;//city water
-  }
-  else {
-    WaterSourseSelection = false; //Tank
+    }
+    else {
+      WaterSourseSelection = false; //Tank
+    }
   }
 
   if (WaterOn == true && (LastSourceForCheck != WaterSourseSelection)) {
-    TurnOffWater();
-    delay(1000);
-    TurnOnWater();
-    if (StreamingDataUSB == true) {
-      GetWaterSource(0);
+      TurnOffWater();
+      delay(1000);
+      TurnOnWater();
+      if (StreamingDataUSB == true) {
+        GetWaterSource(0);
+      }
+      if (StreamingDataRS232 == true) {
+        GetWaterSource(1);
+      }
     }
-    if (StreamingDataRS232 == true) {
-      GetWaterSource(1);
-    }
-  }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   bool SkipTurningOnIfIjustTurnedItOff = false;
@@ -1123,6 +1128,15 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
+bool GetFromEEPROMWaterSourceOverRideOnBoot() {
+  int Value = EEPROM.read(17);
+  if (0 > Value || Value >= 2) {
+    Value = 0;
+    EEPROM.update(17, Value);
+  }
+  return Value;
+}
+
 int GetFromEEPROMWaterPumpSenseOnBoot() {
   int Value = EEPROM.read(16);
   if (0 > Value || Value >= 2) {
@@ -1426,6 +1440,8 @@ void OutputAllData(int WhichPort) {
   GetStreamingState(WhichPort);
   GETACENMONOnBoot(WhichPort);
   GETWaterpumpsenseBoot(WhichPort);
+  GetWaterSourceOverRideOnBoot(WhichPort);
+  GetWaterSourceOverRide(WhichPort);
 }
 
 void OutputLiveData(int WhichPort) {
@@ -1593,13 +1609,16 @@ void GetAlarmStatus(int WhichPort) {
   if (AlarmActive == true) {
     Message = "%R," + GetCurrentTime() + ",ALARM,Active";
   }
-
   SendItOut(Message, WhichPort);
 }
 
 void GetWaterSourceOverRide(int WhichPort) {
-  String Message = "%R,";
+  String Message = "%R,Water Source Override," + StatesForOutput(WaterSourceOverRide);
+  SendItOut(Message, WhichPort);
+}
 
+void GetWaterSourceOverRideOnBoot(int WhichPort) {
+  String Message = "%R,Water Source Override On Boot," + StatesForOutput(GetFromEEPROMWaterSourceOverRideOnBoot());
   SendItOut(Message, WhichPort);
 }
 
@@ -2077,11 +2096,73 @@ void SetWaterDurationInSeconds(String Value, int WhichPort) {
 }
 
 void SetWaterSourceOverRide(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    WaterSourceOverRide = false;
+    CorrectParam = true;
+  }
 
+  if (ThingToTest == "ON") {
+    WaterSourceOverRide = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetWaterSourceOverRide(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
 }
 
 void SetWaterSource(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  LastSourceForCheck = WaterSourseSelection;
+  if (ThingToTest == "CITY") {
+    WaterSourseSelection = false;
+    CorrectParam = true;
+  }
 
+  if (ThingToTest == "TANK") {
+    WaterSourseSelection = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetWaterSource(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
+void SetWaterSourceOverRideOnBoot(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    EEPROM.update(17, 0);
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "ON") {
+    EEPROM.update(17, 1);
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetWaterSourceOverRideOnBoot(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
 }
 
 /*
@@ -2239,6 +2320,10 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
     case 17:
       //SETWATERSOURCE
       SetWaterSource(CommandRaw, WhichPort);
+      break;
+    case 18:
+      //SETWATERSOURCEOVERRIDEONBOOT
+      SetWaterSourceOverRideOnBoot(CommandRaw, WhichPort);
       break;
   }
 }
@@ -2402,7 +2487,12 @@ void CommandToCall(int Index, int WhichPort) {
       GetAlarmStatus(WhichPort);
       break;
     case 38:
+      //WaterSourceOverRide
       GetWaterSourceOverRide(WhichPort);
+      break;
+    case 39:
+      //WaterSourceOverRideOnBoot
+      GetWaterSourceOverRideOnBoot(WhichPort);
       break;
   }
 }

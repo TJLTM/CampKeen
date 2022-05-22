@@ -15,3 +15,4 @@ Memory Address in EEPROM
 14 - PGAGain Upper Byte
 15 - PGAGain Lower Byte
 16 - WaterPumpSense on Boot - Data to be stored int 0,1
+17 - WaterSourceOverRidee On Boot - Data to be stored in 0,1
