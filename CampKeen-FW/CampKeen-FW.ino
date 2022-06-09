@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.1.0";
+const String FWVersion = "1.1.1";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -570,7 +570,7 @@ void WaterControl() {
     //Read Current Water Source Selection
     LastSourceForCheck = WaterSourseSelection;
     if (digitalRead(WaterSourceSelectionInput) == HIGH) {
-    WaterSourseSelection = true;//city water
+      WaterSourseSelection = true;//city water
     }
     else {
       WaterSourseSelection = false; //Tank
@@ -578,16 +578,16 @@ void WaterControl() {
   }
 
   if (WaterOn == true && (LastSourceForCheck != WaterSourseSelection)) {
-      TurnOffWater();
-      delay(1000);
-      TurnOnWater();
-      if (StreamingDataUSB == true) {
-        GetWaterSource(0);
-      }
-      if (StreamingDataRS232 == true) {
-        GetWaterSource(1);
-      }
+    TurnOffWater();
+    delay(1000);
+    TurnOnWater();
+    if (StreamingDataUSB == true) {
+      GetWaterSource(0);
     }
+    if (StreamingDataRS232 == true) {
+      GetWaterSource(1);
+    }
+  }
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   bool SkipTurningOnIfIjustTurnedItOff = false;
@@ -1588,7 +1588,7 @@ void GetACCT2GAIN(int WhichPort) {
 }
 
 void GetWaterDuration(int WhichPort) {
-  SendItOut("%R,WATERDURATION,Units,Seconds," + String(WaterDurationInSeconds), WhichPort);
+  SendItOut("%R,WATERDURATION," + String(WaterDurationInSeconds), WhichPort);
 }
 
 void GetStreamingOnBoot(int WhichPort) {
@@ -1705,9 +1705,11 @@ void ALARM() {
 
 void ResetAlarm() {
   digitalWrite(AlarmOut, LOW);
-  AlarmActive = false;
-  GetAlarmStatus(0);
-  GetAlarmStatus(1);
+  if (AlarmActive == true) {
+    AlarmActive = false;
+    GetAlarmStatus(0);
+    GetAlarmStatus(1);
+  }
 }
 
 void ResetWarnings() {
