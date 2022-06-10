@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.1.1";
+const String FWVersion = "1.1.2";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -1534,7 +1534,7 @@ void GetUnits(int WhichPort) {
 }
 
 void GetDeviceInfo(int WhichPort) {
-  SendItOut("%R," + DeviceName + ",FW," + FWVersion, WhichPort);
+  SendItOut("%R," + DeviceName + "," + FWVersion, WhichPort);
 }
 
 void GetStreamingState(int WhichPort) {
@@ -1692,7 +1692,7 @@ void AllWarningMessages(int WhichPort) {
   }
 
   if (WarningActive == false) {
-    SendItOut("%R,Warning,None", WhichPort);
+    SendItOut("%R,Warning,Clear", WhichPort);
   }
 }
 
