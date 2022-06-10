@@ -1684,14 +1684,15 @@ void OutputWarningMessage(int ID) {
 }
 
 void AllWarningMessages(int WhichPort) {
-  for (int i = 1; i <= TotalWarnings; i++) {
-    if (ArrayOfWarnings[i] != -1) {
-      OutputWarningMessage(i);
-      WarningActive = true;
+  if (WarningActive == true) {
+    for (int i = 1; i <= TotalWarnings; i++) {
+      if (ArrayOfWarnings[i] != -1) {
+        OutputWarningMessage(i);
+        WarningActive = true;
+      }
     }
   }
-
-  if (WarningActive == false) {
+  else{
     SendItOut("%R,Warning,Clear", WhichPort);
   }
 }
