@@ -1437,7 +1437,6 @@ void OutputAllData(int WhichPort) {
   GetACCT1GAIN(WhichPort);
   GetACCT2GAIN(WhichPort);
   GetStreamingOnBoot(WhichPort);
-  GetStreamingState(WhichPort);
   GETACENMONOnBoot(WhichPort);
   GETWaterpumpsenseBoot(WhichPort);
   GetWaterSourceOverRideOnBoot(WhichPort);
