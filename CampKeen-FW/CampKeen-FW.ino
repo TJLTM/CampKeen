@@ -2176,6 +2176,7 @@ void SetWaterSourceOverRideOnBoot(String Value, int WhichPort) {
   case 4 - SCC is found and no delimiter found and there is data in the buffer  - add back to the buffer
   case 5 - SCC is found no delimiter found and another scc is found trim up to the second
   case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
+  case 7 A/B - Valid SSC and Delimiter is found but the command is not in the list of commands
 */
 
 String PainlessInstructionSet(String & TestString, int WhichPort) {
@@ -2215,6 +2216,9 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                     ParamCommandToCall(i, CommandCandidate, WhichPort);
                   }
                 }
+                //Serial.println("PIS Case 7A");
+                //Serial.println(i);
+                //Serial.println(sizeof(ParameterCommands) / sizeof(int));
               }
               else {
                 for (int i = 0; i < (sizeof(AcceptedCommands) / sizeof(int)); i++)
@@ -2224,6 +2228,9 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                     //Serial.println("PIS Case 3B");
                     CommandToCall(i, WhichPort);
                   }
+                  //Serial.println("PIS Case 7B"); 
+                  //Serial.println(i);
+                  //Serial.println(sizeof(AcceptedCommands) / sizeof(int));
                 }
               }
               TestString.remove(0, FindEnd + 1);
