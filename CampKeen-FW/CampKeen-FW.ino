@@ -2207,12 +2207,14 @@ void SetTravel(String Value, int WhichPort) {
   case 4 - SCC is found and no delimiter found and there is data in the buffer  - add back to the buffer
   case 5 - SCC is found no delimiter found and another scc is found trim up to the second
   case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
-  case 7 A/B - Valid SSC and Delimiter is found but the command is not in the list of commands
+  case 7 - Valid SSC and Delimiter is found but the command is not in the list of commands
 */
 
 String PainlessInstructionSet(String & TestString, int WhichPort) {
   int Search = 1;
   while (Search == 1) {
+    bool ParamCommandCalled = false;
+    bool CommandCalled = false;
     int FindStart = TestString.indexOf('%');
     int Param = TestString.indexOf('*');
     int FindEnd = TestString.indexOf('\r');
@@ -2245,11 +2247,9 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                   ParamHeader.toUpperCase();
                   if (ParamHeader == ParameterCommands[i]) {
                     ParamCommandToCall(i, CommandCandidate, WhichPort);
+                    ParamCommandCalled = true;
                   }
                 }
-                //Serial.println("PIS Case 7A");
-                //Serial.println(i);
-                //Serial.println(sizeof(ParameterCommands) / sizeof(int));
               }
               else {
                 for (int i = 0; i < (sizeof(AcceptedCommands) / sizeof(int)); i++)
@@ -2258,11 +2258,12 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                   if (CommandCandidate == AcceptedCommands[i]) {
                     //Serial.println("PIS Case 3B");
                     CommandToCall(i, WhichPort);
+                    CommandCalled = true;
                   }
-                  //Serial.println("PIS Case 7B");
-                  //Serial.println(i);
-                  //Serial.println(sizeof(AcceptedCommands) / sizeof(int));
                 }
+              }
+              if (CommandCalled == false && ParamCommandCalled == false){
+                Serial.println("PIS Case 7");
               }
               TestString.remove(0, FindEnd + 1);
             }
