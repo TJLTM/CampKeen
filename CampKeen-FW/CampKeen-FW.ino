@@ -17,12 +17,12 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
-                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT"
+                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.1.2";
+const String FWVersion = "1.2.0";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -50,7 +50,7 @@ int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
 bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
-     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, LastSourceForCheck = false;
+     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, Travel, LastSourceForCheck = false;
 bool ButtonsReleased = true;
 char Units;
 String TempUnits, PressureUnits;
@@ -295,8 +295,9 @@ void MainApplication() {
   */
   //LCDControl();
   WaterControl();
-  HoldingTankMonitoring();
-
+  if (Travel == false) {
+    HoldingTankMonitoring();
+  }
   /*
      Handle reseting the warnings and alarms
      If reset High warnings/alarms are
@@ -350,16 +351,18 @@ void MainApplication() {
      Water Tank Level
      LPG Tank Level
   */
-  if (abs(millis() - WATERLPGtimer) > 1800000) {
-    ReadWaterAndLPG();
-    WATERLPGtimer = millis();
-    if (StreamingDataUSB == true) {
-      GetWaterLevel(0);
-      GetLPGLevel(0);
-    }
-    if (StreamingDataRS232 == true) {
-      GetWaterLevel(1);
-      GetLPGLevel(1);
+  if (Travel == false) {
+    if (abs(millis() - WATERLPGtimer) > 1800000) {
+      ReadWaterAndLPG();
+      WATERLPGtimer = millis();
+      if (StreamingDataUSB == true) {
+        GetWaterLevel(0);
+        GetLPGLevel(0);
+      }
+      if (StreamingDataRS232 == true) {
+        GetWaterLevel(1);
+        GetLPGLevel(1);
+      }
     }
   }
 
@@ -1622,6 +1625,11 @@ void GetWaterSourceOverRideOnBoot(int WhichPort) {
   SendItOut(Message, WhichPort);
 }
 
+void GetTravel(int WhichPort) {
+  String Message = "%R,Travel Mode," + StatesForOutput(Travel);
+  SendItOut(Message, WhichPort);
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -1692,7 +1700,7 @@ void AllWarningMessages(int WhichPort) {
       }
     }
   }
-  else{
+  else {
     SendItOut("%R,Warning,Clear", WhichPort);
   }
 }
@@ -2168,6 +2176,29 @@ void SetWaterSourceOverRideOnBoot(String Value, int WhichPort) {
   }
 }
 
+void SetTravel(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    Travel = false;
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "ON") {
+    Travel = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetTravel(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2228,7 +2259,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                     //Serial.println("PIS Case 3B");
                     CommandToCall(i, WhichPort);
                   }
-                  //Serial.println("PIS Case 7B"); 
+                  //Serial.println("PIS Case 7B");
                   //Serial.println(i);
                   //Serial.println(sizeof(AcceptedCommands) / sizeof(int));
                 }
@@ -2334,6 +2365,10 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
     case 18:
       //SETWATERSOURCEOVERRIDEONBOOT
       SetWaterSourceOverRideOnBoot(CommandRaw, WhichPort);
+      break;
+    case 19:
+      //SETTRAVEL
+      SetTravel(CommandRaw, WhichPort);
       break;
   }
 }
@@ -2503,6 +2538,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 39:
       //WaterSourceOverRideOnBoot
       GetWaterSourceOverRideOnBoot(WhichPort);
+      break;
+    case 40:
+      //Travel
+      GetTravel(WhichPort);
       break;
   }
 }
