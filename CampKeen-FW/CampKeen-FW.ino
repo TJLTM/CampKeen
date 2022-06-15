@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.2.0";
+const String FWVersion = "1.2.1";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
@@ -2207,7 +2207,7 @@ void SetTravel(String Value, int WhichPort) {
   case 4 - SCC is found and no delimiter found and there is data in the buffer  - add back to the buffer
   case 5 - SCC is found no delimiter found and another scc is found trim up to the second
   case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
-  case 7 - Valid SSC and Delimiter is found but the command is not in the list of commands
+  case 7 - Valid SSC and Delimiter is found but the command is not in the list of commands - tell the user 
 */
 
 String PainlessInstructionSet(String & TestString, int WhichPort) {
@@ -2264,6 +2264,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
               }
               if (CommandCalled == false && ParamCommandCalled == false){
                 Serial.println("PIS Case 7");
+                SendItOut("%R," + GetCurrentTime() + ",Error,Command not recognized", WhichPort);
               }
               TestString.remove(0, FindEnd + 1);
             }
