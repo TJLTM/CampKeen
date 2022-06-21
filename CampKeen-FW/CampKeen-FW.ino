@@ -2222,7 +2222,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
       if (FindStart != -1) { //case 1
         if (FindStart != 0) { //case 2
           //Serial.println("PIS Case 2");
-          SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format No Start or Stop Delimiters", WhichPort);
+          SendItOut("%R,Error,BAD Command Format No Start or Stop Delimiters", WhichPort);
           TestString.remove(0, FindStart);
         }
         else { //Case 3 & Case 5 & Case 4
@@ -2230,7 +2230,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
           int FindStart1 = Case5Test.indexOf('%');
           int FindEnd1 = Case5Test.indexOf('\r');
           if ((FindEnd1 > FindStart1) && (FindStart1 != -1)) {
-            SendItOut("%R," + GetCurrentTime() + ",Error,BAD Command Format - No End Delimiter", WhichPort);
+            SendItOut("%R,Error,BAD Command Format - No End Delimiter", WhichPort);
             //Serial.println("PIS Case 5");
             TestString.remove(0, FindStart1 + 1);
           }
@@ -2264,7 +2264,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
               }
               if (CommandCalled == false && ParamCommandCalled == false){
                 Serial.println("PIS Case 7");
-                SendItOut("%R," + GetCurrentTime() + ",Error,Command not recognized", WhichPort);
+                SendItOut("%R,Error,Command not recognized", WhichPort);
               }
               TestString.remove(0, FindEnd + 1);
             }
