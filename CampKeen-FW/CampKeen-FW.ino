@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.2.1";
+const String FWVersion = "1.2.2";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 7;
