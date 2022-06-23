@@ -2263,7 +2263,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                 }
               }
               if (CommandCalled == false && ParamCommandCalled == false){
-                Serial.println("PIS Case 7");
+                //Serial.println("PIS Case 7");
                 SendItOut("%R,Error,Command not recognized", WhichPort);
               }
               TestString.remove(0, FindEnd + 1);
