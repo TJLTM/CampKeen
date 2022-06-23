@@ -44,7 +44,7 @@ const String DeviceName = "CampKeen";
 const String FWVersion = "1.2.2";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
-int TotalWarnings = 7;
+int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int WaterDurationInSeconds;
 long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
@@ -839,8 +839,6 @@ void HoldingTankMonitoring() {
   }
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
-    //Set Warning State
-    AddWarningToList(2);
     // Also put in a check for FULL State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
@@ -883,10 +881,14 @@ void ReadSewageTank() {
     case 7:
       LastSewageLevel = "3/4";
       ShittersGettinFull = true;
+      //Set Warning State
+      AddWarningToList(8);
       break;
     case 15:
       LastSewageLevel = "Full";
       ShittersGettinFull = true;
+      //Set Warning State
+      AddWarningToList(8);
       break;
     default:
       LastSewageLevel = "ERROR:" + String(TankStatus, BIN);
@@ -930,14 +932,18 @@ void ReadGreyTank() {
     case 7:
       LastGreyWater = "3/4";
       GreyGettinFull = true;
+      //Set Warning State
+      AddWarningToList(2);
       break;
     case 15:
       LastGreyWater = "Full";
       GreyGettinFull = true;
+      //Set Warning State
+      AddWarningToList(2);
       break;
     default:
       LastGreyWater = "ERROR:" + String(TankStatus, BIN);
-      AddWarningToList(4);
+      AddWarningToList(3);
       break;
   }
   LastTimeGreyWater = GetCurrentTime();
@@ -984,8 +990,10 @@ void ReadWaterAndLPG() {
         if (R1 > 100)
         {
           LastWaterLevel = "1/4";
+          AddWarningToList(6);
           if (R1 > 150)
           {
+            AddWarningToList(6);
             LastWaterLevel = "Empty";
           }
         }
@@ -1440,7 +1448,6 @@ void OutputAllData(int WhichPort) {
   GetACCT1GAIN(WhichPort);
   GetACCT2GAIN(WhichPort);
   GetStreamingOnBoot(WhichPort);
-  GetStreamingState(WhichPort);
   GETACENMONOnBoot(WhichPort);
   GETWaterpumpsenseBoot(WhichPort);
   GetWaterSourceOverRideOnBoot(WhichPort);
@@ -1669,7 +1676,7 @@ void OutputWarningMessage(int ID) {
         Message = "RTC Battery voltage is low ";
         break;
       case 2:
-        Message = "One of the holding tanks is getting full";
+        Message = "Grey tank is getting full";
         break;
       case 3:
         Message = "Grey Water Tank ERROR";
@@ -1685,6 +1692,9 @@ void OutputWarningMessage(int ID) {
         break;
       case 7:
         Message = "LPG Level is low";
+        break;
+      case 8:
+        Message = "Sewage tank is getting full";
         break;
     }
     BroadCast("%R,Warning," + Message);
