@@ -1,7 +1,7 @@
 Memory Address in EEPROM
 1 - Units
 2 - ACENMON on Boot - Data to be stored int 0,1
-3 - WaterDuration - Data to be Stored Seconds in int
+3 - throom Water Duration - Data to be Stored Seconds in int
 4 - Streaming on Boot for USB Serial - Data to be sotred int 0,1
 5 - Streaming on Boot for RS232 Serial - Data to be sotred int 0,1
 6 - Energy Monitoring Frequency Data to be stored 50,60 
@@ -16,3 +16,4 @@ Memory Address in EEPROM
 15 - PGAGain Lower Byte
 16 - WaterPumpSense on Boot - Data to be stored int 0,1
 17 - WaterSourceOverRidee On Boot - Data to be stored in 0,1
+18 - Kitchen Water Duration - Data to be stored Seconds in int

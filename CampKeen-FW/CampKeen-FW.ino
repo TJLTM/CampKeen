@@ -16,13 +16,13 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "ENERGY?", "BATTERY?", "RTCBATTERY?", "GENERATOR?", "TEMPS?", "UNITTEMP?", "WATERPUMPSENSE?", "WARNING?",
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
-                            "RESET", "WATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?"
+                            "RESET", "BATHROOMWATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?","KITCHENWATERDURATION?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
-                             "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETWATERDURATION",
+                             "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETBATHROOMWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
-                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL"
+                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -46,9 +46,9 @@ const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
-int WaterDurationInSeconds;
-long WaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
-     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer;
+int WaterDurationInSeconds, WhoTurnedOnTheWater;
+long BathroomWaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
+     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer;
 bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, Travel, LastSourceForCheck = false;
 bool ButtonsReleased = true;
@@ -234,7 +234,7 @@ void setup() {
   StreamingDataRS232 = GetFromEEPROMStreamOnBootRS232();
 
   //load system settings from EEProm
-  WaterDurationInSeconds = GetFromEEPROMWaterDuration();
+  BathroomWaterDurationInSeconds = GetFromEEPROMBathroomWaterDuration();
   UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   WaterSourceOverRide = GetFromEEPROMWaterSourceOverRideOnBoot();
 
@@ -594,7 +594,13 @@ void WaterControl() {
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   bool SkipTurningOnIfIjustTurnedItOff = false;
-  long Delta = abs(millis() - WaterTimer) / 1000;
+  long Delta = 0;
+  if (WhoTurnedOnTheWater == 1){
+    Delta = abs(millis() - BathroomWaterTimer) / 1000;
+  }
+  if (WhoTurnedOnTheWater == 2){
+    Delta = abs(millis() - KitchenWaterTimer) / 1000;
+  }
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
     TurnOffWater();
     SkipTurningOnIfIjustTurnedItOff = true;
@@ -614,8 +620,13 @@ void WaterControl() {
       }
     }
 
-    if (digitalRead(KitchWaterButton) == LOW && digitalRead(BathroomWaterButton) == LOW) {
+    if (digitalRead(BathroomWaterButton) == LOW) {
       ButtonsReleased = true;
+      WhoTurnedOnTheWater = 1;
+    }
+     if (digitalRead(KitchWaterButton) == LOW) {
+      ButtonsReleased = true;
+      WhoTurnedOnTheWater = 2;
     }
 
   }
@@ -626,7 +637,12 @@ void WaterControl() {
 void TurnOnWater() {
   if (WaterOn == false && HoldingTankAlarm == false) {
     WaterOn = true;
-    WaterTimer = millis();
+    if (WhoTurnedOnTheWater == 1){
+      BathroomWaterTimer = millis();
+    }
+    else{
+      KitchenWaterTimer = millis();
+    }
     if (WaterSourseSelection == true) {
       digitalWrite(CityWaterValve, HIGH);
     }
@@ -1185,11 +1201,20 @@ int GetFromEEPROMStreamOnBootRS232() {
   return Value;
 }
 
-int GetFromEEPROMWaterDuration() {
+int GetFromEEPROMBathroomWaterDuration() {
   int Value = EEPROM.read(3);
   if (150 >= Value || Value >= 1800) {
     Value = 150;
     EEPROM.update(3, Value);
+  }
+  return Value;
+}
+
+int GetFromEEPROMKitchenWaterDuration() {
+  int Value = EEPROM.read(18);
+  if (150 >= Value || Value >= 1800) {
+    Value = 150;
+    EEPROM.update(18, Value);
   }
   return Value;
 }
