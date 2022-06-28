@@ -17,7 +17,7 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "BATHROOMWATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?","KITCHENWATERDURATION?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETBATHROOMWATERDURATION",
@@ -46,7 +46,7 @@ const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
-int WaterDurationInSeconds, WhoTurnedOnTheWater;
+int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
 long BathroomWaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer;
 bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
@@ -235,6 +235,7 @@ void setup() {
 
   //load system settings from EEProm
   BathroomWaterDurationInSeconds = GetFromEEPROMBathroomWaterDuration();
+  KitchenWaterDurationInSeconds = GetFromEEPROMKitchenWaterDuration();
   UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   WaterSourceOverRide = GetFromEEPROMWaterSourceOverRideOnBoot();
 
@@ -594,13 +595,16 @@ void WaterControl() {
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   bool SkipTurningOnIfIjustTurnedItOff = false;
-  long Delta = 0;
-  if (WhoTurnedOnTheWater == 1){
+  long Delta,WaterDurationInSeconds = 0;
+  if (WhoTurnedOnTheWater == 1) {
     Delta = abs(millis() - BathroomWaterTimer) / 1000;
+    WaterDurationInSeconds = BathroomWaterDurationInSeconds; 
   }
-  if (WhoTurnedOnTheWater == 2){
+  if (WhoTurnedOnTheWater == 2) {
     Delta = abs(millis() - KitchenWaterTimer) / 1000;
+    WaterDurationInSeconds = KitchenWaterDurationInSeconds;
   }
+  
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
     TurnOffWater();
     SkipTurningOnIfIjustTurnedItOff = true;
@@ -610,6 +614,12 @@ void WaterControl() {
     //  //Check to see if any of the buttons are pressed
     if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
       if (ButtonsReleased == true) { //only do something if buttons have been released between reads
+        if (digitalRead(KitchWaterButton) == HIGH){
+          WhoTurnedOnTheWater = 2;
+        }
+        if (digitalRead(BathroomWaterButton) == HIGH){
+          WhoTurnedOnTheWater = 1;
+        }
         ButtonsReleased = false; //set flag to skip toggle
         if (WaterOn == true) { //toggle the water on and off.
           TurnOffWater();
@@ -622,11 +632,9 @@ void WaterControl() {
 
     if (digitalRead(BathroomWaterButton) == LOW) {
       ButtonsReleased = true;
-      WhoTurnedOnTheWater = 1;
     }
-     if (digitalRead(KitchWaterButton) == LOW) {
+    if (digitalRead(KitchWaterButton) == LOW) {
       ButtonsReleased = true;
-      WhoTurnedOnTheWater = 2;
     }
 
   }
@@ -637,10 +645,10 @@ void WaterControl() {
 void TurnOnWater() {
   if (WaterOn == false && HoldingTankAlarm == false) {
     WaterOn = true;
-    if (WhoTurnedOnTheWater == 1){
+    if (WhoTurnedOnTheWater == 1) {
       BathroomWaterTimer = millis();
     }
-    else{
+    else {
       KitchenWaterTimer = millis();
     }
     if (WaterSourseSelection == true) {
@@ -1456,7 +1464,8 @@ void OutputAllData(int WhichPort) {
   GetUnits(WhichPort);
   GetWaterSource(WhichPort);
   GetWaterLevel(WhichPort);
-  GetWaterDuration(WhichPort);
+  GetKitchenWaterDuration(WhichPort);
+  GetBathroomWaterDuration(WhichPort);
   GetSewageLevel(WhichPort);
   GetGreyLevel(WhichPort);
   GetLPGLevel(WhichPort);
@@ -1622,8 +1631,12 @@ void GetACCT2GAIN(int WhichPort) {
   SendItOut("%R,ACCT2GAIN," + String(CurrentGainCT2), WhichPort);
 }
 
-void GetWaterDuration(int WhichPort) {
-  SendItOut("%R,WATERDURATION," + String(WaterDurationInSeconds), WhichPort);
+void GetBathroomWaterDuration(int WhichPort) {
+  SendItOut("%R,BATHROOMWATERDURATION," + String(BathroomWaterDurationInSeconds), WhichPort);
+}
+
+void GetKitchenWaterDuration(int WhichPort) {
+  SendItOut("%R,KITCHENWATERDURATION," + String(KitchenWaterDurationInSeconds), WhichPort);
 }
 
 void GetStreamingOnBoot(int WhichPort) {
@@ -1846,6 +1859,7 @@ void SetWater(String Value, int WhichPort) {
   }
   if (ThingToTest == "ON") {
     TurnOnWater();
+    WhoTurnedOnTheWater = 1;
     CorrectParam = true;
   }
 
@@ -2126,19 +2140,34 @@ void SetACPGAGAIN(String Value, int WhichPort) {
   }
 }
 
-void SetWaterDurationInSeconds(String Value, int WhichPort) {
+void SetWaterBathroomDurationInSeconds(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   int ThingToTest = Value.substring(Index + 1, End - 1).toInt();
   if (150 <= ThingToTest && ThingToTest <= 1800) {
-    WaterDurationInSeconds = ThingToTest;
+    BathroomWaterDurationInSeconds = ThingToTest;
     EEPROM.update(3, ThingToTest);
   }
   else {
-    SendItOut("%R," + GetCurrentTime() + ",Error,WaterDuration must be between 150 and 1800 seconds", WhichPort);
+    SendItOut("%R," + GetCurrentTime() + ",Error,BathroomWaterDuration must be between 150 and 1800 seconds", WhichPort);
     Error(1, WhichPort);
   }
-  GetWaterDuration(WhichPort);
+  GetBathroomWaterDuration(WhichPort);
+}
+
+void SetWaterKitchenDurationInSeconds(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  int ThingToTest = Value.substring(Index + 1, End - 1).toInt();
+  if (150 <= ThingToTest && ThingToTest <= 1800) {
+    KitchenWaterDurationInSeconds = ThingToTest;
+    EEPROM.update(18, ThingToTest);
+  }
+  else {
+    SendItOut("%R," + GetCurrentTime() + ",Error,KitchenWaterDuration must be between 150 and 1800 seconds", WhichPort);
+    Error(1, WhichPort);
+  }
+  GetKitchenWaterDuration(WhichPort);
 }
 
 void SetWaterSourceOverRide(String Value, int WhichPort) {
@@ -2242,7 +2271,7 @@ void SetTravel(String Value, int WhichPort) {
   case 4 - SCC is found and no delimiter found and there is data in the buffer  - add back to the buffer
   case 5 - SCC is found no delimiter found and another scc is found trim up to the second
   case 6 - No SCC and No Delimiter and there is data in teh buffer - dump the buffer
-  case 7 - Valid SSC and Delimiter is found but the command is not in the list of commands - tell the user 
+  case 7 - Valid SSC and Delimiter is found but the command is not in the list of commands - tell the user
 */
 
 String PainlessInstructionSet(String & TestString, int WhichPort) {
@@ -2297,7 +2326,7 @@ String PainlessInstructionSet(String & TestString, int WhichPort) {
                   }
                 }
               }
-              if (CommandCalled == false && ParamCommandCalled == false){
+              if (CommandCalled == false && ParamCommandCalled == false) {
                 //Serial.println("PIS Case 7");
                 SendItOut("%R,Error,Command not recognized", WhichPort);
               }
@@ -2376,8 +2405,8 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       SetACCT2GAIN(CommandRaw, WhichPort);
       break;
     case 12:
-      //Water Duration
-      SetWaterDurationInSeconds(CommandRaw, WhichPort);
+      //SET BATHROOM WATERDURATION
+      SetWaterBathroomDurationInSeconds(CommandRaw, WhichPort);
       break;
     case 13:
       //SET STREAMING ON BOOT
@@ -2406,6 +2435,10 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
     case 19:
       //SETTRAVEL
       SetTravel(CommandRaw, WhichPort);
+      break;
+    case 20:
+      // SetWaterKitchenDurationInSeconds
+      SetWaterKitchenDurationInSeconds(CommandRaw, WhichPort);
       break;
   }
 }
@@ -2541,8 +2574,8 @@ void CommandToCall(int Index, int WhichPort) {
       MIBFLASH();
       break;
     case 31:
-      //WaterDuration
-      GetWaterDuration(WhichPort);
+      //BathroomWaterDuration
+      GetBathroomWaterDuration(WhichPort);
       break;
     case 32:
       //Streaming on boot
@@ -2579,6 +2612,9 @@ void CommandToCall(int Index, int WhichPort) {
     case 40:
       //Travel
       GetTravel(WhichPort);
+      break;
+    case 41:
+      GetKitchenWaterDuration(WhichPort);
       break;
   }
 }
