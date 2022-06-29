@@ -41,7 +41,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.2.2";
+const String FWVersion = "1.3.0";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, AlarmActive = false;
 int TotalWarnings = 8;
@@ -49,7 +49,7 @@ int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
 long BathroomWaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer;
-bool WaterSourseSelection, WaterOn, TurnOnWaterFromISR, EnableACEnergyMonitoring,
+bool WaterSourseSelection, WaterOn, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, Travel, LastSourceForCheck = false;
 bool ButtonsReleased = true;
 char Units;
