@@ -1865,7 +1865,7 @@ void SetWater(String Value, int WhichPort) {
   }
   if (ThingToTest == "ON") {
     TurnOnWater();
-    WhoTurnedOnTheWater = 1;
+    WhoTurnedOnTheWater = 0;
     CorrectParam = true;
   }
 
