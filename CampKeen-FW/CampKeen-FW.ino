@@ -584,7 +584,7 @@ void WaterControl() {
   if (WaterOn == true && (LastSourceForCheck != WaterSourseSelection)) {
     TurnOffWater();
     delay(1000);
-    TurnOnWater();
+    TurnOnWater(true);
     if (StreamingDataUSB == true) {
       GetWaterSource(0);
     }
@@ -595,17 +595,19 @@ void WaterControl() {
 
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   bool SkipTurningOnIfIjustTurnedItOff = false;
-  long Delta,WaterDurationInSeconds = 0;
+  long Delta, WaterDurationInSeconds = 0;
   if (WhoTurnedOnTheWater == 1 || WhoTurnedOnTheWater == 0) {
     Delta = abs(millis() - BathroomWaterTimer) / 1000;
-    WaterDurationInSeconds = BathroomWaterDurationInSeconds; 
+    WaterDurationInSeconds = BathroomWaterDurationInSeconds;
   }
   if (WhoTurnedOnTheWater == 2) {
     Delta = abs(millis() - KitchenWaterTimer) / 1000;
     WaterDurationInSeconds = KitchenWaterDurationInSeconds;
   }
-  
+
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
+    Serial.print("Turning off water from timer:");
+    Serial.println(WhoTurnedOnTheWater);
     TurnOffWater();
     SkipTurningOnIfIjustTurnedItOff = true;
   }
@@ -614,10 +616,12 @@ void WaterControl() {
     //  //Check to see if any of the buttons are pressed
     if (digitalRead(KitchWaterButton) == HIGH || digitalRead(BathroomWaterButton) == HIGH) {
       if (ButtonsReleased == true) { //only do something if buttons have been released between reads
-        if (digitalRead(KitchWaterButton) == HIGH){
+        if (digitalRead(KitchWaterButton) == HIGH && WaterOn == false) {
           WhoTurnedOnTheWater = 2;
+          Serial.println("Water Turned On from Kitchen");
         }
-        if (digitalRead(BathroomWaterButton) == HIGH){
+        if (digitalRead(BathroomWaterButton) == HIGH && WaterOn == false) {
+          Serial.println("Water Turned on from Bathroom");
           WhoTurnedOnTheWater = 1;
         }
         ButtonsReleased = false; //set flag to skip toggle
@@ -625,30 +629,26 @@ void WaterControl() {
           TurnOffWater();
         }
         else {
-          TurnOnWater();
+          TurnOnWater(false);
         }
       }
     }
 
-    if (digitalRead(BathroomWaterButton) == LOW) {
+    if (digitalRead(BathroomWaterButton) == LOW && digitalRead(KitchWaterButton) == LOW) {
       ButtonsReleased = true;
     }
-    if (digitalRead(KitchWaterButton) == LOW) {
-      ButtonsReleased = true;
-    }
-
   }
   //Check the States of pump and or logical state and set the LEDs accordingly
   WaterLEDState();
 }
 
-void TurnOnWater() {
+void TurnOnWater(bool SwitchingSources) {
   if (WaterOn == false && HoldingTankAlarm == false) {
     WaterOn = true;
-    if (WhoTurnedOnTheWater == 1) {
+    if (WhoTurnedOnTheWater == 1 && SwitchingSources == false) {
       BathroomWaterTimer = millis();
     }
-    else {
+    if (WhoTurnedOnTheWater == 2 && SwitchingSources == false){
       KitchenWaterTimer = millis();
     }
     if (WaterSourseSelection == true) {
@@ -1634,11 +1634,11 @@ void GetACCT2GAIN(int WhichPort) {
 }
 
 void GetBathroomWaterDuration(int WhichPort) {
-  SendItOut("%R,BATHROOMWATERDURATION," + String(BathroomWaterDurationInSeconds), WhichPort);
+  SendItOut("%R,BATHROOMWATERDURATION," + String(GetFromEEPROMBathroomWaterDuration()), WhichPort);
 }
 
 void GetKitchenWaterDuration(int WhichPort) {
-  SendItOut("%R,KITCHENWATERDURATION," + String(KitchenWaterDurationInSeconds), WhichPort);
+  SendItOut("%R,KITCHENWATERDURATION," + String(GetFromEEPROMKitchenWaterDuration()), WhichPort);
 }
 
 void GetStreamingOnBoot(int WhichPort) {
@@ -1860,7 +1860,7 @@ void SetWater(String Value, int WhichPort) {
     CorrectParam = true;
   }
   if (ThingToTest == "ON") {
-    TurnOnWater();
+    TurnOnWater(false);
     WhoTurnedOnTheWater = 0;
     CorrectParam = true;
   }
@@ -2146,9 +2146,10 @@ void SetWaterBathroomDurationInSeconds(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   int ThingToTest = Value.substring(Index + 1, End - 1).toInt();
-  if (150 <= ThingToTest && ThingToTest <= 1800) {
+  if (60 <= ThingToTest && ThingToTest <= 1800) {
     BathroomWaterDurationInSeconds = ThingToTest;
-    EEPROM.update(3, ThingToTest);
+    EEPROM.update(20, highByte(ThingToTest));
+    EEPROM.update(21, lowByte(ThingToTest));
   }
   else {
     SendItOut("%R," + GetCurrentTime() + ",Error,BathroomWaterDuration must be between 150 and 1800 seconds", WhichPort);
@@ -2161,9 +2162,10 @@ void SetWaterKitchenDurationInSeconds(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   int ThingToTest = Value.substring(Index + 1, End - 1).toInt();
-  if (150 <= ThingToTest && ThingToTest <= 1800) {
+  if (60 <= ThingToTest && ThingToTest <= 1800) {
     KitchenWaterDurationInSeconds = ThingToTest;
-    EEPROM.update(18, ThingToTest);
+    EEPROM.update(18, highByte(ThingToTest));
+    EEPROM.update(19, lowByte(ThingToTest));
   }
   else {
     SendItOut("%R," + GetCurrentTime() + ",Error,KitchenWaterDuration must be between 150 and 1800 seconds", WhichPort);
