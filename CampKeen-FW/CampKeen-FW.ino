@@ -596,7 +596,7 @@ void WaterControl() {
   //if the water is on and the timer says it's more than the set WaterDuration then turn it off.
   bool SkipTurningOnIfIjustTurnedItOff = false;
   long Delta,WaterDurationInSeconds = 0;
-  if (WhoTurnedOnTheWater == 1) {
+  if (WhoTurnedOnTheWater == 1 || WhoTurnedOnTheWater == 0) {
     Delta = abs(millis() - BathroomWaterTimer) / 1000;
     WaterDurationInSeconds = BathroomWaterDurationInSeconds; 
   }
@@ -606,6 +606,8 @@ void WaterControl() {
   }
   
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
+    Serial.print("Turning off water from timer:");
+    Serial.println(WhoTurnedOnTheWater);
     TurnOffWater();
     SkipTurningOnIfIjustTurnedItOff = true;
   }
@@ -616,8 +618,10 @@ void WaterControl() {
       if (ButtonsReleased == true) { //only do something if buttons have been released between reads
         if (digitalRead(KitchWaterButton) == HIGH){
           WhoTurnedOnTheWater = 2;
+          Serial.println("Water Turned On from Kitchen");
         }
         if (digitalRead(BathroomWaterButton) == HIGH){
+          Serial.println("Water Turned on from Bathroom");
           WhoTurnedOnTheWater = 1;
         }
         ButtonsReleased = false; //set flag to skip toggle
@@ -1210,19 +1214,21 @@ int GetFromEEPROMStreamOnBootRS232() {
 }
 
 int GetFromEEPROMBathroomWaterDuration() {
-  int Value = EEPROM.read(3);
-  if (150 >= Value || Value >= 1800) {
+  int Value = EEPROM.read(20) << 8 | EEPROM.read(21);
+  if (60 >= Value || Value >= 1800) {
     Value = 150;
-    EEPROM.update(3, Value);
+    EEPROM.update(20, highByte(Value));
+    EEPROM.update(21, lowByte(Value));
   }
   return Value;
 }
 
 int GetFromEEPROMKitchenWaterDuration() {
-  int Value = EEPROM.read(18);
-  if (150 >= Value || Value >= 1800) {
+  int Value = EEPROM.read(18) << 8 | EEPROM.read(19);
+  if (60 >= Value || Value >= 1800) {
     Value = 150;
-    EEPROM.update(18, Value);
+    EEPROM.update(18, highByte(Value));
+    EEPROM.update(19, lowByte(Value));
   }
   return Value;
 }
