@@ -606,8 +606,6 @@ void WaterControl() {
   }
 
   if (WaterOn == true && (Delta > WaterDurationInSeconds)) {
-    Serial.print("Turning off water from timer:");
-    Serial.println(WhoTurnedOnTheWater);
     TurnOffWater();
     SkipTurningOnIfIjustTurnedItOff = true;
   }
@@ -618,10 +616,8 @@ void WaterControl() {
       if (ButtonsReleased == true) { //only do something if buttons have been released between reads
         if (digitalRead(KitchWaterButton) == HIGH && WaterOn == false) {
           WhoTurnedOnTheWater = 2;
-          Serial.println("Water Turned On from Kitchen");
         }
         if (digitalRead(BathroomWaterButton) == HIGH && WaterOn == false) {
-          Serial.println("Water Turned on from Bathroom");
           WhoTurnedOnTheWater = 1;
         }
         ButtonsReleased = false; //set flag to skip toggle
