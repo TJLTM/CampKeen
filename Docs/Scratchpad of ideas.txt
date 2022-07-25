@@ -1,0 +1,4 @@
+remove LCD backlight control and dimming local to the LCD (offload from campkeen)
+get serial Port3 free as to be used for ESP32 connection 
+look at tanks and see if holding tanks can be consolidated to one fet for power 
+if i have to free up space on the PCB, look into removing some of the hex inverters (SN7404)
