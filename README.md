@@ -1,5 +1,5 @@
 # CampKeen
-An OpenSource RV monitoring hardware project. Currently i'm targeting my setup but leaving enough to adapt to other systems. This will allow a central place to monitor all of the various things in an RV and will be able to be integrated with an external system like Homeassistant (when I get to that it will have a separate Repo for the component) or custom setups. As well control some things around the RV. Like in this case, i have small holding tanks and to keep them from overflowing i have added waterpump and city (external water hook up control) in both the bathroom and in the kitchen. This does not have a wifi or ethernet capability. This is RS232 or USB (via the MEGA2560) device only. 
+An OpenSource RV monitoring hardware project. Currently i'm targeting my setup but leaving enough to adapt to other systems. This will allow a central place to monitor all of the various things in an RV and will be able to be integrated with an external system like Homeassistant (when I get to that it will have a separate Repo for the component) or custom setups. As well control some things around the RV. Like in this case, i have small holding tanks and to keep them from overflowing i have added waterpump and city (external water hook up control) in both the bathroom and in the kitchen. This does not have a wifi or ethernet capability. This is RS232 device mainly but a socket for an ESP32 will allow for BLE and WIFI along with a angular front end. 
 
 What this can monitor: 
 1. Holding Tanks - Grey/Sewage via galvanic sensors (posts in the tank) these are the ones i'm using (https://www.amazon.com/gp/product/B07YVK2V2K/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1 and https://www.amazon.com/gp/product/B07SVDTHHG/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
@@ -15,13 +15,13 @@ What this can control:
 1. WaterPump
 2. City Water Valve (https://www.amazon.com/gp/product/B07N6246YB/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&th=1)
 I do this with push buttons (two one in the kitchen and one in the bathroom for my set up) with LEDs to let you know that the water is on. Be it the City Water or Tank Via the pump. 
-i have also included a timer. that can be set for how long you would ike the water to remain on when either button is pressed.
+i have also included timers. they can be set for how long you would like the water to remain on when either button is pressed.
 
 
 Other Stuff
 1. There are 6 spare outputs that can be used to control whatever you want 
 2. Same goes for 6 spare inputs 
-3. I2C output for an 20x4 LCD to display current status (https://www.amazon.com/gp/product/B07MTFDHXZ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+3. I2C output for an 20x4 LCD to display current status (https://www.amazon.com/gp/product/B07MTFDHXZ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) This may require additional hardware to allow to be located further away. 
 4. Siren to alert when the tanks are full
 5. Warning LED (This and the siren can be programmed for other items for warnings) 
 6. 2 Spare Buffered ADCs with POTs 
