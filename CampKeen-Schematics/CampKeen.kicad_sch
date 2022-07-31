@@ -3115,8 +3115,8 @@
   (no_connect (at 78.74 157.48) (uuid 706c1cb9-5d96-4282-9efc-6147f0125147))
   (no_connect (at 64.77 349.25) (uuid 718e5c6d-0e4c-46d8-a149-2f2bfc54c7f1))
   (no_connect (at 481.33 336.55) (uuid 7279863c-ff9f-41e2-868a-ae542af3f597))
-  (no_connect (at 481.33 341.63) (uuid 7279863c-ff9f-41e2-868a-ae542af3f597))
-  (no_connect (at 481.33 339.09) (uuid 7279863c-ff9f-41e2-868a-ae542af3f597))
+  (no_connect (at 481.33 341.63) (uuid 7279863c-ff9f-41e2-868a-ae542af3f598))
+  (no_connect (at 481.33 339.09) (uuid 7279863c-ff9f-41e2-868a-ae542af3f599))
   (no_connect (at 518.16 147.32) (uuid 73fbe87f-3928-49c2-bf87-839d907c6aef))
   (no_connect (at 513.715 344.17) (uuid 7f5bfe30-bd58-4f38-9ffd-bde746cbad1f))
   (no_connect (at 63.5 248.92) (uuid 8eb98c56-17e4-4de6-a3e3-06dcfa392040))
@@ -11691,9 +11691,6 @@
     (path "/00000000-0000-0000-0000-000061a6aeb3/00000000-0000-0000-0000-000061a94bef"
       (reference "#PWR0151") (unit 1) (value "GND") (footprint "")
     )
-    (path "/00000000-0000-0000-0000-000061a6aeb3/00000000-0000-0000-0000-000061a94c2a"
-      (reference "#PWR0152") (unit 1) (value "+5V") (footprint "")
-    )
     (path "/00000000-0000-0000-0000-0000627ae565/00000000-0000-0000-0000-000061ca1cd2"
       (reference "#PWR0153") (unit 1) (value "+5V") (footprint "")
     )
@@ -11798,6 +11795,9 @@
     )
     (path "/f0f750d5-98b5-40d1-ae9d-6417e3cf1979"
       (reference "#PWR0190") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/00000000-0000-0000-0000-000061a6aeb3/39616114-9c84-4cf1-af24-6931b5d3d705"
+      (reference "#PWR?") (unit 1) (value "+12V") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000063086201"
       (reference "5VOut1") (unit 1) (value "VS") (footprint "SamacSys_Parts:BK_HTC-15M")
