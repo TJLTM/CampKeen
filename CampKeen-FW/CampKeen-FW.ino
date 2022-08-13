@@ -17,12 +17,12 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "BATHROOMWATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?", "ALARMWATEROFFOVERRIDE?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?", "TANKALARMOVERRIDE?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETBATHROOMWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
-                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION", "SETALARMWATEROFFOVERRIDE"
+                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION", "SETTANKALARMOVERRIDE"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -43,7 +43,7 @@ RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
 const String FWVersion = "1.4.0";
 const float ConversionFactor = 5.0 / 1023;
-bool WarningActive, AlarmWaterTurnOffOverRide, AlarmActive = false;
+bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
@@ -238,7 +238,7 @@ void setup() {
   KitchenWaterDurationInSeconds = GetFromEEPROMKitchenWaterDuration();
   UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   WaterSourceOverRide = GetFromEEPROMWaterSourceOverRideOnBoot();
-  AlarmWaterTurnOffOverRide = GetFromEEPROMWaterOffAlarm();
+  TankAlarmOverRide = GetFromEEPROMWaterOffAlarm();
 
   pinMode(EnergyMonTransformerEnable, OUTPUT);
   pinMode(EnergyMonitorCS, OUTPUT);
@@ -863,7 +863,7 @@ void HoldingTankMonitoring() {
     // Also put in a check for FULL State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
-      if (AlarmWaterTurnOffOverRide == false) {
+      if (TankAlarmOverRide == false) {
         TurnOffWater();
       }
       ALARM();
@@ -1686,8 +1686,8 @@ void GetTravel(int WhichPort) {
 }
 
 
-void GetALARMWaterOffOverRide(int WhichPort) {
-  String Message = "%R,Alarm Water Off Override," + StatesForOutput(AlarmWaterTurnOffOverRide);
+void GetTankAlarmOverRide(int WhichPort) {
+  String Message = "%R,Tank Alarm Override," + StatesForOutput(TankAlarmOverRide);
   SendItOut(Message, WhichPort);
 }
 
@@ -2281,25 +2281,25 @@ void SetTravel(String Value, int WhichPort) {
   }
 }
 
-void SetALARMWaterOffOverRide(String Value, int WhichPort) {
+void SetTankAlarmOverRide(String Value, int WhichPort) {
   int Index = Value.indexOf("*");
   int End = Value.indexOf("\r");
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
-    AlarmWaterTurnOffOverRide = false;
+    TankAlarmOverRide = false;
     CorrectParam = true;
     EEPROM.update(3, 1);
   }
 
   if (ThingToTest == "ON") {
-    AlarmWaterTurnOffOverRide = true;
+    TankAlarmOverRide = true;
     CorrectParam = true;
     EEPROM.update(3, 0);
   }
 
   if (CorrectParam == true) {
-    GetALARMWaterOffOverRide(WhichPort);
+    GetTankAlarmOverRide(WhichPort);
   }
   else {
     Error(4, WhichPort);
@@ -2484,8 +2484,8 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       SetWaterKitchenDurationInSeconds(CommandRaw, WhichPort);
       break;
     case 21:
-      //SETALARMWATEROFFOVERRIDE
-      SetALARMWaterOffOverRide(CommandRaw, WhichPort);
+      //SetTankAlarmOverRide
+      SetTankAlarmOverRide(CommandRaw, WhichPort);
       break;
   }
 }
@@ -2665,7 +2665,7 @@ void CommandToCall(int Index, int WhichPort) {
       break;
     case 42: 
       //ALARMWATEROFFOVERRIDE?
-      GetALARMWaterOffOverRide(WhichPort);
+      GetTankAlarmOverRide(WhichPort);
       break;
   }
 }
