@@ -2663,7 +2663,7 @@ void CommandToCall(int Index, int WhichPort) {
     case 41:
       GetKitchenWaterDuration(WhichPort);
       break;
-    case 42: 
+    case 42:
       //ALARMWATEROFFOVERRIDE?
       GetTankAlarmOverRide(WhichPort);
       break;
