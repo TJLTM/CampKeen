@@ -1685,6 +1685,12 @@ void GetTravel(int WhichPort) {
   SendItOut(Message, WhichPort);
 }
 
+
+void GetALARMWaterOffOverRide(int WhichPort) {
+  String Message = "%R,Alarm Water Off Override," + StatesForOutput(AlarmWaterTurnOffOverRide);
+  SendItOut(Message, WhichPort);
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -2269,6 +2275,31 @@ void SetTravel(String Value, int WhichPort) {
 
   if (CorrectParam == true) {
     GetTravel(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
+void SetALARMWaterOffOverRide(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    AlarmWaterTurnOffOverRide = false;
+    CorrectParam = true;
+    EEPROM.update(3, 1);
+  }
+
+  if (ThingToTest == "ON") {
+    AlarmWaterTurnOffOverRide = true;
+    CorrectParam = true;
+    EEPROM.update(3, 0);
+  }
+
+  if (CorrectParam == true) {
+    GetALARMWaterOffOverRide(WhichPort);
   }
   else {
     Error(4, WhichPort);
