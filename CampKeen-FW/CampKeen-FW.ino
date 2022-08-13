@@ -238,7 +238,7 @@ void setup() {
   KitchenWaterDurationInSeconds = GetFromEEPROMKitchenWaterDuration();
   UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   WaterSourceOverRide = GetFromEEPROMWaterSourceOverRideOnBoot();
-  TankAlarmOverRide = GetFromEEPROMWaterOffAlarm();
+  TankAlarmOverRide = GetFromEEPROTankAlarmOverride();
 
   pinMode(EnergyMonTransformerEnable, OUTPUT);
   pinMode(EnergyMonitorCS, OUTPUT);
@@ -1162,7 +1162,7 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
-bool GetFromEEPROMWaterOffAlarm() {
+bool GetFromEEPROTankAlarmOverride() {
   int Value = EEPROM.read(3);
   if (0 > Value || Value >= 2) {
     Value = 0;
