@@ -238,7 +238,6 @@ void setup() {
   KitchenWaterDurationInSeconds = GetFromEEPROMKitchenWaterDuration();
   UseWaterPumpSense = GetFromEEPROMWaterPumpSenseOnBoot();
   WaterSourceOverRide = GetFromEEPROMWaterSourceOverRideOnBoot();
-  TankAlarmOverRide = GetFromEEPROTankAlarmOverride();
 
   pinMode(EnergyMonTransformerEnable, OUTPUT);
   pinMode(EnergyMonitorCS, OUTPUT);
@@ -1162,15 +1161,6 @@ void ReadOtherTempSensors() {
 //------------------------------------------------------------------
 //EEPROM functions
 //------------------------------------------------------------------
-bool GetFromEEPROTankAlarmOverride() {
-  int Value = EEPROM.read(3);
-  if (0 > Value || Value >= 2) {
-    Value = 0;
-    EEPROM.update(3, Value);
-  }
-  return Value;
-}
-
 bool GetFromEEPROMWaterSourceOverRideOnBoot() {
   int Value = EEPROM.read(17);
   if (0 > Value || Value >= 2) {
@@ -1689,6 +1679,9 @@ void GetTravel(int WhichPort) {
 void GetTankAlarmOverRide(int WhichPort) {
   String Message = "%R,Tank Alarm Override," + StatesForOutput(TankAlarmOverRide);
   SendItOut(Message, WhichPort);
+  if (TankAlarmOverRide == 1){
+    BroadCast("%R,CAUTION CAUTION CAUTION Tank Alarm Override is enabled holding tanks can be overflowed");
+  }
 }
 
 //------------------------------------------------------------------
@@ -2289,13 +2282,11 @@ void SetTankAlarmOverRide(String Value, int WhichPort) {
   if (ThingToTest == "OFF") {
     TankAlarmOverRide = false;
     CorrectParam = true;
-    EEPROM.update(3, 1);
   }
 
   if (ThingToTest == "ON") {
     TankAlarmOverRide = true;
     CorrectParam = true;
-    EEPROM.update(3, 0);
   }
 
   if (CorrectParam == true) {
