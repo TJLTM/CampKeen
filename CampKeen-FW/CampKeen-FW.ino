@@ -17,12 +17,12 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "BATHROOMWATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?", "TANKALARMOVERRIDE?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETBATHROOMWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
-                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION"
+                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION", "SETTANKALARMOVERRIDE"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -41,9 +41,9 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.3.0";
+const String FWVersion = "1.4.0";
 const float ConversionFactor = 5.0 / 1023;
-bool WarningActive, AlarmActive = false;
+bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
@@ -644,7 +644,7 @@ void TurnOnWater(bool SwitchingSources) {
     if (WhoTurnedOnTheWater == 1 && SwitchingSources == false) {
       BathroomWaterTimer = millis();
     }
-    if (WhoTurnedOnTheWater == 2 && SwitchingSources == false){
+    if (WhoTurnedOnTheWater == 2 && SwitchingSources == false) {
       KitchenWaterTimer = millis();
     }
     if (WaterSourseSelection == true) {
@@ -862,7 +862,9 @@ void HoldingTankMonitoring() {
     // Also put in a check for FULL State on either and turn off pump or city water
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
-      TurnOffWater();
+      if (TankAlarmOverRide == false) {
+        TurnOffWater();
+      }
       ALARM();
     }
     else {
@@ -1673,6 +1675,15 @@ void GetTravel(int WhichPort) {
   SendItOut(Message, WhichPort);
 }
 
+
+void GetTankAlarmOverRide(int WhichPort) {
+  String Message = "%R,Tank Alarm Override," + StatesForOutput(TankAlarmOverRide);
+  SendItOut(Message, WhichPort);
+  if (TankAlarmOverRide == 1){
+    BroadCast("%R,CAUTION CAUTION CAUTION Tank Alarm Override is enabled holding tanks can be overflowed");
+  }
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -2263,6 +2274,29 @@ void SetTravel(String Value, int WhichPort) {
   }
 }
 
+void SetTankAlarmOverRide(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    TankAlarmOverRide = false;
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "ON") {
+    TankAlarmOverRide = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetTankAlarmOverRide(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2440,6 +2474,10 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       // SetWaterKitchenDurationInSeconds
       SetWaterKitchenDurationInSeconds(CommandRaw, WhichPort);
       break;
+    case 21:
+      //SetTankAlarmOverRide
+      SetTankAlarmOverRide(CommandRaw, WhichPort);
+      break;
   }
 }
 
@@ -2615,6 +2653,10 @@ void CommandToCall(int Index, int WhichPort) {
       break;
     case 41:
       GetKitchenWaterDuration(WhichPort);
+      break;
+    case 42:
+      //ALARMWATEROFFOVERRIDE?
+      GetTankAlarmOverRide(WhichPort);
       break;
   }
 }
