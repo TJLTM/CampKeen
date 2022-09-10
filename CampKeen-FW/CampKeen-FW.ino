@@ -1682,7 +1682,7 @@ void GetTravel(int WhichPort) {
 void GetTankAlarmOverRide(int WhichPort) {
   String Message = "%R,Tank Alarm Override," + StatesForOutput(TankAlarmOverRide);
   SendItOut(Message, WhichPort);
-  if (TankAlarmOverRide == 1){
+  if (TankAlarmOverRide == 1) {
     BroadCast("%R,CAUTION CAUTION CAUTION Tank Alarm Override is enabled holding tanks can be overflowed");
   }
 }
@@ -1772,9 +1772,11 @@ void AllWarningMessages(int WhichPort) {
 
 void ALARM() {
   digitalWrite(AlarmOut, HIGH);
-  AlarmActive = true;
-  GetAlarmStatus(0);
-  GetAlarmStatus(1);
+  if (AlarmActive == false) {
+    AlarmActive = true;
+    GetAlarmStatus(0);
+    GetAlarmStatus(1);
+  }
 }
 
 void ResetAlarm() {
