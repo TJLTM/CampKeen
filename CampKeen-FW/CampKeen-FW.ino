@@ -43,9 +43,10 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.5.0";
+const String FWVersion = "1.5.1";
 const float ConversionFactor = 5.0 / 1023;
-bool WarningActive, TankAlarmOverRide, AlarmActive, WarningIndicatorOverRide = false;
+bool WarningActive, TankAlarmOverRide, AlarmActive = false;
+bool WarningIndicator = true;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
@@ -1687,7 +1688,7 @@ void GetTankAlarmOverRide(int WhichPort) {
 }
 
 void GetWarningIndicator(int WhichPort) {
-  String Message = "%R,Warning Indicator Override," + StatesForOutput(WarningIndicatorOverRide);
+  String Message = "%R,Warning Indicator Override," + StatesForOutput(WarningIndicator);
   SendItOut(Message, WhichPort);
 }
 
@@ -1702,7 +1703,7 @@ void Error(int Number, int WhichPort) {
 }
 
 void Warning() {
-  if (WarningActive == true && WarningIndicatorOverRide == false) {
+  if (WarningActive == true && WarningIndicator == true) {
     if (abs(millis() - WarningBlinkTimer) >  333) {
       WarningBlinkTimer = millis();
       if (digitalRead(WarningLED) == LOW) {
@@ -2310,13 +2311,14 @@ void SetWarningIndicator(String Value, int WhichPort) {
   String ThingToTest = Value.substring(Index + 1, End - 1);
   bool CorrectParam = false;
   if (ThingToTest == "OFF") {
-    WarningIndicatorOverRide = false;
+    WarningIndicator = false;
     CorrectParam = true;
   }
 
   if (ThingToTest == "ON") {
-    WarningIndicatorOverRide = true;
+    WarningIndicator = true;
     CorrectParam = true;
+    digitalWrite(WarningLED, LOW);
   }
 
   if (CorrectParam == true) {
