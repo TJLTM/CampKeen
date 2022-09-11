@@ -43,7 +43,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.5.2";
+const String FWVersion = "1.5.3";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 bool WarningIndicator = true;
@@ -51,7 +51,7 @@ int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
 long BathroomWaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
-     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer;
+     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer, HoldingSewageTankPost, HoldingGreyTankPost;
 bool WaterSourseSelection, WaterOn, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, Travel, LastSourceForCheck = false;
 bool ButtonsReleased = true;
@@ -838,15 +838,21 @@ void HoldingTankMonitoring() {
   //Read Grey and Sewage Tanks Continuously when WaterOn == True
   if ((millis() - ShitterTankTimer) > 900000 || ShittersGettinFull == true || WaterOn == true) {
     ReadSewageTank();
-    GetSewageLevel(0);
-    GetSewageLevel(1);
+    if (millis() - HoldingSewageTankPost > 30000) {
+      GetSewageLevel(0);
+      GetSewageLevel(1);
+      HoldingSewageTankPost = millis();
+    }
     ShitterTankTimer = millis();
   }
 
   if ((millis() - GreyTankTimer) > 900000 || GreyGettinFull == true || WaterOn == true) {
     ReadGreyTank();
-    GetGreyLevel(0);
-    GetGreyLevel(1);
+    if (millis() - HoldingGreyTankPost > 30000) {
+      GetGreyLevel(0);
+      GetGreyLevel(1);
+      HoldingGreyTankPost = millis();
+    }
     GreyTankTimer = millis();
   }
 
@@ -1789,6 +1795,7 @@ void ResetWarnings() {
 
 void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
+  ShittersGettinFull = GreyGettinFull = false;
   ResetAlarm();
   ResetWarnings();
 }
