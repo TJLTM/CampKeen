@@ -43,7 +43,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.5.1";
+const String FWVersion = "1.5.2";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 bool WarningIndicator = true;
@@ -866,7 +866,9 @@ void HoldingTankMonitoring() {
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
       if (TankAlarmOverRide == false) {
-        TurnOffWater();
+        if (WaterOn == true) {
+          TurnOffWater();
+        }
       }
       ALARM();
     }
