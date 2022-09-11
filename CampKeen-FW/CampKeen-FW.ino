@@ -838,27 +838,16 @@ void HoldingTankMonitoring() {
   //Read Grey and Sewage Tanks Continuously when WaterOn == True
   if ((millis() - ShitterTankTimer) > 900000 || ShittersGettinFull == true || WaterOn == true) {
     ReadSewageTank();
+    GetSewageLevel(0);
+    GetSewageLevel(1);
     ShitterTankTimer = millis();
   }
 
   if ((millis() - GreyTankTimer) > 900000 || GreyGettinFull == true || WaterOn == true) {
     ReadGreyTank();
+    GetGreyLevel(0);
+    GetGreyLevel(1);
     GreyTankTimer = millis();
-  }
-
-  if (WaterOn == true) {
-    /*Post every 10 Seconds if the water is on repurpose the Grey Timer but update
-       both Sewage and Grey Timers so that when the water is back off they will
-       update on their correct interval
-    */
-    if ((millis() - GreyTankTimer) > 10000) {
-      GetGreyLevel(0);
-      GetSewageLevel(0);
-      GetGreyLevel(1);
-      GetSewageLevel(1);
-      GreyTankTimer = millis();
-      ShitterTankTimer = millis();
-    }
   }
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
