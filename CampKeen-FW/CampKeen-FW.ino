@@ -43,7 +43,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.5.3";
+const String FWVersion = "1.5.4";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 bool WarningIndicator = true;
@@ -891,14 +891,20 @@ void ReadSewageTank() {
     case 0:
       LastSewageLevel = "Empty";
       ShittersGettinFull = false;
+      RemoveWarningToList(4);
+      RemoveWarningToList(8);
       break;
     case 1:
       LastSewageLevel = "1/4";
       ShittersGettinFull = false;
+      RemoveWarningToList(4);
+      RemoveWarningToList(8);
       break;
     case 3:
       LastSewageLevel = "1/2";
       ShittersGettinFull = false;
+      RemoveWarningToList(4);
+      RemoveWarningToList(8);
       break;
     case 7:
       LastSewageLevel = "3/4";
@@ -942,14 +948,20 @@ void ReadGreyTank() {
     case 0:
       LastGreyWater = "Empty";
       GreyGettinFull = false;
+      RemoveWarningToList(2);
+      RemoveWarningToList(3);
       break;
     case 1:
       LastGreyWater = "1/4";
       GreyGettinFull = false;
+      RemoveWarningToList(2);
+      RemoveWarningToList(3);
       break;
     case 3:
       LastGreyWater = "1/2";
       GreyGettinFull = false;
+      RemoveWarningToList(2);
+      RemoveWarningToList(3);
       break;
     case 7:
       LastGreyWater = "3/4";
@@ -1003,12 +1015,15 @@ void ReadWaterAndLPG() {
   if (R1 > 40)
   {
     LastWaterLevel = "Full";
+    RemoveWarningToList(6);
     if (R1 > 60)
     {
       LastWaterLevel = "3/4";
+      RemoveWarningToList(6);
       if (R1 > 80)
       {
         LastWaterLevel = "1/2";
+        RemoveWarningToList(6);
         if (R1 > 100)
         {
           LastWaterLevel = "1/4";
@@ -1032,6 +1047,9 @@ void ReadWaterAndLPG() {
   if (LastLPGLevel <= 25 || LastLPGLevel == "ERROR") {
     OutputWarningMessage(7); //LPG
   }
+  else {
+    RemoveWarningToList(7);
+  }
 }
 //------------------------------------------------------------------
 //Other sensors
@@ -1049,9 +1067,15 @@ void ReadBatteryVoltages() {
   if (LastDCVoltage < 10.5) {
     AddWarningToList(5);
   }
+  else{
+    RemoveWarningToList(5);
+  }
 
   if (LastRTCVoltage < 2.3) {
     AddWarningToList(1);
+  }
+  else{
+    RemoveWarningToList(1);
   }
 
 }
@@ -1711,7 +1735,9 @@ void Warning() {
     }
   }
   else {
-    digitalWrite(WarningLED, LOW);
+    if (digitalRead(WarningLED) == HIGH) {
+      digitalWrite(WarningLED, LOW);
+    }
   }
 }
 
