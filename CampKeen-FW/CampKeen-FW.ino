@@ -1710,6 +1710,9 @@ void Warning() {
       }
     }
   }
+  else {
+    digitalWrite(WarningLED, LOW);
+  }
 }
 
 void AddWarningToList(int WarningID) {
@@ -1717,6 +1720,21 @@ void AddWarningToList(int WarningID) {
   if (ArrayOfWarnings[WarningID] != WarningID) {
     ArrayOfWarnings[WarningID] = WarningID;
     OutputWarningMessage(WarningID);
+  }
+}
+
+void RemoveWarningToList(int WarningID) {
+  if (ArrayOfWarnings[WarningID] != -1) {
+    ArrayOfWarnings[WarningID] = -1;
+  }
+  bool ClearedWarnings = true;
+  for (int i = 1; i <= TotalWarnings; i++) {
+    if (ArrayOfWarnings[i] != -1) {
+      ClearedWarnings = false;
+    }
+  }
+  if (bool ClearedWarnings == true) {
+    WarningActive = false;
   }
 }
 
