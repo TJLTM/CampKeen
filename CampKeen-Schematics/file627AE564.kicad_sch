@@ -1235,7 +1235,7 @@
     (uuid 00000000-0000-0000-0000-000061cc4462)
     (property "Reference" "Q60" (id 0) (at 158.75 64.389 0))
     (property "Value" "LTV-847" (id 1) (at 158.75 66.7004 0))
-    (property "Footprint" "DIP762W60P254L1984H450Q16N" (id 2) (at 176.53 68.58 0)
+    (property "Footprint" "SamacSys_Parts:DIP762W60P254L1984H450Q16N" (id 2) (at 176.53 68.58 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
     (property "Datasheet" "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-305/79782.pdf" (id 3) (at 176.53 71.12 0)

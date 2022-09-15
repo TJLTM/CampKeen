@@ -12687,6 +12687,12 @@
     (path "/00000000-0000-0000-0000-0000619922d7/00000000-0000-0000-0000-00006205f103"
       (reference "R139") (unit 1) (value "22k") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
     )
+    (path "/00000000-0000-0000-0000-000062665296/d6156fd1-51e7-4660-9625-5da2be4b73fa"
+      (reference "R?") (unit 1) (value "1M") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
+    )
+    (path "/00000000-0000-0000-0000-00006479d118/d6156fd1-51e7-4660-9625-5da2be4b73fa"
+      (reference "R?") (unit 1) (value "1M") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
+    )
     (path "/00000000-0000-0000-0000-0000610c27b2"
       (reference "RTCBattery1") (unit 1) (value "S8411-45R") (footprint "SamacSys_Parts:S8411-45R_1")
     )
