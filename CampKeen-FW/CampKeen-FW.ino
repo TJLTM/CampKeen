@@ -1759,7 +1759,7 @@ void RemoveWarningToList(int WarningID) {
       ClearedWarnings = false;
     }
   }
-  if (bool ClearedWarnings == true) {
+  if (ClearedWarnings == true) {
     WarningActive = false;
   }
 }
