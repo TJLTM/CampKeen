@@ -12687,16 +12687,10 @@
     (path "/00000000-0000-0000-0000-0000619922d7/00000000-0000-0000-0000-00006205f103"
       (reference "R139") (unit 1) (value "22k") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
     )
-    (path "/00000000-0000-0000-0000-00006479d118/7584bd0b-5c1a-4d81-83e3-8d6d53313b93"
-      (reference "R?") (unit 1) (value "220") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
-    )
-    (path "/00000000-0000-0000-0000-000062665296/7584bd0b-5c1a-4d81-83e3-8d6d53313b93"
-      (reference "R?") (unit 1) (value "220") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
-    )
-    (path "/00000000-0000-0000-0000-00006479d118/d6156fd1-51e7-4660-9625-5da2be4b73fa"
+    (path "/00000000-0000-0000-0000-000062665296/d6156fd1-51e7-4660-9625-5da2be4b73fa"
       (reference "R?") (unit 1) (value "470") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
     )
-    (path "/00000000-0000-0000-0000-000062665296/d6156fd1-51e7-4660-9625-5da2be4b73fa"
+    (path "/00000000-0000-0000-0000-00006479d118/d6156fd1-51e7-4660-9625-5da2be4b73fa"
       (reference "R?") (unit 1) (value "470") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical")
     )
     (path "/00000000-0000-0000-0000-0000610c27b2"
