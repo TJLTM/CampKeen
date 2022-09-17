@@ -17,12 +17,14 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "WATER?", "STREAMING?", "ACENMON?", "ALLDATA?", "UPDATEALL", "RESETWARNINGS", "RESETALLALARMS",
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "BATHROOMWATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
-                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?", "TANKALARMOVERRIDE?"
+                            "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?", "TANKALARMOVERRIDE?",
+                            "WARNINGINDICATOR?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETBATHROOMWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
-                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION", "SETTANKALARMOVERRIDE"
+                             "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION", "SETTANKALARMOVERRIDE",
+                             "SETWARNINGINDICATOR"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -41,14 +43,15 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.4.0";
+const String FWVersion = "1.5.4";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, TankAlarmOverRide, AlarmActive = false;
+bool WarningIndicator = true;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
 long BathroomWaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
-     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer;
+     EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer, HoldingSewageTankPost, HoldingGreyTankPost;
 bool WaterSourseSelection, WaterOn, EnableACEnergyMonitoring,
      UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, Travel, LastSourceForCheck = false;
 bool ButtonsReleased = true;
@@ -835,27 +838,22 @@ void HoldingTankMonitoring() {
   //Read Grey and Sewage Tanks Continuously when WaterOn == True
   if ((millis() - ShitterTankTimer) > 900000 || ShittersGettinFull == true || WaterOn == true) {
     ReadSewageTank();
+    if (millis() - HoldingSewageTankPost > 30000) {
+      GetSewageLevel(0);
+      GetSewageLevel(1);
+      HoldingSewageTankPost = millis();
+    }
     ShitterTankTimer = millis();
   }
 
   if ((millis() - GreyTankTimer) > 900000 || GreyGettinFull == true || WaterOn == true) {
     ReadGreyTank();
-    GreyTankTimer = millis();
-  }
-
-  if (WaterOn == true) {
-    /*Post every 10 Seconds if the water is on repurpose the Grey Timer but update
-       both Sewage and Grey Timers so that when the water is back off they will
-       update on their correct interval
-    */
-    if ((millis() - GreyTankTimer) > 10000) {
+    if (millis() - HoldingGreyTankPost > 30000) {
       GetGreyLevel(0);
-      GetSewageLevel(0);
       GetGreyLevel(1);
-      GetSewageLevel(1);
-      GreyTankTimer = millis();
-      ShitterTankTimer = millis();
+      HoldingGreyTankPost = millis();
     }
+    GreyTankTimer = millis();
   }
 
   if (ShittersGettinFull == true || GreyGettinFull == true) {
@@ -863,7 +861,9 @@ void HoldingTankMonitoring() {
     if (LastSewageLevel == "Full" || LastGreyWater == "Full") {
       HoldingTankAlarm = true;
       if (TankAlarmOverRide == false) {
-        TurnOffWater();
+        if (WaterOn == true) {
+          TurnOffWater();
+        }
       }
       ALARM();
     }
@@ -891,14 +891,20 @@ void ReadSewageTank() {
     case 0:
       LastSewageLevel = "Empty";
       ShittersGettinFull = false;
+      RemoveWarningToList(4);
+      RemoveWarningToList(8);
       break;
     case 1:
       LastSewageLevel = "1/4";
       ShittersGettinFull = false;
+      RemoveWarningToList(4);
+      RemoveWarningToList(8);
       break;
     case 3:
       LastSewageLevel = "1/2";
       ShittersGettinFull = false;
+      RemoveWarningToList(4);
+      RemoveWarningToList(8);
       break;
     case 7:
       LastSewageLevel = "3/4";
@@ -942,14 +948,20 @@ void ReadGreyTank() {
     case 0:
       LastGreyWater = "Empty";
       GreyGettinFull = false;
+      RemoveWarningToList(2);
+      RemoveWarningToList(3);
       break;
     case 1:
       LastGreyWater = "1/4";
       GreyGettinFull = false;
+      RemoveWarningToList(2);
+      RemoveWarningToList(3);
       break;
     case 3:
       LastGreyWater = "1/2";
       GreyGettinFull = false;
+      RemoveWarningToList(2);
+      RemoveWarningToList(3);
       break;
     case 7:
       LastGreyWater = "3/4";
@@ -1003,12 +1015,15 @@ void ReadWaterAndLPG() {
   if (R1 > 40)
   {
     LastWaterLevel = "Full";
+    RemoveWarningToList(6);
     if (R1 > 60)
     {
       LastWaterLevel = "3/4";
+      RemoveWarningToList(6);
       if (R1 > 80)
       {
         LastWaterLevel = "1/2";
+        RemoveWarningToList(6);
         if (R1 > 100)
         {
           LastWaterLevel = "1/4";
@@ -1032,6 +1047,9 @@ void ReadWaterAndLPG() {
   if (LastLPGLevel <= 25 || LastLPGLevel == "ERROR") {
     OutputWarningMessage(7); //LPG
   }
+  else {
+    RemoveWarningToList(7);
+  }
 }
 //------------------------------------------------------------------
 //Other sensors
@@ -1049,9 +1067,15 @@ void ReadBatteryVoltages() {
   if (LastDCVoltage < 10.5) {
     AddWarningToList(5);
   }
+  else{
+    RemoveWarningToList(5);
+  }
 
   if (LastRTCVoltage < 2.3) {
     AddWarningToList(1);
+  }
+  else{
+    RemoveWarningToList(1);
   }
 
 }
@@ -1679,9 +1703,14 @@ void GetTravel(int WhichPort) {
 void GetTankAlarmOverRide(int WhichPort) {
   String Message = "%R,Tank Alarm Override," + StatesForOutput(TankAlarmOverRide);
   SendItOut(Message, WhichPort);
-  if (TankAlarmOverRide == 1){
+  if (TankAlarmOverRide == 1) {
     BroadCast("%R,CAUTION CAUTION CAUTION Tank Alarm Override is enabled holding tanks can be overflowed");
   }
+}
+
+void GetWarningIndicator(int WhichPort) {
+  String Message = "%R,Warning Indicator Override," + StatesForOutput(WarningIndicator);
+  SendItOut(Message, WhichPort);
 }
 
 //------------------------------------------------------------------
@@ -1695,7 +1724,7 @@ void Error(int Number, int WhichPort) {
 }
 
 void Warning() {
-  if (WarningActive == true) {
+  if (WarningActive == true && WarningIndicator == true) {
     if (abs(millis() - WarningBlinkTimer) >  333) {
       WarningBlinkTimer = millis();
       if (digitalRead(WarningLED) == LOW) {
@@ -1705,6 +1734,11 @@ void Warning() {
       }
     }
   }
+  else {
+    if (digitalRead(WarningLED) == HIGH) {
+      digitalWrite(WarningLED, LOW);
+    }
+  }
 }
 
 void AddWarningToList(int WarningID) {
@@ -1712,6 +1746,21 @@ void AddWarningToList(int WarningID) {
   if (ArrayOfWarnings[WarningID] != WarningID) {
     ArrayOfWarnings[WarningID] = WarningID;
     OutputWarningMessage(WarningID);
+  }
+}
+
+void RemoveWarningToList(int WarningID) {
+  if (ArrayOfWarnings[WarningID] != -1) {
+    ArrayOfWarnings[WarningID] = -1;
+  }
+  bool ClearedWarnings = true;
+  for (int i = 1; i <= TotalWarnings; i++) {
+    if (ArrayOfWarnings[i] != -1) {
+      ClearedWarnings = false;
+    }
+  }
+  if (ClearedWarnings == true) {
+    WarningActive = false;
   }
 }
 
@@ -1764,9 +1813,11 @@ void AllWarningMessages(int WhichPort) {
 
 void ALARM() {
   digitalWrite(AlarmOut, HIGH);
-  AlarmActive = true;
-  GetAlarmStatus(0);
-  GetAlarmStatus(1);
+  if (AlarmActive == false) {
+    AlarmActive = true;
+    GetAlarmStatus(0);
+    GetAlarmStatus(1);
+  }
 }
 
 void ResetAlarm() {
@@ -1788,6 +1839,7 @@ void ResetWarnings() {
 
 void ResetAllAlarmsAndWarnings() {
   HoldingTankAlarm = false;
+  ShittersGettinFull = GreyGettinFull = false;
   ResetAlarm();
   ResetWarnings();
 }
@@ -2297,6 +2349,30 @@ void SetTankAlarmOverRide(String Value, int WhichPort) {
   }
 }
 
+void SetWarningIndicator(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    WarningIndicator = false;
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "ON") {
+    WarningIndicator = true;
+    CorrectParam = true;
+    digitalWrite(WarningLED, LOW);
+  }
+
+  if (CorrectParam == true) {
+    GetWarningIndicator(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2478,6 +2554,10 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       //SetTankAlarmOverRide
       SetTankAlarmOverRide(CommandRaw, WhichPort);
       break;
+    case 22:
+      //SetWarningIndicator
+      SetWarningIndicator(CommandRaw, WhichPort);
+      break;
   }
 }
 
@@ -2657,6 +2737,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 42:
       //ALARMWATEROFFOVERRIDE?
       GetTankAlarmOverRide(WhichPort);
+      break;
+    case 43:
+      //INDICATORS?
+      GetWarningIndicator(WhichPort);
       break;
   }
 }
