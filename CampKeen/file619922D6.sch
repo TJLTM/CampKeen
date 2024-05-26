@@ -1,0 +1,1934 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A2 23386 16535
+encoding utf-8
+Sheet 7 10
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text HLabel 1700 3000 0    50   Input ~ 0
+WaterPumpSenseIn
+$Comp
+L Device:R R?
+U 1 1 61994CEA
+P 2100 3450
+AR Path="/62665296/61994CEA" Ref="R?"  Part="1" 
+AR Path="/6479D118/61994CEA" Ref="R?"  Part="1" 
+AR Path="/627AE565/61994CEA" Ref="R?"  Part="1" 
+AR Path="/619922D7/61994CEA" Ref="R59"  Part="1" 
+F 0 "R59" H 2170 3496 50  0000 L CNN
+F 1 "1M" H 2170 3405 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 2030 3450 50  0001 C CNN
+F 3 "~" H 2100 3450 50  0001 C CNN
+	1    2100 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61994CF0
+P 2650 3750
+AR Path="/62665296/61994CF0" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61994CF0" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61994CF0" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61994CF0" Ref="#PWR0106"  Part="1" 
+F 0 "#PWR0106" H 2650 3500 50  0001 C CNN
+F 1 "GND" H 2655 3577 50  0000 C CNN
+F 2 "" H 2650 3750 50  0001 C CNN
+F 3 "" H 2650 3750 50  0001 C CNN
+	1    2650 3750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 3600 2100 3750
+Wire Wire Line
+	2100 3750 2650 3750
+$Comp
+L Device:R R?
+U 1 1 61994CF8
+P 5550 2300
+AR Path="/62665296/61994CF8" Ref="R?"  Part="1" 
+AR Path="/6479D118/61994CF8" Ref="R?"  Part="1" 
+AR Path="/627AE565/61994CF8" Ref="R?"  Part="1" 
+AR Path="/619922D7/61994CF8" Ref="R63"  Part="1" 
+F 0 "R63" H 5620 2346 50  0000 L CNN
+F 1 "330" H 5620 2255 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5480 2300 50  0001 C CNN
+F 3 "~" H 5550 2300 50  0001 C CNN
+	1    5550 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 3300 2100 3000
+Wire Wire Line
+	2100 3000 2350 3000
+Connection ~ 2650 3750
+Wire Wire Line
+	2650 2800 2650 2650
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61994D0D
+P 2550 3000
+AR Path="/62665296/61994D0D" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61994D0D" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61994D0D" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61994D0D" Ref="Q20"  Part="1" 
+F 0 "Q20" H 2754 3046 50  0000 L CNN
+F 1 "2N7000" H 2754 2955 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 2750 2925 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2550 3000 50  0001 L CNN
+	1    2550 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61994D13
+P 1700 3450
+AR Path="/62665296/61994D13" Ref="C?"  Part="1" 
+AR Path="/6479D118/61994D13" Ref="C?"  Part="1" 
+AR Path="/627AE565/61994D13" Ref="C?"  Part="1" 
+AR Path="/619922D7/61994D13" Ref="C28"  Part="1" 
+F 0 "C28" H 1815 3496 50  0000 L CNN
+F 1 "22nF" H 1815 3405 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 1738 3300 50  0001 C CNN
+F 3 "~" H 1700 3450 50  0001 C CNN
+	1    1700 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 3000 2100 3000
+Connection ~ 2100 3000
+Wire Wire Line
+	1700 3750 2100 3750
+Connection ~ 2100 3750
+Wire Wire Line
+	1700 3750 1700 3600
+Wire Wire Line
+	1700 3300 1700 3000
+Text HLabel 1700 4700 0    50   Input ~ 0
+EnableLCDIn
+$Comp
+L Device:R R?
+U 1 1 619C5CDD
+P 2100 5150
+AR Path="/62665296/619C5CDD" Ref="R?"  Part="1" 
+AR Path="/6479D118/619C5CDD" Ref="R?"  Part="1" 
+AR Path="/627AE565/619C5CDD" Ref="R?"  Part="1" 
+AR Path="/619922D7/619C5CDD" Ref="R60"  Part="1" 
+F 0 "R60" H 2170 5196 50  0000 L CNN
+F 1 "1M" H 2170 5105 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 2030 5150 50  0001 C CNN
+F 3 "~" H 2100 5150 50  0001 C CNN
+	1    2100 5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 619C5CE3
+P 2650 5450
+AR Path="/62665296/619C5CE3" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/619C5CE3" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/619C5CE3" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/619C5CE3" Ref="#PWR0108"  Part="1" 
+F 0 "#PWR0108" H 2650 5200 50  0001 C CNN
+F 1 "GND" H 2655 5277 50  0000 C CNN
+F 2 "" H 2650 5450 50  0001 C CNN
+F 3 "" H 2650 5450 50  0001 C CNN
+	1    2650 5450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 5300 2100 5450
+Wire Wire Line
+	2100 5450 2650 5450
+$Comp
+L Device:R R?
+U 1 1 619C5CEB
+P 5850 2300
+AR Path="/62665296/619C5CEB" Ref="R?"  Part="1" 
+AR Path="/6479D118/619C5CEB" Ref="R?"  Part="1" 
+AR Path="/627AE565/619C5CEB" Ref="R?"  Part="1" 
+AR Path="/619922D7/619C5CEB" Ref="R64"  Part="1" 
+F 0 "R64" H 5920 2346 50  0000 L CNN
+F 1 "330" H 5920 2255 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5780 2300 50  0001 C CNN
+F 3 "~" H 5850 2300 50  0001 C CNN
+	1    5850 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 5000 2100 4700
+Wire Wire Line
+	2100 4700 2350 4700
+Connection ~ 2650 5450
+Wire Wire Line
+	2650 4500 2650 4350
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 619C5D00
+P 2550 4700
+AR Path="/62665296/619C5D00" Ref="Q?"  Part="1" 
+AR Path="/6479D118/619C5D00" Ref="Q?"  Part="1" 
+AR Path="/627AE565/619C5D00" Ref="Q?"  Part="1" 
+AR Path="/619922D7/619C5D00" Ref="Q21"  Part="1" 
+F 0 "Q21" H 2754 4746 50  0000 L CNN
+F 1 "2N7000" H 2754 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 2750 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2550 4700 50  0001 L CNN
+	1    2550 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 619C5D06
+P 1700 5150
+AR Path="/62665296/619C5D06" Ref="C?"  Part="1" 
+AR Path="/6479D118/619C5D06" Ref="C?"  Part="1" 
+AR Path="/627AE565/619C5D06" Ref="C?"  Part="1" 
+AR Path="/619922D7/619C5D06" Ref="C29"  Part="1" 
+F 0 "C29" H 1815 5196 50  0000 L CNN
+F 1 "22nF" H 1815 5105 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 1738 5000 50  0001 C CNN
+F 3 "~" H 1700 5150 50  0001 C CNN
+	1    1700 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 4700 2100 4700
+Connection ~ 2100 4700
+Wire Wire Line
+	1700 5450 2100 5450
+Connection ~ 2100 5450
+Wire Wire Line
+	1700 5450 1700 5300
+Wire Wire Line
+	1700 5000 1700 4700
+Text HLabel 1700 6300 0    50   Input ~ 0
+LCDBackLIGHTIn
+Text HLabel 11400 2950 2    50   Input ~ 0
+LCDBackLIGHTTTL
+$Comp
+L Device:R R?
+U 1 1 619F4C9B
+P 2100 6750
+AR Path="/62665296/619F4C9B" Ref="R?"  Part="1" 
+AR Path="/6479D118/619F4C9B" Ref="R?"  Part="1" 
+AR Path="/627AE565/619F4C9B" Ref="R?"  Part="1" 
+AR Path="/619922D7/619F4C9B" Ref="R61"  Part="1" 
+F 0 "R61" H 2170 6796 50  0000 L CNN
+F 1 "1M" H 2170 6705 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 2030 6750 50  0001 C CNN
+F 3 "~" H 2100 6750 50  0001 C CNN
+	1    2100 6750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 619F4CA1
+P 2650 7050
+AR Path="/62665296/619F4CA1" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/619F4CA1" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/619F4CA1" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/619F4CA1" Ref="#PWR0110"  Part="1" 
+F 0 "#PWR0110" H 2650 6800 50  0001 C CNN
+F 1 "GND" H 2655 6877 50  0000 C CNN
+F 2 "" H 2650 7050 50  0001 C CNN
+F 3 "" H 2650 7050 50  0001 C CNN
+	1    2650 7050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 6900 2100 7050
+Wire Wire Line
+	2100 7050 2650 7050
+$Comp
+L Device:R R?
+U 1 1 619F4CA9
+P 5250 2300
+AR Path="/62665296/619F4CA9" Ref="R?"  Part="1" 
+AR Path="/6479D118/619F4CA9" Ref="R?"  Part="1" 
+AR Path="/627AE565/619F4CA9" Ref="R?"  Part="1" 
+AR Path="/619922D7/619F4CA9" Ref="R65"  Part="1" 
+F 0 "R65" H 5320 2346 50  0000 L CNN
+F 1 "300" H 5320 2255 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5180 2300 50  0001 C CNN
+F 3 "~" H 5250 2300 50  0001 C CNN
+	1    5250 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 6600 2100 6300
+Wire Wire Line
+	2100 6300 2350 6300
+Connection ~ 2650 7050
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 619F4CBE
+P 2550 6300
+AR Path="/62665296/619F4CBE" Ref="Q?"  Part="1" 
+AR Path="/6479D118/619F4CBE" Ref="Q?"  Part="1" 
+AR Path="/627AE565/619F4CBE" Ref="Q?"  Part="1" 
+AR Path="/619922D7/619F4CBE" Ref="Q22"  Part="1" 
+F 0 "Q22" H 2754 6346 50  0000 L CNN
+F 1 "2N7000" H 2754 6255 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 2750 6225 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2550 6300 50  0001 L CNN
+	1    2550 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 619F4CC4
+P 1700 6750
+AR Path="/62665296/619F4CC4" Ref="C?"  Part="1" 
+AR Path="/6479D118/619F4CC4" Ref="C?"  Part="1" 
+AR Path="/627AE565/619F4CC4" Ref="C?"  Part="1" 
+AR Path="/619922D7/619F4CC4" Ref="C30"  Part="1" 
+F 0 "C30" H 1815 6796 50  0000 L CNN
+F 1 "22nF" H 1815 6705 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 1738 6600 50  0001 C CNN
+F 3 "~" H 1700 6750 50  0001 C CNN
+	1    1700 6750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 6300 2100 6300
+Connection ~ 2100 6300
+Wire Wire Line
+	1700 7050 2100 7050
+Connection ~ 2100 7050
+Wire Wire Line
+	1700 7050 1700 6900
+Wire Wire Line
+	1700 6600 1700 6300
+Text HLabel 1700 8000 0    50   Input ~ 0
+WaterSourceIn
+Text HLabel 12150 3150 2    50   Input ~ 0
+WaterSourceTTL
+$Comp
+L Device:R R?
+U 1 1 619FB7A5
+P 2100 8450
+AR Path="/62665296/619FB7A5" Ref="R?"  Part="1" 
+AR Path="/6479D118/619FB7A5" Ref="R?"  Part="1" 
+AR Path="/627AE565/619FB7A5" Ref="R?"  Part="1" 
+AR Path="/619922D7/619FB7A5" Ref="R62"  Part="1" 
+F 0 "R62" H 2170 8496 50  0000 L CNN
+F 1 "1M" H 2170 8405 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 2030 8450 50  0001 C CNN
+F 3 "~" H 2100 8450 50  0001 C CNN
+	1    2100 8450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 619FB7AB
+P 2650 8750
+AR Path="/62665296/619FB7AB" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/619FB7AB" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/619FB7AB" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/619FB7AB" Ref="#PWR0112"  Part="1" 
+F 0 "#PWR0112" H 2650 8500 50  0001 C CNN
+F 1 "GND" H 2655 8577 50  0000 C CNN
+F 2 "" H 2650 8750 50  0001 C CNN
+F 3 "" H 2650 8750 50  0001 C CNN
+	1    2650 8750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 8600 2100 8750
+Wire Wire Line
+	2100 8750 2650 8750
+$Comp
+L Device:R R?
+U 1 1 619FB7B3
+P 4950 2300
+AR Path="/62665296/619FB7B3" Ref="R?"  Part="1" 
+AR Path="/6479D118/619FB7B3" Ref="R?"  Part="1" 
+AR Path="/627AE565/619FB7B3" Ref="R?"  Part="1" 
+AR Path="/619922D7/619FB7B3" Ref="R66"  Part="1" 
+F 0 "R66" H 5020 2346 50  0000 L CNN
+F 1 "330" H 5020 2255 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 4880 2300 50  0001 C CNN
+F 3 "~" H 4950 2300 50  0001 C CNN
+	1    4950 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 8300 2100 8000
+Wire Wire Line
+	2100 8000 2350 8000
+Connection ~ 2650 8750
+Wire Wire Line
+	2650 7800 2650 7650
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 619FB7C8
+P 2550 8000
+AR Path="/62665296/619FB7C8" Ref="Q?"  Part="1" 
+AR Path="/6479D118/619FB7C8" Ref="Q?"  Part="1" 
+AR Path="/627AE565/619FB7C8" Ref="Q?"  Part="1" 
+AR Path="/619922D7/619FB7C8" Ref="Q23"  Part="1" 
+F 0 "Q23" H 2754 8046 50  0000 L CNN
+F 1 "2N7000" H 2754 7955 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 2750 7925 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2550 8000 50  0001 L CNN
+	1    2550 8000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 619FB7CE
+P 1700 8450
+AR Path="/62665296/619FB7CE" Ref="C?"  Part="1" 
+AR Path="/6479D118/619FB7CE" Ref="C?"  Part="1" 
+AR Path="/627AE565/619FB7CE" Ref="C?"  Part="1" 
+AR Path="/619922D7/619FB7CE" Ref="C31"  Part="1" 
+F 0 "C31" H 1815 8496 50  0000 L CNN
+F 1 "22nF" H 1815 8405 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 1738 8300 50  0001 C CNN
+F 3 "~" H 1700 8450 50  0001 C CNN
+	1    1700 8450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 8000 2100 8000
+Connection ~ 2100 8000
+Wire Wire Line
+	1700 8750 2100 8750
+Connection ~ 2100 8750
+Wire Wire Line
+	1700 8750 1700 8600
+Wire Wire Line
+	1700 8300 1700 8000
+Text HLabel 7250 6200 0    50   Input ~ 0
+SP1In
+$Comp
+L Device:R R?
+U 1 1 61AA89A1
+P 7650 6650
+AR Path="/62665296/61AA89A1" Ref="R?"  Part="1" 
+AR Path="/6479D118/61AA89A1" Ref="R?"  Part="1" 
+AR Path="/627AE565/61AA89A1" Ref="R?"  Part="1" 
+AR Path="/619922D7/61AA89A1" Ref="R67"  Part="1" 
+F 0 "R67" H 7720 6696 50  0000 L CNN
+F 1 "1M" H 7720 6605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 7580 6650 50  0001 C CNN
+F 3 "~" H 7650 6650 50  0001 C CNN
+	1    7650 6650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61AA89A7
+P 8200 6950
+AR Path="/62665296/61AA89A7" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61AA89A7" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61AA89A7" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61AA89A7" Ref="#PWR0114"  Part="1" 
+F 0 "#PWR0114" H 8200 6700 50  0001 C CNN
+F 1 "GND" H 8205 6777 50  0000 C CNN
+F 2 "" H 8200 6950 50  0001 C CNN
+F 3 "" H 8200 6950 50  0001 C CNN
+	1    8200 6950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7650 6800 7650 6950
+Wire Wire Line
+	7650 6950 8200 6950
+Wire Wire Line
+	7650 6500 7650 6200
+Wire Wire Line
+	7650 6200 7900 6200
+Connection ~ 8200 6950
+Wire Wire Line
+	8200 6000 8200 5850
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61AA89C4
+P 8100 6200
+AR Path="/62665296/61AA89C4" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61AA89C4" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61AA89C4" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61AA89C4" Ref="Q24"  Part="1" 
+F 0 "Q24" H 8304 6246 50  0000 L CNN
+F 1 "2N7000" H 8304 6155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 8300 6125 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 8100 6200 50  0001 L CNN
+	1    8100 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61AA89CA
+P 7250 6650
+AR Path="/62665296/61AA89CA" Ref="C?"  Part="1" 
+AR Path="/6479D118/61AA89CA" Ref="C?"  Part="1" 
+AR Path="/627AE565/61AA89CA" Ref="C?"  Part="1" 
+AR Path="/619922D7/61AA89CA" Ref="C32"  Part="1" 
+F 0 "C32" H 7365 6696 50  0000 L CNN
+F 1 "22nF" H 7365 6605 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 7288 6500 50  0001 C CNN
+F 3 "~" H 7250 6650 50  0001 C CNN
+	1    7250 6650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7250 6200 7650 6200
+Connection ~ 7650 6200
+Wire Wire Line
+	7250 6950 7650 6950
+Connection ~ 7650 6950
+Wire Wire Line
+	7250 6950 7250 6800
+Wire Wire Line
+	7250 6500 7250 6200
+Text HLabel 7800 7300 0    50   Input ~ 0
+SP2In
+Text HLabel 16300 5950 2    50   Input ~ 0
+SP2TTL
+$Comp
+L Device:R R?
+U 1 1 61AC6543
+P 8200 7750
+AR Path="/62665296/61AC6543" Ref="R?"  Part="1" 
+AR Path="/6479D118/61AC6543" Ref="R?"  Part="1" 
+AR Path="/627AE565/61AC6543" Ref="R?"  Part="1" 
+AR Path="/619922D7/61AC6543" Ref="R74"  Part="1" 
+F 0 "R74" H 8270 7796 50  0000 L CNN
+F 1 "1M" H 8270 7705 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8130 7750 50  0001 C CNN
+F 3 "~" H 8200 7750 50  0001 C CNN
+	1    8200 7750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61AC6549
+P 8750 8050
+AR Path="/62665296/61AC6549" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61AC6549" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61AC6549" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61AC6549" Ref="#PWR0122"  Part="1" 
+F 0 "#PWR0122" H 8750 7800 50  0001 C CNN
+F 1 "GND" H 8755 7877 50  0000 C CNN
+F 2 "" H 8750 8050 50  0001 C CNN
+F 3 "" H 8750 8050 50  0001 C CNN
+	1    8750 8050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8200 7900 8200 8050
+Wire Wire Line
+	8200 8050 8750 8050
+Wire Wire Line
+	8200 7600 8200 7300
+Wire Wire Line
+	8200 7300 8450 7300
+Connection ~ 8750 8050
+Wire Wire Line
+	8750 7100 8750 6950
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61AC6566
+P 8650 7300
+AR Path="/62665296/61AC6566" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61AC6566" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61AC6566" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61AC6566" Ref="Q28"  Part="1" 
+F 0 "Q28" H 8854 7346 50  0000 L CNN
+F 1 "2N7000" H 8854 7255 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 8850 7225 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 8650 7300 50  0001 L CNN
+	1    8650 7300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61AC656C
+P 7800 7750
+AR Path="/62665296/61AC656C" Ref="C?"  Part="1" 
+AR Path="/6479D118/61AC656C" Ref="C?"  Part="1" 
+AR Path="/627AE565/61AC656C" Ref="C?"  Part="1" 
+AR Path="/619922D7/61AC656C" Ref="C36"  Part="1" 
+F 0 "C36" H 7915 7796 50  0000 L CNN
+F 1 "22nF" H 7915 7705 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 7838 7600 50  0001 C CNN
+F 3 "~" H 7800 7750 50  0001 C CNN
+	1    7800 7750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7800 7300 8200 7300
+Connection ~ 8200 7300
+Wire Wire Line
+	7800 8050 8200 8050
+Connection ~ 8200 8050
+Wire Wire Line
+	7800 8050 7800 7900
+Wire Wire Line
+	7800 7600 7800 7300
+Text HLabel 8300 8400 0    50   Input ~ 0
+SP3In
+Text HLabel 16950 6150 2    50   Input ~ 0
+SP3TTL
+$Comp
+L Device:R R?
+U 1 1 61ACB02D
+P 8700 8850
+AR Path="/62665296/61ACB02D" Ref="R?"  Part="1" 
+AR Path="/6479D118/61ACB02D" Ref="R?"  Part="1" 
+AR Path="/627AE565/61ACB02D" Ref="R?"  Part="1" 
+AR Path="/619922D7/61ACB02D" Ref="R68"  Part="1" 
+F 0 "R68" H 8770 8896 50  0000 L CNN
+F 1 "1M" H 8770 8805 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8630 8850 50  0001 C CNN
+F 3 "~" H 8700 8850 50  0001 C CNN
+	1    8700 8850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61ACB033
+P 9250 9150
+AR Path="/62665296/61ACB033" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61ACB033" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61ACB033" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61ACB033" Ref="#PWR0116"  Part="1" 
+F 0 "#PWR0116" H 9250 8900 50  0001 C CNN
+F 1 "GND" H 9255 8977 50  0000 C CNN
+F 2 "" H 9250 9150 50  0001 C CNN
+F 3 "" H 9250 9150 50  0001 C CNN
+	1    9250 9150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8700 9000 8700 9150
+Wire Wire Line
+	8700 9150 9250 9150
+Wire Wire Line
+	8700 8700 8700 8400
+Wire Wire Line
+	8700 8400 8950 8400
+Connection ~ 9250 9150
+Wire Wire Line
+	9250 8200 9250 8050
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61ACB050
+P 9150 8400
+AR Path="/62665296/61ACB050" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61ACB050" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61ACB050" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61ACB050" Ref="Q25"  Part="1" 
+F 0 "Q25" H 9354 8446 50  0000 L CNN
+F 1 "2N7000" H 9354 8355 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 9350 8325 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9150 8400 50  0001 L CNN
+	1    9150 8400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61ACB056
+P 8300 8850
+AR Path="/62665296/61ACB056" Ref="C?"  Part="1" 
+AR Path="/6479D118/61ACB056" Ref="C?"  Part="1" 
+AR Path="/627AE565/61ACB056" Ref="C?"  Part="1" 
+AR Path="/619922D7/61ACB056" Ref="C33"  Part="1" 
+F 0 "C33" H 8415 8896 50  0000 L CNN
+F 1 "22nF" H 8415 8805 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 8338 8700 50  0001 C CNN
+F 3 "~" H 8300 8850 50  0001 C CNN
+	1    8300 8850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8300 8400 8700 8400
+Connection ~ 8700 8400
+Wire Wire Line
+	8300 9150 8700 9150
+Connection ~ 8700 9150
+Wire Wire Line
+	8300 9150 8300 9000
+Wire Wire Line
+	8300 8700 8300 8400
+Text HLabel 8850 9500 0    50   Input ~ 0
+SP4In
+Text HLabel 17700 6350 2    50   Input ~ 0
+SP4TTL
+$Comp
+L Device:R R?
+U 1 1 61ACFEE8
+P 9250 9950
+AR Path="/62665296/61ACFEE8" Ref="R?"  Part="1" 
+AR Path="/6479D118/61ACFEE8" Ref="R?"  Part="1" 
+AR Path="/627AE565/61ACFEE8" Ref="R?"  Part="1" 
+AR Path="/619922D7/61ACFEE8" Ref="R75"  Part="1" 
+F 0 "R75" H 9320 9996 50  0000 L CNN
+F 1 "1M" H 9320 9905 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 9180 9950 50  0001 C CNN
+F 3 "~" H 9250 9950 50  0001 C CNN
+	1    9250 9950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61ACFEEE
+P 9800 10250
+AR Path="/62665296/61ACFEEE" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61ACFEEE" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61ACFEEE" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61ACFEEE" Ref="#PWR0124"  Part="1" 
+F 0 "#PWR0124" H 9800 10000 50  0001 C CNN
+F 1 "GND" H 9805 10077 50  0000 C CNN
+F 2 "" H 9800 10250 50  0001 C CNN
+F 3 "" H 9800 10250 50  0001 C CNN
+	1    9800 10250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9250 10100 9250 10250
+Wire Wire Line
+	9250 10250 9800 10250
+Wire Wire Line
+	9250 9800 9250 9500
+Wire Wire Line
+	9250 9500 9500 9500
+Connection ~ 9800 10250
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61ACFF0B
+P 9700 9500
+AR Path="/62665296/61ACFF0B" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61ACFF0B" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61ACFF0B" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61ACFF0B" Ref="Q29"  Part="1" 
+F 0 "Q29" H 9904 9546 50  0000 L CNN
+F 1 "2N7000" H 9904 9455 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 9900 9425 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9700 9500 50  0001 L CNN
+	1    9700 9500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61ACFF11
+P 8850 9950
+AR Path="/62665296/61ACFF11" Ref="C?"  Part="1" 
+AR Path="/6479D118/61ACFF11" Ref="C?"  Part="1" 
+AR Path="/627AE565/61ACFF11" Ref="C?"  Part="1" 
+AR Path="/619922D7/61ACFF11" Ref="C37"  Part="1" 
+F 0 "C37" H 8965 9996 50  0000 L CNN
+F 1 "22nF" H 8965 9905 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 8888 9800 50  0001 C CNN
+F 3 "~" H 8850 9950 50  0001 C CNN
+	1    8850 9950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8850 9500 9250 9500
+Connection ~ 9250 9500
+Wire Wire Line
+	8850 10250 9250 10250
+Connection ~ 9250 10250
+Wire Wire Line
+	8850 10250 8850 10100
+Wire Wire Line
+	8850 9800 8850 9500
+Text HLabel 2700 13150 0    50   Input ~ 0
+SP5In
+Text HLabel 5500 12700 2    50   Input ~ 0
+SP5TTL
+$Comp
+L Device:R R?
+U 1 1 61AD5FFE
+P 3100 13600
+AR Path="/62665296/61AD5FFE" Ref="R?"  Part="1" 
+AR Path="/6479D118/61AD5FFE" Ref="R?"  Part="1" 
+AR Path="/627AE565/61AD5FFE" Ref="R?"  Part="1" 
+AR Path="/619922D7/61AD5FFE" Ref="R69"  Part="1" 
+F 0 "R69" H 3170 13646 50  0000 L CNN
+F 1 "1M" H 3170 13555 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3030 13600 50  0001 C CNN
+F 3 "~" H 3100 13600 50  0001 C CNN
+	1    3100 13600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61AD6004
+P 3650 13900
+AR Path="/62665296/61AD6004" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61AD6004" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61AD6004" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61AD6004" Ref="#PWR0118"  Part="1" 
+F 0 "#PWR0118" H 3650 13650 50  0001 C CNN
+F 1 "GND" H 3655 13727 50  0000 C CNN
+F 2 "" H 3650 13900 50  0001 C CNN
+F 3 "" H 3650 13900 50  0001 C CNN
+	1    3650 13900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 13750 3100 13900
+Wire Wire Line
+	3100 13900 3650 13900
+Wire Wire Line
+	3100 13450 3100 13150
+Wire Wire Line
+	3100 13150 3350 13150
+Connection ~ 3650 13900
+Wire Wire Line
+	3650 12950 3650 12800
+Wire Wire Line
+	5200 12700 5500 12700
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61AD6021
+P 3550 13150
+AR Path="/62665296/61AD6021" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61AD6021" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61AD6021" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61AD6021" Ref="Q26"  Part="1" 
+F 0 "Q26" H 3754 13196 50  0000 L CNN
+F 1 "2N7000" H 3754 13105 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 3750 13075 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 3550 13150 50  0001 L CNN
+	1    3550 13150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61AD6027
+P 2700 13600
+AR Path="/62665296/61AD6027" Ref="C?"  Part="1" 
+AR Path="/6479D118/61AD6027" Ref="C?"  Part="1" 
+AR Path="/627AE565/61AD6027" Ref="C?"  Part="1" 
+AR Path="/619922D7/61AD6027" Ref="C34"  Part="1" 
+F 0 "C34" H 2815 13646 50  0000 L CNN
+F 1 "22nF" H 2815 13555 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 2738 13450 50  0001 C CNN
+F 3 "~" H 2700 13600 50  0001 C CNN
+	1    2700 13600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 13150 3100 13150
+Connection ~ 3100 13150
+Wire Wire Line
+	2700 13900 3100 13900
+Connection ~ 3100 13900
+Wire Wire Line
+	2700 13900 2700 13750
+Wire Wire Line
+	2700 13450 2700 13150
+Text HLabel 6800 13550 0    50   Input ~ 0
+SP6In
+Text HLabel 9600 13100 2    50   Input ~ 0
+SP6TTL
+$Comp
+L Device:R R?
+U 1 1 61ADB4C1
+P 7200 14000
+AR Path="/62665296/61ADB4C1" Ref="R?"  Part="1" 
+AR Path="/6479D118/61ADB4C1" Ref="R?"  Part="1" 
+AR Path="/627AE565/61ADB4C1" Ref="R?"  Part="1" 
+AR Path="/619922D7/61ADB4C1" Ref="R73"  Part="1" 
+F 0 "R73" H 7270 14046 50  0000 L CNN
+F 1 "1M" H 7270 13955 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 7130 14000 50  0001 C CNN
+F 3 "~" H 7200 14000 50  0001 C CNN
+	1    7200 14000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61ADB4C7
+P 7750 14300
+AR Path="/62665296/61ADB4C7" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/61ADB4C7" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/61ADB4C7" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61ADB4C7" Ref="#PWR0120"  Part="1" 
+F 0 "#PWR0120" H 7750 14050 50  0001 C CNN
+F 1 "GND" H 7755 14127 50  0000 C CNN
+F 2 "" H 7750 14300 50  0001 C CNN
+F 3 "" H 7750 14300 50  0001 C CNN
+	1    7750 14300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7200 14150 7200 14300
+Wire Wire Line
+	7200 14300 7750 14300
+Wire Wire Line
+	7200 13850 7200 13550
+Wire Wire Line
+	7200 13550 7450 13550
+Connection ~ 7750 14300
+Wire Wire Line
+	7750 13350 7750 13200
+Wire Wire Line
+	9300 13100 9600 13100
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61ADB4E4
+P 7650 13550
+AR Path="/62665296/61ADB4E4" Ref="Q?"  Part="1" 
+AR Path="/6479D118/61ADB4E4" Ref="Q?"  Part="1" 
+AR Path="/627AE565/61ADB4E4" Ref="Q?"  Part="1" 
+AR Path="/619922D7/61ADB4E4" Ref="Q27"  Part="1" 
+F 0 "Q27" H 7854 13596 50  0000 L CNN
+F 1 "2N7000" H 7854 13505 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 7850 13475 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 7650 13550 50  0001 L CNN
+	1    7650 13550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61ADB4EA
+P 6800 14000
+AR Path="/62665296/61ADB4EA" Ref="C?"  Part="1" 
+AR Path="/6479D118/61ADB4EA" Ref="C?"  Part="1" 
+AR Path="/627AE565/61ADB4EA" Ref="C?"  Part="1" 
+AR Path="/619922D7/61ADB4EA" Ref="C35"  Part="1" 
+F 0 "C35" H 6915 14046 50  0000 L CNN
+F 1 "22nF" H 6915 13955 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D4.7mm_W2.5mm_P5.00mm" H 6838 13850 50  0001 C CNN
+F 3 "~" H 6800 14000 50  0001 C CNN
+	1    6800 14000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 13550 7200 13550
+Connection ~ 7200 13550
+Wire Wire Line
+	6800 14300 7200 14300
+Connection ~ 7200 14300
+Wire Wire Line
+	6800 14300 6800 14150
+Wire Wire Line
+	6800 13850 6800 13550
+$Comp
+L Diode:1N4007 D?
+U 1 1 61CD23F7
+P 2800 2650
+AR Path="/6479D118/61CD23F7" Ref="D?"  Part="1" 
+AR Path="/619922D7/61CD23F7" Ref="D5"  Part="1" 
+F 0 "D5" H 2800 2867 50  0000 C CNN
+F 1 "1N4007" H 2800 2776 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 2800 2475 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 2800 2650 50  0001 C CNN
+	1    2800 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EA5AC8
+P 8350 5850
+AR Path="/6479D118/61EA5AC8" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EA5AC8" Ref="D22"  Part="1" 
+F 0 "D22" H 8350 6067 50  0000 C CNN
+F 1 "1N4007" H 8350 5976 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 8350 5675 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 8350 5850 50  0001 C CNN
+	1    8350 5850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EA9E92
+P 8900 6950
+AR Path="/6479D118/61EA9E92" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EA9E92" Ref="D23"  Part="1" 
+F 0 "D23" H 8900 7167 50  0000 C CNN
+F 1 "1N4007" H 8900 7076 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 8900 6775 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 8900 6950 50  0001 C CNN
+	1    8900 6950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EADF2A
+P 2800 4350
+AR Path="/6479D118/61EADF2A" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EADF2A" Ref="D17"  Part="1" 
+F 0 "D17" H 2800 4567 50  0000 C CNN
+F 1 "1N4007" H 2800 4476 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 2800 4175 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 2800 4350 50  0001 C CNN
+	1    2800 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EB2545
+P 9400 8050
+AR Path="/6479D118/61EB2545" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EB2545" Ref="D24"  Part="1" 
+F 0 "D24" H 9400 8267 50  0000 C CNN
+F 1 "1N4007" H 9400 8176 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 9400 7875 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 9400 8050 50  0001 C CNN
+	1    9400 8050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EB8200
+P 2800 5950
+AR Path="/6479D118/61EB8200" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EB8200" Ref="D18"  Part="1" 
+F 0 "D18" H 2800 6167 50  0000 C CNN
+F 1 "1N4007" H 2800 6076 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 2800 5775 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 2800 5950 50  0001 C CNN
+	1    2800 5950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EBC9A3
+P 2800 7650
+AR Path="/6479D118/61EBC9A3" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EBC9A3" Ref="D19"  Part="1" 
+F 0 "D19" H 2800 7867 50  0000 C CNN
+F 1 "1N4007" H 2800 7776 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 2800 7475 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 2800 7650 50  0001 C CNN
+	1    2800 7650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EC0AB2
+P 3800 12800
+AR Path="/6479D118/61EC0AB2" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EC0AB2" Ref="D20"  Part="1" 
+F 0 "D20" H 3800 13017 50  0000 C CNN
+F 1 "1N4007" H 3800 12926 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 3800 12625 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 3800 12800 50  0001 C CNN
+	1    3800 12800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EC5241
+P 7900 13200
+AR Path="/6479D118/61EC5241" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EC5241" Ref="D21"  Part="1" 
+F 0 "D21" H 7900 13417 50  0000 C CNN
+F 1 "1N4007" H 7900 13326 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 7900 13025 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 7900 13200 50  0001 C CNN
+	1    7900 13200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9800 9300 9800 9150
+$Comp
+L Diode:1N4007 D?
+U 1 1 61EC954F
+P 9950 9150
+AR Path="/6479D118/61EC954F" Ref="D?"  Part="1" 
+AR Path="/619922D7/61EC954F" Ref="D25"  Part="1" 
+F 0 "D25" H 9950 9367 50  0000 C CNN
+F 1 "1N4007" H 9950 9276 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 9950 8975 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 9950 9150 50  0001 C CNN
+	1    9950 9150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 6100 2650 5950
+Wire Wire Line
+	2650 3200 2650 3750
+Wire Wire Line
+	2650 4900 2650 5450
+Wire Wire Line
+	2650 6500 2650 7050
+Wire Wire Line
+	2650 8200 2650 8750
+$Comp
+L SamacSys_Parts:LTV-847 Q61
+U 1 1 61F35772
+P 6400 2550
+F 0 "Q61" H 7250 2815 50  0000 C CNN
+F 1 "LTV-847" H 7250 2724 50  0000 C CNN
+F 2 "DIP762W60P254L1984H450Q16N" H 7950 2650 50  0001 L CNN
+F 3 "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-305/79782.pdf" H 7950 2550 50  0001 L CNN
+F 4 "PTH 16PDIP DC Input Transistor" H 7950 2450 50  0001 L CNN "Description"
+F 5 "4.5" H 7950 2350 50  0001 L CNN "Height"
+F 6 "859-LTV-847" H 7950 2250 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Lite-On/LTV-847?qs=HMpxB34gN8NSIrLkafiZAg%3D%3D" H 7950 2150 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Lite-On" H 7950 2050 50  0001 L CNN "Manufacturer_Name"
+F 9 "LTV-847" H 7950 1950 50  0001 L CNN "Manufacturer_Part_Number"
+	1    6400 2550
+	1    0    0    -1  
+$EndComp
+Text HLabel 10750 2750 2    50   Input ~ 0
+EnableLCDTTL
+Text HLabel 9900 2550 2    50   Input ~ 0
+WaterPumpSenseTTL
+Wire Wire Line
+	2950 2650 6400 2650
+Wire Wire Line
+	5850 2450 5850 2550
+Wire Wire Line
+	5850 2550 6400 2550
+Wire Wire Line
+	6400 2750 5550 2750
+Wire Wire Line
+	5550 2750 5550 2450
+Wire Wire Line
+	5250 2450 5250 2950
+Wire Wire Line
+	5250 2950 6400 2950
+Wire Wire Line
+	4950 2450 4950 3150
+Wire Wire Line
+	4950 3150 6400 3150
+$Comp
+L power:+5V #PWR?
+U 1 1 61F8E3B8
+P 4950 1900
+AR Path="/627AE565/61F8E3B8" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61F8E3B8" Ref="#PWR0165"  Part="1" 
+F 0 "#PWR0165" H 4950 1750 50  0001 C CNN
+F 1 "+5V" H 4965 2073 50  0000 C CNN
+F 2 "" H 4950 1900 50  0001 C CNN
+F 3 "" H 4950 1900 50  0001 C CNN
+	1    4950 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 61F93092
+P 5250 1900
+AR Path="/627AE565/61F93092" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61F93092" Ref="#PWR0166"  Part="1" 
+F 0 "#PWR0166" H 5250 1750 50  0001 C CNN
+F 1 "+5V" H 5265 2073 50  0000 C CNN
+F 2 "" H 5250 1900 50  0001 C CNN
+F 3 "" H 5250 1900 50  0001 C CNN
+	1    5250 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 61F97C52
+P 5550 1900
+AR Path="/627AE565/61F97C52" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61F97C52" Ref="#PWR0167"  Part="1" 
+F 0 "#PWR0167" H 5550 1750 50  0001 C CNN
+F 1 "+5V" H 5565 2073 50  0000 C CNN
+F 2 "" H 5550 1900 50  0001 C CNN
+F 3 "" H 5550 1900 50  0001 C CNN
+	1    5550 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 61F9C9BE
+P 5850 1900
+AR Path="/627AE565/61F9C9BE" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/61F9C9BE" Ref="#PWR0168"  Part="1" 
+F 0 "#PWR0168" H 5850 1750 50  0001 C CNN
+F 1 "+5V" H 5865 2073 50  0000 C CNN
+F 2 "" H 5850 1900 50  0001 C CNN
+F 3 "" H 5850 1900 50  0001 C CNN
+	1    5850 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4950 1900 4950 2150
+Wire Wire Line
+	5250 1900 5250 2150
+Wire Wire Line
+	5550 1900 5550 2150
+Wire Wire Line
+	5850 1900 5850 2150
+Wire Wire Line
+	8100 2650 8400 2650
+Wire Wire Line
+	8400 2650 8400 2850
+Wire Wire Line
+	8400 3250 8100 3250
+Connection ~ 8400 2850
+Wire Wire Line
+	8400 2850 8400 3050
+Wire Wire Line
+	8100 3050 8400 3050
+Connection ~ 8400 3050
+Wire Wire Line
+	8400 3050 8400 3250
+Wire Wire Line
+	8100 2850 8400 2850
+Wire Wire Line
+	8100 2550 9600 2550
+Wire Wire Line
+	8100 2750 9300 2750
+Wire Wire Line
+	8100 3150 8700 3150
+$Comp
+L Device:R R?
+U 1 1 62009E96
+P 9300 2200
+AR Path="/62665296/62009E96" Ref="R?"  Part="1" 
+AR Path="/6479D118/62009E96" Ref="R?"  Part="1" 
+AR Path="/627AE565/62009E96" Ref="R?"  Part="1" 
+AR Path="/619922D7/62009E96" Ref="R129"  Part="1" 
+F 0 "R129" H 9370 2246 50  0000 L CNN
+F 1 "22k" H 9370 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 9230 2200 50  0001 C CNN
+F 3 "~" H 9300 2200 50  0001 C CNN
+	1    9300 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 62009E9C
+P 9600 2200
+AR Path="/62665296/62009E9C" Ref="R?"  Part="1" 
+AR Path="/6479D118/62009E9C" Ref="R?"  Part="1" 
+AR Path="/627AE565/62009E9C" Ref="R?"  Part="1" 
+AR Path="/619922D7/62009E9C" Ref="R131"  Part="1" 
+F 0 "R131" H 9670 2246 50  0000 L CNN
+F 1 "22k" H 9670 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 9530 2200 50  0001 C CNN
+F 3 "~" H 9600 2200 50  0001 C CNN
+	1    9600 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 62009EA2
+P 9000 2200
+AR Path="/62665296/62009EA2" Ref="R?"  Part="1" 
+AR Path="/6479D118/62009EA2" Ref="R?"  Part="1" 
+AR Path="/627AE565/62009EA2" Ref="R?"  Part="1" 
+AR Path="/619922D7/62009EA2" Ref="R128"  Part="1" 
+F 0 "R128" H 9070 2246 50  0000 L CNN
+F 1 "22k" H 9070 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8930 2200 50  0001 C CNN
+F 3 "~" H 9000 2200 50  0001 C CNN
+	1    9000 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 62009EA8
+P 8700 2200
+AR Path="/62665296/62009EA8" Ref="R?"  Part="1" 
+AR Path="/6479D118/62009EA8" Ref="R?"  Part="1" 
+AR Path="/627AE565/62009EA8" Ref="R?"  Part="1" 
+AR Path="/619922D7/62009EA8" Ref="R127"  Part="1" 
+F 0 "R127" H 8770 2246 50  0000 L CNN
+F 1 "22k" H 8770 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8630 2200 50  0001 C CNN
+F 3 "~" H 8700 2200 50  0001 C CNN
+	1    8700 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 62009EAE
+P 8700 1800
+AR Path="/627AE565/62009EAE" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/62009EAE" Ref="#PWR0169"  Part="1" 
+F 0 "#PWR0169" H 8700 1650 50  0001 C CNN
+F 1 "+5V" H 8715 1973 50  0000 C CNN
+F 2 "" H 8700 1800 50  0001 C CNN
+F 3 "" H 8700 1800 50  0001 C CNN
+	1    8700 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 62009EB4
+P 9000 1800
+AR Path="/627AE565/62009EB4" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/62009EB4" Ref="#PWR0170"  Part="1" 
+F 0 "#PWR0170" H 9000 1650 50  0001 C CNN
+F 1 "+5V" H 9015 1973 50  0000 C CNN
+F 2 "" H 9000 1800 50  0001 C CNN
+F 3 "" H 9000 1800 50  0001 C CNN
+	1    9000 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 62009EBA
+P 9300 1800
+AR Path="/627AE565/62009EBA" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/62009EBA" Ref="#PWR0171"  Part="1" 
+F 0 "#PWR0171" H 9300 1650 50  0001 C CNN
+F 1 "+5V" H 9315 1973 50  0000 C CNN
+F 2 "" H 9300 1800 50  0001 C CNN
+F 3 "" H 9300 1800 50  0001 C CNN
+	1    9300 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 62009EC0
+P 9600 1800
+AR Path="/627AE565/62009EC0" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/62009EC0" Ref="#PWR0172"  Part="1" 
+F 0 "#PWR0172" H 9600 1650 50  0001 C CNN
+F 1 "+5V" H 9615 1973 50  0000 C CNN
+F 2 "" H 9600 1800 50  0001 C CNN
+F 3 "" H 9600 1800 50  0001 C CNN
+	1    9600 1800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8700 1800 8700 2050
+Wire Wire Line
+	9000 1800 9000 2050
+Wire Wire Line
+	9300 1800 9300 2050
+Wire Wire Line
+	9600 1800 9600 2050
+Wire Wire Line
+	9600 2350 9600 2550
+Connection ~ 9600 2550
+Wire Wire Line
+	9600 2550 9900 2550
+Wire Wire Line
+	9300 2350 9300 2750
+Connection ~ 9300 2750
+Wire Wire Line
+	9300 2750 10750 2750
+Wire Wire Line
+	9000 2350 9000 2950
+Wire Wire Line
+	8100 2950 9000 2950
+Connection ~ 9000 2950
+Wire Wire Line
+	9000 2950 11400 2950
+Wire Wire Line
+	8700 2350 8700 3150
+Connection ~ 8700 3150
+Wire Wire Line
+	8700 3150 12150 3150
+Wire Wire Line
+	3800 4350 3800 2850
+Wire Wire Line
+	3800 2850 6400 2850
+Wire Wire Line
+	2950 4350 3800 4350
+Wire Wire Line
+	6400 3050 4000 3050
+Wire Wire Line
+	4000 3050 4000 5950
+Wire Wire Line
+	4000 5950 2950 5950
+Wire Wire Line
+	2950 7650 4250 7650
+Wire Wire Line
+	4250 7650 4250 3250
+Wire Wire Line
+	4250 3250 6400 3250
+$Comp
+L Device:R R?
+U 1 1 6205F0A4
+P 11100 5500
+AR Path="/62665296/6205F0A4" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F0A4" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F0A4" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F0A4" Ref="R134"  Part="1" 
+F 0 "R134" H 11170 5546 50  0000 L CNN
+F 1 "330" H 11170 5455 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 11030 5500 50  0001 C CNN
+F 3 "~" H 11100 5500 50  0001 C CNN
+	1    11100 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6205F0AA
+P 11400 5500
+AR Path="/62665296/6205F0AA" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F0AA" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F0AA" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F0AA" Ref="R135"  Part="1" 
+F 0 "R135" H 11470 5546 50  0000 L CNN
+F 1 "330" H 11470 5455 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 11330 5500 50  0001 C CNN
+F 3 "~" H 11400 5500 50  0001 C CNN
+	1    11400 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6205F0B1
+P 10800 5500
+AR Path="/62665296/6205F0B1" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F0B1" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F0B1" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F0B1" Ref="R133"  Part="1" 
+F 0 "R133" H 10870 5546 50  0000 L CNN
+F 1 "300" H 10870 5455 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 10730 5500 50  0001 C CNN
+F 3 "~" H 10800 5500 50  0001 C CNN
+	1    10800 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6205F0B8
+P 10500 5500
+AR Path="/62665296/6205F0B8" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F0B8" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F0B8" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F0B8" Ref="R132"  Part="1" 
+F 0 "R132" H 10570 5546 50  0000 L CNN
+F 1 "330" H 10570 5455 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 10430 5500 50  0001 C CNN
+F 3 "~" H 10500 5500 50  0001 C CNN
+	1    10500 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:LTV-847 Q62
+U 1 1 6205F0C4
+P 11950 5750
+F 0 "Q62" H 12800 6015 50  0000 C CNN
+F 1 "LTV-847" H 12800 5924 50  0000 C CNN
+F 2 "DIP762W60P254L1984H450Q16N" H 13500 5850 50  0001 L CNN
+F 3 "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-305/79782.pdf" H 13500 5750 50  0001 L CNN
+F 4 "PTH 16PDIP DC Input Transistor" H 13500 5650 50  0001 L CNN "Description"
+F 5 "4.5" H 13500 5550 50  0001 L CNN "Height"
+F 6 "859-LTV-847" H 13500 5450 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Lite-On/LTV-847?qs=HMpxB34gN8NSIrLkafiZAg%3D%3D" H 13500 5350 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Lite-On" H 13500 5250 50  0001 L CNN "Manufacturer_Name"
+F 9 "LTV-847" H 13500 5150 50  0001 L CNN "Manufacturer_Part_Number"
+	1    11950 5750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8500 5850 11950 5850
+Wire Wire Line
+	11400 5650 11400 5750
+Wire Wire Line
+	11400 5750 11950 5750
+Wire Wire Line
+	11950 5950 11100 5950
+Wire Wire Line
+	11100 5950 11100 5650
+Wire Wire Line
+	10800 5650 10800 6150
+Wire Wire Line
+	10800 6150 11950 6150
+Wire Wire Line
+	10500 5650 10500 6350
+Wire Wire Line
+	10500 6350 11950 6350
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F0D5
+P 10500 5100
+AR Path="/627AE565/6205F0D5" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F0D5" Ref="#PWR0173"  Part="1" 
+F 0 "#PWR0173" H 10500 4950 50  0001 C CNN
+F 1 "+5V" H 10515 5273 50  0000 C CNN
+F 2 "" H 10500 5100 50  0001 C CNN
+F 3 "" H 10500 5100 50  0001 C CNN
+	1    10500 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F0DB
+P 10800 5100
+AR Path="/627AE565/6205F0DB" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F0DB" Ref="#PWR0174"  Part="1" 
+F 0 "#PWR0174" H 10800 4950 50  0001 C CNN
+F 1 "+5V" H 10815 5273 50  0000 C CNN
+F 2 "" H 10800 5100 50  0001 C CNN
+F 3 "" H 10800 5100 50  0001 C CNN
+	1    10800 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F0E1
+P 11100 5100
+AR Path="/627AE565/6205F0E1" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F0E1" Ref="#PWR0175"  Part="1" 
+F 0 "#PWR0175" H 11100 4950 50  0001 C CNN
+F 1 "+5V" H 11115 5273 50  0000 C CNN
+F 2 "" H 11100 5100 50  0001 C CNN
+F 3 "" H 11100 5100 50  0001 C CNN
+	1    11100 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F0E7
+P 11400 5100
+AR Path="/627AE565/6205F0E7" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F0E7" Ref="#PWR0176"  Part="1" 
+F 0 "#PWR0176" H 11400 4950 50  0001 C CNN
+F 1 "+5V" H 11415 5273 50  0000 C CNN
+F 2 "" H 11400 5100 50  0001 C CNN
+F 3 "" H 11400 5100 50  0001 C CNN
+	1    11400 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10500 5100 10500 5350
+Wire Wire Line
+	10800 5100 10800 5350
+Wire Wire Line
+	11100 5100 11100 5350
+Wire Wire Line
+	11400 5100 11400 5350
+Wire Wire Line
+	13650 5850 13950 5850
+Wire Wire Line
+	13950 5850 13950 6050
+Wire Wire Line
+	13950 6450 13650 6450
+Connection ~ 13950 6050
+Wire Wire Line
+	13950 6050 13950 6250
+Wire Wire Line
+	13650 6250 13950 6250
+Connection ~ 13950 6250
+Wire Wire Line
+	13950 6250 13950 6450
+Wire Wire Line
+	13650 6050 13950 6050
+Wire Wire Line
+	13650 5750 15150 5750
+Wire Wire Line
+	13650 5950 14850 5950
+Wire Wire Line
+	13650 6350 14250 6350
+$Comp
+L Device:R R?
+U 1 1 6205F0FD
+P 14850 5400
+AR Path="/62665296/6205F0FD" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F0FD" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F0FD" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F0FD" Ref="R138"  Part="1" 
+F 0 "R138" H 14920 5446 50  0000 L CNN
+F 1 "22k" H 14920 5355 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 14780 5400 50  0001 C CNN
+F 3 "~" H 14850 5400 50  0001 C CNN
+	1    14850 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6205F103
+P 15150 5400
+AR Path="/62665296/6205F103" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F103" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F103" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F103" Ref="R139"  Part="1" 
+F 0 "R139" H 15220 5446 50  0000 L CNN
+F 1 "22k" H 15220 5355 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 15080 5400 50  0001 C CNN
+F 3 "~" H 15150 5400 50  0001 C CNN
+	1    15150 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6205F109
+P 14550 5400
+AR Path="/62665296/6205F109" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F109" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F109" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F109" Ref="R137"  Part="1" 
+F 0 "R137" H 14620 5446 50  0000 L CNN
+F 1 "22k" H 14620 5355 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 14480 5400 50  0001 C CNN
+F 3 "~" H 14550 5400 50  0001 C CNN
+	1    14550 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6205F10F
+P 14250 5400
+AR Path="/62665296/6205F10F" Ref="R?"  Part="1" 
+AR Path="/6479D118/6205F10F" Ref="R?"  Part="1" 
+AR Path="/627AE565/6205F10F" Ref="R?"  Part="1" 
+AR Path="/619922D7/6205F10F" Ref="R136"  Part="1" 
+F 0 "R136" H 14320 5446 50  0000 L CNN
+F 1 "22k" H 14320 5355 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 14180 5400 50  0001 C CNN
+F 3 "~" H 14250 5400 50  0001 C CNN
+	1    14250 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F115
+P 14250 5000
+AR Path="/627AE565/6205F115" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F115" Ref="#PWR0177"  Part="1" 
+F 0 "#PWR0177" H 14250 4850 50  0001 C CNN
+F 1 "+5V" H 14265 5173 50  0000 C CNN
+F 2 "" H 14250 5000 50  0001 C CNN
+F 3 "" H 14250 5000 50  0001 C CNN
+	1    14250 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F11B
+P 14550 5000
+AR Path="/627AE565/6205F11B" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F11B" Ref="#PWR0178"  Part="1" 
+F 0 "#PWR0178" H 14550 4850 50  0001 C CNN
+F 1 "+5V" H 14565 5173 50  0000 C CNN
+F 2 "" H 14550 5000 50  0001 C CNN
+F 3 "" H 14550 5000 50  0001 C CNN
+	1    14550 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F121
+P 14850 5000
+AR Path="/627AE565/6205F121" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F121" Ref="#PWR0179"  Part="1" 
+F 0 "#PWR0179" H 14850 4850 50  0001 C CNN
+F 1 "+5V" H 14865 5173 50  0000 C CNN
+F 2 "" H 14850 5000 50  0001 C CNN
+F 3 "" H 14850 5000 50  0001 C CNN
+	1    14850 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6205F127
+P 15150 5000
+AR Path="/627AE565/6205F127" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6205F127" Ref="#PWR0180"  Part="1" 
+F 0 "#PWR0180" H 15150 4850 50  0001 C CNN
+F 1 "+5V" H 15165 5173 50  0000 C CNN
+F 2 "" H 15150 5000 50  0001 C CNN
+F 3 "" H 15150 5000 50  0001 C CNN
+	1    15150 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14250 5000 14250 5250
+Wire Wire Line
+	14550 5000 14550 5250
+Wire Wire Line
+	14850 5000 14850 5250
+Wire Wire Line
+	15150 5000 15150 5250
+Wire Wire Line
+	15150 5550 15150 5750
+Connection ~ 15150 5750
+Wire Wire Line
+	15150 5750 15450 5750
+Wire Wire Line
+	14850 5550 14850 5950
+Connection ~ 14850 5950
+Wire Wire Line
+	14850 5950 16300 5950
+Wire Wire Line
+	14550 5550 14550 6150
+Wire Wire Line
+	13650 6150 14550 6150
+Connection ~ 14550 6150
+Wire Wire Line
+	14550 6150 16950 6150
+Wire Wire Line
+	14250 5550 14250 6350
+Connection ~ 14250 6350
+Wire Wire Line
+	14250 6350 17700 6350
+Wire Wire Line
+	11950 6250 9550 6250
+Text HLabel 15450 5750 2    50   Input ~ 0
+SP1TTL
+Wire Wire Line
+	8200 6400 8200 6950
+Wire Wire Line
+	8750 7500 8750 8050
+Wire Wire Line
+	9250 8600 9250 9150
+Wire Wire Line
+	9800 9700 9800 10250
+Wire Wire Line
+	9050 6950 9050 6050
+Wire Wire Line
+	9050 6050 11950 6050
+Wire Wire Line
+	9550 8050 9550 6250
+Wire Wire Line
+	10100 9150 10100 6450
+Wire Wire Line
+	10100 6450 11950 6450
+Wire Wire Line
+	3650 13350 3650 13900
+Wire Wire Line
+	7750 13750 7750 14300
+$Comp
+L Device:R R?
+U 1 1 622556B3
+P 4050 12350
+AR Path="/62665296/622556B3" Ref="R?"  Part="1" 
+AR Path="/6479D118/622556B3" Ref="R?"  Part="1" 
+AR Path="/627AE565/622556B3" Ref="R?"  Part="1" 
+AR Path="/619922D7/622556B3" Ref="R124"  Part="1" 
+F 0 "R124" H 4120 12396 50  0000 L CNN
+F 1 "330" H 4120 12305 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3980 12350 50  0001 C CNN
+F 3 "~" H 4050 12350 50  0001 C CNN
+	1    4050 12350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 622556B9
+P 4050 11950
+AR Path="/627AE565/622556B9" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/622556B9" Ref="#PWR0181"  Part="1" 
+F 0 "#PWR0181" H 4050 11800 50  0001 C CNN
+F 1 "+5V" H 4065 12123 50  0000 C CNN
+F 2 "" H 4050 11950 50  0001 C CNN
+F 3 "" H 4050 11950 50  0001 C CNN
+	1    4050 11950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4050 11950 4050 12200
+$Comp
+L SamacSys_Parts:LTV-814 IC11
+U 1 1 6227AD60
+P 4200 12700
+F 0 "IC11" H 4650 12965 50  0000 C CNN
+F 1 "LTV-814" H 4650 12874 50  0000 C CNN
+F 2 "DIP762W60P254L460H450Q4N" H 4950 12800 50  0001 L CNN
+F 3 "https://optoelectronics.liteon.com/upload/download/DS-70-96-0013/LTV-8X4%20series%20201509.pdf" H 4950 12700 50  0001 L CNN
+F 4 "Optocoupler Transistor Output, 35V, DIP4 Lite-On LTV-814 AC Input Phototransistor Output Optocoupler, Through-hole, 4-Pin PDIP" H 4950 12600 50  0001 L CNN "Description"
+F 5 "4.5" H 4950 12500 50  0001 L CNN "Height"
+F 6 "859-LTV-814" H 4950 12400 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Lite-On/LTV-814?qs=sfOAxtv3rnlOOcs9ljI%252BWA%3D%3D" H 4950 12300 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Lite-On" H 4950 12200 50  0001 L CNN "Manufacturer_Name"
+F 9 "LTV-814" H 4950 12100 50  0001 L CNN "Manufacturer_Part_Number"
+	1    4200 12700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 62284EE3
+P 8400 3400
+AR Path="/62665296/62284EE3" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/62284EE3" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/62284EE3" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/62284EE3" Ref="#PWR0182"  Part="1" 
+F 0 "#PWR0182" H 8400 3150 50  0001 C CNN
+F 1 "GND" H 8405 3227 50  0000 C CNN
+F 2 "" H 8400 3400 50  0001 C CNN
+F 3 "" H 8400 3400 50  0001 C CNN
+	1    8400 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6228DE96
+P 13950 6600
+AR Path="/62665296/6228DE96" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/6228DE96" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/6228DE96" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/6228DE96" Ref="#PWR0183"  Part="1" 
+F 0 "#PWR0183" H 13950 6350 50  0001 C CNN
+F 1 "GND" H 13955 6427 50  0000 C CNN
+F 2 "" H 13950 6600 50  0001 C CNN
+F 3 "" H 13950 6600 50  0001 C CNN
+	1    13950 6600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	13950 6600 13950 6450
+Connection ~ 13950 6450
+Wire Wire Line
+	8400 3400 8400 3250
+Connection ~ 8400 3250
+$Comp
+L power:GND #PWR?
+U 1 1 622AA02E
+P 5100 13000
+AR Path="/62665296/622AA02E" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/622AA02E" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/622AA02E" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/622AA02E" Ref="#PWR0184"  Part="1" 
+F 0 "#PWR0184" H 5100 12750 50  0001 C CNN
+F 1 "GND" H 5105 12827 50  0000 C CNN
+F 2 "" H 5100 13000 50  0001 C CNN
+F 3 "" H 5100 13000 50  0001 C CNN
+	1    5100 13000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 13000 5100 12800
+Wire Wire Line
+	5200 11950 5200 12200
+$Comp
+L power:+5V #PWR?
+U 1 1 62271151
+P 5200 11950
+AR Path="/627AE565/62271151" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/62271151" Ref="#PWR0185"  Part="1" 
+F 0 "#PWR0185" H 5200 11800 50  0001 C CNN
+F 1 "+5V" H 5215 12123 50  0000 C CNN
+F 2 "" H 5200 11950 50  0001 C CNN
+F 3 "" H 5200 11950 50  0001 C CNN
+	1    5200 11950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6227114B
+P 5200 12350
+AR Path="/62665296/6227114B" Ref="R?"  Part="1" 
+AR Path="/6479D118/6227114B" Ref="R?"  Part="1" 
+AR Path="/627AE565/6227114B" Ref="R?"  Part="1" 
+AR Path="/619922D7/6227114B" Ref="R125"  Part="1" 
+F 0 "R125" H 5270 12396 50  0000 L CNN
+F 1 "22k" H 5270 12305 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5130 12350 50  0001 C CNN
+F 3 "~" H 5200 12350 50  0001 C CNN
+	1    5200 12350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 12700 5200 12700
+Wire Wire Line
+	5200 12700 5200 12500
+Wire Wire Line
+	4200 12700 4050 12700
+Wire Wire Line
+	4050 12700 4050 12500
+Connection ~ 5200 12700
+Wire Wire Line
+	3950 12800 4200 12800
+$Comp
+L Device:R R?
+U 1 1 623551C7
+P 8150 12750
+AR Path="/62665296/623551C7" Ref="R?"  Part="1" 
+AR Path="/6479D118/623551C7" Ref="R?"  Part="1" 
+AR Path="/627AE565/623551C7" Ref="R?"  Part="1" 
+AR Path="/619922D7/623551C7" Ref="R126"  Part="1" 
+F 0 "R126" H 8220 12796 50  0000 L CNN
+F 1 "330" H 8220 12705 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8080 12750 50  0001 C CNN
+F 3 "~" H 8150 12750 50  0001 C CNN
+	1    8150 12750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 623551CD
+P 8150 12350
+AR Path="/627AE565/623551CD" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/623551CD" Ref="#PWR0186"  Part="1" 
+F 0 "#PWR0186" H 8150 12200 50  0001 C CNN
+F 1 "+5V" H 8165 12523 50  0000 C CNN
+F 2 "" H 8150 12350 50  0001 C CNN
+F 3 "" H 8150 12350 50  0001 C CNN
+	1    8150 12350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8150 12350 8150 12600
+$Comp
+L SamacSys_Parts:LTV-814 IC12
+U 1 1 623551DA
+P 8300 13100
+F 0 "IC12" H 8750 13365 50  0000 C CNN
+F 1 "LTV-814" H 8750 13274 50  0000 C CNN
+F 2 "DIP762W60P254L460H450Q4N" H 9050 13200 50  0001 L CNN
+F 3 "https://optoelectronics.liteon.com/upload/download/DS-70-96-0013/LTV-8X4%20series%20201509.pdf" H 9050 13100 50  0001 L CNN
+F 4 "Optocoupler Transistor Output, 35V, DIP4 Lite-On LTV-814 AC Input Phototransistor Output Optocoupler, Through-hole, 4-Pin PDIP" H 9050 13000 50  0001 L CNN "Description"
+F 5 "4.5" H 9050 12900 50  0001 L CNN "Height"
+F 6 "859-LTV-814" H 9050 12800 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Lite-On/LTV-814?qs=sfOAxtv3rnlOOcs9ljI%252BWA%3D%3D" H 9050 12700 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Lite-On" H 9050 12600 50  0001 L CNN "Manufacturer_Name"
+F 9 "LTV-814" H 9050 12500 50  0001 L CNN "Manufacturer_Part_Number"
+	1    8300 13100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 623551E0
+P 9200 13400
+AR Path="/62665296/623551E0" Ref="#PWR?"  Part="1" 
+AR Path="/6479D118/623551E0" Ref="#PWR?"  Part="1" 
+AR Path="/627AE565/623551E0" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/623551E0" Ref="#PWR0187"  Part="1" 
+F 0 "#PWR0187" H 9200 13150 50  0001 C CNN
+F 1 "GND" H 9205 13227 50  0000 C CNN
+F 2 "" H 9200 13400 50  0001 C CNN
+F 3 "" H 9200 13400 50  0001 C CNN
+	1    9200 13400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 13400 9200 13200
+Wire Wire Line
+	9300 12350 9300 12600
+$Comp
+L power:+5V #PWR?
+U 1 1 623551E8
+P 9300 12350
+AR Path="/627AE565/623551E8" Ref="#PWR?"  Part="1" 
+AR Path="/619922D7/623551E8" Ref="#PWR0188"  Part="1" 
+F 0 "#PWR0188" H 9300 12200 50  0001 C CNN
+F 1 "+5V" H 9315 12523 50  0000 C CNN
+F 2 "" H 9300 12350 50  0001 C CNN
+F 3 "" H 9300 12350 50  0001 C CNN
+	1    9300 12350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 623551EE
+P 9300 12750
+AR Path="/62665296/623551EE" Ref="R?"  Part="1" 
+AR Path="/6479D118/623551EE" Ref="R?"  Part="1" 
+AR Path="/627AE565/623551EE" Ref="R?"  Part="1" 
+AR Path="/619922D7/623551EE" Ref="R130"  Part="1" 
+F 0 "R130" H 9370 12796 50  0000 L CNN
+F 1 "22k" H 9370 12705 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 9230 12750 50  0001 C CNN
+F 3 "~" H 9300 12750 50  0001 C CNN
+	1    9300 12750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 13100 9300 13100
+Wire Wire Line
+	9300 13100 9300 12900
+Wire Wire Line
+	8300 13100 8150 13100
+Wire Wire Line
+	8150 13100 8150 12900
+Wire Wire Line
+	8050 13200 8300 13200
+Connection ~ 9300 13100
+$EndSCHEMATC

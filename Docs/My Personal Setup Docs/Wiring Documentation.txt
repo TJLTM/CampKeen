@@ -1,0 +1,35 @@
+Water Pump
+-- White -- Water pump sense 
+-- Green -- Water Pump Relay
+-- black -- NC
+-- red -- NC 
+
+Sewage/Grey 
+-- Blue --1/4
+-- Brown -- 1/2
+-- Green -- 3/4
+-- White - Full
+-- Red/Black -- 12v Power
+
+Bathroom 
+-- Red -- LED Positive 
+-- White -- Button Positive
+-- Green -- Button input to CampKeen
+-- Black -- LED GND
+
+Kitchen 
+-- Red -- LED Positive
+-- Black -- LED GND
+-- White -- Button Positive
+-- Green -- Button input to CampKeen
+
+
+LCD/Control panel 
+-- warning LED -- brown/white
+-- Alarm LED/Siren -- brown
+-- water source selection -- green 
+-- Alarm Reset -- orange
+-- Enable LCD -- green/white
+-- I2C SDA -- blue
+-- I2C SCL -- blue/white
+-- 5V -- orange/white

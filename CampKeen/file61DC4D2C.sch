@@ -1,0 +1,439 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 2
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SamacSys_Parts:DIP05-1A72-12L K?
+U 1 1 61DD2FEA
+P 3450 3250
+F 0 "K?" H 4100 3515 50  0000 C CNN
+F 1 "DIP05-1A72-12L" H 4100 3424 50  0000 C CNN
+F 2 "SamacSys_Parts:DIP051A7212L" H 4600 3350 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/DIP05-1A72-12L.pdf" H 4600 3250 50  0001 L CNN
+F 4 "Reed Relays 1 Form A 5 V Molded DIP" H 4600 3150 50  0001 L CNN "Description"
+F 5 "5.1" H 4600 3050 50  0001 L CNN "Height"
+F 6 "876-DIP05-1A72-12L" H 4600 2950 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=876-DIP05-1A72-12L" H 4600 2850 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Meder" H 4600 2750 50  0001 L CNN "Manufacturer_Name"
+F 9 "DIP05-1A72-12L" H 4600 2650 50  0001 L CNN "Manufacturer_Part_Number"
+	1    3450 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61DD2FF0
+P 4300 5200
+F 0 "#PWR?" H 4300 4950 50  0001 C CNN
+F 1 "GND" H 4305 5027 50  0000 C CNN
+F 2 "" H 4300 5200 50  0001 C CNN
+F 3 "" H 4300 5200 50  0001 C CNN
+	1    4300 5200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3450 3550 3450 3750
+Wire Wire Line
+	4750 3250 5000 3250
+Wire Wire Line
+	5000 3250 5000 2900
+Wire Wire Line
+	4750 3550 4750 3750
+Wire Wire Line
+	4750 3750 3450 3750
+Wire Wire Line
+	3450 3250 3450 2900
+Wire Wire Line
+	3450 2900 5000 2900
+$Comp
+L Device:R R?
+U 1 1 61DD2FFD
+P 5250 3650
+F 0 "R?" H 5320 3696 50  0000 L CNN
+F 1 "1M" H 5320 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5180 3650 50  0001 C CNN
+F 3 "~" H 5250 3650 50  0001 C CNN
+	1    5250 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61DD3003
+P 5800 3950
+F 0 "#PWR?" H 5800 3700 50  0001 C CNN
+F 1 "GND" H 5805 3777 50  0000 C CNN
+F 2 "" H 5800 3950 50  0001 C CNN
+F 3 "" H 5800 3950 50  0001 C CNN
+	1    5800 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5250 3800 5250 3950
+Wire Wire Line
+	5250 3950 5800 3950
+$Comp
+L Device:R R?
+U 1 1 61DD300B
+P 5800 3650
+F 0 "R?" H 5870 3696 50  0000 L CNN
+F 1 "1M" H 5870 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 5730 3650 50  0001 C CNN
+F 3 "~" H 5800 3650 50  0001 C CNN
+	1    5800 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5250 3500 5250 3200
+Wire Wire Line
+	5250 3200 5500 3200
+Wire Wire Line
+	5800 3950 5800 3800
+Connection ~ 5800 3950
+$Comp
+L power:+5V #PWR?
+U 1 1 61DD3015
+P 5800 2850
+F 0 "#PWR?" H 5800 2700 50  0001 C CNN
+F 1 "+5V" H 5815 3023 50  0000 C CNN
+F 2 "" H 5800 2850 50  0001 C CNN
+F 3 "" H 5800 2850 50  0001 C CNN
+	1    5800 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 3000 5800 2850
+$Comp
+L Device:R R?
+U 1 1 61DD301C
+P 6300 3650
+F 0 "R?" H 6370 3696 50  0000 L CNN
+F 1 "1M" H 6370 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 6230 3650 50  0001 C CNN
+F 3 "~" H 6300 3650 50  0001 C CNN
+	1    6300 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61DD3022
+P 6850 3950
+F 0 "#PWR?" H 6850 3700 50  0001 C CNN
+F 1 "GND" H 6855 3777 50  0000 C CNN
+F 2 "" H 6850 3950 50  0001 C CNN
+F 3 "" H 6850 3950 50  0001 C CNN
+	1    6850 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 3800 6300 3950
+Wire Wire Line
+	6300 3950 6850 3950
+$Comp
+L Device:R R?
+U 1 1 61DD302A
+P 6850 3650
+F 0 "R?" H 6920 3696 50  0000 L CNN
+F 1 "1M" H 6920 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 6780 3650 50  0001 C CNN
+F 3 "~" H 6850 3650 50  0001 C CNN
+	1    6850 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 3500 6300 3200
+Wire Wire Line
+	6300 3200 6550 3200
+Wire Wire Line
+	6850 3950 6850 3800
+Connection ~ 6850 3950
+Wire Wire Line
+	6850 3500 6850 3400
+$Comp
+L power:+5V #PWR?
+U 1 1 61DD3035
+P 6850 2850
+F 0 "#PWR?" H 6850 2700 50  0001 C CNN
+F 1 "+5V" H 6865 3023 50  0000 C CNN
+F 2 "" H 6850 2850 50  0001 C CNN
+F 3 "" H 6850 2850 50  0001 C CNN
+	1    6850 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6850 3000 6850 2850
+$Comp
+L Device:R R?
+U 1 1 61DD303C
+P 7350 3650
+F 0 "R?" H 7420 3696 50  0000 L CNN
+F 1 "1M" H 7420 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 7280 3650 50  0001 C CNN
+F 3 "~" H 7350 3650 50  0001 C CNN
+	1    7350 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61DD3042
+P 7900 3950
+F 0 "#PWR?" H 7900 3700 50  0001 C CNN
+F 1 "GND" H 7905 3777 50  0000 C CNN
+F 2 "" H 7900 3950 50  0001 C CNN
+F 3 "" H 7900 3950 50  0001 C CNN
+	1    7900 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 3800 7350 3950
+Wire Wire Line
+	7350 3950 7900 3950
+$Comp
+L Device:R R?
+U 1 1 61DD304A
+P 7900 3650
+F 0 "R?" H 7970 3696 50  0000 L CNN
+F 1 "1M" H 7970 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 7830 3650 50  0001 C CNN
+F 3 "~" H 7900 3650 50  0001 C CNN
+	1    7900 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 3500 7350 3200
+Wire Wire Line
+	7350 3200 7600 3200
+Wire Wire Line
+	7900 3950 7900 3800
+Connection ~ 7900 3950
+Wire Wire Line
+	7900 3500 7900 3400
+$Comp
+L power:+5V #PWR?
+U 1 1 61DD3055
+P 7900 2850
+F 0 "#PWR?" H 7900 2700 50  0001 C CNN
+F 1 "+5V" H 7915 3023 50  0000 C CNN
+F 2 "" H 7900 2850 50  0001 C CNN
+F 3 "" H 7900 2850 50  0001 C CNN
+	1    7900 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7900 3000 7900 2850
+$Comp
+L Device:R R?
+U 1 1 61DD305C
+P 8400 3650
+F 0 "R?" H 8470 3696 50  0000 L CNN
+F 1 "1M" H 8470 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8330 3650 50  0001 C CNN
+F 3 "~" H 8400 3650 50  0001 C CNN
+	1    8400 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61DD3062
+P 8950 3950
+F 0 "#PWR?" H 8950 3700 50  0001 C CNN
+F 1 "GND" H 8955 3777 50  0000 C CNN
+F 2 "" H 8950 3950 50  0001 C CNN
+F 3 "" H 8950 3950 50  0001 C CNN
+	1    8950 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 3800 8400 3950
+Wire Wire Line
+	8400 3950 8950 3950
+$Comp
+L Device:R R?
+U 1 1 61DD306A
+P 8950 3650
+F 0 "R?" H 9020 3696 50  0000 L CNN
+F 1 "1M" H 9020 3605 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 8880 3650 50  0001 C CNN
+F 3 "~" H 8950 3650 50  0001 C CNN
+	1    8950 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 3500 8400 3200
+Wire Wire Line
+	8400 3200 8650 3200
+Wire Wire Line
+	8950 3950 8950 3800
+Connection ~ 8950 3950
+Wire Wire Line
+	8950 3500 8950 3400
+$Comp
+L power:+5V #PWR?
+U 1 1 61DD3075
+P 8950 2850
+F 0 "#PWR?" H 8950 2700 50  0001 C CNN
+F 1 "+5V" H 8965 3023 50  0000 C CNN
+F 2 "" H 8950 2850 50  0001 C CNN
+F 3 "" H 8950 2850 50  0001 C CNN
+	1    8950 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 3000 8950 2850
+Connection ~ 3450 3750
+Wire Wire Line
+	5800 3500 5800 3400
+Wire Wire Line
+	6100 3400 5800 3400
+Wire Wire Line
+	7200 3400 6850 3400
+Wire Wire Line
+	8250 3400 7900 3400
+Wire Wire Line
+	9150 3400 8950 3400
+$Comp
+L power:GND #PWR?
+U 1 1 61DD30A0
+P 4250 5500
+F 0 "#PWR?" H 4250 5250 50  0001 C CNN
+F 1 "GND" H 4255 5327 50  0000 C CNN
+F 2 "" H 4250 5500 50  0001 C CNN
+F 3 "" H 4250 5500 50  0001 C CNN
+	1    4250 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61DD30A6
+P 3400 4900
+F 0 "R?" V 3193 4900 50  0000 C CNN
+F 1 "10k" V 3284 4900 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3330 4900 50  0001 C CNN
+F 3 "~" H 3400 4900 50  0001 C CNN
+	1    3400 4900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3950 5100 3950 5200
+$Comp
+L Transistor_BJT:BC547 Q?
+U 1 1 61DD30AD
+P 3850 4900
+F 0 "Q?" H 4041 4946 50  0000 L CNN
+F 1 "BC547" H 4041 4855 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 4050 4825 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC550-D.pdf" H 3850 4900 50  0001 L CNN
+	1    3850 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61DD30B3
+P 3800 5400
+F 0 "R?" V 3593 5400 50  0000 C CNN
+F 1 "100k" V 3684 5400 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3730 5400 50  0001 C CNN
+F 3 "~" H 3800 5400 50  0001 C CNN
+	1    3800 5400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3950 5400 4250 5400
+Wire Wire Line
+	4250 5400 4250 5500
+Wire Wire Line
+	3550 4900 3600 4900
+Wire Wire Line
+	3600 4900 3600 5400
+Wire Wire Line
+	3600 5400 3650 5400
+Connection ~ 3600 4900
+Wire Wire Line
+	3600 4900 3650 4900
+Wire Wire Line
+	3950 5200 4300 5200
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61DD30C2
+P 5700 3200
+F 0 "Q?" H 5904 3246 50  0000 L CNN
+F 1 "2N7000" H 5904 3155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 5900 3125 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 5700 3200 50  0001 L CNN
+	1    5700 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61DD30C8
+P 6750 3200
+F 0 "Q?" H 6954 3246 50  0000 L CNN
+F 1 "2N7000" H 6954 3155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 6950 3125 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 6750 3200 50  0001 L CNN
+	1    6750 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61DD30CE
+P 7800 3200
+F 0 "Q?" H 8004 3246 50  0000 L CNN
+F 1 "2N7000" H 8004 3155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 8000 3125 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 7800 3200 50  0001 L CNN
+	1    7800 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 61DD30D4
+P 8850 3200
+F 0 "Q?" H 9054 3246 50  0000 L CNN
+F 1 "2N7000" H 9054 3155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 9050 3125 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 8850 3200 50  0001 L CNN
+	1    8850 3200
+	1    0    0    -1  
+$EndComp
+NoConn ~ 4750 3450
+NoConn ~ 4750 3350
+Connection ~ 5800 3400
+Connection ~ 6850 3400
+Connection ~ 7900 3400
+Connection ~ 8950 3400
+Wire Wire Line
+	3450 3750 3450 4300
+$Comp
+L power:+5V #PWR?
+U 1 1 61DD30FB
+P 3250 3100
+F 0 "#PWR?" H 3250 2950 50  0001 C CNN
+F 1 "+5V" H 3265 3273 50  0000 C CNN
+F 2 "" H 3250 3100 50  0001 C CNN
+F 3 "" H 3250 3100 50  0001 C CNN
+	1    3250 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 3350 3250 3100
+Wire Wire Line
+	3250 3350 3450 3350
+Wire Wire Line
+	3950 4700 3950 4050
+Wire Wire Line
+	3950 4050 3250 4050
+Wire Wire Line
+	3250 4050 3250 3450
+Wire Wire Line
+	3250 3450 3450 3450
+$EndSCHEMATC
