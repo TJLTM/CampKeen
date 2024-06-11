@@ -627,7 +627,7 @@
     ],
     [
       "00000000-0000-0000-0000-0000627ae565",
-      "Inputs With Interrupts"
+      "BufferedInputs"
     ],
     [
       "00000000-0000-0000-0000-000062a02be1",
@@ -647,15 +647,23 @@
     ],
     [
       "00000000-0000-0000-0000-000062665296",
-      "Tanks"
+      "Holding Tanks"
     ],
     [
       "00000000-0000-0000-0000-000064106ff4",
       "Water and LPG"
     ],
     [
-      "00000000-0000-0000-0000-00006479d118",
-      "sheet6479D10C"
+      "54756c7a-fb56-492b-8dc7-a8a7bf085a0f",
+      "Holding Tanks1"
+    ],
+    [
+      "a206cf0c-ad0a-4dd7-b305-63dfd8d501a3",
+      "BufferedInputs1"
+    ],
+    [
+      "e951bb9e-ec23-4ad3-87b4-5a1dccdb4bb9",
+      "BufferedInputs2"
     ]
   ],
   "text_variables": {}
