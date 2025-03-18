@@ -1,0 +1,4788 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "97972d9a-c8ac-431f-b1f4-0da8477b5639")
+	(paper "A4")
+	(lib_symbols
+		(symbol "Device:R"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "SamacSys_Parts:BZX79C10"
+			(pin_names
+				(offset 0.762)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Z"
+				(at 10.16 8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "SamacSys_Parts_BZX79C10"
+				(at 10.16 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "DIOAD1068W53L380D172"
+				(at 10.16 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+				(at 10.16 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+				(at 10.16 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "512-BZX79C10"
+				(at 10.16 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+				(at 10.16 -8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "ON Semiconductor"
+				(at 10.16 -11.43 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "BZX79C10"
+				(at 10.16 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(symbol "BZX79C10_0_0"
+				(pin passive line
+					(at 0 0 0)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 15.24 0 180)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "BZX79C10_0_1"
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 5.08 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 4.064 -2.54) (xy 5.08 -2.032)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 2.032) (xy 5.08 -2.032)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 2.032) (xy 6.096 2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 12.7 0) (xy 10.16 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 0) (xy 10.16 2.54) (xy 10.16 -2.54) (xy 5.08 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+		)
+		(symbol "SamacSys_Parts:IRF9Z34NPBF"
+			(pin_names
+				(offset 0.762)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 11.43 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "SamacSys_Parts_IRF9Z34NPBF"
+				(at 11.43 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "TO254P469X1042X1967-3P"
+				(at 11.43 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
+				(at 11.43 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
+				(at 11.43 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Height" "4.69"
+				(at 11.43 -8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "942-IRF9Z34NPBF"
+				(at 11.43 -11.43 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
+				(at 11.43 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "Infineon"
+				(at 11.43 -16.51 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
+				(at 11.43 -19.05 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(symbol "IRF9Z34NPBF_0_0"
+				(pin passive line
+					(at 0 0 0)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 -5.08 90)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 10.16 270)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IRF9Z34NPBF_0_1"
+				(polyline
+					(pts
+						(xy 5.842 -0.508) (xy 5.842 0.508)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 0) (xy 7.62 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.032) (xy 5.842 3.048)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 5.588) (xy 5.842 4.572)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 5.842 2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 7.62 -2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 7.62 5.08) (xy 5.842 5.08)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 7.62 5.08) (xy 7.62 7.62)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 5.08 0) (xy 5.08 5.08)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 6.604 3.048) (xy 6.604 2.032) (xy 7.62 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 6.35 2.54)
+					(radius 3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+		)
+		(symbol "Transistor_FET:2N7000"
+			(pin_names hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 5.08 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "2N7000"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+				(at 5.08 -1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "0.2A Id, 200V Vds, N-Channel MOSFET, 2.6V Logic Level, TO-92"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "N-Channel MOSFET Logic-Level"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TO?92*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "2N7000_0_1"
+				(polyline
+					(pts
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 1.905) (xy 0.254 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.508) (xy 0.762 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "2N7000_1_1"
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "power:+12V"
+			(power)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "+12V"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+12V\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "power-flag"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "+12V_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+12V_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0) hide
+					(name "+12V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "power:GND"
+			(power)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "GND"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "power-flag"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "GND_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "GND_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0) hide
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(junction
+		(at 95.25 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "09433d97-62ec-42de-89f2-7d0b68dc1b9d")
+	)
+	(junction
+		(at 107.95 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1ebce183-d3ad-4022-b82e-9e0d8cd628db")
+	)
+	(junction
+		(at 199.39 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "226748a0-9c54-4438-a724-741c7846a7bf")
+	)
+	(junction
+		(at 139.7 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "30979a3d-28d7-46ae-b5aa-513ad60b71a4")
+	)
+	(junction
+		(at 58.42 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "46255620-16a2-4e81-9e4a-58dddcf89388")
+	)
+	(junction
+		(at 58.42 24.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "52da99c6-c348-4007-8828-51a963a2879f")
+	)
+	(junction
+		(at 199.39 24.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "52fe3400-bf18-4fe5-aa6e-2be779b65697")
+	)
+	(junction
+		(at 186.69 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "730780c7-40bd-484b-b640-ae047209b478")
+	)
+	(junction
+		(at 95.25 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "84daabe5-262d-44f3-8073-3a5eff98700f")
+	)
+	(junction
+		(at 45.72 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "885a1129-9446-432d-8d93-f91d54873594")
+	)
+	(junction
+		(at 186.69 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "92ff4797-ba89-46c8-b3a8-8260d960e660")
+	)
+	(junction
+		(at 45.72 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "94a21413-9821-4587-923e-f37548a5150a")
+	)
+	(junction
+		(at 152.4 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b027388d-8092-416a-ae2f-62be7825303f")
+	)
+	(junction
+		(at 139.7 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ccdce88e-24b7-4692-934b-22bb9b0763dc")
+	)
+	(junction
+		(at 107.95 24.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d0f42cc3-e2d7-4f51-9d6f-0c2eaccb6ae7")
+	)
+	(junction
+		(at 152.4 24.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ddfa4cf0-3486-4284-897b-3a9e51f271d9")
+	)
+	(wire
+		(pts
+			(xy 81.28 85.09) (xy 81.28 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00185541-0a55-4e62-91d8-99e7a7720d36")
+	)
+	(wire
+		(pts
+			(xy 95.25 72.39) (xy 95.25 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "198642f2-8db4-475b-ac24-9da65c994a3a")
+	)
+	(wire
+		(pts
+			(xy 186.69 72.39) (xy 186.69 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1c6c46b2-dd9e-430f-85e9-621815ceca94")
+	)
+	(wire
+		(pts
+			(xy 139.7 58.42) (xy 139.7 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "201a8082-80bc-49cb-a857-a9c917ee8418")
+	)
+	(wire
+		(pts
+			(xy 199.39 55.88) (xy 186.69 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "28aab436-a04a-4f1d-a887-4f09513fdc8a")
+	)
+	(wire
+		(pts
+			(xy 45.72 24.13) (xy 45.72 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "296b967f-b7a9-453f-856a-7b874fdca3db")
+	)
+	(wire
+		(pts
+			(xy 58.42 50.8) (xy 58.42 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c3d5c2f-c119-4276-9b7e-33808f1d9396")
+	)
+	(wire
+		(pts
+			(xy 152.4 55.88) (xy 139.7 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3adb8c69-132c-478c-b246-f381b0e1424c")
+	)
+	(wire
+		(pts
+			(xy 123.19 45.72) (xy 123.19 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b9ce6b0-047c-4e71-81a7-b0a5c13aa4d2")
+	)
+	(wire
+		(pts
+			(xy 167.64 24.13) (xy 152.4 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3be2f64a-643b-4527-aaf5-307341a81097")
+	)
+	(wire
+		(pts
+			(xy 139.7 72.39) (xy 139.7 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d6472eb-4872-48d0-9b65-1b39f6d4a46a")
+	)
+	(wire
+		(pts
+			(xy 214.63 69.85) (xy 214.63 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3fe74e96-d630-4db9-83b3-437a4cba15b4")
+	)
+	(wire
+		(pts
+			(xy 125.73 77.47) (xy 132.08 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "408e380e-a780-4259-a7f0-5062d5808d11")
+	)
+	(wire
+		(pts
+			(xy 58.42 55.88) (xy 45.72 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "41e442c4-3daa-4776-bd79-7990c939b354")
+	)
+	(wire
+		(pts
+			(xy 45.72 58.42) (xy 45.72 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43758126-6174-43ff-b8a7-6d55ec68152a")
+	)
+	(wire
+		(pts
+			(xy 186.69 24.13) (xy 186.69 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "443b842e-cdd6-495f-a7fb-0cef04c17274")
+	)
+	(wire
+		(pts
+			(xy 214.63 45.72) (xy 214.63 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "45b2cd71-50dd-4f61-80ce-9a5382fe6dd4")
+	)
+	(wire
+		(pts
+			(xy 214.63 24.13) (xy 199.39 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "481d8c49-260f-40f8-9d7a-177fecb9140f")
+	)
+	(wire
+		(pts
+			(xy 107.95 35.56) (xy 107.95 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "49c3a7d7-9453-4986-bcff-387f274073df")
+	)
+	(wire
+		(pts
+			(xy 107.95 50.8) (xy 107.95 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4c77837f-2440-4b7b-8e7e-430f981c7c04")
+	)
+	(wire
+		(pts
+			(xy 95.25 55.88) (xy 95.25 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "53548090-4b36-44b5-9ef5-2fa214b2fbf4")
+	)
+	(wire
+		(pts
+			(xy 167.64 45.72) (xy 167.64 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "59550421-1010-45d2-ae78-ff36e5bca6b7")
+	)
+	(wire
+		(pts
+			(xy 152.4 50.8) (xy 152.4 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c4ddc3a-1b67-4d06-8b43-5f565c9d4f71")
+	)
+	(wire
+		(pts
+			(xy 186.69 55.88) (xy 186.69 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ea450c5-c799-4c49-a77b-90af3b812ea4")
+	)
+	(wire
+		(pts
+			(xy 172.72 77.47) (xy 179.07 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ecea6c7-cbcd-4340-9db8-55b54a886e1e")
+	)
+	(wire
+		(pts
+			(xy 66.04 55.88) (xy 58.42 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5fe5bd8d-5a86-4565-bd10-e08c6de9aa03")
+	)
+	(wire
+		(pts
+			(xy 125.73 92.71) (xy 125.73 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6505825f-43ee-4fb8-b546-c0b2310ed040")
+	)
+	(wire
+		(pts
+			(xy 31.75 85.09) (xy 31.75 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "65908b01-f0a0-46e1-84f2-bf49d46af2a7")
+	)
+	(wire
+		(pts
+			(xy 207.01 55.88) (xy 199.39 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e23d37a-3804-4cb0-9f56-ede150eedda5")
+	)
+	(wire
+		(pts
+			(xy 199.39 24.13) (xy 186.69 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7112d2ae-7915-4f1a-aae6-e71244f669d8")
+	)
+	(wire
+		(pts
+			(xy 58.42 35.56) (xy 58.42 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a25e2e8-d883-44ae-8207-1f946e50b1fa")
+	)
+	(wire
+		(pts
+			(xy 199.39 35.56) (xy 199.39 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ab8aff0-29e4-4be7-af1f-6a97b7752e20")
+	)
+	(wire
+		(pts
+			(xy 152.4 24.13) (xy 139.7 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b1f2f40-abe7-4adb-bfe4-3f1a7f99a0f2")
+	)
+	(wire
+		(pts
+			(xy 152.4 35.56) (xy 152.4 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7bc13ee4-2194-461b-9242-0d96ebba241b")
+	)
+	(wire
+		(pts
+			(xy 73.66 24.13) (xy 58.42 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83250ce3-cee5-48b2-8a3e-b1e7887d6a15")
+	)
+	(wire
+		(pts
+			(xy 31.75 77.47) (xy 38.1 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "899d6960-0494-4e8f-9091-802503c02d1b")
+	)
+	(wire
+		(pts
+			(xy 186.69 82.55) (xy 186.69 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b129856-cc2d-4792-b90f-5af9599716ce")
+	)
+	(wire
+		(pts
+			(xy 115.57 55.88) (xy 107.95 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "937928d4-4dfb-4f2f-91d0-697ec54ac283")
+	)
+	(wire
+		(pts
+			(xy 172.72 92.71) (xy 172.72 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96bdf5ea-ca81-4096-814f-ff6d6aaf3220")
+	)
+	(wire
+		(pts
+			(xy 123.19 69.85) (xy 123.19 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96d488aa-4d20-4ba2-8d75-10df5865e575")
+	)
+	(wire
+		(pts
+			(xy 95.25 24.13) (xy 95.25 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a334c2d-ea1e-4f9b-9563-937977728978")
+	)
+	(wire
+		(pts
+			(xy 160.02 55.88) (xy 152.4 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a68bf85-c16f-48ee-8e66-0d9ea8ea8b23")
+	)
+	(wire
+		(pts
+			(xy 167.64 69.85) (xy 167.64 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b774066-2c22-4032-af01-4291adb02340")
+	)
+	(wire
+		(pts
+			(xy 186.69 58.42) (xy 186.69 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c7af13e-949e-4a55-a6b7-45ef51b4f106")
+	)
+	(wire
+		(pts
+			(xy 73.66 45.72) (xy 73.66 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9cd1ba63-2087-4000-a5a9-797dad78d993")
+	)
+	(wire
+		(pts
+			(xy 139.7 82.55) (xy 139.7 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a11284ee-2f71-4eb8-b0ee-e01b498d0140")
+	)
+	(wire
+		(pts
+			(xy 199.39 50.8) (xy 199.39 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a56d1fde-b4ad-42de-a848-9c94bc0cbe09")
+	)
+	(wire
+		(pts
+			(xy 107.95 24.13) (xy 95.25 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9240eb1-cd96-4728-9dbf-17ea5e90b45d")
+	)
+	(wire
+		(pts
+			(xy 73.66 69.85) (xy 73.66 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad8c2a20-27d0-4e2a-aabf-44a509bf342a")
+	)
+	(wire
+		(pts
+			(xy 45.72 72.39) (xy 45.72 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "af5a6355-b37d-4130-98e5-c563dae6ea34")
+	)
+	(wire
+		(pts
+			(xy 45.72 55.88) (xy 45.72 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ba660766-df56-40bf-b584-d5d4ed6cb6fc")
+	)
+	(wire
+		(pts
+			(xy 95.25 82.55) (xy 95.25 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c837798c-83c8-4e02-b288-fa03714cab74")
+	)
+	(wire
+		(pts
+			(xy 172.72 96.52) (xy 186.69 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d2b76814-7e11-4ea5-b409-7892e0c8500a")
+	)
+	(wire
+		(pts
+			(xy 125.73 96.52) (xy 139.7 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d427b096-2104-4cac-9d5d-d2195401989e")
+	)
+	(wire
+		(pts
+			(xy 81.28 92.71) (xy 81.28 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d76ec66c-d0c1-4040-8259-8685c076073a")
+	)
+	(wire
+		(pts
+			(xy 45.72 82.55) (xy 45.72 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7fccf28-3bfa-4b51-bf91-5d4755a0686e")
+	)
+	(wire
+		(pts
+			(xy 172.72 85.09) (xy 172.72 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dd07efd4-24c4-483d-a118-ed58a9223c8c")
+	)
+	(wire
+		(pts
+			(xy 123.19 24.13) (xy 107.95 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ddc0999f-48c1-4a48-960f-30f430270283")
+	)
+	(wire
+		(pts
+			(xy 31.75 96.52) (xy 45.72 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e02b47af-92a8-4b6e-841f-f88d0fa73eb7")
+	)
+	(wire
+		(pts
+			(xy 31.75 92.71) (xy 31.75 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1b0380f-01af-4f4c-986f-502b633a3c03")
+	)
+	(wire
+		(pts
+			(xy 58.42 24.13) (xy 45.72 24.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2743b78-cc59-458c-8fb0-4238f348a49f")
+	)
+	(wire
+		(pts
+			(xy 107.95 55.88) (xy 95.25 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e342f8d7-ca8a-47a5-a679-3c984454e9a5")
+	)
+	(wire
+		(pts
+			(xy 139.7 55.88) (xy 139.7 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e61e3b10-16bb-45fa-9a42-277efd2ec104")
+	)
+	(wire
+		(pts
+			(xy 95.25 58.42) (xy 95.25 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f16972fb-4b2b-49d7-8715-9f31f5431405")
+	)
+	(wire
+		(pts
+			(xy 139.7 24.13) (xy 139.7 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f420833d-9f22-43c2-813c-6543682555e5")
+	)
+	(wire
+		(pts
+			(xy 81.28 77.47) (xy 87.63 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4cf6dc4-65fc-4b8e-a0d8-0a9074993d40")
+	)
+	(wire
+		(pts
+			(xy 125.73 85.09) (xy 125.73 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fab79269-47fb-42f7-a3ad-b9ec94b79b4b")
+	)
+	(wire
+		(pts
+			(xy 81.28 96.52) (xy 95.25 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb7b20d7-70ea-48e6-baf1-01a0d3c92377")
+	)
+	(hierarchical_label "SPOut4"
+		(shape input)
+		(at 214.63 69.85 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "190829cf-8172-400f-bba0-21761cc942eb")
+	)
+	(hierarchical_label "SPOut1TTL"
+		(shape input)
+		(at 31.75 77.47 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2952439a-4d93-45a3-a998-2b2fce2c5fe9")
+	)
+	(hierarchical_label "SPOut3TTL"
+		(shape input)
+		(at 125.73 77.47 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3581de8b-daeb-467a-8039-51714599e4ba")
+	)
+	(hierarchical_label "SPOut1"
+		(shape input)
+		(at 73.66 69.85 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3eff8f32-349a-4846-b484-abdc036c7174")
+	)
+	(hierarchical_label "SPOut4TTL"
+		(shape input)
+		(at 172.72 77.47 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "510813ff-4301-4d7b-b640-805049ac6194")
+	)
+	(hierarchical_label "SPOut2TTL"
+		(shape input)
+		(at 81.28 77.47 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a3eaa329-1c23-49fc-9fb5-976de81b788e")
+	)
+	(hierarchical_label "SPOut3"
+		(shape input)
+		(at 167.64 69.85 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d98b06b1-d759-4372-889f-6ac21114139f")
+	)
+	(hierarchical_label "SPOut2"
+		(shape input)
+		(at 123.19 69.85 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d9cdb60a-ecfa-4866-ad81-ca393f637bae")
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
+		(at 115.57 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337b6")
+		(property "Reference" "Q18"
+			(at 126.492 52.1716 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRF9Z34NPBF"
+			(at 126.492 54.483 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TO254P469X1042X1967-3P"
+			(at 127 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
+			(at 127 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
+			(at 127 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" "4.69"
+			(at 127 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "942-IRF9Z34NPBF"
+			(at 127 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
+			(at 127 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Infineon"
+			(at 127 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
+			(at 127 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c1948da7-e640-46ee-b199-bae2b750ce98")
+		)
+		(pin "2"
+			(uuid "61ebc852-189b-4981-be7d-ccaf920f4adc")
+		)
+		(pin "3"
+			(uuid "71f0a2bd-faee-4392-a39b-d4e778bd880e")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q18")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 81.28 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337bc")
+		(property "Reference" "R49"
+			(at 83.058 87.7316 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 83.058 90.043 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 79.502 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 81.28 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 81.28 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d7b773f3-46be-441d-b4f2-641b081b2008")
+		)
+		(pin "2"
+			(uuid "e4f0d2cd-92a9-4dae-9f7f-feea6f9bce01")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R49")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 95.25 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337c2")
+		(property "Reference" "#PWR0104"
+			(at 95.25 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 95.377 100.9142 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 95.25 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 95.25 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 95.25 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "650ee667-4674-45eb-b43c-085c84ebb142")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0104")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR073")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:2N7000")
+		(at 92.71 77.47 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337cd")
+		(property "Reference" "Q17"
+			(at 97.8916 76.3016 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N7000"
+			(at 97.8916 78.613 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 97.79 79.375 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
+			(at 92.71 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 92.71 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d189dfca-1bed-41a8-9c31-97b948f02b1e")
+		)
+		(pin "2"
+			(uuid "0a69cee7-5eec-4d28-80df-c5d8f301628a")
+		)
+		(pin "3"
+			(uuid "ff01a8b0-fddf-48f6-b801-d080cc502d55")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q17")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 95.25 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337d4")
+		(property "Reference" "R50"
+			(at 97.028 48.3616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 97.028 50.673 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 93.472 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 95.25 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 95.25 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f914b5ac-1de3-4d42-97d1-181f0ec9f6f0")
+		)
+		(pin "2"
+			(uuid "5a096f17-5873-416a-b570-42711c123437")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R50")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 95.25 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337da")
+		(property "Reference" "R51"
+			(at 97.028 61.0616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 97.028 63.373 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 93.472 62.23 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 95.25 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 95.25 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d89d9dd6-e439-42f5-b0c7-300dcdfcd358")
+		)
+		(pin "2"
+			(uuid "806482cb-e5db-4867-8586-1f39e9db49e6")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R51")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:BZX79C10")
+		(at 107.95 35.56 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337e6")
+		(property "Reference" "Z6"
+			(at 111.252 42.0116 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "BZX79C10"
+			(at 111.252 44.323 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:DIOAD1068W53L380D172"
+			(at 104.14 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+			(at 106.68 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+			(at 109.22 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 111.76 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "512-BZX79C10"
+			(at 114.3 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+			(at 116.84 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "ON Semiconductor"
+			(at 119.38 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "BZX79C10"
+			(at 121.92 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "99098c14-3cdf-4ca3-bec4-c58d847f28e1")
+		)
+		(pin "2"
+			(uuid "c73e0af3-559e-4403-92ea-9f8de562bab4")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Z6")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Z2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 107.95 24.13 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c337fd")
+		(property "Reference" "#PWR0105"
+			(at 107.95 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 107.569 19.7358 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 107.95 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 107.95 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 107.95 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4c464515-3781-4290-9f05-5fe2d21699a3")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0105")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR074")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
+		(at 160.02 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b2f")
+		(property "Reference" "Q20"
+			(at 170.942 52.1716 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRF9Z34NPBF"
+			(at 170.942 54.483 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TO254P469X1042X1967-3P"
+			(at 171.45 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
+			(at 171.45 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
+			(at 171.45 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" "4.69"
+			(at 171.45 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "942-IRF9Z34NPBF"
+			(at 171.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
+			(at 171.45 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Infineon"
+			(at 171.45 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
+			(at 171.45 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "32eac043-f439-4edf-8336-86dd574f0534")
+		)
+		(pin "2"
+			(uuid "657d76a8-931f-4a2c-9f3e-61a249af2a7a")
+		)
+		(pin "3"
+			(uuid "532d051f-c1d6-44e2-a768-7f8528526e9f")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q20")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 125.73 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b35")
+		(property "Reference" "R52"
+			(at 127.508 87.7316 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 127.508 90.043 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 123.952 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 125.73 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 125.73 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d62f73bc-003b-4c9c-b06c-fc7502b32505")
+		)
+		(pin "2"
+			(uuid "fa8705a5-5f68-4a01-a87e-4094342c6066")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R52")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R19")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 139.7 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b3b")
+		(property "Reference" "#PWR0106"
+			(at 139.7 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 139.827 100.9142 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 139.7 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 139.7 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 139.7 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b5a24c43-864f-49b1-806e-7085ccf0eeb3")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0106")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR075")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:2N7000")
+		(at 137.16 77.47 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b46")
+		(property "Reference" "Q19"
+			(at 142.3416 76.3016 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N7000"
+			(at 142.3416 78.613 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 142.24 79.375 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
+			(at 137.16 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7b81c782-1faa-490b-9f78-b4ee2a6f3c8d")
+		)
+		(pin "2"
+			(uuid "a7039bc8-101b-4c55-9c02-b9932387b6c5")
+		)
+		(pin "3"
+			(uuid "9e6cfa6f-342d-4630-90a5-345ce6ef8945")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q19")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 139.7 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b4d")
+		(property "Reference" "R53"
+			(at 141.478 48.3616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 141.478 50.673 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 137.922 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 139.7 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 139.7 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e5a38d17-4ae7-40bc-8701-2fc942c683f5")
+		)
+		(pin "2"
+			(uuid "60a74b82-5352-4797-b94a-a10dbe6f931c")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R53")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 139.7 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b53")
+		(property "Reference" "R54"
+			(at 141.478 61.0616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 141.478 63.373 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 137.922 62.23 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 139.7 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 139.7 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e55071f3-b824-4ac8-82f1-552a11013e19")
+		)
+		(pin "2"
+			(uuid "6f7a4d8d-8a54-46c3-b779-4c5b2a0a3448")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R54")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:BZX79C10")
+		(at 152.4 35.56 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b5f")
+		(property "Reference" "Z7"
+			(at 155.702 42.0116 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "BZX79C10"
+			(at 155.702 44.323 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:DIOAD1068W53L380D172"
+			(at 148.59 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+			(at 151.13 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+			(at 153.67 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 156.21 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "512-BZX79C10"
+			(at 158.75 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+			(at 161.29 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "ON Semiconductor"
+			(at 163.83 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "BZX79C10"
+			(at 166.37 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "09cb2c66-b6ea-4b47-a88c-0a73e30598bb")
+		)
+		(pin "2"
+			(uuid "cb75c01c-d80d-4192-8b73-e5675d9893f7")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Z7")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Z3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 152.4 24.13 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c37b76")
+		(property "Reference" "#PWR0107"
+			(at 152.4 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 152.019 19.7358 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 152.4 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "366278d9-2e71-4614-8c54-ff9b7ff04db9")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0107")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR076")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
+		(at 207.01 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e865")
+		(property "Reference" "Q22"
+			(at 217.932 52.1716 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRF9Z34NPBF"
+			(at 217.932 54.483 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TO254P469X1042X1967-3P"
+			(at 218.44 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
+			(at 218.44 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
+			(at 218.44 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" "4.69"
+			(at 218.44 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "942-IRF9Z34NPBF"
+			(at 218.44 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
+			(at 218.44 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Infineon"
+			(at 218.44 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
+			(at 218.44 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3fdb8a35-1584-4588-830e-04584d96f07f")
+		)
+		(pin "2"
+			(uuid "42ac116d-ce64-49e1-9840-e8178bfcca6f")
+		)
+		(pin "3"
+			(uuid "6c8a4398-0e10-48b2-bcae-d6f33006415e")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q22")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 172.72 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e86b")
+		(property "Reference" "R55"
+			(at 174.498 87.7316 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 174.498 90.043 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 170.942 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 172.72 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 172.72 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "119cfa44-e28a-43f6-b044-3b50323d4481")
+		)
+		(pin "2"
+			(uuid "82f3d884-22f0-4090-a115-581c5197e09e")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R55")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R22")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 186.69 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e871")
+		(property "Reference" "#PWR0108"
+			(at 186.69 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 186.817 100.9142 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 186.69 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 186.69 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 186.69 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "de132241-74ca-431d-8d66-6bdabb252de7")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0108")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR077")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:2N7000")
+		(at 184.15 77.47 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e87c")
+		(property "Reference" "Q21"
+			(at 189.3316 76.3016 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N7000"
+			(at 189.3316 78.613 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 189.23 79.375 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
+			(at 184.15 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 184.15 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3e3ebeb0-ec32-4105-b6b2-fc25223a8ffb")
+		)
+		(pin "2"
+			(uuid "b77e7f54-0ae7-4d45-9c81-dd91580d848e")
+		)
+		(pin "3"
+			(uuid "8ea3b85b-bd92-4f36-9d5e-683d09ed5cad")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q21")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 186.69 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e883")
+		(property "Reference" "R56"
+			(at 188.468 48.3616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 188.468 50.673 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 184.912 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 186.69 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 186.69 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8026adf8-54ab-49eb-8fa8-a7fbb0873eaa")
+		)
+		(pin "2"
+			(uuid "1ad9ef52-67b4-4c6e-94ec-fe41004306cc")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R56")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 186.69 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e889")
+		(property "Reference" "R57"
+			(at 188.468 61.0616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 188.468 63.373 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 184.912 62.23 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 186.69 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 186.69 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ac2d7fc4-1a3b-4049-8bca-8237abdb2fb3")
+		)
+		(pin "2"
+			(uuid "b1764996-cf8c-44aa-b8dc-b84cee03c25d")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R57")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R24")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:BZX79C10")
+		(at 199.39 35.56 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e895")
+		(property "Reference" "Z8"
+			(at 202.692 42.0116 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "BZX79C10"
+			(at 202.692 44.323 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:DIOAD1068W53L380D172"
+			(at 195.58 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+			(at 198.12 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+			(at 200.66 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 203.2 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "512-BZX79C10"
+			(at 205.74 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+			(at 208.28 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "ON Semiconductor"
+			(at 210.82 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "BZX79C10"
+			(at 213.36 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "34bf9690-67f6-43c1-91e7-2ec834ae3a59")
+		)
+		(pin "2"
+			(uuid "164fa7cf-537a-4c7c-b644-c2c7e1fee116")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Z8")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Z4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 199.39 24.13 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000062c3e8ac")
+		(property "Reference" "#PWR0109"
+			(at 199.39 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 199.009 19.7358 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 199.39 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 199.39 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 199.39 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e16d36b6-2678-44e1-98fc-4533567b9527")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0109")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR078")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
+		(at 66.04 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f66344")
+		(property "Reference" "Q16"
+			(at 76.962 52.1716 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRF9Z34NPBF"
+			(at 76.962 54.483 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TO254P469X1042X1967-3P"
+			(at 77.47 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
+			(at 77.47 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
+			(at 77.47 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" "4.69"
+			(at 77.47 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "942-IRF9Z34NPBF"
+			(at 77.47 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
+			(at 77.47 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Infineon"
+			(at 77.47 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
+			(at 77.47 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "38fe9dd3-1744-450b-b760-e3542e240b27")
+		)
+		(pin "2"
+			(uuid "57826327-8ed4-4451-9b2d-c1de8a3085e2")
+		)
+		(pin "3"
+			(uuid "f12770f5-863c-4a99-a223-3bc05fc616c8")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q16")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 31.75 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f6634a")
+		(property "Reference" "R46"
+			(at 33.528 87.7316 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 33.528 90.043 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 29.972 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 31.75 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3802e6b3-dff6-4f36-8264-488d5597463e")
+		)
+		(pin "2"
+			(uuid "0f8934a1-0d00-41ab-bc28-37be29d373ea")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R46")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 45.72 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f66350")
+		(property "Reference" "#PWR0102"
+			(at 45.72 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 45.847 100.9142 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 45.72 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 45.72 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 45.72 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "33b09c35-1855-4200-937e-82f675a194af")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0102")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR071")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:2N7000")
+		(at 43.18 77.47 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f6635b")
+		(property "Reference" "Q15"
+			(at 48.3616 76.3016 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N7000"
+			(at 48.3616 78.613 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 48.26 79.375 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
+			(at 43.18 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 43.18 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1ad6d416-ba84-4eda-95c6-6a472d2d6225")
+		)
+		(pin "2"
+			(uuid "022993cb-f016-4a00-a2e4-a1a0c697937d")
+		)
+		(pin "3"
+			(uuid "e52ed114-a7b7-45be-88ad-e893604c9c19")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Q15")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 45.72 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f66362")
+		(property "Reference" "R47"
+			(at 47.498 48.3616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 47.498 50.673 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 43.942 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 45.72 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 45.72 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5872e79a-fd89-4cdb-85c3-c7daa3d6b249")
+		)
+		(pin "2"
+			(uuid "9aa3cdf4-f2dc-4e29-8976-0fcbd39579b9")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R47")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 45.72 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f66368")
+		(property "Reference" "R48"
+			(at 47.498 61.0616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 47.498 63.373 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 43.942 62.23 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 45.72 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 45.72 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3d68c46a-469a-4100-a296-ec21414557dd")
+		)
+		(pin "2"
+			(uuid "6301c422-6421-4579-be26-c0ea6ba6bfb4")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "R48")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "R15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:BZX79C10")
+		(at 58.42 35.56 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f66374")
+		(property "Reference" "Z5"
+			(at 61.722 42.0116 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "BZX79C10"
+			(at 61.722 44.323 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:DIOAD1068W53L380D172"
+			(at 54.61 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+			(at 57.15 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+			(at 59.69 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 62.23 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "512-BZX79C10"
+			(at 64.77 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+			(at 67.31 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "ON Semiconductor"
+			(at 69.85 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "BZX79C10"
+			(at 72.39 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "306da3b6-3850-4745-8def-008c82445897")
+		)
+		(pin "2"
+			(uuid "8adde73c-44df-4fa9-8938-2cb8a5be4d1e")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "Z5")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "Z1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 58.42 24.13 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000063f664bf")
+		(property "Reference" "#PWR0103"
+			(at 58.42 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 58.039 19.7358 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 58.42 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.42 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 58.42 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5b4849ac-c821-4e75-99e9-5d94bc6c7d49")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000063f3f92c"
+					(reference "#PWR0103")
+					(unit 1)
+				)
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/7eea3a6b-d54f-44a9-bc10-0847b1679b74"
+					(reference "#PWR072")
+					(unit 1)
+				)
+			)
+		)
+	)
+)
