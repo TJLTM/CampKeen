@@ -1,4 +1,3 @@
-#include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <Adafruit_MAX31865.h>
 #include <SPI.h>
@@ -28,11 +27,6 @@ char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREA
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
-LiquidCrystal_I2C lcd(0x27, 20, 4);
-int DisplayCounter = 0;
-//#define LCDEnable 41
-#define LCDEnable 33
-#define LCDPowerOut 23
 //-----------------------------------------------------------
 // ATM90E32 energy monitor
 ATM90E32 eic{}; // Energy Monitor Object
@@ -43,7 +37,7 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.5.4";
+const String FWVersion = "1.6.0";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 bool WarningIndicator = true;
@@ -53,7 +47,7 @@ int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTh
 long BathroomWaterTimer, ShitterTankTimer, GreyTankTimer, WATERLPGtimer, FiveMinTimer, DisplayTimer, NTCTimer,
      EnergyTimer, OutputTimer, HoldingTankTimer, WarningBlinkTimer, KitchenWaterTimer, HoldingSewageTankPost, HoldingGreyTankPost;
 bool WaterSourseSelection, WaterOn, EnableACEnergyMonitoring,
-     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, LCDSetup, WaterSourceOverRide, Travel, LastSourceForCheck = false;
+     UseWaterPumpSense, StreamingDataUSB, StreamingDataRS232, WaterSourceOverRide, Travel, LastSourceForCheck = false;
 bool ButtonsReleased = true;
 char Units;
 String TempUnits, PressureUnits;
@@ -177,9 +171,6 @@ void setup() {
   inputString.reserve(200);
   inputStringRS232.reserve(200);
 
-  pinMode(LCDEnable, INPUT);
-  pinMode(LCDPowerOut, OUTPUT);
-
   pinMode(AlarmReset, INPUT);
   pinMode(WaterSourceSelectionInput, INPUT);
   pinMode(WaterPumpSense, INPUT);
@@ -255,22 +246,9 @@ void setup() {
   Units = GetFromEEPROMUnits();
   SetUnitsForOutput();
   BroadCast("Units: " + String(Units));
-  digitalWrite(LCDPowerOut, HIGH);
-  delay(250);
-  SetupLCD();
-  lcd.setCursor(0, 0);
-  lcd.print("Starting " + DeviceName);
   //Run through the sensors and get values for everything
   ForceCompleteUpdateOfAllStates();
   BroadCast("System Initialized and values populated:" + GetCurrentTime());
-  lcd.setCursor(0, 1);
-  lcd.print("System Initialized");
-  lcd.setCursor(0, 2);
-  lcd.print(GetCurrentTime());
-  lcd.setCursor(0, 3);
-  lcd.print(FWVersion + " Units: " + Units);
-  delay(2000);
-  digitalWrite(LCDPowerOut, digitalRead(LCDEnable));
 }
 
 void loop() {
@@ -297,7 +275,6 @@ void MainApplication() {
      All the basic functions that need to be handled
      everytime the loop comes back around
   */
-  //LCDControl();
   WaterControl();
   if (Travel == false) {
     HoldingTankMonitoring();
@@ -387,186 +364,6 @@ void MainApplication() {
       GetDCBatteryVoltage(1);
       GetRTCBatteryVotlage(1);
     }
-  }
-}
-
-//------------------------------------------------------------------
-//LCD
-//------------------------------------------------------------------
-void LCDControl() {
-  if (digitalRead(LCDEnable) == HIGH) {
-    digitalWrite(LCDPowerOut, HIGH);
-    if (LCDSetup == false) {
-      delay(250);
-      SetupLCD();
-      delay(250);
-    }
-    LCDOutput();
-  }
-  else {
-    lcd.clear();
-    LCDSetup = false;
-    digitalWrite(LCDPowerOut, LOW);
-  }
-}
-
-void SetupLCD() {
-  lcd.init();
-  lcd.backlight();
-  LCDSetup = true;
-  DisplayCounter = 0;
-}
-
-void LCDOutput() {
-  if (abs(millis() - DisplayTimer) > 7500)
-  {
-    lcd.clear();
-    LCDDisplay();
-    DisplayTimer = millis();
-
-    if (DisplayCounter < 5) {
-      DisplayCounter += 1;
-    }
-    else {
-      DisplayCounter = 0;
-    }
-  }
-}
-
-void LCDDisplay() {
-  //setCursor(position,line)
-  switch (DisplayCounter) {
-    case 0:
-      //Tank Levels
-      lcd.setCursor(0, 0);
-      lcd.print("Water");
-      lcd.setCursor(14, 0);
-      lcd.print(LastWaterLevel);
-
-      lcd.setCursor(0, 1);
-      lcd.print("LPG");
-      lcd.setCursor(14, 1);
-      lcd.print(LastLPGLevel);
-
-      lcd.setCursor(0, 2);
-      lcd.print("Grey Water");
-      lcd.setCursor(14, 2);
-      if (LastGreyWater == "Empty" || LastGreyWater == "1/4" || LastGreyWater == "1/2" || LastGreyWater == "3/4" || LastGreyWater == "Full") {
-        lcd.setCursor(14, 3);
-      }
-      else {
-        lcd.setCursor(10, 3);
-      }
-      lcd.print(LastGreyWater);
-      lcd.setCursor(0, 3);
-      lcd.print("Sewage");
-      if (LastSewageLevel == "Empty" || LastSewageLevel == "1/4" || LastSewageLevel == "1/2" || LastSewageLevel == "3/4" || LastSewageLevel == "Full") {
-        lcd.setCursor(14, 3);
-      }
-      else {
-        lcd.setCursor(10, 3);
-      }
-      lcd.print(LastSewageLevel);
-      break;
-    case 1:
-      //Electrical
-      lcd.setCursor(0, 0);
-      lcd.print("Camper Battery");
-      lcd.setCursor(15, 0);
-      lcd.print(LastDCVoltage);
-
-      lcd.setCursor(0, 1);
-      lcd.print("RTC Battery");
-      lcd.setCursor(15, 1);
-      lcd.print(LastRTCVoltage);
-      break;
-    case 2:
-      //Generator
-      lcd.setCursor(0, 0);
-      lcd.print("Gen Fuel");
-      lcd.setCursor(12, 0);
-      lcd.print(LastGenFuel);
-
-      lcd.setCursor(0, 1);
-      lcd.print("Enclosure");
-      lcd.setCursor(12, 1);
-      lcd.print(LastGenEnclosureTemp, 1);
-
-      lcd.setCursor(0, 2);
-      lcd.print("Head Right");
-      lcd.setCursor(12, 2);
-      lcd.print(LastGenHeadRightTemp, 1);
-
-      lcd.setCursor(0, 3);
-      lcd.print("Head Left");
-      lcd.setCursor(12, 3);
-      lcd.print(LastGenHeadLeftTemp, 1);
-      break;
-    case 3:
-      //Temps
-      lcd.setCursor(0, 0);
-      lcd.print("Hallway");
-      lcd.setCursor(15, 0);
-      lcd.print(LastHallwayTemp, 1);
-
-      lcd.setCursor(0, 1);
-      lcd.print("Bathroom");
-      lcd.setCursor(15, 1);
-      lcd.print(LastBathroomTemp, 1);
-
-      lcd.setCursor(0, 2);
-      lcd.print("Back Cabin");
-      lcd.setCursor(15, 2);
-      lcd.print(LastBackCabinTemp, 1);
-
-      lcd.setCursor(0, 3);
-      lcd.print("Outside");
-      lcd.setCursor(15, 3);
-      lcd.print(LastOutsideTemp, 1);
-      break;
-    case 4:
-      //Temps
-      lcd.setCursor(0, 0);
-      lcd.print("Back AC");
-      lcd.setCursor(15, 0);
-      lcd.print(LastBackACTemp, 1);
-
-      lcd.setCursor(0, 1);
-      lcd.print("Front AC");
-      lcd.setCursor(15, 1);
-      lcd.print(LastFrontACTemp, 1);
-
-      lcd.setCursor(0, 2);
-      lcd.print("Fridge");
-      lcd.setCursor(15, 2);
-      lcd.print(LastFridgeTemp, 1);
-
-      lcd.setCursor(0, 3);
-      lcd.print("Freezer");
-      lcd.setCursor(15, 3);
-      lcd.print(LastFreezerTemp, 1);
-      break;
-    case 5:
-      lcd.setCursor(0, 0);
-      lcd.print("Watts");
-      lcd.setCursor(12, 0);
-      lcd.print(LastACWatts, 1);
-      //Amps
-      lcd.setCursor(0, 1);
-      lcd.print("AC Amps");
-      lcd.setCursor(12, 1);
-      lcd.print(LastACCurrent);
-      //Voltage
-      lcd.setCursor(0, 2);
-      lcd.print("AC Voltage");
-      lcd.setCursor(12, 2);
-      lcd.print(LastACVoltage);
-
-      lcd.setCursor(0, 3);
-      lcd.print("PF");
-      lcd.setCursor(12, 3);
-      lcd.print(LastPowerFactor, 0);
-      break;
   }
 }
 //------------------------------------------------------------------
