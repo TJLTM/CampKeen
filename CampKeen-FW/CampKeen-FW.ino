@@ -17,13 +17,13 @@ char* AcceptedCommands[] = {"UNITS?", "DEVICE?", "WATERSOURCE?", "WATERLEVEL?", 
                             "TIME?", "ACVOLTAGEGAIN?", "ACFREQ?", "ACPGAGAIN?", "ACLEGS?", "ACCT1GAIN?", "ACCT2GAIN?", "REBOOT",
                             "RESET", "BATHROOMWATERDURATION?", "STREAMINGONBOOT?", "ACENMONONBOOT?", "WATERPUMPSENSEONBOOT?", "STATUS?", "PORT?",
                             "ALARM?", "WATERSOURCEOVERRIDE?", "WATERSOURCEOVERRIDEONBOOT?", "TRAVEL?", "KITCHENWATERDURATION?", "TANKALARMOVERRIDE?",
-                            "WARNINGINDICATOR?"
+                            "WARNINGINDICATOR?, GOODNIGHTLIGHT?"
                            };
 char* ParameterCommands[] = {"SETUNITS", "SETWATERPUMPSENSE", "WATER", "SETSTREAMINGDATA", "SETTIME", "SETACENMON", "SETACFREQ",
                              "SETACPGAGAIN", "SETACVOLTAGEGAIN", "SETACLEGS", "SETACCT1GAIN", "SETACCT2GAIN", "SETBATHROOMWATERDURATION",
                              "SETSTREAMINGONBOOT", "SETACENMONONBOOT", "SETWATERPUMPSENSEONBOOT", "SETWATERSOURCEOVERRIDE",
                              "SETWATERSOURCE", "SETWATERSOURCEOVERRIDEONBOOT", "SETTRAVEL", "SETKITCHENWATERDURATION", "SETTANKALARMOVERRIDE",
-                             "SETWARNINGINDICATOR"
+                             "SETWARNINGINDICATOR, SETGOODNIGHTLIGHT"
                             };
 String inputString, inputStringRS232 = "";         // a String to hold incoming data from ports
 bool stringComplete, stringCompleteRS232 = false;     // whether the string is complete for each respective port
@@ -37,10 +37,11 @@ int NumberOfACLegs;
 // System Level
 RTC_DS3231 rtc;
 const String DeviceName = "CampKeen";
-const String FWVersion = "1.6.0";
+const String FWVersion = "1.7.0";
 const float ConversionFactor = 5.0 / 1023;
 bool WarningActive, TankAlarmOverRide, AlarmActive = false;
 bool WarningIndicator = true;
+bool GoodNightLightState = true;
 int TotalWarnings = 8;
 int ArrayOfWarnings[] = {};
 int BathroomWaterDurationInSeconds, KitchenWaterDurationInSeconds, WhoTurnedOnTheWater;
@@ -1510,6 +1511,11 @@ void GetWarningIndicator(int WhichPort) {
   SendItOut(Message, WhichPort);
 }
 
+void GetGoodNightLightState(int WhichPort) {
+  String Message = "%R,GoodNightLight State," + StatesForOutput(GoodNightLightState);
+  SendItOut(Message, WhichPort);
+}
+
 //------------------------------------------------------------------
 //Alarm and Warnings
 //------------------------------------------------------------------
@@ -2170,6 +2176,30 @@ void SetWarningIndicator(String Value, int WhichPort) {
   }
 }
 
+void SetGoodNightLight(String Value, int WhichPort) {
+  int Index = Value.indexOf("*");
+  int End = Value.indexOf("\r");
+  String ThingToTest = Value.substring(Index + 1, End - 1);
+  bool CorrectParam = false;
+  if (ThingToTest == "OFF") {
+    GoodNightLightState = true;
+    CorrectParam = true;
+  }
+
+  if (ThingToTest == "ON") {
+    GoodNightLightState = true;
+    CorrectParam = true;
+  }
+
+  if (CorrectParam == true) {
+    GetGoodNightLightState(WhichPort);
+  }
+  else {
+    Error(4, WhichPort);
+  }
+}
+
+
 /*
   SCC = start command character
   case 1 - no SCC found and there is data in the buffer - dump the buffer
@@ -2355,6 +2385,10 @@ void ParamCommandToCall(int Index, String CommandRaw, int WhichPort) {
       //SetWarningIndicator
       SetWarningIndicator(CommandRaw, WhichPort);
       break;
+    case 23:
+      //SETGOODNIGHTLIGHT
+      SetGoodNightLight(CommandRaw, WhichPort);
+      break;
   }
 }
 
@@ -2538,6 +2572,10 @@ void CommandToCall(int Index, int WhichPort) {
     case 43:
       //INDICATORS?
       GetWarningIndicator(WhichPort);
+      break;
+    case 44:
+      //GOODNIGHTLIGHT?
+      GetGoodNightLightState(WhichPort);
       break;
   }
 }
