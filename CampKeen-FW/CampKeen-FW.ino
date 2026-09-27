@@ -1,9 +1,14 @@
+#include <mcp2515_can.h>
+#include <mcp_can.h>
+
 #include <Wire.h>
 #include <Adafruit_MAX31865.h>
 #include <SPI.h>
 #include <RTClib.h>
 #include <EEPROM.h>
 #include <ATM90E32.h>
+
+
 
 
 //-----------------------------------------------------------
