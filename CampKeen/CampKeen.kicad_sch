@@ -25016,7 +25016,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00006491b189")
-		(property "Reference" "J2"
+		(property "Reference" "J3"
 			(at 129.032 255.4732 0)
 			(effects
 				(font
@@ -25091,7 +25091,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894"
-					(reference "J2")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -26855,7 +26855,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8bdc0399-6034-4083-8f09-056a91eb80d5")
-		(property "Reference" "J3"
+		(property "Reference" "J2"
 			(at 137.16 158.75 0)
 			(effects
 				(font
@@ -26907,7 +26907,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894"
-					(reference "J3")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -27443,7 +27443,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "00000000-0000-0000-0000-0000627ae565")
-		(property "Sheetname" "Inputs"
+		(property "Sheetname" "Inputs with interrupts"
 			(at 267.97 118.6684 0)
 			(effects
 				(font
