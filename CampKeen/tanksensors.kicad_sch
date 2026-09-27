@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "e8a669b7-c663-4fa5-9b1f-ce9eb01dc726")
+	(uuid "f3d957b3-a212-43c5-8d1f-d64ecc22aebd")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Device:R"
@@ -124,6 +124,364 @@
 								(size 1.27 1.27)
 							)
 						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "SamacSys_Parts:BK_HTC-15M"
+			(pin_names
+				(offset 0.762)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 16.51 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "SamacSys_Parts_BK_HTC-15M"
+				(at 16.51 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "BK/HTC-15M"
+				(at 16.51 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 16.51 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "Fuse Holder PCB FUSE BLOCK"
+				(at 16.51 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "504-HTC-15M"
+				(at 16.51 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Bussmann-Eaton/BK-HTC-15M?qs=xYgILgh9YcIcij8kQUilpQ%3D%3D"
+				(at 16.51 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "Eaton"
+				(at 16.51 -12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "BK/HTC-15M"
+				(at 16.51 -15.24 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(symbol "BK_HTC-15M_0_0"
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "BK_HTC-15M_0_1"
+				(polyline
+					(pts
+						(xy 5.08 2.54) (xy 15.24 2.54) (xy 15.24 -5.08) (xy 5.08 -5.08) (xy 5.08 2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "SamacSys_Parts:BZX79C10"
+			(pin_names
+				(offset 0.762)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Z"
+				(at 10.16 8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "SamacSys_Parts_BZX79C10"
+				(at 10.16 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "DIOAD1068W53L380D172"
+				(at 10.16 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+				(at 10.16 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+				(at 10.16 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "512-BZX79C10"
+				(at 10.16 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+				(at 10.16 -8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "ON Semiconductor"
+				(at 10.16 -11.43 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "BZX79C10"
+				(at 10.16 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(symbol "BZX79C10_0_0"
+				(pin passive line
+					(at 0 0 0)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 15.24 0 180)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "BZX79C10_0_1"
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 5.08 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 4.064 -2.54) (xy 5.08 -2.032)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 2.032) (xy 5.08 -2.032)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 2.032) (xy 6.096 2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 0) (xy 10.16 2.54) (xy 10.16 -2.54) (xy 5.08 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 12.7 0) (xy 10.16 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 			)
@@ -945,356 +1303,549 @@
 		)
 	)
 	(junction
-		(at 149.86 85.09)
+		(at 109.22 86.36)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "3c0e161b-77de-41cd-8057-090b9a285b00")
+		(uuid "4c7d5a22-740d-4732-8111-f06b3d959cb7")
 	)
 	(junction
-		(at 212.09 125.73)
+		(at 109.22 127)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "520fd06c-b6b9-4c42-9bfc-5c3d2d29f14b")
+		(uuid "a634951c-2e8c-42f8-b355-2cd4f902b1e7")
 	)
 	(junction
-		(at 212.09 85.09)
+		(at 121.92 86.36)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5b176ccc-587a-4308-8c95-991bd5be9b68")
+		(uuid "b7cd4f73-af64-422e-bfae-4608d946ec47")
 	)
 	(junction
-		(at 224.79 53.34)
+		(at 121.92 54.61)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5b6af5a7-591e-4959-8c60-02f298d40677")
+		(uuid "d290d469-7ac7-453c-a3dc-74266279ddfc")
 	)
 	(junction
-		(at 149.86 125.73)
+		(at 137.16 54.61)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "f711db5e-77b0-4494-90e8-aecb55e572ba")
-	)
-	(junction
-		(at 162.56 53.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fec985c7-f284-4d68-8727-af7eebd8b5f8")
+		(uuid "d8d8b65b-6c08-415b-961e-dc9c52021c24")
 	)
 	(wire
 		(pts
-			(xy 177.8 53.34) (xy 162.56 53.34)
+			(xy 137.16 91.44) (xy 137.16 102.87)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "111becb9-cb80-417e-8fbe-97b6e8030333")
+		(uuid "0f0feb4e-baee-4342-835e-d0ae1b37a375")
 	)
 	(wire
 		(pts
-			(xy 212.09 111.76) (xy 212.09 125.73)
+			(xy 186.69 97.79) (xy 186.69 102.87)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1e2b7ca4-bf12-4484-baf4-f8f4ad434bb3")
+		(uuid "16b585e6-4e25-4322-842f-53692e642052")
 	)
 	(wire
 		(pts
-			(xy 198.12 125.73) (xy 212.09 125.73)
+			(xy 121.92 66.04) (xy 121.92 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1fad9050-55c5-4235-9608-ea9460329cdb")
+		(uuid "20454920-d6f2-493f-b689-57c7382f2254")
 	)
 	(wire
 		(pts
-			(xy 162.56 53.34) (xy 149.86 53.34)
+			(xy 137.16 54.61) (xy 121.92 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2022f2c2-2d52-4762-8871-c3aaafed73b6")
+		(uuid "214f0a7c-b409-48f6-9929-c08f15d7e4e2")
 	)
 	(wire
 		(pts
-			(xy 135.89 114.3) (xy 135.89 106.68)
+			(xy 121.92 54.61) (xy 109.22 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "290311ab-2acc-454a-9a59-6cba16c0a08d")
+		(uuid "3ab7a7e4-016a-49ea-a21e-a79f51826945")
 	)
 	(wire
 		(pts
-			(xy 198.12 121.92) (xy 198.12 125.73)
+			(xy 129.54 86.36) (xy 121.92 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2965d96a-703d-45a6-8083-ee4575c36bb7")
+		(uuid "408097c7-d622-4f83-b93e-9e914d196fa4")
 	)
 	(wire
 		(pts
-			(xy 149.86 53.34) (xy 149.86 74.93)
+			(xy 137.16 110.49) (xy 137.16 118.11)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2ab6f680-d446-4f8f-9f8c-8ce4722c87d3")
+		(uuid "4f9808cd-faec-41c4-a797-04576c903035")
 	)
 	(wire
 		(pts
-			(xy 135.89 125.73) (xy 149.86 125.73)
+			(xy 109.22 102.87) (xy 109.22 96.52)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2cad3fe2-0f3b-467e-9c49-f271aa1ec49b")
+		(uuid "525d1c41-f98d-429d-bdf7-1c7f1a195d4c")
 	)
 	(wire
 		(pts
-			(xy 212.09 85.09) (xy 232.41 85.09)
+			(xy 109.22 54.61) (xy 109.22 76.2)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "4497622e-6a35-4d56-b145-e61873b6a125")
+		(uuid "526648ec-5bb8-4204-8841-0a8314af96bb")
 	)
 	(wire
 		(pts
-			(xy 177.8 74.93) (xy 177.8 53.34)
+			(xy 137.16 76.2) (xy 137.16 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "461c24bd-c29b-4d81-bd76-c5414eb04a70")
+		(uuid "58f8dba3-08be-4904-a01c-1a01598b339b")
 	)
 	(wire
 		(pts
-			(xy 224.79 53.34) (xy 212.09 53.34)
+			(xy 154.94 54.61) (xy 154.94 60.96)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "4cd38139-85d8-4bb0-8ec5-44fb4adb00fa")
+		(uuid "71feed56-1065-4586-b676-f2a3357b2f45")
 	)
 	(wire
 		(pts
-			(xy 135.89 106.68) (xy 142.24 106.68)
+			(xy 186.69 90.17) (xy 179.07 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "58eb1f49-1e5e-4c0c-97da-fb971f13fe25")
+		(uuid "721b316d-e0f7-4a33-b7bc-e505b6a8a039")
 	)
 	(wire
 		(pts
-			(xy 149.86 85.09) (xy 149.86 101.6)
+			(xy 121.92 86.36) (xy 109.22 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5f3f0408-a3b0-4f22-91e2-9a024ab006ab")
+		(uuid "78de1d56-5f4a-4e92-8b6a-39addbaf6820")
 	)
 	(wire
 		(pts
-			(xy 240.03 99.06) (xy 240.03 90.17)
+			(xy 95.25 127) (xy 109.22 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6a3fe70d-92b9-4ad1-8a4f-a944ee5522b9")
+		(uuid "7f0a95b8-5ddb-4397-b37e-a59cdf03bfe6")
 	)
 	(wire
 		(pts
-			(xy 149.86 111.76) (xy 149.86 125.73)
+			(xy 142.24 63.5) (xy 154.94 63.5)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6ae74015-156b-4b08-b0b7-49ff17fb760f")
+		(uuid "820e4559-5f61-49c4-acc3-bbb624481cbf")
 	)
 	(wire
 		(pts
-			(xy 149.86 85.09) (xy 149.86 82.55)
+			(xy 109.22 86.36) (xy 109.22 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6b065e8e-fef9-4b30-824e-7d9ccd606772")
+		(uuid "89a03b14-3f6c-461a-8cbd-a0953604b3b4")
 	)
 	(wire
 		(pts
-			(xy 198.12 106.68) (xy 204.47 106.68)
+			(xy 179.07 85.09) (xy 179.07 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7bd6fa35-9259-4a2d-8279-ba81ed2069f9")
+		(uuid "8f3674f7-813b-4775-b3ca-b610d0f9c8eb")
 	)
 	(wire
 		(pts
-			(xy 198.12 114.3) (xy 198.12 106.68)
+			(xy 109.22 88.9) (xy 109.22 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "88c879b0-2510-4f44-a16d-26dd08b3c12a")
+		(uuid "9037e6b5-c9db-4a40-8e5c-7cceb995136c")
 	)
 	(wire
 		(pts
-			(xy 212.09 85.09) (xy 212.09 82.55)
+			(xy 137.16 54.61) (xy 154.94 54.61)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9da855b0-f953-4d94-ac15-68c62fcf943f")
+		(uuid "9081d187-543b-4baa-8b4e-7a17dc0f351e")
 	)
 	(wire
 		(pts
-			(xy 149.86 85.09) (xy 170.18 85.09)
+			(xy 95.25 107.95) (xy 101.6 107.95)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a1a89e2c-c297-4307-a1ff-efd1e2a95a5d")
+		(uuid "a5f3df04-099f-4664-ae47-2703e2397ac4")
 	)
 	(wire
 		(pts
-			(xy 177.8 99.06) (xy 177.8 90.17)
+			(xy 95.25 115.57) (xy 95.25 107.95)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b73bc21e-e4fc-434c-9782-67f831579d00")
+		(uuid "c9744d54-03d3-4af4-ab9b-7127d0fde105")
 	)
 	(wire
 		(pts
-			(xy 240.03 53.34) (xy 224.79 53.34)
+			(xy 121.92 81.28) (xy 121.92 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c04e50f2-d5aa-4a23-a606-4b4ca7d7a313")
+		(uuid "df418fa6-7d16-4478-a301-1b5f7b46e5f8")
 	)
 	(wire
 		(pts
-			(xy 212.09 53.34) (xy 212.09 74.93)
+			(xy 95.25 123.19) (xy 95.25 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c221eefe-1cf5-48d5-b941-f08de75c2fe3")
+		(uuid "e7197002-8f1c-4e71-a2ab-c1c2f1509ba5")
 	)
 	(wire
 		(pts
-			(xy 240.03 74.93) (xy 240.03 53.34)
+			(xy 142.24 60.96) (xy 142.24 63.5)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "de589fca-e528-4d9d-88c3-9fb59d406d80")
+		(uuid "ee6a69ad-21a1-4529-b542-b510f2a78ffc")
 	)
 	(wire
 		(pts
-			(xy 135.89 121.92) (xy 135.89 125.73)
+			(xy 109.22 113.03) (xy 109.22 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "de6a8a79-ffb1-408e-99f7-331b8dd7ba96")
+		(uuid "f0f78a73-5135-4b01-96b4-e40435d83fd4")
 	)
-	(wire
-		(pts
-			(xy 212.09 85.09) (xy 212.09 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fc98aaf7-0aba-4c7e-a96d-56e31c31a588")
-	)
-	(hierarchical_label "LCDBacklightOut"
+	(hierarchical_label "TankPowerIn"
 		(shape input)
-		(at 177.8 99.06 180)
+		(at 95.25 107.95 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "1df88bde-ee9c-4b31-90f5-5e91fa88d17a")
+		(uuid "34d54953-2ec4-4368-9191-16794267bc47")
 	)
-	(hierarchical_label "LCDPowerTTL"
+	(hierarchical_label "WaterOut"
 		(shape input)
-		(at 198.12 106.68 180)
+		(at 179.07 85.09 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "2adbad2b-46af-4caa-a651-e9f024a9fb8b")
+		(uuid "5c0c0285-23ff-4d90-aeb9-f6805c232738")
 	)
-	(hierarchical_label "LCDBacklightTTL"
+	(hierarchical_label "LPGOut"
 		(shape input)
-		(at 135.89 106.68 180)
+		(at 137.16 118.11 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "c78f65fa-a030-469f-965a-f81d8f3afba6")
+		(uuid "62a6287c-bd93-423c-b0aa-4fef861faa25")
 	)
-	(hierarchical_label "LCDPowerOut"
+	(hierarchical_label "TankPowerOut"
 		(shape input)
-		(at 240.03 99.06 180)
+		(at 137.16 100.33 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "e254fbf4-1596-4274-a2c3-cd2c87e0c836")
+		(uuid "662bac41-1300-4eb5-aa0a-3e6e33e3ad3a")
+	)
+	(hierarchical_label "WaterIn"
+		(shape input)
+		(at 179.07 90.17 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "668ff754-65b5-4f57-bf9f-7aa41a81d78b")
+	)
+	(hierarchical_label "LPGIn"
+		(shape input)
+		(at 137.16 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ae800808-7a85-494b-b87f-bbfd025b1c2c")
 	)
 	(symbol
-		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
-		(at 170.18 85.09 0)
+		(lib_id "power:+5V")
+		(at 142.24 60.96 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94b90")
-		(property "Reference" "Q55"
-			(at 181.102 81.3816 0)
+		(uuid "00000000-0000-0000-0000-0000641a2399")
+		(property "Reference" "#PWR0123"
+			(at 142.24 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 142.621 56.5658 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 142.24 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 142.24 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 142.24 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e2f74d9b-9dc5-4af4-9b59-59867d4d27d5")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "#PWR0123")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:BK_HTC-15M")
+		(at 154.94 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-0000641a23a6")
+		(property "Reference" "LPWater1"
+			(at 170.8912 61.0616 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LPGVS"
+			(at 170.8912 63.373 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:BK_HTC-15M"
+			(at 171.45 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 171.45 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "Fuse Holder PCB FUSE BLOCK"
+			(at 171.45 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 171.45 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "504-HTC-15M"
+			(at 171.45 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Bussmann-Eaton/BK-HTC-15M?qs=xYgILgh9YcIcij8kQUilpQ%3D%3D"
+			(at 171.45 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Eaton"
+			(at 171.45 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "BK/HTC-15M"
+			(at 171.45 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "68af48e1-7fe4-41b6-b144-316053c80195")
+		)
+		(pin "2"
+			(uuid "f01c69da-a1a7-4438-81c4-0dd538bdfc09")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "LPWater1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
+		(at 129.54 86.36 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-0000641a23b2")
+		(property "Reference" "Q44"
+			(at 140.462 82.6516 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1303,7 +1854,7 @@
 			)
 		)
 		(property "Value" "IRF9Z34NPBF"
-			(at 181.102 83.693 0)
+			(at 140.462 84.963 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1312,7 +1863,7 @@
 			)
 		)
 		(property "Footprint" "SamacSys_Parts:TO254P469X1042X1967-3P"
-			(at 181.61 86.36 0)
+			(at 140.97 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1322,7 +1873,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
-			(at 181.61 88.9 0)
+			(at 140.97 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1332,7 +1883,7 @@
 			)
 		)
 		(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
-			(at 181.61 91.44 0)
+			(at 140.97 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1342,7 +1893,7 @@
 			)
 		)
 		(property "Height" "4.69"
-			(at 181.61 93.98 0)
+			(at 140.97 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1352,7 +1903,7 @@
 			)
 		)
 		(property "Mouser Part Number" "942-IRF9Z34NPBF"
-			(at 181.61 96.52 0)
+			(at 140.97 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1362,7 +1913,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
-			(at 181.61 99.06 0)
+			(at 140.97 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1372,7 +1923,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "Infineon"
-			(at 181.61 101.6 0)
+			(at 140.97 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1382,7 +1933,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
-			(at 181.61 104.14 0)
+			(at 140.97 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1392,18 +1943,18 @@
 			)
 		)
 		(pin "1"
-			(uuid "58cedb92-0b3e-4c0f-b0e2-e7ab6bd627bd")
+			(uuid "18a92488-ba60-4d87-b28f-dc5bf7d8de8a")
 		)
 		(pin "2"
-			(uuid "a68c78ad-9cec-4137-9796-9c71881a3773")
+			(uuid "bcb2f00a-6200-4973-8d3e-657a97ebe924")
 		)
 		(pin "3"
-			(uuid "c1ae6448-e348-46fd-9029-51d233ebdaed")
+			(uuid "47656a69-7651-456c-882f-8b0ce864ecba")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "Q55")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "Q44")
 					(unit 1)
 				)
 			)
@@ -1411,15 +1962,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 135.89 118.11 0)
+		(at 95.25 119.38 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94b96")
-		(property "Reference" "R115"
-			(at 137.668 116.9416 0)
+		(uuid "00000000-0000-0000-0000-0000641a23b8")
+		(property "Reference" "R97"
+			(at 97.028 118.2116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1428,7 +1979,7 @@
 			)
 		)
 		(property "Value" "1M"
-			(at 137.668 119.253 0)
+			(at 97.028 120.523 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1437,7 +1988,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 134.112 118.11 90)
+			(at 93.472 119.38 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1446,7 +1997,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 135.89 118.11 0)
+			(at 95.25 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1455,7 +2006,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 135.89 118.11 0)
+			(at 95.25 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1464,15 +2015,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "8f888b3e-763f-4f0f-84b4-173d66ed0277")
+			(uuid "9a5da808-1121-4f9e-9019-c160abdd38fd")
 		)
 		(pin "2"
-			(uuid "a42a267c-2977-47f2-a013-98a3171ee80a")
+			(uuid "b27bfc88-358d-4b86-8247-6299c389eb77")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "R115")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "R97")
 					(unit 1)
 				)
 			)
@@ -1480,15 +2031,15 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 149.86 125.73 0)
+		(at 109.22 127 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94b9c")
-		(property "Reference" "#PWR0149"
-			(at 149.86 132.08 0)
+		(uuid "00000000-0000-0000-0000-0000641a23be")
+		(property "Reference" "#PWR0122"
+			(at 109.22 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1497,7 +2048,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 149.987 130.1242 0)
+			(at 109.347 131.3942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1505,7 +2056,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 149.86 125.73 0)
+			(at 109.22 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1514,7 +2065,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 149.86 125.73 0)
+			(at 109.22 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1523,7 +2074,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 149.86 125.73 0)
+			(at 109.22 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1532,12 +2083,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "74a3d13a-075d-4844-a897-5f4193592b0f")
+			(uuid "aaaa7d07-f37d-4e47-895a-acd3b508a883")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "#PWR0149")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "#PWR0122")
 					(unit 1)
 				)
 			)
@@ -1545,15 +2096,15 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:2N7000")
-		(at 147.32 106.68 0)
+		(at 106.68 107.95 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94ba7")
-		(property "Reference" "Q54"
-			(at 152.5016 105.5116 0)
+		(uuid "00000000-0000-0000-0000-0000641a23c9")
+		(property "Reference" "Q43"
+			(at 111.8616 106.7816 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1562,7 +2113,7 @@
 			)
 		)
 		(property "Value" "2N7000"
-			(at 152.5016 107.823 0)
+			(at 111.8616 109.093 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1571,7 +2122,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 152.4 108.585 0)
+			(at 111.76 109.855 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1582,7 +2133,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
-			(at 147.32 106.68 0)
+			(at 106.68 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1592,7 +2143,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 147.32 106.68 0)
+			(at 106.68 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1601,18 +2152,18 @@
 			)
 		)
 		(pin "1"
-			(uuid "a94e32e4-9213-4d6c-a537-94544302eb53")
+			(uuid "54516603-c17c-4d8f-97a8-dfc60ec1eeea")
 		)
 		(pin "2"
-			(uuid "ca97447b-18d4-410b-bfae-b9c01eda49f2")
+			(uuid "3f3d9a1b-cf3a-448e-96b5-4f46e3cfa5d2")
 		)
 		(pin "3"
-			(uuid "2e4db022-da2e-4605-9a39-ffcb19da3b9c")
+			(uuid "cb653f82-47f4-47bb-999d-7fe07a6d692e")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "Q54")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "Q43")
 					(unit 1)
 				)
 			)
@@ -1620,15 +2171,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 149.86 78.74 0)
+		(at 109.22 80.01 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94bae")
-		(property "Reference" "R116"
-			(at 151.638 77.5716 0)
+		(uuid "00000000-0000-0000-0000-0000641a23d0")
+		(property "Reference" "R98"
+			(at 110.998 78.8416 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1637,7 +2188,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 151.638 79.883 0)
+			(at 110.998 81.153 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1646,7 +2197,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 148.082 78.74 90)
+			(at 107.442 80.01 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1655,7 +2206,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 149.86 78.74 0)
+			(at 109.22 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1664,7 +2215,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 149.86 78.74 0)
+			(at 109.22 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1673,205 +2224,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "5c8b09d6-849d-4e2e-ab34-52aa58a21211")
+			(uuid "9550b623-2b6d-46bf-813b-4703edb28579")
 		)
 		(pin "2"
-			(uuid "131eb33e-ee22-4373-9714-7c200e6113e2")
+			(uuid "078bd27a-1e67-46d8-9b44-a3e0aa98a5ac")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "R116")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 162.56 53.34 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94bd7")
-		(property "Reference" "#PWR0150"
-			(at 162.56 57.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 162.941 48.9458 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 162.56 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 162.56 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 162.56 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4491de66-df2d-41c6-bd50-4eef980ed9f5")
-		)
-		(instances
-			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "#PWR0150")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "SamacSys_Parts:IRF9Z34NPBF")
-		(at 232.41 85.09 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94be3")
-		(property "Reference" "Q57"
-			(at 243.332 81.3816 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "IRF9Z34NPBF"
-			(at 243.332 83.693 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "SamacSys_Parts:TO254P469X1042X1967-3P"
-			(at 243.84 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.infineon.com/dgdl/irf9z34npbf.pdf?fileId=5546d462533600a40153561220af1ddd"
-			(at 243.84 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Description" "MOSFET MOSFT PCh -55V -17A 100mOhm 23.3nC"
-			(at 243.84 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Height" "4.69"
-			(at 243.84 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "942-IRF9Z34NPBF"
-			(at 243.84 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRF9Z34NPBF?qs=9%252BKlkBgLFf16a%2FvlD%252BMCtQ%3D%3D"
-			(at 243.84 99.06 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "Infineon"
-			(at 243.84 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "IRF9Z34NPBF"
-			(at 243.84 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "de97e689-eea3-463c-9799-769ad14424d9")
-		)
-		(pin "2"
-			(uuid "7e2c6707-674e-4590-a6b7-59c9db582d68")
-		)
-		(pin "3"
-			(uuid "1b08b5ee-7349-49ed-92af-dd5ac6cbea49")
-		)
-		(instances
-			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "Q57")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "R98")
 					(unit 1)
 				)
 			)
@@ -1879,15 +2240,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 198.12 118.11 0)
+		(at 109.22 92.71 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94be9")
-		(property "Reference" "R118"
-			(at 199.898 116.9416 0)
+		(uuid "00000000-0000-0000-0000-0000641a23d6")
+		(property "Reference" "R99"
+			(at 110.998 91.5416 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1895,8 +2256,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1M"
-			(at 199.898 119.253 0)
+		(property "Value" "10k"
+			(at 110.998 93.853 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1905,7 +2266,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 196.342 118.11 90)
+			(at 107.442 92.71 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1914,7 +2275,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 198.12 118.11 0)
+			(at 109.22 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1923,7 +2284,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 198.12 118.11 0)
+			(at 109.22 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1932,15 +2293,272 @@
 			)
 		)
 		(pin "1"
-			(uuid "1a5a4d35-b646-48e3-aa61-8f8ad827f86b")
+			(uuid "cdcee1b0-4134-4ceb-b8fa-ba2960817f53")
 		)
 		(pin "2"
-			(uuid "e6aeae6c-cb32-4163-afe2-60a206f080f2")
+			(uuid "846eca2c-1d90-4c4f-a4ed-372bde2715c4")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "R118")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "R99")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:BZX79C10")
+		(at 121.92 66.04 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-0000641a23e2")
+		(property "Reference" "Z14"
+			(at 125.222 72.4916 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "BZX79C10"
+			(at 125.222 74.803 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:DIOAD1068W53L380D172"
+			(at 118.11 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.fairchildsemi.com/datasheets/BZ/BZX79C10.pdf"
+			(at 120.65 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "BZX79C10, Zener Diode, 10V +/-5 500 mW 0.2A, 2-Pin DO-35"
+			(at 123.19 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 125.73 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "512-BZX79C10"
+			(at 128.27 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor-Fairchild/BZX79C10?qs=FITO%2F%2FQgYDkGEXVpK3DyhQ%3D%3D"
+			(at 130.81 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "ON Semiconductor"
+			(at 133.35 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "BZX79C10"
+			(at 135.89 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3890b4f9-b8cd-425f-88ac-bafeedbd5774")
+		)
+		(pin "2"
+			(uuid "5d19eecb-1ca4-476e-8581-d7091612b8a6")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "Z14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 137.16 106.68 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-0000643133f3")
+		(property "Reference" "R100"
+			(at 142.4178 106.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47"
+			(at 140.1064 106.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
+			(at 138.938 106.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 137.16 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "68dbc3d7-370c-4417-89da-a4b1b2bd4416")
+		)
+		(pin "2"
+			(uuid "a92c3123-a220-4612-806a-2666e87b40ad")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "R100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 186.69 93.98 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000064313403")
+		(property "Reference" "R101"
+			(at 191.9478 93.98 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47"
+			(at 189.6364 93.98 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
+			(at 188.468 93.98 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 186.69 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 186.69 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e884ccdc-e2b2-4615-8356-97b8681d507f")
+		)
+		(pin "2"
+			(uuid "3f1da200-8ddf-4c37-bb20-c3b43a5c6661")
+		)
+		(instances
+			(project "CampKeen"
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "R101")
 					(unit 1)
 				)
 			)
@@ -1948,15 +2566,15 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 212.09 125.73 0)
+		(at 186.69 102.87 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94bef")
-		(property "Reference" "#PWR0151"
-			(at 212.09 132.08 0)
+		(uuid "00000000-0000-0000-0000-000064313409")
+		(property "Reference" "#PWR0124"
+			(at 186.69 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1965,7 +2583,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 212.217 130.1242 0)
+			(at 186.817 107.2642 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1973,7 +2591,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 212.09 125.73 0)
+			(at 186.69 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1982,7 +2600,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 212.09 125.73 0)
+			(at 186.69 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1991,7 +2609,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 212.09 125.73 0)
+			(at 186.69 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2000,221 +2618,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "2aab71fb-a5ac-4c3e-9d5c-6c5d52c6e0d2")
+			(uuid "8037b5c5-c6fc-45ce-aa71-2fb8bb77e121")
 		)
 		(instances
 			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "#PWR0151")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Transistor_FET:2N7000")
-		(at 209.55 106.68 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94bfa")
-		(property "Reference" "Q56"
-			(at 214.7316 105.5116 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "2N7000"
-			(at 214.7316 107.823 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 214.63 108.585 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
-			(at 209.55 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 209.55 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f5179a76-a09e-4b98-8f8b-fc7aba31a4b8")
-		)
-		(pin "2"
-			(uuid "38db5b48-939d-4b67-9b6a-7ec1ef184750")
-		)
-		(pin "3"
-			(uuid "d415987f-c06d-4f1e-ba86-9fa63d01bdbb")
-		)
-		(instances
-			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "Q56")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 212.09 78.74 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94c01")
-		(property "Reference" "R119"
-			(at 213.868 77.5716 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100k"
-			(at 213.868 79.883 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 210.312 78.74 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 212.09 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 212.09 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "15c81074-1f01-420d-8bb7-d55424a9351f")
-		)
-		(pin "2"
-			(uuid "1357f14a-f489-446d-a560-a9cde8958077")
-		)
-		(instances
-			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "R119")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 224.79 53.34 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000061a94c2a")
-		(property "Reference" "#PWR0152"
-			(at 224.79 57.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 225.171 48.9458 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 224.79 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 224.79 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 224.79 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4676e685-e1d2-40ba-9baa-5e82d89fc49b")
-		)
-		(instances
-			(project "CampKeen"
-				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-000061a6aeb3"
-					(reference "#PWR0152")
+				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/8f1ca980-bf53-4a73-9980-3081ed703e40"
+					(reference "#PWR0124")
 					(unit 1)
 				)
 			)

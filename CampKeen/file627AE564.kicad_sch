@@ -2389,7 +2389,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000618f12b3")
-		(property "Reference" "R55"
+		(property "Reference" "R44"
 			(at 53.848 119.4816 0)
 			(effects
 				(font
@@ -2443,7 +2443,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R55")
+					(reference "R44")
 					(unit 1)
 				)
 			)
@@ -2458,7 +2458,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000618f12b9")
-		(property "Reference" "#PWR0102"
+		(property "Reference" "#PWR084"
 			(at 66.04 134.62 0)
 			(effects
 				(font
@@ -2508,7 +2508,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0102")
+					(reference "#PWR084")
 					(unit 1)
 				)
 			)
@@ -2523,7 +2523,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000618f12c1")
-		(property "Reference" "R57"
+		(property "Reference" "R52"
 			(at 206.248 67.4116 0)
 			(effects
 				(font
@@ -2577,7 +2577,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R57")
+					(reference "R52")
 					(unit 1)
 				)
 			)
@@ -2592,7 +2592,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000618f12d6")
-		(property "Reference" "Q18"
+		(property "Reference" "Q13"
 			(at 68.6816 108.0516 0)
 			(effects
 				(font
@@ -2652,7 +2652,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "Q18")
+					(reference "Q13")
 					(unit 1)
 				)
 			)
@@ -2667,7 +2667,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000618f12dc")
-		(property "Reference" "C26"
+		(property "Reference" "C15"
 			(at 44.831 119.4816 0)
 			(effects
 				(font
@@ -2721,7 +2721,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "C26")
+					(reference "C15")
 					(unit 1)
 				)
 			)
@@ -2736,7 +2736,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061c8b4e8")
-		(property "Reference" "#PWR0121"
+		(property "Reference" "#PWR093"
 			(at 204.47 66.04 0)
 			(effects
 				(font
@@ -2786,7 +2786,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0121")
+					(reference "#PWR093")
 					(unit 1)
 				)
 			)
@@ -2801,7 +2801,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061c8c410")
-		(property "Reference" "#PWR0123"
+		(property "Reference" "#PWR094"
 			(at 232.41 71.12 0)
 			(effects
 				(font
@@ -2851,7 +2851,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0123")
+					(reference "#PWR094")
 					(unit 1)
 				)
 			)
@@ -2866,7 +2866,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061c8d1d9")
-		(property "Reference" "#PWR0117"
+		(property "Reference" "#PWR095"
 			(at 256.54 76.2 0)
 			(effects
 				(font
@@ -2916,7 +2916,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0117")
+					(reference "#PWR095")
 					(unit 1)
 				)
 			)
@@ -2931,7 +2931,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061c8df19")
-		(property "Reference" "#PWR0115"
+		(property "Reference" "#PWR091"
 			(at 180.34 60.96 0)
 			(effects
 				(font
@@ -2981,7 +2981,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0115")
+					(reference "#PWR091")
 					(unit 1)
 				)
 			)
@@ -2996,7 +2996,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca1ccb")
-		(property "Reference" "R121"
+		(property "Reference" "R47"
 			(at 99.568 55.9816 0)
 			(effects
 				(font
@@ -3050,7 +3050,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R121")
+					(reference "R47")
 					(unit 1)
 				)
 			)
@@ -3065,7 +3065,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca1cd2")
-		(property "Reference" "#PWR0153"
+		(property "Reference" "#PWR087"
 			(at 97.79 54.61 0)
 			(effects
 				(font
@@ -3115,7 +3115,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0153")
+					(reference "#PWR087")
 					(unit 1)
 				)
 			)
@@ -3130,7 +3130,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca47c5")
-		(property "Reference" "R14"
+		(property "Reference" "R50"
 			(at 135.128 55.9816 0)
 			(effects
 				(font
@@ -3184,7 +3184,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R14")
+					(reference "R50")
 					(unit 1)
 				)
 			)
@@ -3199,7 +3199,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca47cc")
-		(property "Reference" "#PWR0111"
+		(property "Reference" "#PWR090"
 			(at 133.35 54.61 0)
 			(effects
 				(font
@@ -3249,7 +3249,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0111")
+					(reference "#PWR090")
 					(unit 1)
 				)
 			)
@@ -3264,7 +3264,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca664f")
-		(property "Reference" "R117"
+		(property "Reference" "R49"
 			(at 122.428 55.9816 0)
 			(effects
 				(font
@@ -3318,7 +3318,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R117")
+					(reference "R49")
 					(unit 1)
 				)
 			)
@@ -3333,7 +3333,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca6656")
-		(property "Reference" "#PWR0113"
+		(property "Reference" "#PWR089"
 			(at 120.65 54.61 0)
 			(effects
 				(font
@@ -3383,7 +3383,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0113")
+					(reference "#PWR089")
 					(unit 1)
 				)
 			)
@@ -3398,7 +3398,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca8277")
-		(property "Reference" "R120"
+		(property "Reference" "R48"
 			(at 110.998 55.9816 0)
 			(effects
 				(font
@@ -3452,7 +3452,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R120")
+					(reference "R48")
 					(unit 1)
 				)
 			)
@@ -3467,7 +3467,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061ca827e")
-		(property "Reference" "#PWR0119"
+		(property "Reference" "#PWR088"
 			(at 109.22 54.61 0)
 			(effects
 				(font
@@ -3517,7 +3517,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0119")
+					(reference "#PWR088")
 					(unit 1)
 				)
 			)
@@ -3532,7 +3532,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061cc4462")
-		(property "Reference" "Q60"
+		(property "Reference" "Q16"
 			(at 158.75 64.389 0)
 			(effects
 				(font
@@ -3679,7 +3679,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "Q60")
+					(reference "Q16")
 					(unit 1)
 				)
 			)
@@ -3694,7 +3694,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061cf45ae")
-		(property "Reference" "D14"
+		(property "Reference" "D10"
 			(at 60.5282 87.63 0)
 			(effects
 				(font
@@ -3746,7 +3746,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "D14")
+					(reference "D10")
 					(unit 1)
 				)
 			)
@@ -3761,7 +3761,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061cf45b4")
-		(property "Reference" "D15"
+		(property "Reference" "D11"
 			(at 73.2282 90.17 0)
 			(effects
 				(font
@@ -3813,7 +3813,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "D15")
+					(reference "D11")
 					(unit 1)
 				)
 			)
@@ -3828,7 +3828,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061cf45ba")
-		(property "Reference" "D16"
+		(property "Reference" "D12"
 			(at 85.9282 95.25 0)
 			(effects
 				(font
@@ -3880,7 +3880,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "D16")
+					(reference "D12")
 					(unit 1)
 				)
 			)
@@ -3896,7 +3896,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061cf45c0")
-		(property "Reference" "D13"
+		(property "Reference" "D9"
 			(at 62.23 79.1718 0)
 			(effects
 				(font
@@ -3948,7 +3948,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "D13")
+					(reference "D9")
 					(unit 1)
 				)
 			)
@@ -3963,7 +3963,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061d587eb")
-		(property "Reference" "#PWR0164"
+		(property "Reference" "#PWR092"
 			(at 184.15 97.79 0)
 			(effects
 				(font
@@ -4013,7 +4013,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0164")
+					(reference "#PWR092")
 					(unit 1)
 				)
 			)
@@ -4028,7 +4028,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b13bc")
-		(property "Reference" "R51"
+		(property "Reference" "R43"
 			(at 39.878 91.5416 0)
 			(effects
 				(font
@@ -4082,7 +4082,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R51")
+					(reference "R43")
 					(unit 1)
 				)
 			)
@@ -4097,7 +4097,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b13c2")
-		(property "Reference" "#PWR098"
+		(property "Reference" "#PWR083"
 			(at 52.07 106.68 0)
 			(effects
 				(font
@@ -4147,7 +4147,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR098")
+					(reference "#PWR083")
 					(unit 1)
 				)
 			)
@@ -4162,7 +4162,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b13ca")
-		(property "Reference" "R53"
+		(property "Reference" "R51"
 			(at 182.118 62.3316 0)
 			(effects
 				(font
@@ -4216,7 +4216,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R53")
+					(reference "R51")
 					(unit 1)
 				)
 			)
@@ -4231,7 +4231,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b13df")
-		(property "Reference" "Q16"
+		(property "Reference" "Q12"
 			(at 54.7116 80.1116 0)
 			(effects
 				(font
@@ -4291,7 +4291,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "Q16")
+					(reference "Q12")
 					(unit 1)
 				)
 			)
@@ -4306,7 +4306,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b13e5")
-		(property "Reference" "C24"
+		(property "Reference" "C14"
 			(at 30.861 91.5416 0)
 			(effects
 				(font
@@ -4360,7 +4360,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "C24")
+					(reference "C14")
 					(unit 1)
 				)
 			)
@@ -4375,7 +4375,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627ba46d")
-		(property "Reference" "R56"
+		(property "Reference" "R45"
 			(at 66.548 147.4216 0)
 			(effects
 				(font
@@ -4429,7 +4429,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R56")
+					(reference "R45")
 					(unit 1)
 				)
 			)
@@ -4444,7 +4444,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627ba473")
-		(property "Reference" "#PWR0104"
+		(property "Reference" "#PWR085"
 			(at 78.74 162.56 0)
 			(effects
 				(font
@@ -4494,7 +4494,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0104")
+					(reference "#PWR085")
 					(unit 1)
 				)
 			)
@@ -4509,7 +4509,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627ba47b")
-		(property "Reference" "R58"
+		(property "Reference" "R53"
 			(at 234.188 72.4916 0)
 			(effects
 				(font
@@ -4563,7 +4563,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R58")
+					(reference "R53")
 					(unit 1)
 				)
 			)
@@ -4578,7 +4578,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627ba490")
-		(property "Reference" "Q19"
+		(property "Reference" "Q14"
 			(at 81.3816 135.9916 0)
 			(effects
 				(font
@@ -4638,7 +4638,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "Q19")
+					(reference "Q14")
 					(unit 1)
 				)
 			)
@@ -4653,7 +4653,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627ba496")
-		(property "Reference" "C27"
+		(property "Reference" "C16"
 			(at 57.531 147.4216 0)
 			(effects
 				(font
@@ -4707,7 +4707,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "C27")
+					(reference "C16")
 					(unit 1)
 				)
 			)
@@ -4722,7 +4722,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627c28ff")
-		(property "Reference" "R52"
+		(property "Reference" "R46"
 			(at 79.248 175.3616 0)
 			(effects
 				(font
@@ -4776,7 +4776,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "R52")
+					(reference "R46")
 					(unit 1)
 				)
 			)
@@ -4791,7 +4791,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627c2905")
-		(property "Reference" "#PWR0100"
+		(property "Reference" "#PWR086"
 			(at 91.44 190.5 0)
 			(effects
 				(font
@@ -4841,7 +4841,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "#PWR0100")
+					(reference "#PWR086")
 					(unit 1)
 				)
 			)
@@ -4925,7 +4925,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627c2922")
-		(property "Reference" "Q17"
+		(property "Reference" "Q15"
 			(at 94.0816 163.9316 0)
 			(effects
 				(font
@@ -4985,7 +4985,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "Q17")
+					(reference "Q15")
 					(unit 1)
 				)
 			)
@@ -5000,7 +5000,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627c2928")
-		(property "Reference" "C25"
+		(property "Reference" "C17"
 			(at 70.231 175.3616 0)
 			(effects
 				(font
@@ -5054,7 +5054,7 @@
 		(instances
 			(project "CampKeen"
 				(path "/63c56ea4-91a3-4172-b9de-a4388cc8f894/00000000-0000-0000-0000-0000627ae565"
-					(reference "C25")
+					(reference "C17")
 					(unit 1)
 				)
 			)
